@@ -9,7 +9,14 @@
 
 ## Running (development)
 
-To start the app and watch for changes:
+Turn on the virtual environment:
+
+    . .venv/bin/activate
+
+Note: you may want to use something like [direnv](https://direnv.net)
+or [autoenv](https://github.com/kennethreitz/autoenv) to automate this.
+
+Start the app and watch for changes:
 
     DEBUG=1 ./app.py
 
