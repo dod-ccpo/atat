@@ -2,61 +2,60 @@
 
 {% block form %}
 
+{% autoescape None %}
+{% if f.errors %}
+  <b>There were some errors, see below.</b>
+{% end %}
+
 
 <h2>Organizational Info</h2>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque placeat distinctio accusamus quo temporibus facilis, dicta delectus asperiores. Nihil aut quod quibusdam id fugit, officia dolorum laudantium! Quidem tempora, aliquam.</p>
 
 <h3 id="information-about-you">Information About You</h3>
 
-  <label for="">Name</label>
-  <input id="" name="" type="text">
+  {{ f.name.label }}
+  {{ f.name }}
 
-  <label for="">Email</label>
-  <input id="" name="" type="email" placeholder="i.e. name@mail.gov">
+  {{ f.email.label }}
+  {{ f.email(placeholder="i.e. name@mail.gov") }}
 
-  <label for="">Phone Number</label>
-  <input id="" name="" type="text" placeholder="i.e. (123) 456-7890">
+  {{ f.phone_number.label }}
+  {{ f.phone_number(placeholder="i.e. (123) 456-7890") }}
 
-  <label for="">Office Symbol / Department</label>
-  <input id="" name="" type="text" placeholder="i.e. Army PEO-EIS">
+  {{ f.department.label }}
+  {{ f.department(placeholder="i.e. Army PEO-EIS") }}
 
-  <fieldset>
-    <label for="">Citizenship</label>
-    <ul class="usa-unstyled-list">
-      <li>
-        <input id="" type="radio" name="" value"">
-        <label class="input-label">United States</label>
-      </li>
-      <li>
-        <input id="" type="radio" name="" value"">
-        <label class="input-label">Foreign National</label>
-      </li>
-      <li>
-        <input id="" type="radio" name="" value"">
-        <label class="input-label">Other</label>
-      </li>
-    </ul>
+  <br>
+
+  <fieldset class="usa-fieldset-inputs usa-sans">
+    {{ f.citizenship.label }}
+    {{ f.citizenship(class_="usa-unstyled-list") }}
+  </fieldset>
+
+  <br>
+
+  <fieldset class="usa-fieldset-inputs usa-sans">
+    {{ f.designation.label }}
+    {{ f.designation(class_="usa-unstyled-list") }}
   </fieldset>
 
   <fieldset>
-    <label for="">Designation of Person</label>
-    <ul class="usa-unstyled-list">
-      <li>
-        <input id="" type="radio" name="" value"">
-        <label class="input-label">Military</label>
-      </li>
-      <li>
-        <input id="" type="radio" name="" value"">
-        <label class="input-label">Civilian</label>
-      </li>
-      <li>
-        <input id="" type="radio" name="" value"">
-        <label class="input-label">Contractor</label>
-      </li>
-    </ul>
+    <label for="input-start-date">Expected start date</label>
+    <div class="usa-date-of-birth">
+      <div class="usa-form-group usa-form-group-month">
+        {{ f.ia_training_completion_date.month.label }}
+        {{ f.ia_training_completion_date.month(min="1", max="12") }}
+       </div>
+      <div class="usa-form-group usa-form-group-day">
+        {{ f.ia_training_completion_date.day.label }}
+        {{ f.ia_training_completion_date.day(min="1", max="31") }}
+       </div>
+      <div class="usa-form-group usa-form-group-year">
+        {{ f.ia_training_completion_date.year.label }}
+        {{ f.ia_training_completion_date.year }}
+       </div>
+     </div>
   </fieldset>
-
-
 
   <fieldset>
     <label for="">Latest IA Training completion date</label>
