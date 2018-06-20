@@ -22,8 +22,8 @@
   {{ f.phone_number.label }}
   {{ f.phone_number(placeholder="i.e. (123) 456-7890") }}
 
-  {{ f.department.label }}
-  {{ f.department(placeholder="i.e. Army PEO-EIS") }}
+  {{ f.service_branch.label }}
+  {{ f.service_branch(placeholder="i.e. Army PEO-EIS") }}
 
   <br>
 
@@ -40,7 +40,7 @@
   </fieldset>
 
   <fieldset>
-    <label for="input-start-date">Expected start date</label>
+    {{ f.ia_training_completion_date.label }}
     <div class="usa-date-of-birth">
       <div class="usa-form-group usa-form-group-month">
         {{ f.ia_training_completion_date.month.label }}
@@ -57,34 +57,13 @@
      </div>
   </fieldset>
 
-  <fieldset>
-    <label for="">Latest IA Training completion date</label>
-
-    <div class="usa-date-input">
-      <div class="usa-form-group usa-form-group-month">
-        <label for="">Month</label>
-        <input class="usa-input-inline" id="" name="" type="number" min="1" max="12" value="">
-      </div>
-      <div class="usa-form-group usa-form-group-day">
-        <label for="">Day</label>
-        <input class="usa-input-inline" id="" name="" type="number" min="1" max="31" value="">
-      </div>
-      <div class="usa-form-group usa-form-group-year">
-        <label for="">Year</label>
-        <input class="usa-input-inline" id="" name="" type="number" min="1900" max="2000" value="">
-      </div>
-    </div>
-  </fieldset>
-
-
 <h3 id="information-about-your-collaborators">Information About Your Collaborators</h3>
   <p>Please designate a Contracting Officer that will help you complete this process.</p>
-  <label for="">Name</label>
-  <input id="" name="" type="text">
+  {{ f.collab_name.label }}
+  {{ f.collab_name }}
 
-  <label for="">Email</label>
-  <input id="" name="" type="text" placeholder="i.e. name@mail.gov">
-
+  {{ f.collab_email.label }}
+  {{ f.collab_email(placeholder="i.e. name@mail.gov") }}
 
 {% end %}
 

@@ -9,7 +9,7 @@ class OrganizationInfoForm(Form):
     name = StringField('Name', validators=[Required()])
     email = StringField('Email', validators=[Required()])
     phone_number = StringField('Phone Number', validators=[Required()])
-    department = StringField('Office Symbol / Department', validators=[Required()])
+    service_branch = StringField('Service Branch / Agency', validators=[Required()])
     citizenship = RadioField('Citizenship',
                              validators=[Required()],
                              choices=[
