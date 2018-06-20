@@ -16,14 +16,11 @@
   <button class="usa-button-secondary" disabled>Sandbox Application</button>
 
 
-  {{ f.application_name.label }}
-  {{ f.application_name(placeholder="What is the application name?") }}
-
-  {{ f.application_description.label }}
-  {{ f.application_description(placeholder="Describe the application") }}
-
   {{ f.dollar_value.label }}
-  {{ f.dollar_value(placeholder="$") }}
+  {{ f.dollar_value }}
+
+  {{ f.num_applications.label }}
+  {{ f.num_applications }}
 
   {{ f.input_estimate.label }}
   {{ f.input_estimate }}
