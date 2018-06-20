@@ -140,11 +140,11 @@
         },
         "black": {
             "hashes": [
-                "sha256:22158b89c1a6b4eb333a1e65e791a3f8b998cf3b11ae094adb2570f31f769a44",
-                "sha256:4b475bbd528acce094c503a3d2dbc2d05a4075f6d0ef7d9e7514518e14cc5191"
+                "sha256:479cc8b3455a75b5b289276b5f47fd2bb412f2f369292989c12b891264758b5c",
+                "sha256:fe3b7ac846f2a7c91d926782184826c57d2be283c57f0d6b37b85496eb5469ff"
             ],
             "index": "pypi",
-            "version": "==18.6b4"
+            "version": "==18.6b3"
         },
         "click": {
             "hashes": [
