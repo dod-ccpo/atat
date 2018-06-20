@@ -15,6 +15,7 @@ pytest-tornado = "==0.5.0"
 ipython = "*"
 ipdb = "*"
 pylint = "*"
+black = "*"
 
 [requires]
 python_version = "3.6"
