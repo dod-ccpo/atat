@@ -12,7 +12,7 @@ class RequestNew(BaseHandler):
     screens = [
         {
             'title': 'Details of Use',
-            'section_id': 'details_of_use',
+            'section': 'details_of_use',
             'form': RequestForm,
             'subitems': [
                 {'title': 'Application Details', 'id': 'application-details'},
@@ -23,22 +23,22 @@ class RequestNew(BaseHandler):
         },
         {
             'title': 'Organizational Info',
-            'section_id': 'organizational_info',
+            'section': 'organizational_info',
             'form': OrganizationInfoForm,
         },
         {
             'title': 'Funding/Contracting',
-            'section_id': 'funding_contracting',
+            'section': 'funding_contracting',
             'form': FundingForm,
         },
         {
             'title': 'Readiness Survey',
-            'section_id': 'readiness_survey',
+            'section': 'readiness_survey',
             'form': ReadinessForm,
         },
         {
             'title': 'Review & Submit',
-            'section_id': 'review_and_submit',
+            'section': 'review_and_submit',
             'form': ReviewForm,
         },
     ]
@@ -53,10 +53,13 @@ class RequestNew(BaseHandler):
         self.check_xsrf_cookie()
         screen = int(screen)
         form_metadata = self.screens[screen - 1]
+        form_section = form_metadata['section']
         form = form_metadata['form'](self.request.arguments)
+
         if form.validate():
-            request_data = {form_metadata['section_id']: form.data}
-            response = yield self.create_or_update_request(request_data, request_id)
+            response = yield self.create_or_update_request(
+                form_section, form.data, request_id
+            )
             if response.ok:
                 where = self.application.default_router.reverse_url(
                     'request_form_update',
@@ -77,7 +80,8 @@ class RequestNew(BaseHandler):
             request = yield self.get_request(request_id)
             if request.ok:
                 form_metadata = self.screens[int(screen) - 1]
-                form_data = request.json['body'].get(form_metadata['section_id'], {})
+                section = form_metadata['section']
+                form_data = request.json['body'].get(section, {})
                 form = form_metadata['form'](data=form_data)
 
         self.show_form(screen=screen, form=form, request_id=request_id)
@@ -104,8 +108,11 @@ class RequestNew(BaseHandler):
         return request
 
     @tornado.gen.coroutine
-    def create_or_update_request(self, form_data, request_id=None):
-        request_data = {'creator_id': self.get_current_user(), 'request': form_data}
+    def create_or_update_request(self, form_section, form_data, request_id=None):
+        request_data = {
+            'creator_id': self.get_current_user(),
+            'request': {form_section: form_data},
+        }
         if request_id:
             response = yield self.requests_client.patch(
                 '/requests/{}'.format(request_id), json=request_data
