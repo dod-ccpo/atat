@@ -20,10 +20,62 @@
   {{ f.dollar_value }}
 
   {{ f.num_applications.label }}
-  {{ f.num_applications }}
+  {{ f.num_applications(placeholder="Number of applications") }}
 
-  {{ f.input_estimate.label }}
-  {{ f.input_estimate }}
+  <h4 id="application-details">Cloud Resources</h4>
+
+  {{ f.total_cores.label }}
+  {{ f.total_cores(placeholder="Total cores", min="1", max="32") }}
+
+  <!-- example field with custom validation -->
+  {{ f.total_ram.label }}
+  {{ f.total_ram(placeholder="Total RAM", min="1", max="32") }}
+  <!-- example validation errors -->
+  {% for e in f.total_ram.errors %}
+    <div class="usa-input-error-message">
+      {{ e }}
+    </div>
+  {% end %}
+
+
+  <!-- Storage -->
+  <h4 id="application-storage">Storage</h4>
+  <p>The particulars of your body copy will be determined by the topic of your page. Regardless of topic, it’s a good practice to follow the inverted pyramid structure when writing copy: Begin with the information that’s most important to your users and then present information of less importance.</p>
+
+  {{ f.object_storage.label }}
+  {{ f.object_storage(placeholder="Total object storage") }}
+
+  {{ f.server_storage.label }}
+  {{ f.server_storage(placeholder="Total server storage") }}
+
+  <!-- Application Usage -->
+  <h4 id="application-usage">Estimated Application Storage</h4>
+  <p>The particulars of your body copy will be determined by the topic of your page. Regardless of topic, it’s a good practice to follow the inverted pyramid structure when writing copy: Begin with the information that’s most important to your users and then present information of less importance.</p>
+
+  {{ f.total_active_users.label }}
+  {{ f.total_active_users(placeholder="Total active users") }}
+
+  {{ f.total_peak_users.label }}
+  {{ f.total_peak_users(placeholder="Total peak users") }}
+
+  {{ f.total_requests.label }}
+  {{ f.total_requests(placeholder="Total requests") }}
+
+  {{ f.total_environments.label }}
+  {{ f.total_environments(placeholder="Total number of environments") }}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <b>NEW</b>
   <hr>
@@ -68,46 +120,4 @@
 
 
   <!-- Computation -->
-  <h4 id="application-details">Computation</h4>
-  <p>These headings introduce, respectively, sections and subsections within your body copy. As you create these headings, follow the same guidelines that you use when writing section headings: Be succinct, descriptive, and precise.</p>
-
-  {{ f.number_of_cores.label }}
-  {{ f.number_of_cores(placeholder="Total cores", min="1", max="32") }}
-
-  <!-- example field with custom validation -->
-  {{ f.total_ram.label }}
-  {{ f.total_ram(placeholder="Total RAM", min="1", max="32") }}
-  <!-- example validation errors -->
-  {% for e in f.total_ram.errors %}
-    <div class="usa-input-error-message">
-      {{ e }}
-    </div>
-  {% end %}
-
-
-  <!-- Storage -->
-  <h4 id="application-storage">Storage</h4>
-  <p>The particulars of your body copy will be determined by the topic of your page. Regardless of topic, it’s a good practice to follow the inverted pyramid structure when writing copy: Begin with the information that’s most important to your users and then present information of less importance.</p>
-
-  {{ f.object_storage.label }}
-  {{ f.object_storage(placeholder="Total object storage") }}
-
-  {{ f.server_storage.label }}
-  {{ f.server_storage(placeholder="Total server storage") }}
-
-  <!-- Application Usage -->
-  <h4 id="application-usage">Estimated Application Storage</h4>
-  <p>The particulars of your body copy will be determined by the topic of your page. Regardless of topic, it’s a good practice to follow the inverted pyramid structure when writing copy: Begin with the information that’s most important to your users and then present information of less importance.</p>
-
-  {{ f.total_active_users.label }}
-  {{ f.total_active_users(placeholder="Total active users") }}
-
-  {{ f.total_peak_users.label }}
-  {{ f.total_peak_users(placeholder="Total peak users") }}
-
-  {{ f.total_requests.label }}
-  {{ f.total_requests(placeholder="Total requests") }}
-
-  {{ f.total_environments.label }}
-  {{ f.total_environments(placeholder="Total number of environments") }}
 {% end %}
