@@ -66,14 +66,30 @@
 
 
 
-
-
 <!-- ORGANIZATIONAL INFO -->
 
 <h3 id="organizational-info">Organizational Info</h3>
 
+{{ f.name.label }}
+{{ f.name(placeholder="First and Last") }}
 
+{{ f.email.label }}
+{{ f.email(placeholder="jane@mail.mil") }}
 
+{{ f.phone_number.label }}
+{{ f.phone_number(placeholder="(123) 456-7890") }}
+
+{{ f.service_branch.label }}
+{{ f.service_branch(placeholder="i.e. US Air Force, US Army, US Navy, Marine Corps, Defense Media Agency") }}
+
+{{ f.citizenship.label }}
+{{ f.citizenship(placeholder="") }}
+
+{{ f.designation.label }}
+{{ f.designation(placeholder="") }}
+
+{{ f.date_latest_training.label }}
+{{ f.date_latest_training(placeholder="") }}
 
 
 
