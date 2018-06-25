@@ -13,6 +13,8 @@ from .date import DateForm
 
 
 class RequestForm(Form):
+
+    # Details of Use: Overall Request Details
     dollar_value = IntegerField(
         'What is the total estimated dollar value of the cloud resources you are requesting using the JEDI CSP Calculator? ',
         validators=[Required()],
@@ -25,6 +27,7 @@ class RequestForm(Form):
         'What organizations are supported by these applications?',
         validators=[Required()],
         )
+
 
     # Details of Use: Cloud Resources
     total_cores = IntegerField(
@@ -50,7 +53,6 @@ class RequestForm(Form):
 
 
     # Details of Use: Support Staff
-
     has_contractor_advisor = BooleanField('Do you have a contractor to advise and assist you with using cloud services?', 
         validators=[Required()]
         )
@@ -73,6 +75,8 @@ class RequestForm(Form):
         validators=[Required()]
         )
 
+
+    # Primary Government/Military POC
     name = StringField(
         'Name',
         )
