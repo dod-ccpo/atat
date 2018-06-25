@@ -19,13 +19,32 @@ class RequestForm(Form):
         'What is the total estimated dollar value of the cloud resources you are requesting using the JEDI CSP Calculator? ',
         validators=[Required()],
         )
+
     num_applications = IntegerField(
         'Please estimate the number of applications that might be supported by this request',
         validators=[Required()],
         )
+
+    date_start = StringField(
+        'Date you expect to start accessing this cloud resource',
+        validators=[Required()]
+        )
+
+    app_description = TextAreaField(
+        'Please briefly describe how your team is expecting to use the JEDI Cloud'
+        )
+
     supported_organizations = StringField(
         'What organizations are supported by these applications?',
         validators=[Required()],
+        )
+
+    uii_ids = TextAreaField(
+        'Please enter the Unique Item Identifier (UII)s related to your application(s) if you already have them.'
+        )
+
+    pe_id = TextAreaField(
+        'Please provide the Program Element (PE) Numbers related to your request'
         )
 
 
@@ -76,7 +95,7 @@ class RequestForm(Form):
         )
 
 
-    # Primary Government/Military POC
+    # Organizational Info
     name = StringField(
         'Name',
         )
@@ -112,15 +131,95 @@ class RequestForm(Form):
         )
 
 
+    # Primary Government/Military POC
+    name_poc = StringField(
+        'Name',
+        )
 
+    email_poc = StringField(
+        'Email (associated with your CAC)',
+        validators=[Required()]
+        )
 
+    dodid_poc = StringField(
+        'DOD ID',
+        validators=[Required()]
+        )
 
-    # date_start = FormField(DateForm, 'Date you expect to start accessing this cloud resource', validators=[Required()])
-    app_description = TextAreaField('Please briefly describe how your team is expecting to use the JEDI Cloud')
+    # Financial Verification
 
+    task_order_id = StringField(
+        'Task Order Number associated with this request.',
+        validators=[Required()]
+        )
 
-    working_with = TextAreaField('Please describe who you are working with')
-    is_existing_app = BooleanField('Is this an existing site/application?', validators=[Required()])
+    name_co = StringField(
+        'Contracting Officer Name',
+        validators=[Required()]
+        )
 
-    uiis = TextAreaField('Please provide the Unique Item Identifier (UII)s related to your request')
-    pes = TextAreaField('Please provide the Program Element (PE) Numbers related to your request')
+    email_co = StringField(
+        'Contracting Officer Email',
+        validators=[Required()]
+        )
+
+    office_co = StringField(
+        'Contracting Office Office',
+        validators=[Required()]
+        )
+
+    name_cor = StringField(
+        'Contracting Officer Representative (COR) Name',
+        validators=[Required()]
+        )
+
+    email_cor = StringField(
+        'Contracting Officer Representative (COR) Email',
+        validators=[Required()]
+        )
+
+    office_cor = StringField(
+        'Contracting Officer Representative (COR) Office',
+        validators=[Required()]
+        )
+
+    funding_type = StringField(
+        'Funding Type',
+        validators=[Required()]
+        )
+
+    funding_type_other = StringField(
+        'If other, please specify',
+        validators=[Required()]
+        )
+
+    clin_0001 = StringField(
+        'CLIN 0001 - Unclassified IaaS and PaaS Amount',
+        validators=[Required()]
+        )
+
+    clin_0003 = StringField(
+        'CLIN 0003 - Unclassified Cloud Support Package',
+        validators=[Required()]
+        )
+
+    clin_1001 = StringField(
+        'CLIN 1001 - Unclassified IaaS and PaaS Amount OPTION PERIOD 1',
+        validators=[Required()]
+        )
+
+    clin_1003 = StringField(
+        'CLIN 1003 - Unclassified Cloud Support Package OPTION PERIOD 1',
+        validators=[Required()]
+        )
+
+    clin_2001 = StringField(
+        'CLIN 2001 - Unclassified IaaS and PaaS Amount OPTION PERIOD 2',
+        validators=[Required()]
+        )
+
+    clin_2003 = StringField(
+        'CLIN 2003 - Unclassified Cloud Support Package OPTION PERIOD 2',
+        validators=[Required()]
+        )
+
