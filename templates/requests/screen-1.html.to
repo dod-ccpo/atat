@@ -19,8 +19,25 @@
 {{ f.num_applications.label }}
 {{ f.num_applications(placeholder="Estimated number of applications") }}
 
+{{ f.date_start.label }}
+{{ f.date_start }}
+
 {{ f.supported_organizations.label }}
 {{ f.supported_organizations(placeholder="Add tags associated with DoD components or other entities") }}
+
+{{ f.app_description.label }}
+{{ f.app_description(placeholder="Example: My organization is supporting the migration of XYZ system to the cloud due to XX policy memo. I am planning to use a sandbox environment to do testing.") }}
+
+{{ f.supported_organizations.label }}
+{{ f.supported_organizations(placeholder="Add tags associated with DoD components or other entities") }}
+
+{{ f.uii_ids.label }}
+{{ f.uii_ids(placeholder="Example: DI 0CVA5786950 or UN1945326361234786950") }}
+
+{{ f.pe_id.label }}
+{{ f.pe_id(placeholder="Example: 0203752A") }}
+
+
 
 
 <h3 id="cloud-resources">Cloud Resources</h3>
@@ -83,17 +100,96 @@
 {{ f.service_branch(placeholder="i.e. US Air Force, US Army, US Navy, Marine Corps, Defense Media Agency") }}
 
 {{ f.citizenship.label }}
-{{ f.citizenship(placeholder="") }}
+{{ f.citizenship }}
 
 {{ f.designation.label }}
-{{ f.designation(placeholder="") }}
+{{ f.designation }}
 
 {{ f.date_latest_training.label }}
-{{ f.date_latest_training(placeholder="") }}
+{{ f.date_latest_training }}
 
 
+<!-- PRIMARY GOVERNMENT/MILITARY POC -->
+
+<h3 id="government-poc">Primary Government/Military POC</h3>
+<p>Please designate a Primary Point of Contact that will be responsible for owning the workspace in the JEDI Cloud.</p>
+<p>The Point of Contact will become the primary owner of the <em>workspace</em> created to use the JEDI Cloud. As a workspace owner, this person will have the ability to: 
+  <ul>
+    <li>Create multiple application stacks and environments in the workspace to access the commercial cloud service provider portal</li>
+    <li>Add and manage users in the workspace</li>
+    <li>View the budget and billing history related to this workspace</li>
+    <li>Manage access to the Cloud Service Provider's Console</li>
+    <li>Transfer Workspace ownership to another person</li>
+  </ul>
+  <em>This POC may be you.</em>
+</p>
+
+{{ f.name_poc.label }}
+{{ f.name_poc(placeholder="First and Last") }}
+
+{{ f.email_poc.label }}
+{{ f.email_poc(placeholder="jane@mail.mil") }}
+
+{{ f.dodid_poc.label }}
+{{ f.dodid_poc(placeholder="10-digit number on the back of your CAC") }}
+
+<br><hr>
+<em>&darr; AFTER JEDI APPROVAL (whether manual or automatic)</em>
 
 
+<!-- FINANCIAL VERIFICATION -->
+
+<h3 id="financial-verification">Financial Verification</h3>
+<p>In order to get you access to the JEDI Cloud, we will need you to enter the details below that will help us verify and account for your Task Order.</p>
+
+{{ f.task_order_id.label }}
+{{ f.task_order_id(placeholder="Example: 1234567899C0001") }}
+
+{{ f.name_co.label }}
+{{ f.name_co(placeholder="First and Last") }}
+
+{{ f.email_co.label }}
+{{ f.email_co(placeholder="jane@mail.mil") }}
+
+{{ f.office_co.label }}
+{{ f.office_co(placeholder="Example: WHS") }}
+
+{{ f.name_cor.label }}
+{{ f.name_cor(placeholder="First and Last") }}
+
+{{ f.email_cor.label }}
+{{ f.email_cor(placeholder="jane@mail.mil") }}
+
+{{ f.office_cor.label }}
+{{ f.office_cor(placeholder="Example: WHS") }}
+
+<br><hr>
+<em>&darr; FIELDS NEEDED FOR MANUAL ENTRY OF TASK ORDER INFORMATION (only necessary if EDA info not available)</em>
+
+
+{{ f.funding_type.label }}
+{{ f.funding_type }}
+
+{{ f.funding_type_other.label }}
+{{ f.funding_type_other(placeholder="") }}
+
+{{ f.clin_0001.label }}
+{{ f.clin_0001(placeholder="50,000") }}
+
+{{ f.clin_0003.label }}
+{{ f.clin_0003(placeholder="13,000") }}
+
+{{ f.clin_1001.label }}
+{{ f.clin_1001(placeholder="30,000") }}
+
+{{ f.clin_1003.label }}
+{{ f.clin_1003(placeholder="7,000") }}
+
+{{ f.clin_2001.label }}
+{{ f.clin_2001(placeholder="30,000") }}
+
+{{ f.clin_2003.label }}
+{{ f.clin_2003(placeholder="7,000") }}
 
 
 {% end %}
