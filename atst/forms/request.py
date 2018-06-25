@@ -39,11 +39,11 @@ class RequestForm(Form):
         validators=[Required()],
         )
 
-    uii_ids = TextAreaField(
+    uii_ids = StringField(
         'Please enter the Unique Item Identifier (UII)s related to your application(s) if you already have them.'
         )
 
-    pe_id = TextAreaField(
+    pe_id = StringField(
         'Please provide the Program Element (PE) Numbers related to your request'
         )
 
