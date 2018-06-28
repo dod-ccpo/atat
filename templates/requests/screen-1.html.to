@@ -92,9 +92,9 @@
 </fieldset>
 
 
-<!-- ORGANIZATIONAL INFO -->
+<!-- INFORMATION ABOUT YOU -->
 
-<h3 id="organizational-info">Information About You</h3>
+<h2 id="Information About You">Information About You</h2>
 <p>Please tell us more about yourself.</p>
 
 {{ f.fname_request.label }}

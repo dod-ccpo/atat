@@ -3,8 +3,8 @@ from {
 }
 
 select {
-  background-image: none;
-  border-radius: 0px;
+  border-radius: 0;
+  -webkit-appearance: none;
 }
 
 .usa-date-input label {
@@ -16,7 +16,7 @@ select {
 }
 
 .usa-fieldset-inputs {
-  margin-top: 3rem;
+  margin-top: 2.25rem;
 
   label:first-child {
     padding-bottom: 0.5rem;
