@@ -33,7 +33,7 @@
 {{ f.supported_organizations(placeholder="Add tags associated with DoD components or other entities") }}
 
 {{ f.uii_ids.label }}
-{{ f.uii_ids(placeholder="Example: DI 0CVA5786950 or UN1945326361234786950") }}
+{{ f.uii_ids(placeholder="Example: \nDI 0CVA5786950 \nUN1945326361234786950") }}
 
 {{ f.pe_id.label }}
 {{ f.pe_id(placeholder="Example: 0203752A") }}
@@ -70,31 +70,41 @@
 <h3 id="support-staff">Support Staff</h3>
 <p>We want to learn more about the people helping you with the cloud.</p>
 
-{{ f.has_contractor_advisor.label }}
-{{ f.has_contractor_advisor }}
 
-{{ f.is_migrating_application.label }}
-{{ f.is_migrating_application }}
+<fieldset class="usa-fieldset-inputs">
+  {{ f.has_contractor_advisor.label }}
+  {{ f.has_contractor_advisor(class_="usa-unstyled-list") }}
+</fieldset>
 
-{{ f.has_migration_office.label }}
-{{ f.has_migration_office }}
+<fieldset class="usa-fieldset-inputs">
+  {{ f.is_migrating_application.label }}
+  {{ f.is_migrating_application(class_="usa-unstyled-list") }}
+</fieldset>
 
-{{ f.supporting_organization.label }}
-{{ f.supporting_organization(placeholder="e.g. AF CCE/HNI, Navy SPAWAR, MITRE") }}
+<fieldset class="usa-fieldset-inputs">
+  {{ f.has_migration_office.label }}
+  {{ f.has_migration_office(class_="usa-unstyled-list") }}
+</fieldset>
 
+<fieldset class="usa-fieldset-inputs">
+  {{ f.supporting_organization.label }}
+  {{ f.supporting_organization(placeholder="Example: AF CCE/HNI, Navy SPAWAR, MITRE", class_="usa-unstyled-list") }}
+</fieldset>
 
 
 <!-- ORGANIZATIONAL INFO -->
 
 <h3 id="organizational-info">Information About You</h3>
-<p>Please tell us more about you.</p>
+<p>Please tell us more about yourself.</p>
 
-{{ f.name.label }}
-{{ f.name(placeholder="First and Last") }}
-<!-- TODO: Split first and last -->
+{{ f.fname_request.label }}
+{{ f.fname_request(placeholder="Your first name") }}
 
-{{ f.email.label }}
-{{ f.email(placeholder="jane@mail.mil") }}
+{{ f.lname_request.label }}
+{{ f.lname_request(placeholder="Your last name") }}
+
+{{ f.email_request.label }}
+{{ f.email_request(placeholder="jane@mail.mil") }}
 
 {{ f.phone_number.label }}
 {{ f.phone_number(placeholder="(123) 456-7890") }}
@@ -102,19 +112,36 @@
 {{ f.service_branch.label }}
 {{ f.service_branch(placeholder="i.e. US Air Force, US Army, US Navy, Marine Corps, Defense Media Agency") }}
 
-{{ f.citizenship.label }}
-{{ f.citizenship }}
+<fieldset class="usa-fieldset-inputs">
+  {{ f.citizenship.label }}
+  {{ f.citizenship(class_="usa-unstyled-list") }}
+</fieldset>
 
 {{ f.designation.label }}
 {{ f.designation }}
 
-{{ f.date_latest_training.label }}
-{{ f.date_latest_training }}
+<fieldset>
+  <label for="input-start-date">Latest Information Assurance (IA) Training completion date</label>
+  <div class="usa-date-of-birth">
+    <div class="usa-form-group usa-form-group-month">
+      {{ f.date_latest_training.month.label }}
+      {{ f.date_latest_training.month(min="1", max="12") }}
+    </div>
+    <div class="usa-form-group usa-form-group-day">
+      {{ f.date_latest_training.day.label }}
+      {{ f.date_latest_training.day(min="1", max="31") }}
+    </div>
+    <div class="usa-form-group usa-form-group-year">
+      {{ f.date_latest_training.year.label }}
+      {{ f.date_latest_training.year(min="1900", max="2040") }}
+    </div>
+  </div>
+</fieldset>
 
 
 <!-- PRIMARY GOVERNMENT/MILITARY POC -->
 
-<h3 id="government-poc">Primary Government/Military POC</h3>
+<h3 id="government-poc">Primary Government/Military Point of Contact (POC)</h3>
 <p>Please designate a Primary Point of Contact that will be responsible for owning the workspace in the JEDI Cloud.</p>
 <p>The Point of Contact will become the primary owner of the <em>workspace</em> created to use the JEDI Cloud. As a workspace owner, this person will have the ability to: 
   <ul>
@@ -127,14 +154,17 @@
   <em>This POC may be you.</em>
 </p>
 
-{{ f.name_poc.label }}
-{{ f.name_poc(placeholder="First and Last") }}
+{{ f.fname_poc.label }}
+{{ f.fname_poc(placeholder="First name") }}
+
+{{ f.lname_poc.label }}
+{{ f.lname_poc(placeholder="Last name") }}
 
 {{ f.email_poc.label }}
 {{ f.email_poc(placeholder="jane@mail.mil") }}
 
 {{ f.dodid_poc.label }}
-{{ f.dodid_poc(placeholder="10-digit number on the back of your CAC") }}
+{{ f.dodid_poc(placeholder="10-digit number on the back of the CAC") }}
 
 <br><hr>
 <em>&darr; AFTER JEDI APPROVAL (whether manual or automatic)</em>
@@ -148,8 +178,11 @@
 {{ f.task_order_id.label }}
 {{ f.task_order_id(placeholder="Example: 1234567899C0001") }}
 
-{{ f.name_co.label }}
-{{ f.name_co(placeholder="First and Last") }}
+{{ f.fname_co.label }}
+{{ f.fname_co(placeholder="Contracting Officer first name") }}
+
+{{ f.lname_co.label }}
+{{ f.lname_co(placeholder="Contracting Officer last name") }}
 
 {{ f.email_co.label }}
 {{ f.email_co(placeholder="jane@mail.mil") }}
@@ -157,8 +190,11 @@
 {{ f.office_co.label }}
 {{ f.office_co(placeholder="Example: WHS") }}
 
-{{ f.name_cor.label }}
-{{ f.name_cor(placeholder="First and Last") }}
+{{ f.fname_cor.label }}
+{{ f.fname_cor(placeholder="Contracting Officer first name") }}
+
+{{ f.lname_cor.label }}
+{{ f.lname_cor(placeholder="Contracting Officer last name") }}
 
 {{ f.email_cor.label }}
 {{ f.email_cor(placeholder="jane@mail.mil") }}

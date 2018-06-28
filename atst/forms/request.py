@@ -1,4 +1,4 @@
-from wtforms.fields.html5 import IntegerField
+from wtforms.fields.html5 import IntegerField, EmailField, TelField
 from wtforms.fields import (
     RadioField,
     StringField,
@@ -39,7 +39,7 @@ class RequestForm(Form):
         validators=[Required()],
     )
 
-    uii_ids = StringField(
+    uii_ids = TextAreaField(
         "Please enter the Unique Item Identifier (UII)s related to your application(s) if you already have them."
     )
 
@@ -57,13 +57,15 @@ class RequestForm(Form):
     total_server_storage = IntegerField("Total server storage", validators=[Required()])
 
     # Details of Use: Support Staff
-    has_contractor_advisor = BooleanField(
+    has_contractor_advisor = RadioField(
         "Do you have a contractor to advise and assist you with using cloud services?",
+        choices=[('yes','Yes'),('no','No')],
         validators=[Required()],
     )
 
-    is_migrating_application = BooleanField(
+    is_migrating_application = RadioField(
         "Are you using the JEDI Cloud to migrate existing applications?",
+        choices=[('yes','Yes'),('no','No')],
         validators=[Required()],
     )
 
@@ -72,8 +74,9 @@ class RequestForm(Form):
         validators=[Required()],
     )
 
-    has_migration_office = BooleanField(
+    has_migration_office = RadioField(
         "Do you have a migration office that you're working with to migrate to the cloud?",
+        choices=[('yes','Yes'),('no','No')],
         validators=[Required()],
     )
 
@@ -83,27 +86,32 @@ class RequestForm(Form):
     )
 
     # Organizational Info
-    name = StringField("Name")
+    fname_request = StringField("First Name")
+    lname_request = StringField("Last Name")
 
-    email = StringField("Email (associated with your CAC)", validators=[Required()])
+    email_request = EmailField("Email (associated with your CAC)", validators=[Required()])
 
-    phone_number = StringField("Phone Number", validators=[Required()])
+    phone_number = TelField("Phone Number", validators=[Required()])
 
     service_branch = StringField("Service Branch or Agency", validators=[Required()])
 
-    citizenship = StringField("Citizenship", validators=[Required()])
+    citizenship = RadioField(
+        choices=[
+            ('United States','United States'),
+            ('Foreign National','Foreign National'),
+            ('Other','Other')],
+        validators=[Required()]
+    )
 
     designation = StringField("Designation of Person", validators=[Required()])
 
-    date_latest_training = StringField(
-        "Latest Information Assurance (IA) Training completion date",
-        validators=[Required()],
-    )
+    date_latest_training = FormField(DateForm)
 
     # Primary Government/Military POC
-    name_poc = StringField("Name")
+    fname_poc = StringField("POC First Name")
+    lname_poc = StringField("POC Last Name")
 
-    email_poc = StringField("Email (associated with your CAC)", validators=[Required()])
+    email_poc = StringField("POC Email (associated with CAC)", validators=[Required()])
 
     dodid_poc = StringField("DOD ID", validators=[Required()])
 
@@ -113,14 +121,19 @@ class RequestForm(Form):
         "Task Order Number associated with this request.", validators=[Required()]
     )
 
-    name_co = StringField("Contracting Officer Name", validators=[Required()])
+    fname_co = StringField("Contracting Officer First Name", validators=[Required()])
+    lname_co = StringField("Contracting Officer Last Name", validators=[Required()])
 
     email_co = StringField("Contracting Officer Email", validators=[Required()])
 
     office_co = StringField("Contracting Office Office", validators=[Required()])
 
-    name_cor = StringField(
-        "Contracting Officer Representative (COR) Name", validators=[Required()]
+    fname_cor = StringField(
+        "Contracting Officer Representative (COR) First Name", validators=[Required()]
+    )
+
+    lname_cor = StringField(
+        "Contracting Officer Representative (COR) Last Name", validators=[Required()]
     )
 
     email_cor = StringField(
@@ -131,7 +144,18 @@ class RequestForm(Form):
         "Contracting Officer Representative (COR) Office", validators=[Required()]
     )
 
-    funding_type = StringField("Funding Type", validators=[Required()])
+
+    funding_type = SelectField(
+        validators=[Required()],
+        choices=[
+            ("", "- Select -"),
+            ("RDTE","Research, Development, Testing & Evaluation (RDT&E)"),
+            ("OM","Operations & Maintenance (O&M)"),
+            ("PROC","Procurement (PROC)"),
+            ("OTHER","Other"),
+        ],
+    )
+
 
     funding_type_other = StringField(
         "If other, please specify", validators=[Required()]
