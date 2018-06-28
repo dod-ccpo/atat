@@ -12,6 +12,7 @@
 <!-- DETAILS OF USE -->
 
 <h3 id="overall-request-details">Overall Request Details</h3>
+<p>Please help us understand the size and scope of your resource request.</p>
 
 {{ f.dollar_value.label }}
 {{ f.dollar_value(placeholder="Total dollar amount to be associated with the Task Order")}}
@@ -85,10 +86,12 @@
 
 <!-- ORGANIZATIONAL INFO -->
 
-<h3 id="organizational-info">Organizational Info</h3>
+<h3 id="organizational-info">Information About You</h3>
+<p>Please tell us more about you.</p>
 
 {{ f.name.label }}
 {{ f.name(placeholder="First and Last") }}
+<!-- TODO: Split first and last -->
 
 {{ f.email.label }}
 {{ f.email(placeholder="jane@mail.mil") }}
@@ -135,7 +138,7 @@
 
 <br><hr>
 <em>&darr; AFTER JEDI APPROVAL (whether manual or automatic)</em>
-
+<!-- TODO: Conditional form reveal -->
 
 <!-- FINANCIAL VERIFICATION -->
 

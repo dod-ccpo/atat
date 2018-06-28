@@ -15,9 +15,9 @@
 <main class="main-content usa-width-two-thirds">
 
     {% if request_id %}
-      <form method='POST' action="{{ reverse_url('request_form_update', current, request_id) }}">
+      <form method='POST' action="{{ reverse_url('request_form_update', current, request_id) }}" autocomplete="off">
     {% else %}
-      <form method='POST' action="{{ reverse_url('request_form_new', current) }}">
+      <form method='POST' action="{{ reverse_url('request_form_new', current) }}" autocomplete="off">
     {% end %}
 
     {% module xsrf_form_html() %}

@@ -7,9 +7,9 @@ from tests.mocks import MockApiClient, MockRequestsClient
 @pytest.fixture
 def app():
     TEST_DEPS = {
-        'authz_client': MockApiClient('authz'),
-        'requests_client': MockRequestsClient('requests'),
-        'authnid_client': MockApiClient('authnid'),
+        "authz_client": MockApiClient("authz"),
+        "requests_client": MockRequestsClient("requests"),
+        "authnid_client": MockApiClient("authnid"),
     }
 
     config = make_config()

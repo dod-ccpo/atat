@@ -3,7 +3,6 @@ from atst.handler import BaseHandler
 
 
 class Login(BaseHandler):
-
     def initialize(self, authnid_client):
         self.authnid_client = authnid_client
 
@@ -25,7 +24,7 @@ class Login(BaseHandler):
     def _validate_login_token(self, token):
         try:
             response = yield self.authnid_client.post(
-                "/api/v1/validate", json={"token": token}
+                "/validate", json={"token": token}
             )
             return response.code == 200
 

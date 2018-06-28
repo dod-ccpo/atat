@@ -8,6 +8,7 @@ cd "$(dirname "${0}")/.."
 
 # Install Python dependencies
 pipenv --python 3.6
+pipenv run pip install --upgrade pip
 pipenv install --dev
 
 # Install uswds node module and dependencies
