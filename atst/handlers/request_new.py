@@ -22,23 +22,23 @@ class RequestNew(BaseHandler):
         },
         {
             "title": "Information About You",
-            "section": "organizational_info",
-            "form": OrganizationInfoForm,
+            "section": "information_about_you",
+            "form": RequestForm,
         },
         {
-            "title": "Primary Point of Contact (POC)",
-            "section": "funding_contracting",
-            "form": FundingForm,
+            "title": "Primary Point of Contact",
+            "section": "primary_poc",
+            "form": RequestForm,
         },
         {
             "title": "Review & Submit",
-            "section": "readiness_survey",
-            "form": ReadinessForm,
+            "section": "review_submit",
+            "form": RequestForm,
         },
         {
             "title": "Financial Verification",
-            "section": "review_and_submit",
-            "form": ReviewForm,
+            "section": "financial_verification",
+            "form": RequestForm,
         },
     ]
 

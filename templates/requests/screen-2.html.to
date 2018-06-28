@@ -8,62 +8,49 @@
 {% end %}
 
 
-<h2>Organizational Info</h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque placeat distinctio accusamus quo temporibus facilis, dicta delectus asperiores. Nihil aut quod quibusdam id fugit, officia dolorum laudantium! Quidem tempora, aliquam.</p>
+<h2 id="Information About You">Information About You</h2>
+<p>Please tell us more about yourself.</p>
 
-<h3 id="information-about-you">Information About You</h3>
+{{ f.fname_request.label }}
+{{ f.fname_request(placeholder="Your first name") }}
 
-  {{ f.name.label }}
-  {{ f.name }}
+{{ f.lname_request.label }}
+{{ f.lname_request(placeholder="Your last name") }}
 
-  {{ f.email.label }}
-  {{ f.email(placeholder="i.e. name@mail.gov") }}
+{{ f.email_request.label }}
+{{ f.email_request(placeholder="jane@mail.mil") }}
 
-  {{ f.phone_number.label }}
-  {{ f.phone_number(placeholder="i.e. (123) 456-7890") }}
+{{ f.phone_number.label }}
+{{ f.phone_number(placeholder="(123) 456-7890") }}
 
-  {{ f.service_branch.label }}
-  {{ f.service_branch(placeholder="i.e. Army PEO-EIS") }}
+{{ f.service_branch.label }}
+{{ f.service_branch(placeholder="i.e. US Air Force, US Army, US Navy, Marine Corps, Defense Media Agency") }}
 
-  <br>
+<fieldset class="usa-fieldset-inputs">
+  {{ f.citizenship.label }}
+  {{ f.citizenship(class_="usa-unstyled-list") }}
+</fieldset>
 
-  <fieldset class="usa-fieldset-inputs usa-sans">
-    {{ f.citizenship.label }}
-    {{ f.citizenship(class_="usa-unstyled-list") }}
-  </fieldset>
+{{ f.designation.label }}
+{{ f.designation }}
 
-  <br>
-
-  <fieldset class="usa-fieldset-inputs usa-sans">
-    {{ f.designation.label }}
-    {{ f.designation(class_="usa-unstyled-list") }}
-  </fieldset>
-
-  <fieldset>
-    {{ f.ia_training_completion_date.label }}
-    <div class="usa-date-of-birth">
-      <div class="usa-form-group usa-form-group-month">
-        {{ f.ia_training_completion_date.month.label }}
-        {{ f.ia_training_completion_date.month(min="1", max="12") }}
-       </div>
-      <div class="usa-form-group usa-form-group-day">
-        {{ f.ia_training_completion_date.day.label }}
-        {{ f.ia_training_completion_date.day(min="1", max="31") }}
-       </div>
-      <div class="usa-form-group usa-form-group-year">
-        {{ f.ia_training_completion_date.year.label }}
-        {{ f.ia_training_completion_date.year }}
-       </div>
-     </div>
-  </fieldset>
-
-<h3 id="information-about-your-collaborators">Information About Your Collaborators</h3>
-  <p>Please designate a Contracting Officer that will help you complete this process.</p>
-  {{ f.collab_name.label }}
-  {{ f.collab_name }}
-
-  {{ f.collab_email.label }}
-  {{ f.collab_email(placeholder="i.e. name@mail.gov") }}
+<fieldset>
+  <label for="input-start-date">Latest Information Assurance (IA) Training completion date</label>
+  <div class="usa-date-of-birth">
+    <div class="usa-form-group usa-form-group-month">
+      {{ f.date_latest_training.month.label }}
+      {{ f.date_latest_training.month(min="1", max="12") }}
+    </div>
+    <div class="usa-form-group usa-form-group-day">
+      {{ f.date_latest_training.day.label }}
+      {{ f.date_latest_training.day(min="1", max="31") }}
+    </div>
+    <div class="usa-form-group usa-form-group-year">
+      {{ f.date_latest_training.year.label }}
+      {{ f.date_latest_training.year(min="1900", max="2040") }}
+    </div>
+  </div>
+</fieldset>
 
 {% end %}
 

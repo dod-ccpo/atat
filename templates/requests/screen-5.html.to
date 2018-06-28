@@ -1,202 +1,70 @@
 {% extends '../requests_new.html.to' %}
 
 {% block form %}
-<h2>Review &amp; Submit</h2>
-<p class="usa-font-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae placeat maiores illo totam consequuntur ipsum quo animi earum voluptatem, velit minus, perferendis aperiam, tenetur alias nemo ratione accusantium, ullam at!</p>
 
-
-<h3>1. Details of Use <a href="" class="usa-button usa-button-secondary">Edit</a></h3>
-
-
-<h4>Applications &amp; Environments (2)</h4>
-<table class="usa-table-borderless" width="100%">
-  <thead>
-    <tr>
-      <th scope="col">Application Name</th>
-      <th scope="col">Total Users</th>
-      <th scope="col">Estimated Cost</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><a href="#app-code-mil">Code.mil</a></td>
-      <td>235</td>
-      <td>$1,000,000,000</td>
-    </tr>
-    <tr>
-      <td><a href="#app-digital-dojo">Digital Dojo</a></td>
-      <td>1,337</td>
-      <td>$10,000</td>
-    </tr>
-  </tbody>
-</table>
-
-<h5 id="app-code-mil">Code.mil</h5>
-
-<h6>Application Details</h6>
-<label>Application description</label>
-<span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore tempora provident labore, deleniti facilis dolorum impedit repellat, et, quisquam modi eos libero nulla ut excepturi omnis. At magnam assumenda vero.</span>
-
-<label>Estimated dollar value of use</label>
-<span>$1,000,000,000</span>
-
-<label>How did you arrive at this estimate?</label>
-<span>CSP Calculator</span>
-
-<label>Expected start date</label>
-<span>2020-03-02</span>
-
-<label>Desired period of performance</label>
-<span>Lots of it</span>
-
-<label>Classification level</label>
-<span>Secret</span>
-
-<label>Primary service branch usage</label>
-<span>Army</span>
-
-<label>Cloud model service</label>
-<span>IaaS and PaaS</span>
-
-<h6>Computation</h6>
-<label>Number of cores</label>
-<span>32</span>
-
-<label>Total RAM</label>
-<span>128GB</span>
-
-<h6>Storage</h6>
-<label>Object storage</label>
-<span>10TB</span>
-
-<label>Server storage</label>
-<span>100TB</span>
-
-<h6>Estimated Application Storage</h6>
-<label>Expected active users</label>
-<span>300</span>
-
-<label>Expected peak concurrent users</label>
-<span>1,000</span>
-
-<label>Expected requests per minute</label>
-<span>1,000</span>
-
-<label>Number of application environments</label>
-<span>3</span>
-
-
-<h5 id="app-digital-dojo">Digital Dojo</h5>
-
-<h6>Application Details</h6>
-<label>Application description</label>
-<span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore tempora provident labore, deleniti facilis dolorum impedit repellat, et, quisquam modi eos libero nulla ut excepturi omnis. At magnam assumenda vero.</span>
-
-<label>Estimated dollar value of use</label>
-<span>$10,000</span>
-
-<label>How did you arrive at this estimate?</label>
-<span>CSP Calculator</span>
-
-<label>Expected start date</label>
-<span>2020-03-02</span>
-
-<label>Desired period of performance</label>
-<span>Lots of it</span>
-
-<label>Classification level</label>
-<span>Secret</span>
-
-<label>Primary service branch usage</label>
-<span>Army</span>
-
-<label>Cloud model service</label>
-<span>IaaS and PaaS</span>
-
-<h6>Computation</h6>
-<label>Number of cores</label>
-<span>32</span>
-
-<label>Total RAM</label>
-<span>128GB</span>
-
-<h6>Storage</h6>
-<label>Object storage</label>
-<span>10TB</span>
-
-<label>Server storage</label>
-<span>100TB</span>
-
-<h6>Estimated Application Storage</h6>
-<label>Expected active users</label>
-<span>300</span>
-
-<label>Expected peak concurrent users</label>
-<span>1,000</span>
-
-<label>Expected requests per minute</label>
-<span>1,000</span>
-
-<label>Number of application environments</label>
-<span>3</span>
-
-
-<h3>2. Organizational Info <a href="" class="usa-button usa-button-secondary">Edit</a></h3>
-
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint qui rem molestiae officia vitae quas error ut, est commodi quo! Error itaque earum, facere quod dolore qui beatae repudiandae accusantium.</p>
-<h4>Information About Requester</h4>
-
-
-<label>Name</label>
-<span>Friedrich Straat</span>
-
-<label>Email</label>
-<span>fstraat@mail.gov</span>
-
-<label>Phone Number</label>
-<span>(123) 456-7890</span>
-
-<label>Office Symbol / Department</label>
-<span>Army</span>
-
-
-<label>Citizenship</label>
-<span>United States</span>
-
-
-<label>Designation of Person</label>
-<span>Military</span>
-
-
-<label>Latest IA Training completion date</label>
-<span>2018-04-12</span>
-
-
-<h4>Information About Collaborators</h4>
-
-<label>Name</label>
-<span>Pietro Quirinis</span>
-
-<label>Email</label>
-<span>quirinis@mail.gov</span>
-
-
-
-<h3>3. Funding &amp; Contracting <a href="" class="usa-button usa-button-secondary">Edit</a></h3>
-
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse inventore non illo quibusdam tempora vero temporibus reprehenderit sapiente cumque enim quaerat fuga praesentium nemo vel, expedita numquam sequi sed iusto!</p>
-
-
-
-
-
-
-
-<br><br>
-
-
+{% autoescape None %}
+{% if f.errors %}
+  <b>There were some errors, see below.</b>
 {% end %}
 
-{% block next %}
-<a class='usa-button'>Submit</a>
+
+<h2 id="financial-verification">Financial Verification</h2>
+<p>In order to get you access to the JEDI Cloud, we will need you to enter the details below that will help us verify and account for your Task Order.</p>
+
+{{ f.task_order_id.label }}
+{{ f.task_order_id(placeholder="Example: 1234567899C0001") }}
+
+{{ f.fname_co.label }}
+{{ f.fname_co(placeholder="Contracting Officer first name") }}
+
+{{ f.lname_co.label }}
+{{ f.lname_co(placeholder="Contracting Officer last name") }}
+
+{{ f.email_co.label }}
+{{ f.email_co(placeholder="jane@mail.mil") }}
+
+{{ f.office_co.label }}
+{{ f.office_co(placeholder="Example: WHS") }}
+
+{{ f.fname_cor.label }}
+{{ f.fname_cor(placeholder="Contracting Officer first name") }}
+
+{{ f.lname_cor.label }}
+{{ f.lname_cor(placeholder="Contracting Officer last name") }}
+
+{{ f.email_cor.label }}
+{{ f.email_cor(placeholder="jane@mail.mil") }}
+
+{{ f.office_cor.label }}
+{{ f.office_cor(placeholder="Example: WHS") }}
+
+<br><hr>
+<em>&darr; FIELDS NEEDED FOR MANUAL ENTRY OF TASK ORDER INFORMATION (only necessary if EDA info not available)</em>
+
+
+{{ f.funding_type.label }}
+{{ f.funding_type }}
+
+{{ f.funding_type_other.label }}
+{{ f.funding_type_other(placeholder="") }}
+
+{{ f.clin_0001.label }}
+{{ f.clin_0001(placeholder="50,000") }}
+
+{{ f.clin_0003.label }}
+{{ f.clin_0003(placeholder="13,000") }}
+
+{{ f.clin_1001.label }}
+{{ f.clin_1001(placeholder="30,000") }}
+
+{{ f.clin_1003.label }}
+{{ f.clin_1003(placeholder="7,000") }}
+
+{{ f.clin_2001.label }}
+{{ f.clin_2001(placeholder="30,000") }}
+
+{{ f.clin_2003.label }}
+{{ f.clin_2003(placeholder="7,000") }}
+
+
 {% end %}
