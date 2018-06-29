@@ -14,6 +14,13 @@
 <h3>Primary POC</h3>
 <p>DOD ID for POC: {{ data['primary_poc'].get('dodid_poc', None) }}</p>
 
+{{ f.reviewed }}
+{{ f.reviewed.label }}
+
 <br><br>
 
+{% end %}
+
+{% block next %}
+<input type='submit' class='usa-button usa-button-primary' value='Submit' />
 {% end %}
