@@ -77,13 +77,18 @@ class RequestNew(BaseHandler):
     def get(self, screen=1, request_id=None):
         form = None
         form_data = None
+        is_review_section = screen == 4
+
         if request_id:
             request = yield self.get_request(request_id)
             if request.ok:
-                form_metadata = self.screens[int(screen) - 1]
-                section = form_metadata["section"]
-                form_data = request.json["body"].get(section, request.json["body"])
-                form = form_metadata["form"](data=form_data)
+                if is_review_section:
+                    form_data = request.json["body"]
+                else:
+                    form_metadata = self.screens[int(screen) - 1]
+                    section = form_metadata["section"]
+                    form_data = request.json["body"].get(section, request.json["body"])
+                    form = form_metadata["form"](data=form_data)
 
         self.show_form(screen=screen, form=form, request_id=request_id, data=form_data)
 
