@@ -4,20 +4,115 @@
 
 {% autoescape None %}
 {% if f.errors %}
-  <b>There were some errors, see below.</b>
+<b>There were some errors, see below.</b>
 {% end %}
 
 <h2 id="review-submit">Review &amp; Submit</h2>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem ullam veritatis fuga non repellendus repellat dolorum labore nulla iure aspernatur ipsam recusandae saepe harum iste, dolorem adipisci dolores eum, doloribus?</p>
 
-<p>Total RAM: {{ data.get('details_of_use', {}).get('total_ram') }}</p>
+<h3>Details of Use <a href="">Edit</a></h3>
 
-<!-- this is an example -->
-<h3>Primary POC</h3>
-<p>DOD ID for POC: {{ data.get('details_of_use', {}) }}</p>
+<h4>Overall Request Details</h4>
 
-{{ f.reviewed }}
-{{ f.reviewed.label }}
+<label>What is the total estimated dollar value of the cloud resources you are requesting using the JEDI CSP Calculator? </label>
+<b>{{ data.get('details_of_use', {}).get('dollar_value') }}</b>
+
+<label>Please estimate the number of applications that might be supported by this request</label>
+<b>{{ data.get('details_of_use', {}).get('num_applications') }}</b>
+
+<label>Start Date</label>
+<b>{{ data.get('details_of_use', {}).get('date_start') }}</b>
+
+<label>Please briefly describe how your team is expecting to use the JEDI Cloud</label>
+<b>{{ data.get('details_of_use', {}).get('app_description') }}</b>
+
+<label>What organizations are supported by these applications?</label>
+<b>{{ data.get('details_of_use', {}).get('supported_organizations') }}</b>
+
+<label>Please enter the Unique Item Identifier (UII)s related to your application(s) if you already have them.</label>
+<b>{{ data.get('details_of_use', {}).get('uii_ids') }}</b>
+
+<label>Please provide the Program Element (PE) Numbers related to your request</label>
+<b>{{ data.get('details_of_use', {}).get('pe_id') }}</b>
+
+<h4>Cloud Resources</h4>
+
+<label>Total Number of vCPU cores</label>
+<b>{{ data.get('details_of_use', {}).get('total_cores') }}</b>
+
+<label>Total RAM</label>
+<b>{{ data.get('details_of_use', {}).get('total_ram') }}</b>
+
+<label>Total object storage</label>
+<b>{{ data.get('details_of_use', {}).get('total_object_storage') }}</b>
+
+<label>Total server storage</label>
+<b>{{ data.get('details_of_use', {}).get('total_server_storage') }}</b>
+
+<h4>Support Staff</h4>
+
+<label>Do you have a contractor to advise and assist you with using cloud services?</label>
+<b>{{ data.get('details_of_use', {}).get('has_contractor_advisor') }}</b>
+
+<label>Are you using the JEDI Cloud to migrate existing applications?</label>
+<b>{{ data.get('details_of_use', {}).get('is_migrating_application') }}</b>
+
+<label>Please describe the organizations that are supporting you, include both government and contractor resources</label>
+<b>{{ data.get('details_of_use', {}).get('supporting_organization') }}</b>
+
+<label>Do you have a migration office that you're working with to migrate to the cloud?</label>
+<b>{{ data.get('details_of_use', {}).get('has_migration_office') }}</b>
+
+<label>Please describe the organizations that are supporting you, include both government and contractor resources.</label>
+<b>{{ data.get('details_of_use', {}).get('supporting_organization') }}</b>
+
+<br><br><hr>
+
+<h3>Information About You <a href="">Edit</a></h3>
+
+<label>First Name</label>
+<b>{{ data.get('information_about_you', {}).get('fname_request') }}</b>
+
+<label>Last Name</label>
+<b>{{ data.get('information_about_you', {}).get('lname_request') }}</b>
+
+<label>Email (associated with your CAC)</label>
+<b>{{ data.get('information_about_you', {}).get('email_request') }}</b>
+
+<label>Phone Number</label>
+<b>{{ data.get('information_about_you', {}).get('phone_number') }}</b>
+
+<label>Service Branch or Agency</label>
+<b>{{ data.get('information_about_you', {}).get('service_branch') }}</b>
+
+<label>Citizenship</label>
+<b>{{ data.get('information_about_you', {}).get('citizenship') }}</b>
+
+<label>Designation of Person</label>
+<b>{{ data.get('information_about_you', {}).get('designation') }}</b>
+
+<label>Latest Information Assurance (IA) Training completion date</label>
+<b>{{ data.get('information_about_you', {}).get('date_latest_training') }}</b>
+
+
+<br><br><hr>
+
+<h3>Primary Government/Military Point of Contact (POC) <a href="">Edit</a></h3>
+
+
+
+<label>POC First Name</label>
+<b>{{ data.get('primary_poc', {}).get('fname_poc')}}</b>
+
+<label>POC Last Name</label>
+<b>{{ data.get('primary_poc', {}).get('lname_poc')}}</b>
+
+<label>POC Email (associated with CAC)</label>
+<b>{{ data.get('primary_poc', {}).get('email_poc')}} </b>
+
+<label>DOD ID</label>
+<b>{{ data.get('primary_poc', {}).get('dodid_poc')}}</b>
+
 
 <br><br>
 
