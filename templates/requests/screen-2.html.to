@@ -36,7 +36,7 @@
 
 <fieldset>
   <label for="input-start-date">Latest Information Assurance (IA) Training completion date</label>
-  <div class="usa-date-of-birth">
+  <div class="usa-date-input">
     <div class="usa-form-group usa-form-group-month">
       {{ f.date_latest_training.month.label }}
       {{ f.date_latest_training.month(min="1", max="12") }}

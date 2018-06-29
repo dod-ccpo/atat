@@ -22,7 +22,7 @@
 
 <fieldset>
   <label for="input-start-date">Date you expect to start accessing this cloud resource</label>
-  <div class="usa-date-of-birth">
+  <div class="usa-date-input">
     <div class="usa-form-group usa-form-group-month">
       {{ f.date_start.month.label }}
       {{ f.date_start.month(min="1", max="12") }}
