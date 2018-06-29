@@ -20,8 +20,23 @@
 {{ f.num_applications.label }}
 {{ f.num_applications(placeholder="Estimated number of applications") }}
 
-{{ f.date_start.label }}
-{{ f.date_start }}
+<fieldset>
+  <label for="input-start-date">Date you expect to start accessing this cloud resource</label>
+  <div class="usa-date-of-birth">
+    <div class="usa-form-group usa-form-group-month">
+      {{ f.date_start.month.label }}
+      {{ f.date_start.month(min="1", max="12") }}
+    </div>
+    <div class="usa-form-group usa-form-group-day">
+      {{ f.date_start.day.label }}
+      {{ f.date_start.day(min="1", max="31") }}
+    </div>
+    <div class="usa-form-group usa-form-group-year">
+      {{ f.date_start.year.label }}
+      {{ f.date_start.year(min="1900", max="2040") }}
+    </div>
+  </div>
+</fieldset>
 
 {{ f.supported_organizations.label }}
 {{ f.supported_organizations(placeholder="Add tags associated with DoD components or other entities") }}

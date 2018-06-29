@@ -25,10 +25,7 @@ class RequestForm(Form):
         validators=[Required()],
     )
 
-    date_start = StringField(
-        "Date you expect to start accessing this cloud resource",
-        validators=[Required()],
-    )
+    date_start = FormField(DateForm)
 
     app_description = TextAreaField(
         "Please briefly describe how your team is expecting to use the JEDI Cloud"
