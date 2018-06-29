@@ -10,6 +10,9 @@
 <h2 id="review-submit">Review &amp; Submit</h2>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem ullam veritatis fuga non repellendus repellat dolorum labore nulla iure aspernatur ipsam recusandae saepe harum iste, dolorem adipisci dolores eum, doloribus?</p>
 
+<!-- this is an example -->
+<h3>Primary POC</h3>
+<p>DOD ID for POC: {{ data['primary_poc'].get('dodid_poc', None) }}</p>
 
 <br><br>
 

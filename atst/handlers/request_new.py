@@ -76,22 +76,24 @@ class RequestNew(BaseHandler):
     @tornado.gen.coroutine
     def get(self, screen=1, request_id=None):
         form = None
+        form_data = None
         if request_id:
             request = yield self.get_request(request_id)
             if request.ok:
                 form_metadata = self.screens[int(screen) - 1]
                 section = form_metadata["section"]
-                form_data = request.json["body"].get(section, {})
+                form_data = request.json["body"].get(section, request.json["body"])
                 form = form_metadata["form"](data=form_data)
 
-        self.show_form(screen=screen, form=form, request_id=request_id)
+        self.show_form(screen=screen, form=form, request_id=request_id, data=form_data)
 
-    def show_form(self, screen=1, form=None, request_id=None):
+    def show_form(self, screen=1, form=None, request_id=None, data=None):
         if not form:
             form = self.screens[int(screen) - 1]["form"](self.request.arguments)
         self.render(
             "requests/screen-%d.html.to" % int(screen),
             f=form,
+            data=data,
             page=self.page,
             screens=self.screens,
             current=int(screen),

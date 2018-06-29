@@ -1,6 +1,6 @@
 import tornado.gen
 from tornado.httpclient import AsyncHTTPClient
-from json import dumps, loads
+from json import dumps, loads, decoder
 
 
 class ApiClient(object):
@@ -49,7 +49,12 @@ class ApiClient(object):
 
     def adapt_response(self, response):
         if "application/json" in response.headers["Content-Type"]:
-            json = loads(response.body)
-            setattr(response, "json", json)
+            try:
+                json = loads(response.body)
+                setattr(response, "json", json)
+            except decoder.JSONDecodeError:
+                setattr(response, "json", {})
+        else:
+            setattr(response, "json", {})
         setattr(response, "ok", 200 <= response.code < 300)
         return response
