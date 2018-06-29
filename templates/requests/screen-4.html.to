@@ -10,59 +10,7 @@
 <h2 id="review-submit">Review &amp; Submit</h2>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem ullam veritatis fuga non repellendus repellat dolorum labore nulla iure aspernatur ipsam recusandae saepe harum iste, dolorem adipisci dolores eum, doloribus?</p>
 
-{{ f.dollar_value.label }}
-<code>f.dollar_value </code>
-
-{{ f.num_applications.label }}
-<code>f.num_applications </code>
-
-{{ f.date_start.label }}
-<code>f.date_start </code>
-
-{{ f.supported_organizations.label }}
-<code>f.supported_organizations </code>
-
-{{ f.app_description.label }}
-<code>f.app_description </code>
-
-{{ f.supported_organizations.label }}
-<code>f.supported_organizations </code>
-
-{{ f.uii_ids.label }}
-<code>f.uii_ids </code>
-
-{{ f.pe_id.label }}
-<code>f.pe_id </code>
-
-{{ f.total_cores.label }}
-<code>f.total_cores </code>
-
-{{ f.total_ram.label }}
-<code>f.total_ram </code>
-
-{{ f.total_object_storage.label }}
-<code>f.total_object_storage </code>
-
-{{ f.total_database_storage.label }}
-<code>f.total_database_storage </code>
-
-{{ f.total_server_storage.label }}
-<code>f.total_server_storage </code>
-
-{{ f.has_contractor_advisor.label }}
-<code>f.has_contractor_advisor </code>
-
-{{ f.is_migrating_application.label }}
-<code>f.is_migrating_application </code>
-
-{{ f.has_migration_office.label }}
-<code>f.has_migration_office </code>
-
-{{ f.supporting_organization.label }}
-<code>f.supporting_organization </code>
-
 
 <br><br>
 
 {% end %}
-

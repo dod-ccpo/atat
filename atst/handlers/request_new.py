@@ -1,10 +1,10 @@
 import tornado
 from atst.handler import BaseHandler
 from atst.forms.request import RequestForm
-from atst.forms.organization_info import OrganizationInfoForm
-from atst.forms.funding import FundingForm
-from atst.forms.readiness import ReadinessForm
+from atst.forms.org import OrgForm
+from atst.forms.poc import POCForm
 from atst.forms.review import ReviewForm
+from atst.forms.financial import FinancialForm
 import tornado.httputil
 
 
@@ -23,22 +23,22 @@ class RequestNew(BaseHandler):
         {
             "title": "Information About You",
             "section": "information_about_you",
-            "form": RequestForm,
+            "form": OrgForm,
         },
         {
             "title": "Primary Point of Contact",
             "section": "primary_poc",
-            "form": RequestForm,
+            "form": POCForm,
         },
         {
             "title": "Review & Submit",
             "section": "review_submit",
-            "form": RequestForm,
+            "form": ReviewForm,
         },
         {
             "title": "Financial Verification",
             "section": "financial_verification",
-            "form": RequestForm,
+            "form": FinancialForm,
         },
     ]
 
@@ -69,6 +69,7 @@ class RequestNew(BaseHandler):
             else:
                 self.set_status(response.code)
         else:
+            print(form.errors)
             self.show_form(screen, form)
 
     @tornado.web.authenticated
