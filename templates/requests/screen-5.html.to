@@ -14,6 +14,8 @@
 {{ f.task_order_id.label }}
 {{ f.task_order_id(placeholder="Example: 1234567899C0001") }}
 
+<h3>Contracting Officer (KO) Information</h3>
+
 {{ f.fname_co.label }}
 {{ f.fname_co(placeholder="Contracting Officer first name") }}
 
@@ -26,11 +28,13 @@
 {{ f.office_co.label }}
 {{ f.office_co(placeholder="Example: WHS") }}
 
+<h3>Contracting Officer Representative (COR) Information</h3>
+
 {{ f.fname_cor.label }}
-{{ f.fname_cor(placeholder="Contracting Officer first name") }}
+{{ f.fname_cor(placeholder="Contracting Officer Representative first name") }}
 
 {{ f.lname_cor.label }}
-{{ f.lname_cor(placeholder="Contracting Officer last name") }}
+{{ f.lname_cor(placeholder="Contracting Officer Representative last name") }}
 
 {{ f.email_cor.label }}
 {{ f.email_cor(placeholder="jane@mail.mil") }}
