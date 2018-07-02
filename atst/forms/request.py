@@ -2,7 +2,7 @@ from wtforms.fields.html5 import IntegerField
 from wtforms.fields import RadioField, StringField, TextAreaField
 from wtforms.validators import NumberRange, InputRequired
 from wtforms_tornado import Form
-from .fields import DateField
+from .fields import DateField, NewlineListField
 from .validators import DateRange
 import pendulum
 
@@ -38,14 +38,6 @@ class RequestForm(Form):
     supported_organizations = StringField(
         "What organizations are supported by these applications?",
         validators=[InputRequired()],
-    )
-
-    uii_ids = TextAreaField(
-        "Please enter the Unique Item Identifier (UII)s related to your application(s) if you already have them."
-    )
-
-    pe_id = StringField(
-        "Please provide the Program Element (PE) Numbers related to your request"
     )
 
     # Details of Use: Cloud Resources

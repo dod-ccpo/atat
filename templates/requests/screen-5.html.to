@@ -19,6 +19,23 @@
   </div>
 {% end %}
 
+{{ f.uii_ids.label }}
+{{ f.uii_ids(placeholder="Example: \nDI 0CVA5786950 \nUN1945326361234786950") }}
+{% for e in f.uii_ids.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
+
+{{ f.pe_id.label }}
+{{ f.pe_id(placeholder="Example: 0203752A") }}
+{% for e in f.pe_id.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
+
+
 <h3>Contracting Officer (KO) Information</h3>
 
 {{ f.fname_co.label }}

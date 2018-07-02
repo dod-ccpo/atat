@@ -3,10 +3,20 @@ from wtforms.fields import StringField, SelectField
 from wtforms.validators import Required, Email
 from wtforms_tornado import Form
 
+from .fields import NewlineListField
+
 
 class FinancialForm(Form):
     task_order_id = StringField(
         "Task Order Number associated with this request.", validators=[Required()]
+    )
+
+    uii_ids = NewlineListField(
+        "Please enter the Unique Item Identifier (UII)s related to your application(s) if you already have them."
+    )
+
+    pe_id = NewlineListField(
+        "Please provide the Program Element (PE) Numbers related to your request"
     )
 
     fname_co = StringField("Contracting Officer First Name", validators=[Required()])

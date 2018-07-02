@@ -1,6 +1,6 @@
-from wtforms.fields.html5 import IntegerField, DateField
-from wtforms.validators import Required, ValidationError
-from wtforms_tornado import Form
+from wtforms.fields.html5 import DateField
+from wtforms.fields import Field
+from wtforms.widgets import TextArea
 import pendulum
 
 
@@ -14,5 +14,21 @@ class DateField(DateField):
     def process_formdata(self, values):
         if values:
             self.data = values[0]
+        else:
+            self.data = []
+
+
+class NewlineListField(Field):
+    widget = TextArea()
+
+    def _value(self):
+        if self.data:
+            return "\n".join(self.data)
+        else:
+            return ""
+
+    def process_formdata(self, valuelist):
+        if valuelist:
+            self.data = [l.strip() for l in valuelist[0].split("\n")]
         else:
             self.data = []
