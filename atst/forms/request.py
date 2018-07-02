@@ -1,13 +1,8 @@
 from wtforms.fields.html5 import IntegerField
-from wtforms.fields import (
-    RadioField,
-    StringField,
-    FormField,
-    TextAreaField,
-)
+from wtforms.fields import RadioField, StringField, TextAreaField
 from wtforms.validators import Required, NumberRange
 from wtforms_tornado import Form
-from .date import DateForm
+from .fields import DateField
 
 
 class RequestForm(Form):
@@ -23,7 +18,10 @@ class RequestForm(Form):
         validators=[Required(), NumberRange(min=1)],
     )
 
-    date_start = FormField(DateForm)
+    date_start = DateField(
+        "Date you expect to start accessing this cloud resource.",
+        validators=[Required()],
+    )
 
     app_description = TextAreaField(
         "Please briefly describe how your team is expecting to use the JEDI Cloud"

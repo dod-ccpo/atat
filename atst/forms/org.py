@@ -1,15 +1,8 @@
-from wtforms.fields.html5 import IntegerField, EmailField, TelField
-from wtforms.fields import (
-    RadioField,
-    StringField,
-    SelectField,
-    FormField,
-    TextAreaField,
-    BooleanField,
-)
+from wtforms.fields.html5 import EmailField, TelField
+from wtforms.fields import RadioField, StringField
 from wtforms.validators import Required, ValidationError
 from wtforms_tornado import Form
-from .date import DateForm
+from .fields import DateField
 
 
 class OrgForm(Form):
@@ -36,4 +29,7 @@ class OrgForm(Form):
 
     designation = StringField("Designation of Person", validators=[Required()])
 
-    date_latest_training = FormField(DateForm)
+    date_latest_training = DateField(
+        "Latest Information Assurance (IA) Training completion date.",
+        validators=[Required()],
+    )

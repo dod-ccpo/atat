@@ -9,7 +9,6 @@ from wtforms.fields import (
 )
 from wtforms.validators import Required, ValidationError
 from wtforms_tornado import Form
-from .date import DateForm
 
 
 class POCForm(Form):

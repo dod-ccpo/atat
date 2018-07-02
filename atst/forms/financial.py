@@ -1,15 +1,6 @@
-from wtforms.fields.html5 import IntegerField, EmailField, TelField
-from wtforms.fields import (
-    RadioField,
-    StringField,
-    SelectField,
-    FormField,
-    TextAreaField,
-    BooleanField,
-)
-from wtforms.validators import Required, ValidationError
+from wtforms.fields import StringField, SelectField
+from wtforms.validators import Required
 from wtforms_tornado import Form
-from .date import DateForm
 
 
 class FinancialForm(Form):
