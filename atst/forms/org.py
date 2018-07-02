@@ -1,20 +1,19 @@
 from wtforms.fields.html5 import EmailField, TelField
 from wtforms.fields import RadioField, StringField
-from wtforms.validators import Required, ValidationError
+from wtforms.validators import Required, Length, Email
 from wtforms_tornado import Form
 from .fields import DateField
 
 
 class OrgForm(Form):
-    # Organizational Info
-    fname_request = StringField("First Name")
-    lname_request = StringField("Last Name")
+    fname_request = StringField("First Name", validators=[Required()])
+    lname_request = StringField("Last Name", validators=[Required()])
 
     email_request = EmailField(
-        "Email (associated with your CAC)", validators=[Required()]
+        "Email (associated with your CAC)", validators=[Required(), Email()]
     )
 
-    phone_number = TelField("Phone Number", validators=[Required()])
+    phone_number = TelField("Phone Number", validators=[Required(), Length(min=7)])
 
     service_branch = StringField("Service Branch or Agency", validators=[Required()])
 

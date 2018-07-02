@@ -13,29 +13,68 @@
 
 {{ f.fname_request.label }}
 {{ f.fname_request(placeholder="Your first name") }}
+{% for e in f.fname_request.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.lname_request.label }}
 {{ f.lname_request(placeholder="Your last name") }}
+{% for e in f.lname_request.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.email_request.label }}
 {{ f.email_request(placeholder="jane@mail.mil") }}
+{% for e in f.email_request.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.phone_number.label }}
 {{ f.phone_number(placeholder="(123) 456-7890") }}
+{% for e in f.phone_number.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.service_branch.label }}
 {{ f.service_branch(placeholder="i.e. US Air Force, US Army, US Navy, Marine Corps, Defense Media Agency") }}
+{% for e in f.service_branch.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 <fieldset class="usa-fieldset-inputs">
   {{ f.citizenship.label }}
   {{ f.citizenship(class_="usa-unstyled-list") }}
+{% for e in f.citizenship.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 </fieldset>
 
 {{ f.designation.label }}
 {{ f.designation }}
+{% for e in f.designation.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.date_latest_training.label }}
 {{ f.date_latest_training }}
-
+{% for e in f.date_latest_training.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
 {% end %}
 
+{% end %}
