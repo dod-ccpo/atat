@@ -1,11 +1,10 @@
+from wtforms.fields.html5 import EmailField
 from wtforms.fields import StringField, SelectField
-from wtforms.validators import Required
+from wtforms.validators import Required, Email
 from wtforms_tornado import Form
 
 
 class FinancialForm(Form):
-    # Financial Verification
-
     task_order_id = StringField(
         "Task Order Number associated with this request.", validators=[Required()]
     )
@@ -13,7 +12,7 @@ class FinancialForm(Form):
     fname_co = StringField("Contracting Officer First Name", validators=[Required()])
     lname_co = StringField("Contracting Officer Last Name", validators=[Required()])
 
-    email_co = StringField("Contracting Officer Email", validators=[Required()])
+    email_co = EmailField("Contracting Officer Email", validators=[Required(), Email()])
 
     office_co = StringField("Contracting Office Office", validators=[Required()])
 
@@ -25,8 +24,9 @@ class FinancialForm(Form):
         "Contracting Officer Representative (COR) Last Name", validators=[Required()]
     )
 
-    email_cor = StringField(
-        "Contracting Officer Representative (COR) Email", validators=[Required()]
+    email_cor = EmailField(
+        "Contracting Officer Representative (COR) Email",
+        validators=[Required(), Email()],
     )
 
     office_cor = StringField(

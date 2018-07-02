@@ -4,7 +4,7 @@
 
 {% autoescape None %}
 {% if f.errors %}
-  <b>There were some errors, see below.</b>
+  <b class="usa-input-error-message">There were some errors, see below.</b>
 {% end %}
 
 
@@ -13,34 +13,79 @@
 
 {{ f.task_order_id.label }}
 {{ f.task_order_id(placeholder="Example: 1234567899C0001") }}
+{% for e in f.task_order_id.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 <h3>Contracting Officer (KO) Information</h3>
 
 {{ f.fname_co.label }}
 {{ f.fname_co(placeholder="Contracting Officer first name") }}
+{% for e in f.fname_co.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.lname_co.label }}
 {{ f.lname_co(placeholder="Contracting Officer last name") }}
+{% for e in f.lname_co.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.email_co.label }}
 {{ f.email_co(placeholder="jane@mail.mil") }}
+{% for e in f.email_co.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.office_co.label }}
 {{ f.office_co(placeholder="Example: WHS") }}
+{% for e in f.office_co.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 <h3>Contracting Officer Representative (COR) Information</h3>
 
 {{ f.fname_cor.label }}
 {{ f.fname_cor(placeholder="Contracting Officer Representative first name") }}
+{% for e in f.fname_cor.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.lname_cor.label }}
 {{ f.lname_cor(placeholder="Contracting Officer Representative last name") }}
+{% for e in f.lname_cor.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.email_cor.label }}
 {{ f.email_cor(placeholder="jane@mail.mil") }}
+{% for e in f.email_cor.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.office_cor.label }}
 {{ f.office_cor(placeholder="Example: WHS") }}
+{% for e in f.office_cor.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 <br><hr>
 <em>&darr; FIELDS NEEDED FOR MANUAL ENTRY OF TASK ORDER INFORMATION (only necessary if EDA info not available)</em>
@@ -48,27 +93,67 @@
 
 {{ f.funding_type.label }}
 {{ f.funding_type }}
+{% for e in f.funding_type.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.funding_type_other.label }}
 {{ f.funding_type_other(placeholder="") }}
+{% for e in f.funding_type_other.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.clin_0001.label }}
 {{ f.clin_0001(placeholder="50,000") }}
+{% for e in f.clin_0001.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.clin_0003.label }}
 {{ f.clin_0003(placeholder="13,000") }}
+{% for e in f.clin_0003.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.clin_1001.label }}
 {{ f.clin_1001(placeholder="30,000") }}
+{% for e in f.clin_1001.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.clin_1003.label }}
 {{ f.clin_1003(placeholder="7,000") }}
+{% for e in f.clin_1003.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.clin_2001.label }}
 {{ f.clin_2001(placeholder="30,000") }}
+{% for e in f.clin_2001.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.clin_2003.label }}
 {{ f.clin_2003(placeholder="7,000") }}
+{% for e in f.clin_2003.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 
 {% end %}
