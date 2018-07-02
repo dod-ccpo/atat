@@ -30,11 +30,7 @@ class RequestNew(BaseHandler):
             "section": "primary_poc",
             "form": POCForm,
         },
-        {
-            "title": "Review & Submit",
-            "section": "review_submit",
-            "form": ReviewForm,
-        },
+        {"title": "Review & Submit", "section": "review_submit", "form": ReviewForm},
         {
             "title": "Financial Verification",
             "section": "financial_verification",
@@ -109,7 +105,7 @@ class RequestNew(BaseHandler):
     @tornado.gen.coroutine
     def get_request(self, request_id):
         request = yield self.requests_client.get(
-            "/users/{}/requests/{}".format(self.get_current_user()['id'], request_id),
+            "/users/{}/requests/{}".format(self.get_current_user()["id"], request_id),
             raise_error=False,
         )
         return request
@@ -117,7 +113,7 @@ class RequestNew(BaseHandler):
     @tornado.gen.coroutine
     def create_or_update_request(self, form_section, form_data, request_id=None):
         request_data = {
-            "creator_id": self.get_current_user()['id'],
+            "creator_id": self.get_current_user()["id"],
             "request": {form_section: form_data},
         }
         if request_id:

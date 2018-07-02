@@ -17,7 +17,9 @@ class OrgForm(Form):
     fname_request = StringField("First Name")
     lname_request = StringField("Last Name")
 
-    email_request = EmailField("Email (associated with your CAC)", validators=[Required()])
+    email_request = EmailField(
+        "Email (associated with your CAC)", validators=[Required()]
+    )
 
     phone_number = TelField("Phone Number", validators=[Required()])
 
@@ -25,10 +27,11 @@ class OrgForm(Form):
 
     citizenship = RadioField(
         choices=[
-            ('United States','United States'),
-            ('Foreign National','Foreign National'),
-            ('Other','Other')],
-        validators=[Required()]
+            ("United States", "United States"),
+            ("Foreign National", "Foreign National"),
+            ("Other", "Other"),
+        ],
+        validators=[Required()],
     )
 
     designation = StringField("Designation of Person", validators=[Required()])

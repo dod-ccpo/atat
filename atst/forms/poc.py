@@ -20,4 +20,3 @@ class POCForm(Form):
     email_poc = StringField("POC Email (associated with CAC)", validators=[Required()])
 
     dodid_poc = StringField("DOD ID", validators=[Required()])
-

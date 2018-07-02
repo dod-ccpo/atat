@@ -11,7 +11,9 @@ MOCK_USER = {
 
 
 @pytest.mark.gen_test
-@pytest.mark.skip(reason="there are no server-side validations on the requests form currently")
+@pytest.mark.skip(
+    reason="there are no server-side validations on the requests form currently"
+)
 def test_submit_invalid_request_form(monkeypatch, http_client, base_url):
     monkeypatch.setattr(
         "atst.handlers.request_new.RequestNew.get_current_user", lambda s: MOCK_USER

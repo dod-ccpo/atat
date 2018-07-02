@@ -11,6 +11,7 @@ from wtforms.validators import Required, ValidationError
 from wtforms_tornado import Form
 from .date import DateForm
 
+
 class FinancialForm(Form):
     # Financial Verification
 
@@ -41,18 +42,16 @@ class FinancialForm(Form):
         "Contracting Officer Representative (COR) Office", validators=[Required()]
     )
 
-
     funding_type = SelectField(
         validators=[Required()],
         choices=[
             ("", "- Select -"),
-            ("RDTE","Research, Development, Testing & Evaluation (RDT&E)"),
-            ("OM","Operations & Maintenance (O&M)"),
-            ("PROC","Procurement (PROC)"),
-            ("OTHER","Other"),
+            ("RDTE", "Research, Development, Testing & Evaluation (RDT&E)"),
+            ("OM", "Operations & Maintenance (O&M)"),
+            ("PROC", "Procurement (PROC)"),
+            ("OTHER", "Other"),
         ],
     )
-
 
     funding_type_other = StringField(
         "If other, please specify", validators=[Required()]

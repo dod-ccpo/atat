@@ -1,13 +1,11 @@
-from wtforms.fields.html5 import IntegerField, EmailField, TelField
+from wtforms.fields.html5 import IntegerField
 from wtforms.fields import (
     RadioField,
     StringField,
-    SelectField,
     FormField,
     TextAreaField,
-    BooleanField,
 )
-from wtforms.validators import Required, ValidationError, NumberRange
+from wtforms.validators import Required, NumberRange
 from wtforms_tornado import Form
 from .date import DateForm
 
@@ -45,24 +43,30 @@ class RequestForm(Form):
     )
 
     # Details of Use: Cloud Resources
-    total_cores = IntegerField("Total Number of vCPU cores", validators=[Required(), NumberRange(min=0)])
+    total_cores = IntegerField(
+        "Total Number of vCPU cores", validators=[Required(), NumberRange(min=0)]
+    )
     total_ram = IntegerField("Total RAM", validators=[Required(), NumberRange(min=0)])
-    total_object_storage = IntegerField("Total object storage", validators=[Required(), NumberRange(min=0)])
+    total_object_storage = IntegerField(
+        "Total object storage", validators=[Required(), NumberRange(min=0)]
+    )
     total_database_storage = IntegerField(
         "Total database storage", validators=[Required(), NumberRange(min=0)]
     )
-    total_server_storage = IntegerField("Total server storage", validators=[Required(), NumberRange(min=0)])
+    total_server_storage = IntegerField(
+        "Total server storage", validators=[Required(), NumberRange(min=0)]
+    )
 
     # Details of Use: Support Staff
     has_contractor_advisor = RadioField(
         "Do you have a contractor to advise and assist you with using cloud services?",
-        choices=[('yes','Yes'),('no','No')],
+        choices=[("yes", "Yes"), ("no", "No")],
         validators=[Required()],
     )
 
     is_migrating_application = RadioField(
         "Are you using the JEDI Cloud to migrate existing applications?",
-        choices=[('yes','Yes'),('no','No')],
+        choices=[("yes", "Yes"), ("no", "No")],
         validators=[Required()],
     )
 
@@ -73,7 +77,7 @@ class RequestForm(Form):
 
     has_migration_office = RadioField(
         "Do you have a migration office that you're working with to migrate to the cloud?",
-        choices=[('yes','Yes'),('no','No')],
+        choices=[("yes", "Yes"), ("no", "No")],
         validators=[Required()],
     )
 
@@ -81,5 +85,3 @@ class RequestForm(Form):
         "Please describe the organizations that are supporting you, include both government and contractor resources.",
         validators=[Required()],
     )
-
-
