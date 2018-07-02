@@ -1,21 +1,17 @@
-from wtforms.fields.html5 import IntegerField, EmailField, TelField
-from wtforms.fields import (
-    RadioField,
-    StringField,
-    SelectField,
-    FormField,
-    TextAreaField,
-    BooleanField,
-)
-from wtforms.validators import Required, ValidationError
+from wtforms.fields import StringField
+from wtforms.validators import Required, Email, Length
 from wtforms_tornado import Form
+from .validators import IsNumber
 
 
 class POCForm(Form):
-    # Primary Government/Military POC
-    fname_poc = StringField("POC First Name")
-    lname_poc = StringField("POC Last Name")
+    fname_poc = StringField("POC First Name", validators=[Required()])
+    lname_poc = StringField("POC Last Name", validators=[Required()])
 
-    email_poc = StringField("POC Email (associated with CAC)", validators=[Required()])
+    email_poc = StringField(
+        "POC Email (associated with CAC)", validators=[Required(), Email()]
+    )
 
-    dodid_poc = StringField("DOD ID", validators=[Required()])
+    dodid_poc = StringField(
+        "DOD ID", validators=[Required(), Length(min=10), IsNumber()]
+    )

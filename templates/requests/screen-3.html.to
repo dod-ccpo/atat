@@ -4,12 +4,12 @@
 
 {% autoescape None %}
 {% if f.errors %}
-  <b>There were some errors, see below.</b>
+  <b class="usa-input-error-message">There were some errors, see below.</b>
 {% end %}
 
 <h2 id="primary-poc">Primary Government/Military <br> Point of Contact (POC)</h2>
 <p>Please designate a Primary Point of Contact that will be responsible for owning the workspace in the JEDI Cloud.</p>
-<p>The Point of Contact will become the primary owner of the <em>workspace</em> created to use the JEDI Cloud. As a workspace owner, this person will have the ability to: 
+<p>The Point of Contact will become the primary owner of the <em>workspace</em> created to use the JEDI Cloud. As a workspace owner, this person will have the ability to:
   <ul>
     <li>Create multiple application stacks and environments in the workspace to access the commercial cloud service provider portal</li>
     <li>Add and manage users in the workspace</li>
@@ -22,17 +22,34 @@
 
 {{ f.fname_poc.label }}
 {{ f.fname_poc(placeholder="First name") }}
+{% for e in f.fname_poc.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.lname_poc.label }}
 {{ f.lname_poc(placeholder="Last name") }}
+{% for e in f.lname_poc.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.email_poc.label }}
 {{ f.email_poc(placeholder="jane@mail.mil") }}
+{% for e in f.email_poc.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.dodid_poc.label }}
 {{ f.dodid_poc(placeholder="10-digit number on the back of the CAC") }}
-
-
-
+{% for e in f.dodid_poc.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
 {% end %}
 
+{% end %}

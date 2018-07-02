@@ -17,3 +17,13 @@ def DateRange(lower_bound=None, upper_bound=None, message=None):
                 raise ValidationError(message)
 
     return _date_range
+
+
+def IsNumber(message="Please enter a valid number."):
+    def _is_number(form, field):
+        try:
+            int(field.data)
+        except ValueError:
+            raise ValidationError(message)
+
+    return _is_number

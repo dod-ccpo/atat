@@ -4,7 +4,7 @@
 
 {% autoescape None %}
 {% if f.errors %}
-  <b>There were some errors, see below.</b>
+  <b class="usa-input-error-message">There were some errors, see below.</b>
 {% end %}
 
 
