@@ -7,7 +7,7 @@ from wtforms.fields import (
     TextAreaField,
     BooleanField,
 )
-from wtforms.validators import Required, ValidationError
+from wtforms.validators import Required, ValidationError, NumberRange
 from wtforms_tornado import Form
 from .date import DateForm
 
@@ -17,12 +17,12 @@ class RequestForm(Form):
     # Details of Use: Overall Request Details
     dollar_value = IntegerField(
         "What is the total estimated dollar value of the cloud resources you are requesting using the JEDI CSP Calculator? ",
-        validators=[Required()],
+        validators=[Required(), NumberRange(min=1)],
     )
 
     num_applications = IntegerField(
         "Please estimate the number of applications that might be supported by this request",
-        validators=[Required()],
+        validators=[Required(), NumberRange(min=1)],
     )
 
     date_start = FormField(DateForm)
@@ -45,13 +45,13 @@ class RequestForm(Form):
     )
 
     # Details of Use: Cloud Resources
-    total_cores = IntegerField("Total Number of vCPU cores", validators=[Required()])
-    total_ram = IntegerField("Total RAM", validators=[Required()])
-    total_object_storage = IntegerField("Total object storage", validators=[Required()])
+    total_cores = IntegerField("Total Number of vCPU cores", validators=[Required(), NumberRange(min=0)])
+    total_ram = IntegerField("Total RAM", validators=[Required(), NumberRange(min=0)])
+    total_object_storage = IntegerField("Total object storage", validators=[Required(), NumberRange(min=0)])
     total_database_storage = IntegerField(
-        "Total database storage", validators=[Required()]
+        "Total database storage", validators=[Required(), NumberRange(min=0)]
     )
-    total_server_storage = IntegerField("Total server storage", validators=[Required()])
+    total_server_storage = IntegerField("Total server storage", validators=[Required(), NumberRange(min=0)])
 
     # Details of Use: Support Staff
     has_contractor_advisor = RadioField(
@@ -66,7 +66,7 @@ class RequestForm(Form):
         validators=[Required()],
     )
 
-    supporting_organization = IntegerField(
+    supporting_organization = TextAreaField(
         "Please describe the organizations that are supporting you, include both government and contractor resources",
         validators=[Required()],
     )
