@@ -65,7 +65,6 @@ class RequestNew(BaseHandler):
             else:
                 self.set_status(response.code)
         else:
-            print(form.errors)
             self.show_form(screen, form)
 
     @tornado.web.authenticated

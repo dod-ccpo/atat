@@ -5,7 +5,7 @@
 
 {% autoescape None %}
 {% if f.errors %}
-<b>There were some errors, see below.</b>
+  <b class="usa-input-error-message">There were some errors, see below.</b>
 {% end %}
 
 
@@ -16,55 +16,102 @@
 
 {{ f.dollar_value.label }}
 {{ f.dollar_value(placeholder="Total dollar amount to be associated with the Task Order")}}
+{% for e in f.dollar_value.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.num_applications.label }}
 {{ f.num_applications(placeholder="Estimated number of applications") }}
+{% for e in f.num_applications.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.date_start.label }}
 {{ f.date_start }}
+{% for e in f.date_start.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.supported_organizations.label }}
 {{ f.supported_organizations(placeholder="Add tags associated with DoD components or other entities") }}
+{% for e in f.supported_organizations.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.app_description.label }}
 {{ f.app_description(placeholder="Example: My organization is supporting the migration of XYZ system to the cloud due to XX policy memo. I am planning to use a sandbox environment to do testing.") }}
-
-{{ f.supported_organizations.label }}
-{{ f.supported_organizations(placeholder="Add tags associated with DoD components or other entities") }}
+{% for e in f.app_description.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.uii_ids.label }}
 {{ f.uii_ids(placeholder="Example: \nDI 0CVA5786950 \nUN1945326361234786950") }}
+{% for e in f.uii_ids.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.pe_id.label }}
 {{ f.pe_id(placeholder="Example: 0203752A") }}
-
-
-
+{% for e in f.pe_id.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 <h3 id="cloud-resources">Cloud Resources</h3>
 <p>Please tell us about your expected cloud resource usage as best as you can. Please refer to the <a href="">Cloud Service Provider</a> as necessary.</p>
 
 {{ f.total_cores.label }}
 {{ f.total_cores(placeholder="Expected total cores", min="1", max="32") }}
+{% for e in f.total_cores.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
-<!-- example field with custom validation -->
 {{ f.total_ram.label }}
 {{ f.total_ram(placeholder="Expected amount of RAM", min="1", max="32") }}
-<!-- example validation errors -->
 {% for e in f.total_ram.errors %}
-<div class="usa-input-error-message">
-  {{ e }}
-</div>
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
 {% end %}
 
 {{ f.total_object_storage.label }}
 {{ f.total_object_storage(placeholder="Expected total object storage") }}
+{% for e in f.total_object_storage.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.total_database_storage.label }}
 {{ f.total_database_storage(placeholder="Expected total database storage") }}
+{% for e in f.total_database_storage.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 {{ f.total_server_storage.label }}
 {{ f.total_server_storage(placeholder="Expected total server storage") }}
+{% for e in f.total_server_storage.errors %}
+  <div class="usa-input-error-message">
+    {{ e }}
+  </div>
+{% end %}
 
 
 <h3 id="support-staff">Support Staff</h3>
@@ -74,23 +121,41 @@
 <fieldset class="usa-fieldset-inputs">
   {{ f.has_contractor_advisor.label }}
   {{ f.has_contractor_advisor(class_="usa-unstyled-list") }}
+  {% for e in f.has_contractor_advisor.errors %}
+    <div class="usa-input-error-message">
+      {{ e }}
+    </div>
+  {% end %}
 </fieldset>
 
 <fieldset class="usa-fieldset-inputs">
   {{ f.is_migrating_application.label }}
   {{ f.is_migrating_application(class_="usa-unstyled-list") }}
+  {% for e in f.is_migrating_application.errors %}
+    <div class="usa-input-error-message">
+      {{ e }}
+    </div>
+  {% end %}
 </fieldset>
 
 <fieldset class="usa-fieldset-inputs">
   {{ f.has_migration_office.label }}
   {{ f.has_migration_office(class_="usa-unstyled-list") }}
+  {% for e in f.has_migration_office.errors %}
+    <div class="usa-input-error-message">
+      {{ e }}
+    </div>
+  {% end %}
 </fieldset>
 
 <fieldset class="usa-fieldset-inputs">
   {{ f.supporting_organization.label }}
   {{ f.supporting_organization(placeholder="Example: AF CCE/HNI, Navy SPAWAR, MITRE", class_="usa-unstyled-list") }}
+  {% for e in f.supporting_organization.errors %}
+    <div class="usa-input-error-message">
+      {{ e }}
+    </div>
+  {% end %}
 </fieldset>
-
-
 
 {% end %}
