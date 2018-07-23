@@ -20,6 +20,7 @@ from atst.api_client import ApiClient
 from atst.sessions import RedisSessions
 from atst import ui_modules
 from atst import ui_methods
+from atst.database import make_db
 
 ENV = os.getenv("TORNADO_ENV", "dev")
 
@@ -55,7 +56,7 @@ def make_app(config, deps, **kwargs):
         url(
             r"/requests",
             Request,
-            {"page": "requests", "requests_client": deps["requests_client"]},
+            {"page": "requests", "db_session": deps["db_session"]},
             name="requests",
         ),
         url(
@@ -159,6 +160,7 @@ def make_deps(config):
     )
 
     return {
+        "db_session": make_db(config),
         "authz_client": ApiClient(
             config["default"]["AUTHZ_BASE_URL"],
             api_version="v1",

@@ -14,9 +14,9 @@ class Request(Base):
     creator = Column(UUID(as_uuid=True))
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     body = Column(JSONB)
-    status_events = relationship('StatusEvent',
+    status_events = relationship('RequestStatusEvent',
                                  backref='request',
-                                 order_by='StatusEvent.sequence')
+                                 order_by='RequestStatusEvent.sequence')
 
     @property
     def status(self):
