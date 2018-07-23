@@ -72,10 +72,10 @@ class Requests(object):
 
     @tornado.gen.coroutine
     def submit(self, request):
-        request.status_events.append(StatusEvent(new_status="submitted"))
+        request.status_events.append(RequestStatusEvent(new_status="submitted"))
 
         if Requests.should_auto_approve(request):
-            request.status_events.append(StatusEvent(new_status="approved"))
+            request.status_events.append(RequestStatusEvent(new_status="approved"))
 
         self.db_session.add(request)
         self.db_session.commit()
@@ -99,7 +99,7 @@ class Requests(object):
         request.body = deep_merge(request_delta, request.body)
 
         if Requests.should_allow_submission(request):
-            request.status_events.append(StatusEvent(new_status="pending_submission"))
+            request.status_events.append(RequestStatusEvent(new_status="pending_submission"))
 
         # Without this, sqlalchemy won't notice the change to request.body,
         # since it doesn't track dictionary mutations by default.

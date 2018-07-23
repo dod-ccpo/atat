@@ -9,17 +9,16 @@ from atst.forms.review import ReviewForm
 
 
 class RequestNew(BaseHandler):
-    def initialize(self, page, requests_client, fundz_client):
+    def initialize(self, page, db_session, fundz_client):
         self.page = page
-        self.requests_client = requests_client
+        self.requests_repo = Requests(db_session)
         self.fundz_client = fundz_client
 
-    @tornado.gen.coroutine
     def get_existing_request(self, request_id):
         if request_id is None:
-            return {}
-        request = yield self.requests_client.get("/requests/{}".format(request_id))
-        return request.json
+            return None
+        request = self.requests_repo.get(request_id)
+        return request
 
     @tornado.web.authenticated
     @tornado.gen.coroutine
@@ -28,9 +27,9 @@ class RequestNew(BaseHandler):
         screen = int(screen)
         post_data = self.request.arguments
         current_user = self.get_current_user()
-        existing_request = yield self.get_existing_request(request_id)
+        existing_request = self.get_existing_request(request_id)
         jedi_flow = JEDIRequestFlow(
-            self.requests_client,
+            self.requests_repo,
             self.fundz_client,
             screen,
             post_data=post_data,
@@ -50,24 +49,21 @@ class RequestNew(BaseHandler):
         )
 
         if jedi_flow.validate():
-            response = yield jedi_flow.create_or_update_request()
-            if response.ok:
-                valid = yield jedi_flow.validate_warnings()
-                if valid:
-                    if jedi_flow.next_screen > len(jedi_flow.screens):
-                        where = "/requests"
-                    else:
-                        where = self.application.default_router.reverse_url(
-                            "request_form_update", jedi_flow.next_screen, jedi_flow.request_id
-                        )
-                    self.redirect(where)
+            request = jedi_flow.create_or_update_request()
+            valid = yield jedi_flow.validate_warnings()
+            if valid:
+                if jedi_flow.next_screen > len(jedi_flow.screens):
+                    where = "/requests"
                 else:
-                    self.render(
-                        "requests/screen-%d.html.to" % int(screen),
-                        **rerender_args
+                    where = self.application.default_router.reverse_url(
+                        "request_form_update", jedi_flow.next_screen, jedi_flow.request_id
                     )
+                self.redirect(where)
             else:
-                self.set_status(response.code)
+                self.render(
+                    "requests/screen-%d.html.to" % int(screen),
+                    **rerender_args
+                )
         else:
             self.render(
                 "requests/screen-%d.html.to" % int(screen),
@@ -81,15 +77,10 @@ class RequestNew(BaseHandler):
         request = None
 
         if request_id:
-            response = yield self.requests_client.get(
-                "/requests/{}".format(request_id),
-                raise_error=False,
-            )
-            if response.ok:
-                request = response.json
+            request = self.requests_repo.get(request_id)
 
         jedi_flow = JEDIRequestFlow(
-            self.requests_client, self.fundz_client, screen, request, request_id=request_id
+            self.requests_repo, self.fundz_client, screen, request, request_id=request_id
         )
 
         self.render(
@@ -108,7 +99,7 @@ class RequestNew(BaseHandler):
 class JEDIRequestFlow(object):
     def __init__(
         self,
-        requests_client,
+        requests_repo,
         fundz_client,
         current_step,
         request=None,
@@ -117,7 +108,7 @@ class JEDIRequestFlow(object):
         current_user=None,
         existing_request=None,
     ):
-        self.requests_client = requests_client
+        self.requests_repo = requests_repo
         self.fundz_client = fundz_client
 
         self.current_step = current_step
@@ -145,8 +136,13 @@ class JEDIRequestFlow(object):
 
     @tornado.gen.coroutine
     def validate_warnings(self):
+        existing_request_data = (
+            self.existing_request
+            and self.existing_request.body.get(self.form_section)
+        ) or None
+
         valid = yield self.form.perform_extra_validation(
-            self.existing_request.get('body', {}).get(self.form_section),
+            existing_request_data,
             self.fundz_client,
         )
         return valid
@@ -171,15 +167,15 @@ class JEDIRequestFlow(object):
 
         if self.request:
             if self.form_section == "review_submit":
-                data = self.request["body"]
+                data = self.request.body
             else:
-                data = self.request["body"].get(self.form_section, {})
+                data = self.request.body.get(self.form_section, {})
 
         return defaultdict(lambda: defaultdict(lambda: 'Input required'), data)
 
     @property
     def can_submit(self):
-        return self.request and self.request["status"] != "incomplete"
+        return self.request and self.request.status != "incomplete"
 
     @property
     def next_screen(self):
@@ -222,19 +218,12 @@ class JEDIRequestFlow(object):
             },
         ]
 
-    @tornado.gen.coroutine
     def create_or_update_request(self):
         request_data = {
-            "creator_id": self.current_user["id"],
-            "request": {self.form_section: self.form.data},
+            self.form_section: self.form.data
         }
         if self.request_id:
-            response = yield self.requests_client.patch(
-                "/requests/{}".format(self.request_id), json=request_data
-            )
+            self.requests_repo.update(self.request_id, request_data)
         else:
-            response = yield self.requests_client.post("/requests", json=request_data)
-            self.request = response.json
-            self.request_id = self.request["id"]
-
-        return response
+            request = self.requests_repo.create(self.current_user["id"], request_data)
+            self.request_id = request.id
