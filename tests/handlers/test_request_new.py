@@ -3,8 +3,17 @@ import pytest
 import tornado
 import urllib
 from tests.mocks import MOCK_USER
+from tests.factories import RequestFactory
 
 ERROR_CLASS = "usa-input-error-message"
+MOCK_REQUEST = RequestFactory.create(
+    creator=MOCK_USER["id"],
+    body={
+        "financial_verification": {
+            "pe_id": "0203752A",
+        },
+    }
+)
 
 @pytest.mark.gen_test
 def test_submit_invalid_request_form(monkeypatch, http_client, base_url):

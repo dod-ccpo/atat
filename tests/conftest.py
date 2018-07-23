@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 from atst.app import make_app, make_deps, make_config
 from atst.database import make_db
-from tests.mocks import MockApiClient, MockFundzClient, MockRequestsClient, MockAuthzClient
+from tests.mocks import MockApiClient, MockFundzClient, MockAuthzClient
 from atst.sessions import DictSessions
 
 
@@ -11,7 +11,6 @@ from atst.sessions import DictSessions
 def app(db):
     TEST_DEPS = {
         "authz_client": MockAuthzClient("authz"),
-        "requests_client": MockRequestsClient("requests"),
         "authnid_client": MockApiClient("authnid"),
         "fundz_client": MockFundzClient("fundz"),
         "sessions": DictSessions(),
