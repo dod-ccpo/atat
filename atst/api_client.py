@@ -1,5 +1,5 @@
 import tornado.gen
-from tornado.httpclient import AsyncHTTPClient
+from tornado.curl_httpclient import CurlAsyncHTTPClient
 from json import dumps, loads, decoder
 
 
@@ -8,7 +8,7 @@ class ApiClient(object):
         self.base_url = base_url
         if api_version:
             self.base_url = f"{base_url}/api/{api_version}"
-        self.client = AsyncHTTPClient()
+        self.client = CurlAsyncHTTPClient()
         self.validate_cert = validate_cert
 
     @tornado.gen.coroutine

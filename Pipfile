@@ -10,6 +10,7 @@ Unipath = "==1.1"
 wtforms-tornado = "*"
 pendulum = "*"
 redis = "*"
+pycurl = {version = "*", sys_platform = "!= 'darwin'"}
 
 [dev-packages]
 bandit = "*"

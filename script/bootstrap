@@ -15,6 +15,10 @@ INSTALL_NODE_PACKAGES="true"
 # Run the shared bootstrap script
 source ./script/include/run_bootstrap
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  PYCURL_SSL_LIBRARY=openssl LDFLAGS="-L/usr/local/opt/openssl/lib" CPPFLAGS="-I/usr/local/opt/openssl/include" pipenv run pip install --no-cache-dir pycurl
+fi
+
 # Link USWDS fonts into the /static directory
 rm -f ./static/fonts
 ln -s ../node_modules/uswds/src/fonts ./static/fonts
