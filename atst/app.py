@@ -107,7 +107,7 @@ def make_app(config, deps, **kwargs):
             RequestFinancialVerification,
             {
                 "page": "financial_verification",
-                "requests_client": deps["requests_client"],
+                "db_session": deps["db_session"],
                 "fundz_client": deps["fundz_client"],
             },
             name="financial_verification",

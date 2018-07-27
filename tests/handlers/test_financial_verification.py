@@ -36,6 +36,7 @@ class TestPENumberInForm:
             "atst.handlers.request_financial_verification.RequestFinancialVerification.check_xsrf_cookie", lambda s: True
         )
         monkeypatch.setattr("atst.forms.request.RequestForm.validate", lambda s: True)
+        monkeypatch.setattr("atst.domain.requests.Requests.get", lambda s, i: MOCK_REQUEST)
 
     @tornado.gen.coroutine
     def submit_data(self, http_client, base_url, data):
@@ -64,7 +65,7 @@ class TestPENumberInForm:
         self._set_monkeypatches(monkeypatch)
 
         data = dict(self.required_data)
-        data['pe_id'] = MOCK_REQUEST['body']['financial_verification']['pe_id']
+        data['pe_id'] = MOCK_REQUEST.body['financial_verification']['pe_id']
 
         response = yield self.submit_data(http_client, base_url, data)
 
