@@ -4,5 +4,8 @@
 
 source "$(dirname "${0}")"/../script/include/global_header.inc.sh
 
-# Run the bootstrap script
-source ./script/bootstrap
+# Enable DB migration
+MIGRATE_DB="true"
+
+# Run the shared update script
+source ./script/include/run_update

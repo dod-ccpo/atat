@@ -40,7 +40,7 @@ class TestPENumberInForm:
     @tornado.gen.coroutine
     def submit_data(self, http_client, base_url, data):
         response = yield http_client.fetch(
-            base_url + "/requests/verify/{}".format(MOCK_REQUEST["id"]),
+            base_url + "/requests/verify/{}".format(MOCK_REQUEST.id),
             method="POST",
             headers={"Content-Type": "application/x-www-form-urlencoded"},
             body=urllib.parse.urlencode(data),

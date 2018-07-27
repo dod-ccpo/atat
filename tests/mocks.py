@@ -2,6 +2,7 @@ import tornado.gen
 from tornado.httpclient import HTTPRequest, HTTPResponse
 
 from atst.api_client import ApiClient
+from tests.factories import RequestFactory
 
 
 MOCK_USER = {
@@ -10,6 +11,14 @@ MOCK_USER = {
     "first_name": "Fake",
     "last_name": "User",
 }
+MOCK_REQUEST = RequestFactory.create(
+    creator=MOCK_USER["id"],
+    body={
+        "financial_verification": {
+            "pe_id": "0203752A",
+        },
+    }
+)
 
 
 class MockApiClient(ApiClient):

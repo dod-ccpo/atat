@@ -6,6 +6,7 @@ from atst.forms.request import RequestForm
 from atst.forms.org import OrgForm
 from atst.forms.poc import POCForm
 from atst.forms.review import ReviewForm
+from atst.domain.requests import Requests
 
 
 class RequestNew(BaseHandler):
