@@ -7,13 +7,14 @@ from atst.forms.org import OrgForm
 from atst.forms.poc import POCForm
 from atst.forms.review import ReviewForm
 from atst.domain.requests import Requests
+from atst.domain.pe_numbers import PENumbers
 
 
 class RequestNew(BaseHandler):
-    def initialize(self, page, db_session, fundz_client):
+    def initialize(self, page, db_session):
         self.page = page
         self.requests_repo = Requests(db_session)
-        self.fundz_client = fundz_client
+        self.pe_numbers_repo = PENumbers(db_session)
 
     def get_existing_request(self, request_id):
         if request_id is None:
@@ -31,7 +32,7 @@ class RequestNew(BaseHandler):
         existing_request = self.get_existing_request(request_id)
         jedi_flow = JEDIRequestFlow(
             self.requests_repo,
-            self.fundz_client,
+            self.pe_numbers_repo,
             screen,
             post_data=post_data,
             request_id=request_id,
@@ -81,7 +82,7 @@ class RequestNew(BaseHandler):
             request = self.requests_repo.get(request_id)
 
         jedi_flow = JEDIRequestFlow(
-            self.requests_repo, self.fundz_client, screen, request, request_id=request_id
+            self.requests_repo, self.pe_numbers_repo, screen, request, request_id=request_id
         )
 
         self.render(
@@ -101,7 +102,7 @@ class JEDIRequestFlow(object):
     def __init__(
         self,
         requests_repo,
-        fundz_client,
+        pe_numbers_repo,
         current_step,
         request=None,
         post_data=None,
@@ -110,7 +111,7 @@ class JEDIRequestFlow(object):
         existing_request=None,
     ):
         self.requests_repo = requests_repo
-        self.fundz_client = fundz_client
+        self.pe_numbers_repo = pe_numbers_repo
 
         self.current_step = current_step
         self.request = request
@@ -144,7 +145,7 @@ class JEDIRequestFlow(object):
 
         valid = yield self.form.perform_extra_validation(
             existing_request_data,
-            self.fundz_client,
+            self.pe_numbers_repo,
         )
         return valid
 

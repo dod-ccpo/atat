@@ -2,7 +2,8 @@ import re
 import pytest
 import tornado
 import urllib
-from tests.mocks import MOCK_REQUEST, MOCK_USER, MOCK_VALID_PE_ID
+from tests.mocks import MOCK_REQUEST, MOCK_USER
+from tests.factories import PENumberFactory
 
 
 class TestPENumberInForm:
@@ -73,11 +74,14 @@ class TestPENumberInForm:
         assert response.headers.get("Location") == "/requests/financial_verification_submitted"
 
     @pytest.mark.gen_test
-    def test_submit_request_form_with_new_valid_pe_id(self, monkeypatch, http_client, base_url):
+    def test_submit_request_form_with_new_valid_pe_id(self, db, monkeypatch, http_client, base_url):
         self._set_monkeypatches(monkeypatch)
+        pe = PENumberFactory.create(number="8675309U", description="sample PE number")
+        db.add(pe)
+        db.commit()
 
         data = dict(self.required_data)
-        data['pe_id'] = MOCK_VALID_PE_ID
+        data['pe_id'] = pe.number
 
         response = yield self.submit_data(http_client, base_url, data)
 

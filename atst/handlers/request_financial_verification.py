@@ -3,13 +3,14 @@ import tornado
 from atst.handler import BaseHandler
 from atst.forms.financial import FinancialForm
 from atst.domain.requests import Requests
+from atst.domain.pe_numbers import PENumbers
 
 
 class RequestFinancialVerification(BaseHandler):
-    def initialize(self, page, db_session, fundz_client):
+    def initialize(self, page, db_session):
         self.page = page
         self.requests_repo = Requests(db_session)
-        self.fundz_client = fundz_client
+        self.pe_numbers_repo = PENumbers(db_session)
 
     def get_existing_request(self, request_id):
         return self.requests_repo.get(request_id)
@@ -48,7 +49,7 @@ class RequestFinancialVerification(BaseHandler):
             yield self.update_request(request_id, form.data)
             valid = yield form.perform_extra_validation(
                 existing_request.body.get('financial_verification'),
-                self.fundz_client
+                self.pe_numbers_repo
             )
             if valid:
                 self.redirect(

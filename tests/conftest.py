@@ -11,7 +11,6 @@ from atst.sessions import DictSessions
 def app(db):
     TEST_DEPS = {
         "authnid_client": MockApiClient("authnid"),
-        "fundz_client": MockFundzClient("fundz"),
         "sessions": DictSessions(),
         "db_session": db
     }

@@ -65,7 +65,6 @@ def make_app(config, deps, **kwargs):
             {
                 "page": "requests_new",
                 "db_session": deps["db_session"],
-                "fundz_client": deps["fundz_client"],
             },
             name="request_new",
         ),
@@ -75,7 +74,6 @@ def make_app(config, deps, **kwargs):
             {
                 "page": "requests_new",
                 "db_session": deps["db_session"],
-                "fundz_client": deps["fundz_client"],
             },
             name="request_form_new",
         ),
@@ -85,7 +83,6 @@ def make_app(config, deps, **kwargs):
             {
                 "page": "requests_new",
                 "db_session": deps["db_session"],
-                "fundz_client": deps["fundz_client"],
             },
             name="request_form_update",
         ),
@@ -108,7 +105,6 @@ def make_app(config, deps, **kwargs):
             {
                 "page": "financial_verification",
                 "db_session": deps["db_session"],
-                "fundz_client": deps["fundz_client"],
             },
             name="financial_verification",
         ),
@@ -171,9 +167,6 @@ def make_deps(config):
             config["default"]["AUTHNID_BASE_URL"],
             api_version="v1",
             validate_cert=validate_cert,
-        ),
-        "fundz_client": ApiClient(
-            config["default"]["FUNDZ_BASE_URL"], validate_cert=validate_cert
         ),
         "sessions": RedisSessions(
             redis_client, config["default"]["SESSION_TTL_SECONDS"]

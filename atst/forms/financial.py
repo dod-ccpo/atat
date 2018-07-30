@@ -6,6 +6,8 @@ from wtforms.fields import StringField, SelectField
 from wtforms.form import Form
 from wtforms.validators import Required, Email
 
+from atst.domain.exceptions import NotFoundError
+
 from .fields import NewlineListField
 from .forms import ValidatedForm
 
@@ -35,12 +37,10 @@ def suggest_pe_id(pe_id):
 
 
 @tornado.gen.coroutine
-def validate_pe_id(field, existing_request, fundz_client):
-    response = yield fundz_client.get(
-        "/pe-number/{}".format(field.data),
-        raise_error=False,
-    )
-    if not response.ok:
+def validate_pe_id(field, existing_request, pe_numbers_repo):
+    try:
+        pe_number = pe_numbers_repo.get(field.data)
+    except NotFoundError:
         suggestion = suggest_pe_id(field.data)
         error_str = (
             "We couldn't find that PE number. {}"
@@ -56,10 +56,10 @@ def validate_pe_id(field, existing_request, fundz_client):
 class FinancialForm(ValidatedForm):
 
     @tornado.gen.coroutine
-    def perform_extra_validation(self, existing_request, fundz_client):
+    def perform_extra_validation(self, existing_request, pe_numbers_repo):
         valid = True
         if not existing_request or existing_request.get('pe_id') != self.pe_id.data:
-            valid = yield validate_pe_id(self.pe_id, existing_request, fundz_client)
+            valid = yield validate_pe_id(self.pe_id, existing_request, pe_numbers_repo)
         raise Return(valid)
 
     task_order_id = StringField(
