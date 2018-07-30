@@ -6,7 +6,7 @@ from atst.domain.exceptions import NotFoundError, AlreadyExistsError
 
 
 @pytest.fixture()
-def users_repo(db) -> Users:
+def users_repo(db):
     return Users(db)
 
 
