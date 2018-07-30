@@ -17,7 +17,20 @@
     {% module SidenavItem(
       "Members",
       href=reverse_url('workspace_members', '123456'),
-      active=matchesPath('\/workspaces\/[A-Za-z0-9]*\/members')
+      active=matchesPath('\/workspaces\/[A-Za-z0-9]*\/members'),
+      subnav=[
+        {
+          "label": "Add New Member",
+          "href": "",
+          "active": matchesPath('/workspaces/members/new'),
+          "icon": "plus"
+        },
+        {
+          "label": "Editing Member",
+          "href": "",
+          "active": matchesPath('/workspaces/123456/members/789/edit')
+        }
+      ]
     )%}
 
     {% module SidenavItem(

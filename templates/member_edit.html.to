@@ -1,0 +1,85 @@
+{% extends "base_workspace.html.to" %}
+
+{% block template_vars %}
+{% set is_new_member = False %}
+{% set member_name = "Danny Knight" %}
+{% set member_email = "knight@mil.gov" %}
+{% set member_workspace_role = "Billing Auditor" %}
+{% set member_id = "789" %}
+{% end %}
+
+{% block workspace_content %}
+
+{% module Alert(
+  "UI Mock",
+  message="<p>Please note, this screen is a non-functional UI mockup.</p>",
+  level="info"
+  ) %}
+
+
+  <div class='panel'>
+    <div class='panel__heading'>
+      <h1 class='h2'>
+        {% if is_new_member %}
+        Add new member
+        {% else %}
+        {{ member_name }}
+        {% end %}
+      </h1>
+      <div>Workspace Role</span> <span class="label">{{member_workspace_role}}</div>
+    </div>
+  </div>
+
+
+  <div class='panel panel__actions'>
+    <div class='row'>
+      <div class='col col--grow'>
+        <form class="usa-search usa-search-small">
+          <label class="usa-sr-only" for="search-field-small">Search small</label>
+          <input id="search-field-small" type="search" name="search" placeholder="Search by project name">
+          <button type="submit">
+            <span class="usa-sr-only">Search</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class='block-list project-list-item'>
+    <header class='block-list__header'>
+      <h2 class='block-list__title'>Code.mil</h2>
+      <a class="block-list__header__link icon-link icon-link--danger">revoke all access</a>
+    </header>
+    <ul>
+      <li class='block-list__item project-list-item__environment'>
+        <span class='project-list-item__environment'>
+          Development
+        </span>
+        <div class='project-list-item__environment__actions'>
+          <span>no access</span><a href="#" class="icon-link">set role</a>
+        </div>
+      </li>
+      <li class='block-list__item project-list-item__environment'>
+        <span class='project-list-item__environment'>
+          Production
+        </span>
+        <div class='project-list-item__environment__actions'>
+          <span>Billing</span><a href="#" class="icon-link">set role</a>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+
+  <div class='action-group'>
+    <a href='#' class='action-group__action usa-button usa-button-big'>
+      {% if is_new_member %}Create{% else %}Save{% end %}
+    </a>
+    <a href='#' class='action-group__action icon-link'>
+      {% module Icon('x') %}
+      <span>Cancel</span>
+    </a>
+  </div>
+
+  {% end %}
+
