@@ -4,3 +4,7 @@ Base = declarative_base()
 
 from .request import Request
 from .request_status_event import RequestStatusEvent
+from .permissions import Permissions
+from .role import Role
+from .user import User
+from .workspace_role import WorkspaceRole
