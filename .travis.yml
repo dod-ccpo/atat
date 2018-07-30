@@ -1,7 +1,11 @@
 sudo: required
 language: python
 python: "3.6"
-services: docker
+services:
+  - docker
+  - postgres
+addons:
+  postgresql: "9.6"
 git:
     submodules: false
 env:
@@ -16,8 +20,9 @@ before_install:
     - git submodule update --init --recursive
 
 before_script:
+  - travis_host_ip="$(/sbin/ip route|awk '/default/ { print $3 }')"
   - docker login -u $ATAT_DOCKER_REGISTRY_USERNAME -p $ATAT_DOCKER_REGISTRY_PASSWORD $ATAT_DOCKER_REGISTRY_URL
-  - docker build --tag "${TESTER_IMAGE_NAME}" . -f deploy/docker/tester/Dockerfile
+  - docker build --tag "${TESTER_IMAGE_NAME}" --add-host "travishost:${travis_host_ip}" . -f deploy/docker/tester/Dockerfile
 
 script:
   - docker run "${TESTER_IMAGE_NAME}"
