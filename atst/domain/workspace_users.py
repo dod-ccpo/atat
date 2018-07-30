@@ -1,5 +1,4 @@
 from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy.dialects.postgresql import insert
 
 from atst.models.workspace_role import WorkspaceRole
 from atst.models.workspace_user import WorkspaceUser

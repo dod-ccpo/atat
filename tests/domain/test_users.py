@@ -1,5 +1,5 @@
 import pytest
-from uuid import uuid4, UUID
+from uuid import uuid4
 
 from atst.domain.users import Users
 from atst.domain.exceptions import NotFoundError, AlreadyExistsError
