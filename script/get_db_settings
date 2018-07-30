@@ -5,4 +5,4 @@
 source "$(dirname "${0}")"/../script/include/global_header.inc.sh
 
 # Run the shared get_db_settings script
-source ./script/include/run_get_sb_settings.sh
+source ./script/include/run_get_db_settings.sh
