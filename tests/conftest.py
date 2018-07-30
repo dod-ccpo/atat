@@ -10,7 +10,6 @@ from atst.sessions import DictSessions
 @pytest.fixture
 def app(db):
     TEST_DEPS = {
-        "authz_client": MockAuthzClient("authz"),
         "authnid_client": MockApiClient("authnid"),
         "fundz_client": MockFundzClient("fundz"),
         "sessions": DictSessions(),
