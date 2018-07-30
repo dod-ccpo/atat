@@ -35,7 +35,7 @@ def make_app(config, deps, **kwargs):
             {
                 "sessions": deps["sessions"],
                 "authnid_client": deps["authnid_client"],
-                "authz_client": deps["authz_client"],
+                "db_session": deps["db_session"],
             },
             name="login_redirect",
         ),
@@ -50,7 +50,7 @@ def make_app(config, deps, **kwargs):
         url(
             r"/workspaces",
             Workspaces,
-            {"page": "workspaces", "authz_client": deps["authz_client"]},
+            {"page": "workspaces", "db_session": deps["db_session"]},
             name="workspaces",
         ),
         url(
@@ -136,7 +136,7 @@ def make_app(config, deps, **kwargs):
                 {
                     "action": "login",
                     "sessions": deps["sessions"],
-                    "authz_client": deps["authz_client"],
+                    "db_session": deps["db_session"],
                 },
                 name="dev-login",
             )
@@ -167,11 +167,6 @@ def make_deps(config):
 
     return {
         "db_session": make_db(config),
-        "authz_client": ApiClient(
-            config["default"]["AUTHZ_BASE_URL"],
-            api_version="v1",
-            validate_cert=validate_cert,
-        ),
         "authnid_client": ApiClient(
             config["default"]["AUTHNID_BASE_URL"],
             api_version="v1",

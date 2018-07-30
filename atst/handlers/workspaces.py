@@ -12,9 +12,9 @@ mock_workspaces = [
 
 
 class Workspaces(BaseHandler):
-    def initialize(self, page, authz_client):
+    def initialize(self, page, db_session):
         self.page = page
-        self.authz_client = authz_client
+        self.db_session = db_session
 
     @tornado.gen.coroutine
     @tornado.web.authenticated

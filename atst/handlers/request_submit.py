@@ -6,6 +6,7 @@ from atst.domain.requests import Requests
 
 class RequestsSubmit(BaseHandler):
     def initialize(self, db_session):
+        self.db_session = db_session
         self.requests_repo = Requests(db_session)
 
     @tornado.web.authenticated

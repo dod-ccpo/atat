@@ -3,10 +3,10 @@ from atst.handler import BaseHandler
 
 
 class LoginRedirect(BaseHandler):
-    def initialize(self, authnid_client, sessions, authz_client):
+    def initialize(self, authnid_client, sessions, db_session):
+        self.db_session = db_session
         self.authnid_client = authnid_client
         self.sessions = sessions
-        self.authz_client = authz_client
 
     @tornado.gen.coroutine
     def get(self):

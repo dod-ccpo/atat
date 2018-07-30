@@ -5,15 +5,16 @@ from .exceptions import NotFoundError
 
 
 class Roles(object):
-    @classmethod
-    def get(cls, role_name):
+    def __init__(self, db_session):
+        self.db_session = db_session
+
+    def get(self, role_name):
         try:
-            role = Role.query.filter_by(name=role_name).one()
+            role = self.db_session.query(Role).filter_by(name=role_name).one()
         except NoResultFound:
             raise NotFoundError("role")
 
         return role
 
-    @classmethod
-    def get_all(cls):
-        return Role.query.all()
+    def get_all(self):
+        return self.db_session.query(Role).all()

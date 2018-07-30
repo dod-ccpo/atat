@@ -1,6 +1,7 @@
 import tornado.gen
 
 from atst.handler import BaseHandler
+from atst.domain.users import Users
 
 _DEV_USERS = {
     "sam": {
@@ -9,7 +10,6 @@ _DEV_USERS = {
         "last_name": "Seeceepio",
         "atat_role": "ccpo"
     },
-
     "amanda": {
         "id": "cce17030-4109-4719-b958-ed109dbb87c8",
         "first_name": "Amanda",
@@ -44,10 +44,11 @@ _DEV_USERS = {
 
 class Dev(BaseHandler):
 
-    def initialize(self, action, sessions, authz_client):
+    def initialize(self, action, sessions, db_session):
+        self.db_session = db_session
         self.action = action
         self.sessions = sessions
-        self.authz_client = authz_client
+        self.users_repo = Users(db_session)
 
     @tornado.gen.coroutine
     def get(self):
@@ -58,7 +59,4 @@ class Dev(BaseHandler):
 
     @tornado.gen.coroutine
     def _set_user_permissions(self, user_id, role):
-        response = yield self.authz_client.post(
-            "/users", json={"id": user_id, "atat_role": role}
-        )
-        return response.json
+        return self.users_repo.get_or_create(user_id, atat_role_name=role)

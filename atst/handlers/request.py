@@ -22,6 +22,7 @@ def map_request(user, request):
 class Request(BaseHandler):
     def initialize(self, page, db_session):
         self.page = page
+        self.db_session = db_session
         self.requests = Requests(db_session)
 
     @tornado.web.authenticated
