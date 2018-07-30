@@ -210,15 +210,15 @@ def make_config():
     # Assemble DATABASE_URI value
     database_uri = (
         "postgres://"
-        + config.get("default", "DATABASE_USERNAME")
+        + config.get("default", "PGUSER")
         + ":"
-        + config.get("default", "DATABASE_PASSWORD")
+        + config.get("default", "PGPASSWORD")
         + "@"
-        + config.get("default", "DATABASE_HOST")
+        + config.get("default", "PGHOST")
         + ":"
-        + config.get("default", "DATABASE_PORT")
+        + config.get("default", "PGPORT")
         + "/"
-        + config.get("default", "DATABASE_NAME")
+        + config.get("default", "PGDATABASE")
     )
     config.set("default", "DATABASE_URI", database_uri)
 
