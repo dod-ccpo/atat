@@ -4,6 +4,7 @@ from uuid import uuid4, UUID
 from atst.domain.users import Users
 from atst.domain.exceptions import NotFoundError, AlreadyExistsError
 
+
 @pytest.fixture()
 def users_repo(db) -> Users:
     return Users(db)

@@ -8,11 +8,9 @@ from .exceptions import NotFoundError, AlreadyExistsError
 
 
 class Users(object):
-
     def __init__(self, db_session):
         self.db_session = db_session
         self.roles_repo = Roles(db_session)
-
 
     def get(self, user_id):
         try:

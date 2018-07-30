@@ -8,8 +8,8 @@ from .roles import Roles
 from .users import Users
 from .exceptions import NotFoundError
 
-class WorkspaceUsers(object):
 
+class WorkspaceUsers(object):
     def __init__(self, db_session):
         self.db_session = db_session
         self.roles_repo = Roles(db_session)
@@ -48,10 +48,14 @@ class WorkspaceUsers(object):
                 raise NotFoundError("role")
 
             try:
-                existing_workspace_role = self.db_session.query(WorkspaceRole).filter(
-                    WorkspaceRole.user == user,
-                    WorkspaceRole.workspace_id == workspace_id,
-                ).one()
+                existing_workspace_role = (
+                    self.db_session.query(WorkspaceRole)
+                    .filter(
+                        WorkspaceRole.user == user,
+                        WorkspaceRole.workspace_id == workspace_id,
+                    )
+                    .one()
+                )
                 new_workspace_role = existing_workspace_role
                 new_workspace_role.role = role
             except NoResultFound:
