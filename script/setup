@@ -8,5 +8,11 @@ source "$(dirname "${0}")"/../script/include/global_header.inc.sh
 # Turn on sass compiler installation
 INSTALL_SASS="true"
 
+# Set database name
+DATABASE_NAME="atat"
+
+# Enable database resetting
+RESET_DB="true"
+
 # Run the shared setup script
 source ./script/include/run_setup
