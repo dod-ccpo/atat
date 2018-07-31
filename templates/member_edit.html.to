@@ -29,29 +29,24 @@
           <dt>Email:</dt>
           <dd>{{ member_email }}</dd>
         </span>
+        <a href="#" class="icon-link">edit account details</a>
       </dl>
-      <a href="#" class="icon-link">edit account details</a>
     </div>
   </div>
 
-
-  <div class='panel panel__actions'>
-    <div class='row'>
-      <div class='col col--grow'>
-        <form class="usa-search usa-search-small">
-          <label class="usa-sr-only" for="search-field-small">Search small</label>
-          <input id="search-field-small" type="search" name="search" placeholder="Search by project name">
-          <button type="submit">
-            <span class="usa-sr-only">Search</span>
-          </button>
-        </form>
-      </div>
+  <form class='search-bar'>
+    <div class='usa-input search-input'>
+      <label for='project-search'>Search by project name</label>
+      <input type='search' id='project-search' name='project-search' placeholder="Search by project name"/>
+      <button type="submit">
+        <span class="hide">Search</span>
+      </button>
     </div>
-  </div>
+  </form>
 
   <div class='block-list project-list-item'>
     <header class='block-list__header'>
-      <h2 class='block-list__title'>Code.mil</h2>
+      <h2 class='block-list__title'>&#9662; Code.mil</h2>
       <span><a href="#" class="icon-link icon-link--danger">revoke all access</a></span>
     </header>
     <ul>
@@ -84,7 +79,7 @@
 
   <div class='block-list project-list-item'>
     <header class='block-list__header'>
-      <h2 class='block-list__title'>Digital Dojo</h2>
+      <h2 class='block-list__title'>&#9656; Digital Dojo</h2>
       <span>no access</span>
     </header>
   </div>
