@@ -10,6 +10,9 @@ Unipath = "==1.1"
 wtforms-tornado = "*"
 pendulum = "*"
 redis = "*"
+sqlalchemy = "*"
+alembic = "*"
+"psycopg2-binary" = "*"
 
 [dev-packages]
 bandit = "*"
@@ -20,6 +23,7 @@ ipdb = "*"
 pylint = "*"
 black = "*"
 pytest-watch = "*"
+factory-boy = "*"
 
 [requires]
 python_version = "3.6"

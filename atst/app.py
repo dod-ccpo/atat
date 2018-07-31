@@ -20,8 +20,10 @@ from atst.api_client import ApiClient
 from atst.sessions import RedisSessions
 from atst import ui_modules
 from atst import ui_methods
+from atst.database import make_db
 
 ENV = os.getenv("TORNADO_ENV", "dev")
+
 
 def make_app(config, deps, **kwargs):
 
@@ -30,16 +32,15 @@ def make_app(config, deps, **kwargs):
         url(
             r"/login-redirect",
             LoginRedirect,
-            {"sessions": deps["sessions"], "authnid_client": deps["authnid_client"], "authz_client": deps["authz_client"]},
+            {
+                "sessions": deps["sessions"],
+                "authnid_client": deps["authnid_client"],
+                "authz_client": deps["authz_client"],
+            },
             name="login_redirect",
         ),
         url(r"/home", Main, {"page": "home"}, name="home"),
-        url(
-            r"/styleguide",
-            Main,
-            {"page": "styleguide"},
-            name="styleguide",
-        ),
+        url(r"/styleguide", Main, {"page": "styleguide"}, name="styleguide"),
         url(
             r"/workspaces/blank",
             Main,
@@ -55,7 +56,7 @@ def make_app(config, deps, **kwargs):
         url(
             r"/requests",
             Request,
-            {"page": "requests", "requests_client": deps["requests_client"]},
+            {"page": "requests", "db_session": deps["db_session"]},
             name="requests",
         ),
         url(
@@ -63,7 +64,7 @@ def make_app(config, deps, **kwargs):
             RequestNew,
             {
                 "page": "requests_new",
-                "requests_client": deps["requests_client"],
+                "db_session": deps["db_session"],
                 "fundz_client": deps["fundz_client"],
             },
             name="request_new",
@@ -73,7 +74,7 @@ def make_app(config, deps, **kwargs):
             RequestNew,
             {
                 "page": "requests_new",
-                "requests_client": deps["requests_client"],
+                "db_session": deps["db_session"],
                 "fundz_client": deps["fundz_client"],
             },
             name="request_form_new",
@@ -83,7 +84,7 @@ def make_app(config, deps, **kwargs):
             RequestNew,
             {
                 "page": "requests_new",
-                "requests_client": deps["requests_client"],
+                "db_session": deps["db_session"],
                 "fundz_client": deps["fundz_client"],
             },
             name="request_form_update",
@@ -91,7 +92,7 @@ def make_app(config, deps, **kwargs):
         url(
             r"/requests/submit/(\S+)",
             RequestsSubmit,
-            {"requests_client": deps["requests_client"]},
+            {"db_session": deps["db_session"]},
             name="requests_submit",
         ),
         # Dummy request/approval screen
@@ -99,14 +100,14 @@ def make_app(config, deps, **kwargs):
             r"/request/approval",
             Main,
             {"page": "request_approval"},
-            name="request_approval"
+            name="request_approval",
         ),
         url(
             r"/requests/verify/(\S+)",
             RequestFinancialVerification,
             {
                 "page": "financial_verification",
-                "requests_client": deps["requests_client"],
+                "db_session": deps["db_session"],
                 "fundz_client": deps["fundz_client"],
             },
             name="financial_verification",
@@ -120,7 +121,9 @@ def make_app(config, deps, **kwargs):
         url(r"/users", Main, {"page": "users"}, name="users"),
         url(r"/reports", Main, {"page": "reports"}, name="reports"),
         url(r"/calculator", Main, {"page": "calculator"}, name="calculator"),
-        url(r"/workspaces/(\S+)/members", WorkspaceMembers, {}, name="workspace_members"),
+        url(
+            r"/workspaces/(\S+)/members", WorkspaceMembers, {}, name="workspace_members"
+        ),
         url(r"/workspaces/(\S+)/projects", Workspace, {}, name="workspace_projects"),
         url(r"/workspaces/123456/projects/789/edit", Main, {"page": "project_edit"}, name="project_edit"),
     ]
@@ -130,7 +133,11 @@ def make_app(config, deps, **kwargs):
             url(
                 r"/login-dev",
                 Dev,
-                {"action": "login", "sessions": deps["sessions"], "authz_client": deps["authz_client"]},
+                {
+                    "action": "login",
+                    "sessions": deps["sessions"],
+                    "authz_client": deps["authz_client"],
+                },
                 name="dev-login",
             )
         ]
@@ -144,7 +151,7 @@ def make_app(config, deps, **kwargs):
         debug=config["default"].getboolean("DEBUG"),
         ui_modules=ui_modules,
         ui_methods=ui_methods,
-        **kwargs,
+        **kwargs
     )
     app.config = config
     app.sessions = deps["sessions"]
@@ -159,6 +166,7 @@ def make_deps(config):
     )
 
     return {
+        "db_session": make_db(config),
         "authz_client": ApiClient(
             config["default"]["AUTHZ_BASE_URL"],
             api_version="v1",
@@ -170,13 +178,7 @@ def make_deps(config):
             validate_cert=validate_cert,
         ),
         "fundz_client": ApiClient(
-            config["default"]["FUNDZ_BASE_URL"],
-            validate_cert=validate_cert,
-        ),
-        "requests_client": ApiClient(
-            config["default"]["REQUESTS_QUEUE_BASE_URL"],
-            api_version="v1",
-            validate_cert=validate_cert,
+            config["default"]["FUNDZ_BASE_URL"], validate_cert=validate_cert
         ),
         "sessions": RedisSessions(
             redis_client, config["default"]["SESSION_TTL_SECONDS"]
@@ -189,8 +191,30 @@ def make_config():
     ENV_CONFIG_FILENAME = os.path.join(
         os.path.dirname(__file__), "../config/", "{}.ini".format(ENV.lower())
     )
+    OVERRIDE_CONFIG_FILENAME = os.getenv("OVERRIDE_CONFIG_FULLPATH")
+
     config = ConfigParser()
 
+    config_files = [BASE_CONFIG_FILENAME, ENV_CONFIG_FILENAME]
+    if OVERRIDE_CONFIG_FILENAME:
+        config_files.append(OVERRIDE_CONFIG_FILENAME)
+
     # ENV_CONFIG will override values in BASE_CONFIG.
-    config.read([BASE_CONFIG_FILENAME, ENV_CONFIG_FILENAME])
+    config.read(config_files)
+
+    # Assemble DATABASE_URI value
+    database_uri = (
+        "postgres://"
+        + config.get("default", "PGUSER")
+        + ":"
+        + config.get("default", "PGPASSWORD")
+        + "@"
+        + config.get("default", "PGHOST")
+        + ":"
+        + config.get("default", "PGPORT")
+        + "/"
+        + config.get("default", "PGDATABASE")
+    )
+    config.set("default", "DATABASE_URI", database_uri)
+
     return config
