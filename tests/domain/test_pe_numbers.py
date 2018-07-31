@@ -23,7 +23,7 @@ def new_pe_number(db):
 
 
 def test_can_get_pe_number(pe_numbers, new_pe_number):
-    new_pen = new_pe_number(number="0101969F", description="Combat Support - Offensive")
+    new_pen = new_pe_number(number="0701367F", description="Combat Support - Offensive")
     pen = pe_numbers.get(new_pen.number)
 
     assert pen.number == new_pen.number
