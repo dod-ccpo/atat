@@ -16,7 +16,6 @@
   level="info"
   ) %}
 
-
   <div class='panel'>
     <div class='panel__heading'>
       <h1 class='h2'>
@@ -26,7 +25,10 @@
         {{ member_name }}
         {% end %}
       </h1>
-      <div>Workspace Role</span> <span class="label">{{member_workspace_role}}</div>
+      <div>Workspace Role <span class="label">{{member_workspace_role}}</span></div>
+      <span>DOD ID: {{ member_id }}</span>
+      <div>Email: {{ member_email }}</div>
+      <span><a href="#" class="icon-link">edit account details</a></span>
     </div>
   </div>
 
@@ -57,6 +59,14 @@
         </span>
         <div class='project-list-item__environment__actions'>
           <span>no access </span><a href="#" class="icon-link">set role</a>
+        </div>
+      </li>
+      <li class='block-list__item project-list-item__environment'>
+        <span class='project-list-item__environment'>
+          Sandbox
+        </span>
+        <div class='project-list-item__environment__actions'>
+          <span>no access</span><a href="#" class="icon-link">set role</a>
         </div>
       </li>
       <li class='block-list__item project-list-item__environment'>
