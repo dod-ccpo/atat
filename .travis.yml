@@ -14,15 +14,15 @@ env:
     - PROD_IMAGE_NAME=atst-prod
 
 before_install:
-    # Use sed to replace the SSH URL with the public URL
-    - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
-    # Manually initialize submodules
-    - git submodule update --init --recursive
-    - /sbin/ip route|awk '/default/ { print $3 }'
-    - /sbin/ip addr
-    - ./foo
+  # Use sed to replace the SSH URL with the public URL
+  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  # Manually initialize submodules
+  - git submodule update --init --recursive
+  - /sbin/ip route|awk '/default/ { print $3 }'
+  - /sbin/ip addr
 
 before_script:
+  - netstat -anlp | grep LISTEN | grep tcp
   - travis_host_ip="$(/sbin/ip route|awk '/default/ { print $3 }')"
   - docker login -u $ATAT_DOCKER_REGISTRY_USERNAME -p $ATAT_DOCKER_REGISTRY_PASSWORD $ATAT_DOCKER_REGISTRY_URL
   - docker build --tag "${TESTER_IMAGE_NAME}" --add-host "travishost:${travis_host_ip}" . -f deploy/docker/tester/Dockerfile
