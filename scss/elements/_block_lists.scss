@@ -59,7 +59,8 @@
     margin: -$gap 0;
   }
 
-  .icon-link {
+  .icon-link,
+  .label {
     &:first-child {
       margin-left: -$gap;
     }

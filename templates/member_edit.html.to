@@ -19,7 +19,7 @@
   <div class='panel member-card'>
     <div class='member-card__header'>
       <h1 class='member-card__heading'>{{ member_name }}</h1>
-      <dl><dt>Workspace Role</dt> <dd class='label'>{{member_workspace_role}}</dd></dl>
+      <dl><dt>Workspace Role</dt> <dd><span class='label label--info'>{{member_workspace_role}}</span></dd></dl>
     </div>
     <div class='member-card__details'>
       <dl>
@@ -57,7 +57,7 @@
           Development
         </span>
         <div class='project-list-item__environment__actions'>
-          <span>no access </span><a href="#" class="icon-link">set role</a>
+          <span class="label">no access </span><a href="#" class="icon-link">set role</a>
         </div>
       </li>
       <li class='block-list__item project-list-item__environment'>
@@ -65,7 +65,7 @@
           Sandbox
         </span>
         <div class='project-list-item__environment__actions'>
-          <span>no access</span><a href="#" class="icon-link">set role</a>
+          <span class="label">no access</span><a href="#" class="icon-link">set role</a>
         </div>
       </li>
       <li class='block-list__item project-list-item__environment'>
@@ -73,7 +73,7 @@
           Production
         </span>
         <div class='project-list-item__environment__actions'>
-          <span>Billing</span><a href="#" class="icon-link">set role</a>
+        <span class="label label--success">Billing</span><a href="#" class="icon-link">set role</a>
         </div>
       </li>
     </ul>
@@ -82,7 +82,7 @@
   <div class='block-list project-list-item'>
     <header class='block-list__header'>
       <h2 class='block-list__title'>{% module Icon('arrow-right') %} Digital Dojo</h2>
-      <span>no access</span>
+      <span class="label">no access</span>
     </header>
   </div>
 

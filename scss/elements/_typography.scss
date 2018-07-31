@@ -4,7 +4,7 @@
  * @source https://github.com/uswds/uswds/blob/develop/src/stylesheets/elements/_typography.scss
  */
 
-* {
+ * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -56,8 +56,4 @@ dl {
   > div {
     margin-bottom: $gap * 2;
   }
-}
-
-.subtitle {
-  color: $color-gray;
 }

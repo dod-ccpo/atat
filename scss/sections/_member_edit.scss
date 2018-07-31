@@ -33,5 +33,9 @@
 
   .member-card__details {
    text-align: right;
+
+   .icon-link {
+    margin: 0 -$gap;
+   }
  }
 }
