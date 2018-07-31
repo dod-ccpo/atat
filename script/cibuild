@@ -4,5 +4,10 @@
 
 source "$(dirname "${0}")"/../script/include/global_header.inc.sh
 
+echo
+echo "DEBUG: Hosts file:"
+cat /etc/hosts
+echo
+
 # Run lint/style checks and unit tests
 source ./script/test

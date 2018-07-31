@@ -21,12 +21,12 @@ before_install:
 before_script:
   - docker run -d --name postgres96 postgres:9.6-alpine
   - docker run --link postgres96:postgres96 waisbrot/wait
-  - postgres_ip="$(docker inspect -f "{{ .NetworkSettings.IPAddress }}" postgres96)"
+  - export postgres_ip="$(docker inspect -f "{{ .NetworkSettings.IPAddress }}" postgres96)"
   - docker login -u $ATAT_DOCKER_REGISTRY_USERNAME -p $ATAT_DOCKER_REGISTRY_PASSWORD $ATAT_DOCKER_REGISTRY_URL
   - docker build --tag "${TESTER_IMAGE_NAME}" --add-host "postgreshost:${postgres_ip}" . -f deploy/docker/tester/Dockerfile
 
 script:
-  - docker run "${TESTER_IMAGE_NAME}"
+  - docker run --add-host "postgreshost:${postgres_ip}" "${TESTER_IMAGE_NAME}"
 
 before_deploy:
   - docker build --tag "${PROD_IMAGE_NAME}" . -f deploy/docker/prod/Dockerfile
