@@ -59,4 +59,8 @@
   &.icon-link--large {
     @include icon-link-large;
   }
+
+  &.icon-link--danger {
+    @include icon-link-color($color-red, $color-red-lightest);
+  }
 }

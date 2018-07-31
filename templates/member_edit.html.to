@@ -48,7 +48,7 @@
   <div class='block-list project-list-item'>
     <header class='block-list__header'>
       <h2 class='block-list__title'>Code.mil</h2>
-      <a class="block-list__header__link icon-link icon-link--danger">revoke all access</a>
+      <a href="#" class="icon-link icon-link--danger">revoke all access</a>
     </header>
     <ul>
       <li class='block-list__item project-list-item__environment'>
@@ -56,7 +56,7 @@
           Development
         </span>
         <div class='project-list-item__environment__actions'>
-          <span>no access</span><a href="#" class="icon-link">set role</a>
+          <span>no access </span><a href="#" class="icon-link">set role</a>
         </div>
       </li>
       <li class='block-list__item project-list-item__environment'>

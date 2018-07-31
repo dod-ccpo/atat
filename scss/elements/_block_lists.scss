@@ -54,14 +54,25 @@
 
 .block-list {
   @include block-list;
+
+  .icon-link {
+    margin: -$gap 0;
+  }
+
+  .icon-link {
+    &:first-child {
+      margin-left: -$gap;
+    }
+
+    &:last-child {
+      margin-right: -$gap;
+    }
+
+  }
 }
 
 .block-list__header {
   @include block-list-header;
-
-  .block-list__header__link {
-    @include icon-link;
-  }
 }
 
 .block-list__title {
