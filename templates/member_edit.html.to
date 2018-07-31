@@ -20,17 +20,12 @@
     <div class='panel__heading'>
       <h1 class='h2'>{{ member_name }}</h1>
       <div>Workspace Role <span class="label">{{member_workspace_role}}</span></div>
-      <dl>
-        <span>
-          <dt>DOD ID:</dt>
-          <dd>{{ member_id }}</dd>
-        </span>
-        <span>
-          <dt>Email:</dt>
-          <dd>{{ member_email }}</dd>
-        </span>
-        <a href="#" class="icon-link">edit account details</a>
-      </dl>
+
+      DOD ID:
+      {{ member_id }}
+      Email:
+      {{ member_email }}
+      <a href="#" class="icon-link">edit account details</a>
     </div>
   </div>
 
