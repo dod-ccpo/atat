@@ -180,11 +180,6 @@ def make_deps(config):
         "fundz_client": ApiClient(
             config["default"]["FUNDZ_BASE_URL"], validate_cert=validate_cert
         ),
-        "requests_client": ApiClient(
-            config["default"]["REQUESTS_QUEUE_BASE_URL"],
-            api_version="v1",
-            validate_cert=validate_cert,
-        ),
         "sessions": RedisSessions(
             redis_client, config["default"]["SESSION_TTL_SECONDS"]
         ),
