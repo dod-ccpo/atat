@@ -41,7 +41,7 @@
 
   <div class='block-list project-list-item'>
     <header class='block-list__header'>
-      <h2 class='block-list__title'>&#9662; Code.mil</h2>
+      <h2 class='block-list__title'>{% module Icon('arrow-down') %} Code.mil</h2>
       <span><a href="#" class="icon-link icon-link--danger">revoke all access</a></span>
     </header>
     <ul>
@@ -74,7 +74,7 @@
 
   <div class='block-list project-list-item'>
     <header class='block-list__header'>
-      <h2 class='block-list__title'>&#9656; Digital Dojo</h2>
+      <h2 class='block-list__title'>{% module Icon('arrow-right') %} Digital Dojo</h2>
       <span>no access</span>
     </header>
   </div>

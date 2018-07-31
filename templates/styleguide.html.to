@@ -301,6 +301,8 @@
       <span class='nowrap'>{% module Icon('link') %} 'link'&nbsp;&nbsp;&nbsp;</span>
       <span class='nowrap'>{% module Icon('ok') %} 'ok'&nbsp;&nbsp;&nbsp;</span>
       <span class='nowrap'>{% module Icon('checkmark') %} 'checkmark'&nbsp;&nbsp;&nbsp;</span>
+      <span class='nowrap'>{% module Icon('arrow-right') %} 'arrow-right'&nbsp;&nbsp;&nbsp;</span>
+      <span class='nowrap'>{% module Icon('arrow-down') %} 'arrow-down'&nbsp;&nbsp;&nbsp;</span>
     </div>
   </div>
 
