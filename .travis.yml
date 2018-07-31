@@ -15,8 +15,6 @@ before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   # Manually initialize submodules
   - git submodule update --init --recursive
-  - /sbin/ip route|awk '/default/ { print $3 }'
-  - /sbin/ip addr
 
 before_script:
   - docker run -d --name postgres96 postgres:9.6-alpine
