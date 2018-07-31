@@ -61,12 +61,3 @@ class MockApiClient(ApiClient):
 
 
 MOCK_VALID_PE_ID = "8675309U"
-
-class MockFundzClient(MockApiClient):
-
-    @tornado.gen.coroutine
-    def get(self, path, **kwargs):
-        if path.endswith(MOCK_VALID_PE_ID):
-            return self._get_response("GET", path, 200)
-        else:
-            return self._get_response("GET", path, 404)

@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 from atst.app import make_app, make_deps, make_config
 from atst.database import make_db
-from tests.mocks import MockApiClient, MockFundzClient
+from tests.mocks import MockApiClient
 from atst.sessions import DictSessions
 
 
