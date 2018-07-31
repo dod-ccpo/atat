@@ -6,3 +6,6 @@ source "$(dirname "${0}")"/../script/include/global_header.inc.sh
 
 # Run the shared get_db_settings script
 source ./script/include/run_get_db_settings.sh
+
+echo "Postgres settings: "
+echo $PGHOST

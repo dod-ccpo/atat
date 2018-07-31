@@ -14,5 +14,8 @@ DATABASE_NAME="atat"
 # Enable database resetting
 RESET_DB="true"
 
+echo "Hosts file:"
+cat /etc/hosts
+
 # Run the shared setup script
 source ./script/include/run_setup
