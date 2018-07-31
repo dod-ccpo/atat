@@ -3,9 +3,6 @@ language: python
 python: "3.6"
 services:
   - docker
-  - postgres
-addons:
-  postgresql: "9.6"
 git:
     submodules: false
 env:
@@ -22,10 +19,11 @@ before_install:
   - /sbin/ip addr
 
 before_script:
-  - netstat -anlp | grep LISTEN | grep tcp
-  - travis_host_ip="$(/sbin/ip route|awk '/default/ { print $3 }')"
+  - docker run -d --name postgres96 postgres:9.6-alpine
+  - docker run --link postgres96:postgres96 waisbrot/wait
+  - postgres_ip="$(docker inspect -f "{{ .NetworkSettings.IPAddress }}" postgres96)"
   - docker login -u $ATAT_DOCKER_REGISTRY_USERNAME -p $ATAT_DOCKER_REGISTRY_PASSWORD $ATAT_DOCKER_REGISTRY_URL
-  - docker build --tag "${TESTER_IMAGE_NAME}" --add-host "travishost:${travis_host_ip}" . -f deploy/docker/tester/Dockerfile
+  - docker build --tag "${TESTER_IMAGE_NAME}" --add-host "postgreshost:${postgres_ip}" . -f deploy/docker/tester/Dockerfile
 
 script:
   - docker run "${TESTER_IMAGE_NAME}"
