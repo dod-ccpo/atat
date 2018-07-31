@@ -16,3 +16,6 @@ RESET_DB="true"
 
 # Run the shared setup script
 source ./script/include/run_setup
+
+# Fetch and import the PE numbers
+run_command "python script/ingest_pe_numbers.py"

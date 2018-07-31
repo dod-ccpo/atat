@@ -9,3 +9,6 @@ MIGRATE_DB="true"
 
 # Run the shared update script
 source ./script/include/run_update
+
+# Fetch and import/update the PE numbers
+run_command "python script/ingest_pe_numbers.py"
