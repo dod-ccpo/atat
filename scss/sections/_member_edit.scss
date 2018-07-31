@@ -1,0 +1,37 @@
+.member-card {
+  @include grid-row;
+  padding: $gap*2;
+  justify-content: space-between;
+
+  dl {
+    margin: 0;
+
+    > div {
+      margin-bottom: $gap;
+    }
+  }
+
+  dt {
+    font-weight: normal;
+    color: $color-gray;
+  }
+
+  dd {
+    display: inline;
+  }
+
+  .member-card__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .member-card__heading {
+    margin: 0;
+    @include h2;
+  }
+
+  .member-card__details {
+   text-align: right;
+ }
+}

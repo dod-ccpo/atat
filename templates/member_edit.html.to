@@ -16,16 +16,23 @@
   level="info"
   ) %}
 
-  <div class='panel'>
-    <div class='panel__heading'>
-      <h1 class='h2'>{{ member_name }}</h1>
-      <div>Workspace Role <span class="label">{{member_workspace_role}}</span></div>
-
-      DOD ID:
-      {{ member_id }}
-      Email:
-      {{ member_email }}
-      <a href="#" class="icon-link">edit account details</a>
+  <div class='panel member-card'>
+    <div class='member-card__header'>
+      <h1 class='member-card__heading'>{{ member_name }}</h1>
+      <dl><dt>Workspace Role</dt> <dd class='label'>{{member_workspace_role}}</dd></dl>
+    </div>
+    <div class='member-card__details'>
+      <dl>
+        <div>
+          <dt>DOD ID:</dt>
+          <dd>{{ member_id }}</dd>
+        </div>
+        <div>
+          <dt>Email:</dt>
+          <dd>{{ member_email }}</dd>
+        </div>
+      </dl>
+      <a href='#' class='icon-link'>edit account details</a>
     </div>
   </div>
 
