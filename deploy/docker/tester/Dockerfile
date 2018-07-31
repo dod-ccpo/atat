@@ -8,7 +8,9 @@ ARG APP_DIR=/opt/atat/atst
 ARG CIBUILD=true
 
 ENV APP_DIR "${APP_DIR}"
+ENV FLASK_ENV ci
 ENV SKIP_PIPENV true
+ENV TORNADO_ENV ci
 
 # Use dumb-init for proper signal handling
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
