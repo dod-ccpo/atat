@@ -32,3 +32,10 @@ def test_can_get_pe_number(pe_numbers, new_pe_number):
 def test_nonexistent_pe_number_raises(pe_numbers):
     with pytest.raises(NotFoundError):
         pe_numbers.get("some fake number")
+
+def test_create_many(pe_numbers):
+    pen_list = [['123456', 'Land Speeder'], ['7891011', 'Lightsaber']]
+    pe_numbers.create_many(pen_list)
+
+    assert pe_numbers.get(pen_list[0][0])
+    assert pe_numbers.get(pen_list[1][0])

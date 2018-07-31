@@ -1,3 +1,5 @@
+from sqlalchemy.dialects.postgresql import insert
+
 from atst.models.pe_number import PENumber
 from .exceptions import NotFoundError
 
@@ -13,3 +15,12 @@ class PENumbers(object):
             raise NotFoundError("pe_number")
 
         return pe_number
+
+    def create_many(self, list_of_pe_numbers):
+        stmt = insert(PENumber).values(list_of_pe_numbers)
+        do_update = stmt.on_conflict_do_update(
+            index_elements=["number"],
+            set_=dict(description=stmt.excluded.description)
+        )
+        self.db_session.execute(do_update)
+        self.db_session.commit()
