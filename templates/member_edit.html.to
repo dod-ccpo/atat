@@ -48,7 +48,7 @@
   <div class='block-list project-list-item'>
     <header class='block-list__header'>
       <h2 class='block-list__title'>Code.mil</h2>
-      <a href="#" class="icon-link icon-link--danger">revoke all access</a>
+      <span><a href="#" class="icon-link icon-link--danger">revoke all access</a></span>
     </header>
     <ul>
       <li class='block-list__item project-list-item__environment'>
@@ -67,8 +67,14 @@
           <span>Billing</span><a href="#" class="icon-link">set role</a>
         </div>
       </li>
-
     </ul>
+  </div>
+
+  <div class='block-list project-list-item'>
+    <header class='block-list__header'>
+      <h2 class='block-list__title'>Digital Dojo</h2>
+      <span>no access</span>
+    </header>
   </div>
 
   <div class='action-group'>
