@@ -18,17 +18,19 @@
 
   <div class='panel'>
     <div class='panel__heading'>
-      <h1 class='h2'>
-        {% if is_new_member %}
-        Add new member
-        {% else %}
-        {{ member_name }}
-        {% end %}
-      </h1>
+      <h1 class='h2'>{{ member_name }}</h1>
       <div>Workspace Role <span class="label">{{member_workspace_role}}</span></div>
-      <span>DOD ID: {{ member_id }}</span>
-      <div>Email: {{ member_email }}</div>
-      <span><a href="#" class="icon-link">edit account details</a></span>
+      <dl>
+        <span>
+          <dt>DOD ID:</dt>
+          <dd>{{ member_id }}</dd>
+        </span>
+        <span>
+          <dt>Email:</dt>
+          <dd>{{ member_email }}</dd>
+        </span>
+      </dl>
+      <a href="#" class="icon-link">edit account details</a>
     </div>
   </div>
 
