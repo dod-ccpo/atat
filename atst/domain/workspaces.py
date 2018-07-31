@@ -1,6 +1,3 @@
-import tornado.gen
-
-
 class Projects(object):
 
     def __init__(self):

@@ -50,7 +50,7 @@ class RequestNew(BaseHandler):
         )
 
         if jedi_flow.validate():
-            request = jedi_flow.create_or_update_request()
+            jedi_flow.create_or_update_request()
             valid = yield jedi_flow.validate_warnings()
             if valid:
                 if jedi_flow.next_screen > len(jedi_flow.screens):
