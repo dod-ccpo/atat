@@ -18,6 +18,9 @@ before_install:
     - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
     # Manually initialize submodules
     - git submodule update --init --recursive
+    - /sbin/ip route|awk '/default/ { print $3 }'
+    - /sbin/ip addr
+    - ./foo
 
 before_script:
   - travis_host_ip="$(/sbin/ip route|awk '/default/ { print $3 }')"
