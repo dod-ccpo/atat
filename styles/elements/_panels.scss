@@ -29,6 +29,19 @@
   }
 }
 
+@mixin panel-row {
+  @include grid-row;
+
+  .col {
+    margin: 0 $site-margins-mobile * 2;
+
+    @include media($medium-screen) {
+      margin: 0 $site-margins * 2;
+    }
+  }
+
+}
+
 @mixin panel-actions {
   padding: $gap;
 }

@@ -7,7 +7,7 @@
     padding: $gap * 2;
   }
 
-  .kpi__item--value {
+  .kpi__item__value {
     @include h1;
     padding-bottom: $gap / 2;
   }
