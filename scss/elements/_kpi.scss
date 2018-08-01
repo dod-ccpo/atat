@@ -1,0 +1,15 @@
+.kpi {
+
+  .kpi__item {
+    @include panel-base;
+    text-align: center;
+    margin: $gap;
+    padding: $gap * 2;
+  }
+
+  .kpi__item--value {
+    @include h1;
+    padding-bottom: $gap / 2;
+  }
+
+}
