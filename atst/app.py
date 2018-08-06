@@ -124,6 +124,7 @@ def make_app(config, deps, **kwargs):
         url(r"/workspaces/(\S+)/projects", Workspace, {}, name="workspace_projects"),
         url(r"/workspaces/123456/projects/789/edit", Main, {"page": "project_edit"}, name="project_edit"),
         url(r"/workspaces/123456/members/789/edit", Main, {"page": "member_edit"}, name="member_edit"),
+        url(r"/workspaces/123456/members/new", Main, {"page": "member_new"}, name="member_new"),
     ]
 
     if not ENV == "production":

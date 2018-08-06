@@ -1,0 +1,31 @@
+{% extends "base_workspace.html.to" %}
+
+{% block workspace_content %}
+
+
+{% include 'members_menu.html.to' %}
+
+<div class='panel'>
+  <div class='panel__heading'>
+    <h1>Add New Member</h1>
+    <div class='subtitle'>
+      <h2>Account Details</h2>
+    </div>
+  </div>
+
+  <div class='panel__content'>
+    <form action=''>
+
+
+    </form>
+  </div>
+</div>
+
+<div class='action-group'>
+  <a type='submit' class='usa-button usa-button-primary' value='Set Workspace Role'>Next: Set Workspace Role</a>
+  <a type='submit' class='icon-link' value='Cancel'>Cancel</a>
+</div>
+
+
+{% end %}
+
