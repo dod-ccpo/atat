@@ -1,0 +1,74 @@
+{% extends "base_workspace.html.to" %}
+
+
+{% block workspace_content %}
+
+
+{% include 'members_menu.html.to' %}
+
+<div class='panel'>
+  <div class='panel__heading'>
+    <h1>Add new workspace member</h1>
+    <div class='subtitle'>
+      <h2>Project Access</h2>
+    </div>
+  </div>
+</div>
+
+<form class='search-bar'>
+  <div class='usa-input search-input'>
+    <label for='project-search'>Search by project name</label>
+    <input type='search' id='project-search' name='project-search' placeholder="Search by project name"/>
+    <button type="submit">
+      <span class="hide">Search</span>
+    </button>
+  </div>
+</form>
+
+<div class='block-list project-list-item'>
+  <header class='block-list__header'>
+    <h2 class='block-list__title'>{% module Icon('arrow-down') %} Code.mil</h2>
+    <span><a href="#" class="icon-link icon-link--danger">revoke all access</a></span>
+  </header>
+  <ul>
+    <li class='block-list__item project-list-item__environment'>
+      <span class='project-list-item__environment'>
+        Development
+      </span>
+      <div class='project-list-item__environment__actions'>
+        <span class="label">no access </span><a href="#" class="icon-link">set role</a>
+      </div>
+    </li>
+    <li class='block-list__item project-list-item__environment'>
+      <span class='project-list-item__environment'>
+        Sandbox
+      </span>
+      <div class='project-list-item__environment__actions'>
+        <span class="label label--success">Developer</span><a href="#" class="icon-link">set role</a>
+      </div>
+    </li>
+    <li class='block-list__item project-list-item__environment'>
+      <span class='project-list-item__environment'>
+        Production
+      </span>
+      <div class='project-list-item__environment__actions'>
+        <span class="label label--success">Developer</span><a href="#" class="icon-link">set role</a>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class='block-list project-list-item'>
+  <header class='block-list__header'>
+    <h2 class='block-list__title'>{% module Icon('arrow-right') %} Digital Dojo</h2>
+    <span class="label">no access</span>
+  </header>
+</div>
+
+<div class='action-group'>
+  <a type='submit' class='usa-button usa-button-primary' value='Save'>Save New Member</a>
+  <a class='icon-link' value='Cancel'>Cancel</a>
+</div>
+
+{% end %}
+

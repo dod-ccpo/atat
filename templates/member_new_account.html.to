@@ -1,0 +1,48 @@
+{% extends "base_workspace.html.to" %}
+
+{% block workspace_content %}
+
+
+{% include 'members_menu.html.to' %}
+
+<div class='panel'>
+  <div class='panel__heading'>
+    <h1>Add new workspace member</h1>
+    <div class='subtitle'>
+      <h2>Account Details</h2>
+    </div>
+  </div>
+
+  <div class='panel__content'>
+    <form action=''>
+      <div class="usa-input">
+        <label for="">First Name</label>
+        <input id="" name="" value="">
+      </div>
+
+      <div class="usa-input">
+        <label for="">Last Name</label>
+        <input id="" name="" value="">
+      </div>
+
+      <div class="usa-input">
+        <label for="">DOD ID</label>
+        <input id="" name="" value="" placeholder="10-digit number on the back of the CAC">
+      </div>
+
+      <div class="usa-input">
+        <label for="">E-mail Address</label>
+        <input id="" name="" value="" placeholder="jane@mail.mil">
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<div class='action-group'>
+  <a href="{{ reverse_url('member_new_role') }}" type='submit' class='usa-button usa-button-primary' value='Set Project Access'>Next: Set Project Access</a>
+  <a class='icon-link' value='Cancel'>Cancel</a>
+</div>
+
+{% end %}
+

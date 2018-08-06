@@ -7,7 +7,7 @@
       subnav=[
         {
           "label": "Add New Project",
-          "href":"/",
+          "href":"#",
           "active": matchesPath('workspaces/projects/new'),
           "icon": "plus"
         }
@@ -21,13 +21,13 @@
       subnav=[
         {
           "label": "Add New Member",
-          "href": "",
-          "active": matchesPath('/workspaces/members/new'),
+          "href": "/workspaces/123456/members/new/1",
+          "active": matchesPath('/workspaces/123456/members/new'),
           "icon": "plus"
         },
         {
           "label": "Editing Member",
-          "href": "",
+          "href": "/workspaces/123456/members/789/edit",
           "active": matchesPath('/workspaces/123456/members/789/edit')
         }
       ]

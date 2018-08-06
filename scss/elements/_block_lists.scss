@@ -22,6 +22,12 @@
   margin: 0;
 }
 
+@mixin block-list__description {
+  padding-top: $gap/2;
+  font-style: italic;
+  line-height: $base-line-height;
+}
+
 @mixin block-list__footer {
   @include panel-base;
   @include panel-theme-default;
@@ -43,12 +49,43 @@
   padding: $gap * 2;
   border-top: 0;
   border-bottom: 1px dashed $color-gray-light;
+  cursor: default;
 
   @at-root li#{&} {
     &:last-child {
       border-bottom-style: solid;
     }
   }
+
+  &--active {
+    color: $color-blue;
+  }
+}
+
+@mixin block-list__status {
+  content: "";
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid $color-gray;
+  border-radius: 100%;
+  position: absolute;
+
+  &--active:before {
+    border: 2px solid $color-blue;
+  }
+
+  &--complete:before {
+    content: url('/static/icons/checkmark.svg');
+    background-color: $color-blue;
+    border: 2px solid $color-blue;
+    font-size: $h6-font-size;
+    padding: 1px 2px;
+  }
+
+  &--incomplete:before {
+    border: 2px solid $color-gray-light;
+  }
+
 }
 
 
@@ -78,6 +115,14 @@
 
 .block-list__title {
   @include block-list__title;
+}
+
+.block-list__description {
+  @include block-list__description;
+}
+
+.block-list__status {
+ @include block-list__status;
 }
 
 .block-list__item {
