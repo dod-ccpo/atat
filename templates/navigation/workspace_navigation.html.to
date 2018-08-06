@@ -21,7 +21,7 @@
       subnav=[
         {
           "label": "Add New Member",
-          "href": "/workspaces/123456/members/new",
+          "href": "/workspaces/123456/members/new/1",
           "active": matchesPath('/workspaces/123456/members/new'),
           "icon": "plus"
         },

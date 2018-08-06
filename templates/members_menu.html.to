@@ -1,13 +1,13 @@
 <div class="progress-menu progress-menu--three">
   <ul>
     <li class="progress-menu__item">
-      <a href="#">Account Details</a>
+      <a href="{{ reverse_url('member_new_account') }}">Account Details</a>
     </li>
     <li class="progress-menu__item">
-      <a href="#">Workspace Role</a>
+      <a href="{{ reverse_url('member_new_role') }}">Workspace Role</a>
     </li>
     <li class="progress-menu__item">
-      <a href="#">Project Access</a>
+      <a href="{{ reverse_url('member_new_access') }}">Project Access</a>
     </li>
   </ul>
 </div>
