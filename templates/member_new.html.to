@@ -1,5 +1,11 @@
 {% extends "base_workspace.html.to" %}
 
+
+{% block template_vars %}
+  {% set roles_workspace = ['Owner','Admin','Developer','Billing Auditor','Security Auditor','CCPO'] %}
+{% end %}
+
+
 {% block workspace_content %}
 
 
@@ -7,7 +13,7 @@
 
 <div class='panel'>
   <div class='panel__heading'>
-    <h1>Add New Member</h1>
+    <h1>Add new workspace member</h1>
     <div class='subtitle'>
       <h2>Account Details</h2>
     </div>
@@ -37,6 +43,38 @@
 
     </form>
   </div>
+</div>
+
+<div class='action-group'>
+  <a type='submit' class='usa-button usa-button-primary' value='Set Project Access'>Next: Set Project Access</a>
+  <a type='submit' class='icon-link' value='Cancel'>Cancel</a>
+</div>
+
+
+<br>
+
+<div class='panel'>
+  <div class='panel__heading'>
+    <h1>Add new workspace member</h1>
+    <div class='subtitle'>
+      <h2>Workspace Role</h2>
+    </div>
+  </div>
+
+</div>
+
+<div class='block-list'>
+  <ul>
+  {% for role in roles_workspace %}
+    <li class="block-list__item">
+      <div class="block-list__title">{{role}}</div>
+      <div class="block-list__description">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur asperiores ad quos porro, nobis quod repellat omnis sunt id error, sed, odit minima nisi fuga expedita nam sapiente ipsa facere.
+      </div>
+    </li>
+    {% end %}
+  </ul>
+
 </div>
 
 <div class='action-group'>

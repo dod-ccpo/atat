@@ -22,6 +22,12 @@
   margin: 0;
 }
 
+@mixin block-list__description {
+  padding-top: $gap;
+  font-style: italic;
+  line-height: $base-line-height;
+}
+
 @mixin block-list__footer {
   @include panel-base;
   @include panel-theme-default;
@@ -47,6 +53,10 @@
   @at-root li#{&} {
     &:last-child {
       border-bottom-style: solid;
+    }
+
+    &:first-child {
+      border-top: 1px solid $color-black;
     }
   }
 }
@@ -78,6 +88,10 @@
 
 .block-list__title {
   @include block-list__title;
+}
+
+.block-list__description {
+  @include block-list__description;
 }
 
 .block-list__item {
