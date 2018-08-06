@@ -15,7 +15,25 @@
 
   <div class='panel__content'>
     <form action=''>
+      <div class="usa-input">
+        <label for="">First Name</label>
+        <input id="" name="" value="">
+      </div>
 
+      <div class="usa-input">
+        <label for="">Last Name</label>
+        <input id="" name="" value="">
+      </div>
+
+      <div class="usa-input">
+        <label for="">DOD ID</label>
+        <input id="" name="" value="" placeholder="10-digit number on the back of the CAC">
+      </div>
+
+      <div class="usa-input">
+        <label for="">E-mail Address</label>
+        <input id="" name="" value="" placeholder="jane@mail.mil">
+      </div>
 
     </form>
   </div>
