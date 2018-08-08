@@ -6,8 +6,9 @@ git:
     submodules: false
 env:
   global:
-    - TESTER_IMAGE_NAME=atst-tester
     - PROD_IMAGE_NAME=atst-prod
+    - TESTER_IMAGE1_NAME=atst-tester-nocrls
+    - TESTER_IMAGE2_NAME=atst-tester
 cache:
   directories:
     - crl
@@ -25,14 +26,15 @@ before_script:
   - export postgres_ip="$(docker inspect -f "{{ .NetworkSettings.IPAddress }}" postgres96)"
   - export redis_ip="$(docker inspect -f "{{ .NetworkSettings.IPAddress }}" redis)"
   - docker login -u $ATAT_DOCKER_REGISTRY_USERNAME -p $ATAT_DOCKER_REGISTRY_PASSWORD $ATAT_DOCKER_REGISTRY_URL
-  - docker build --tag "${TESTER_IMAGE_NAME}" --add-host "postgreshost:${postgres_ip}" --add-host "redishost:${redis_ip}" . -f deploy/docker/tester/Dockerfile
+  - docker build --tag "${TESTER_IMAGE1_NAME}" --add-host "postgreshost:${postgres_ip}" --add-host "redishost:${redis_ip}" . -f deploy/docker/tester/Dockerfile
 
 script:
-  - docker run --add-host "postgreshost:${postgres_ip}" --add-host "redishost:${redis_ip}" "${TESTER_IMAGE_NAME}"
-  - docker run -d --entrypoint='/bin/sh' -t --name current-atst-tester "${TESTER_IMAGE_NAME}"
+  - docker run -d --entrypoint='/bin/sh' -t --name current-atst-tester "${TESTER_IMAGE1_NAME}"
   - docker container exec -t current-atst-tester script/sync-crls
+  - docker commit current-atst-tester "${TESTER_IMAGE2_NAME}"
   - docker cp current-atst-tester:/opt/atat/atst/crl ./crl
   - docker container stop current-atst-tester
+  - docker run --add-host "postgreshost:${postgres_ip}" --add-host "redishost:${redis_ip}" "${TESTER_IMAGE2_NAME}"
 
 before_deploy:
   - docker build --tag "${PROD_IMAGE_NAME}" . -f deploy/docker/prod/Dockerfile
