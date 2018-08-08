@@ -8,6 +8,9 @@ env:
   global:
     - TESTER_IMAGE_NAME=atst-tester
     - PROD_IMAGE_NAME=atst-prod
+cache:
+  directories:
+    - crl
 
 before_install:
   # Use sed to replace the SSH URL with the public URL
