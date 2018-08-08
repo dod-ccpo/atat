@@ -24,7 +24,7 @@ spec:
         fsGroup: 101
       containers:
         - name: atst
-          image: registry.atat.codes:443/atst-prod:e9b6f76
+          image: registry.atat.codes:443/atst-prod:93b9317
           envFrom:
           - configMapRef:
               name: atst-envvars
@@ -32,6 +32,9 @@ spec:
             - name: atst-config
               mountPath: "/opt/atat/atst/atst-overrides.ini"
               subPath: atst-overrides.ini
+            - name: nginx-client-ca-bundle
+              mountPath: "/opt/atat/atst/ssl/server-certs/ca-chain.pem"
+              subPath: client-ca-bundle.pem
             - name: uwsgi-config
               mountPath: "/opt/atat/atst/uwsgi-config.ini"
               subPath: uwsgi-config.ini
@@ -47,6 +50,9 @@ spec:
           volumeMounts:
             - name: nginx-auth-tls
               mountPath: "/etc/ssl/private"
+            - name: nginx-client-ca-bundle
+              mountPath: "/etc/ssl/client-ca-bundle.pem"
+              subPath: client-ca-bundle.pem
             - name: nginx-config
               mountPath: "/etc/nginx/conf.d/atst.conf"
               subPath: atst.conf
@@ -78,6 +84,13 @@ spec:
             - key: tls.key
               path: auth.atat.key
               mode: 0640
+        - name: nginx-client-ca-bundle
+          secret:
+            secretName: nginx-client-ca-bundle
+            items:
+            - key: client-ca-bundle.pem
+              path: client-ca-bundle.pem
+              mode: 0666
         - name: nginx-config
           configMap:
             name: atst-nginx
