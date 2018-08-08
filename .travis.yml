@@ -26,6 +26,10 @@ before_script:
 
 script:
   - docker run --add-host "postgreshost:${postgres_ip}" --add-host "redishost:${redis_ip}" "${TESTER_IMAGE_NAME}"
+  - docker run -d --entrypoint='/bin/sh' --name current-atst-tester "${TESTER_IMAGE_NAME}"
+  - docker container exec -t current-atst-tester script/sync-crls
+  - docker cp current-atst-tester:crl ./crl
+  - docker container stop current-atst-tester
 
 before_deploy:
   - docker build --tag "${PROD_IMAGE_NAME}" . -f deploy/docker/prod/Dockerfile
