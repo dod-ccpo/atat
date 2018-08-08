@@ -24,7 +24,7 @@ spec:
         fsGroup: 101
       containers:
         - name: atst
-          image: registry.atat.codes:443/atst-prod:e9b6f76
+          image: registry.atat.codes:443/atst-prod:2030b4d
           envFrom:
           - configMapRef:
               name: atst-envvars
