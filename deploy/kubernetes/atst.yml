@@ -32,6 +32,9 @@ spec:
             - name: atst-config
               mountPath: "/opt/atat/atst/atst-overrides.ini"
               subPath: atst-overrides.ini
+            - name: nginx-client-ca-bundle
+              mountPath: "/opt/atat/atst/ssl/server-certs/ca-chain.pem"
+              subPath: client-ca-bundle.pem
             - name: uwsgi-config
               mountPath: "/opt/atat/atst/uwsgi-config.ini"
               subPath: uwsgi-config.ini
