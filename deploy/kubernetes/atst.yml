@@ -81,7 +81,7 @@ spec:
             - key: tls.key
               path: auth.atat.key
               mode: 0640
-        - name: nginx-ca-bundle
+        - name: nginx-client-ca-bundle
           secret:
             secretName: nginx-client-ca-bundle
             items:
