@@ -55,9 +55,9 @@ data:
         ssl_stapling_verify on;
         resolver 8.8.8.8 8.8.4.4;
         # Request and validate client certificate
-        #ssl_verify_client on;
-        #ssl_verify_depth 10;
-        #ssl_client_certificate /etc/nginx/ssl/ca/client-ca.pem;
+        ssl_verify_client on;
+        ssl_verify_depth 10;
+        ssl_client_certificate /etc/nginx/ssl/client-ca-bundle.pem;
         # Guard against HTTPS -> HTTP downgrade
         add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; always";
         location / {
