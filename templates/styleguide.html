@@ -3,6 +3,7 @@
 {% from "components/icon.html" import Icon %}
 {% from "components/modal.html" import Modal %}
 {% from "components/alert.html" import Alert %}
+{% from "components/tooltip.html" import Tooltip %}
 
 
 {% block content %}
@@ -283,12 +284,13 @@
 
       </form>
 
-      <hr>
       <h5>Tooltips</h5>
-      <span v-tooltip="'this is a tooltip text'">{{ Icon('help') }}</span><code>top</code> <br>
+      {{ Tooltip('this is a tooltip text') }}<code>example</code> <br>
       <span v-tooltip.top-start="'this is a tooltip text'">{{ Icon('help') }}</span><code>top-start</code> <br>
       <span v-tooltip.right="'this is a tooltip text'">{{ Icon('help') }}</span><code>right</code> <br>
       <span v-tooltip.bottom="'this is a tooltip text'">{{ Icon('help') }}</span><code>bottom</code> <br>
+
+
 
     </div>
   </div>
