@@ -1,15 +1,16 @@
 {% from "components/icon.html" import Icon %}
+{% from "components/tooltip.html" import Tooltip %}
 
-{% macro TextInput(field, placeholder='') -%}
+{% macro TextInput(field, tooltip='', placeholder='') -%}
   <div class='usa-input {% if field.errors %}usa-input--error{% endif %}'>
     <label for={{field.name}}>
-      {{ field.label }}
+      {{ field.label }} {% if tooltip %}{{ Tooltip(tooltip) }}{% endif %}
 
       {% if field.description %}
         <span class='usa-input__help'>{{ field.description | safe }}</span>
       {% endif %}
 
-      {% if field.errors %}{{ Icon('alert') }}{% endif %}
+      {% if field.errors %} <span class="icon-validation">{{ Icon('alert') }}</span>{% endif %}
     </label>
 
     {{ field(placeholder=placeholder) | safe }}

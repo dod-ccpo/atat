@@ -23,9 +23,6 @@ class RequestForm(ValidatedForm):
     jedi_usage = TextAreaField(
         "JEDI Usage",
         description="Briefly describe how you are expecting to use the JEDI Cloud",
-        render_kw={
-            "placeholder": "e.g. We are migrating XYZ application to the cloud so that..."
-        },
     )
 
     # Details of Use: Cloud Readiness
