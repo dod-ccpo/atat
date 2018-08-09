@@ -1,7 +1,11 @@
 import classes from '../styles/atat.scss'
 import Vue from 'vue/dist/vue'
+import VTooltip from 'v-tooltip'
 
 import textinput from './components/text_input'
+
+Vue.use(VTooltip)
+
 
 const app = new Vue({
   el: '#app-root',
