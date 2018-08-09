@@ -1,6 +1,7 @@
 .tooltip {
   display: block;
   z-index: 10000;
+  max-width: $text-max-width;
 
   .tooltip-inner {
     background: $color-black;
