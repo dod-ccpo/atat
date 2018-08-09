@@ -2,7 +2,7 @@
 
 {% macro Tooltip(message) -%}
 
-  <span v-tooltip="{content: '{{message}}'}">
+  <span class="tooltip-wrapper" v-tooltip="{content: '{{message}}'}">
     {{ Icon('help') }}
   </span>
 
