@@ -128,12 +128,6 @@
         <div class='col col--grow'>col 12</div>
       </div>
 
-        <h5>Tooltips</h5>
-        <span v-tooltip="'this is a tooltip text'">{{ Icon('help') }}</span><code>top</code> <br>
-        <span v-tooltip.top-start="'this is a tooltip text'">{{ Icon('help') }}</span><code>top-start</code> <br>
-        <span v-tooltip.right="'this is a tooltip text'">{{ Icon('help') }}</span><code>right</code> <br>
-        <span v-tooltip.bottom="'this is a tooltip text'">{{ Icon('help') }}</span><code>bottom</code> <br>
-
       <form>
         <textinput inline-template validation='dollars' value='1231231'>
           <div v-bind:class="['usa-input usa-input--validation--' + validation, { 'usa-input--error': showError, 'usa-input--success': showValid }]">
@@ -288,6 +282,14 @@
         </div>
 
       </form>
+
+      <hr>
+      <h5>Tooltips</h5>
+      <span v-tooltip="'this is a tooltip text'">{{ Icon('help') }}</span><code>top</code> <br>
+      <span v-tooltip.top-start="'this is a tooltip text'">{{ Icon('help') }}</span><code>top-start</code> <br>
+      <span v-tooltip.right="'this is a tooltip text'">{{ Icon('help') }}</span><code>right</code> <br>
+      <span v-tooltip.bottom="'this is a tooltip text'">{{ Icon('help') }}</span><code>bottom</code> <br>
+
     </div>
   </div>
 
