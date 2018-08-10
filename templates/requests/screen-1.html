@@ -23,7 +23,7 @@
 
 <h2>General</h2>
 {{ TextInput(f.dod_component) }}
-{{ TextInput(f.jedi_usage,placeholder="e.g. We are migrating XYZ application to the cloud so that...",tooltip="Your answer will help us provide tangible examples to DoD leadership how and why commercial cloud resources are accelerating the Departments missions.<br>Please tell us more about what the systems / applications you are working with and why the cloud is a good place to host these applications.") }}
+{{ TextInput(f.jedi_usage,placeholder="Briefly describe how you are expecting to use the JEDI Cloud. \n e.g. We are migrating XYZ application to the cloud so that...",tooltip="Your answer will help us provide tangible examples to DoD leadership how and why commercial cloud resources are accelerating the Department\\'s missions.") }}
 
 <h2>Cloud Readiness</h2>
 {{ TextInput(f.num_software_systems,placeholder="Number of systems",tooltip="A software system can be any code that you plan to host on cloud infrastructure. For example, it could be a custom-developed web application, or a large ERP system.") }}
@@ -38,7 +38,7 @@
 
 <h2>Financial Usage</h2>
 {{ TextInput(f.estimated_monthly_spend, tooltip="Refer to financial verification step help docs") }}
-<p>So this means you are spending approximately <b>$X</b> annually</p>
+<span>So this means you are spending approximately <b class="label">$1,000,023</b> annually.</span>
 {{ TextInput(f.dollar_value) }}
 {{ TextInput(f.number_user_sessions) }}
 {{ TextInput(f.average_daily_traffic, tooltip="Requests are the client-to-server network traffic that is being transferred to your systems") }}

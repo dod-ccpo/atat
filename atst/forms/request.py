@@ -22,8 +22,9 @@ class RequestForm(ValidatedForm):
 
     jedi_usage = TextAreaField(
         "JEDI Usage",
-        description="Briefly describe how you are expecting to use the JEDI Cloud",
+        description="Please tell us more about what the systems/applications you are working with and why the cloud is a good place to host these applications",
     )
+
 
     # Details of Use: Cloud Readiness
     num_software_systems = IntegerField(
@@ -32,31 +33,32 @@ class RequestForm(ValidatedForm):
     )
 
     jedi_migration = RadioField(
-        "Are you using the JEDI Cloud to migrate existing systems?",
+        description="Are you using the JEDI Cloud to migrate existing systems?",
         choices=[("yes", "Yes"), ("no", "No")],
     )
 
     rationalization_software_systems = RadioField(
-        "Have you completed a “rationalization” of your software systems to move to the cloud?",
+        description="Have you completed a “rationalization” of your software systems to move to the cloud?",
         choices=[("yes", "Yes"), ("no", "No"), ("in_progress", "In Progress")],
     )
 
     technical_support_team = RadioField(
-        "Are you working with a technical support team experienced in cloud migrations?",
+        description="Are you working with a technical support team experienced in cloud migrations?",
         choices=[("yes", "Yes"), ("no", "No")],
     )
 
     organization_providing_assistance = RadioField(  # this needs to be updated to use checkboxes instead of radio
-        "If you are receiving migration assistance, indicate the type of organization providing assistance below:",
+        description="If you are receiving migration assistance, what is the type of organization providing assistance?",
         choices=[
             ("in_house_staff", "In-house staff"),
             ("contractor", "Contractor"),
             ("other_dod_organization", "Other DoD organization"),
+            ("none", "None"),
         ],
     )
 
     engineering_assessment = RadioField(
-        "Have you completed an engineering assessment of your software systems for cloud readiness?",
+        description="Have you completed an engineering assessment of your systems for cloud readiness?",
         choices=[("yes", "Yes"), ("no", "No"), ("in_progress", "In Progress")],
     )
 
@@ -96,7 +98,7 @@ class RequestForm(ValidatedForm):
     # Details of Use: Financial Usage
     estimated_monthly_spend = IntegerField(
         "Estimated monthly spend",
-        description='Use the <a href="#">JEDI CSP Calculator</a> to estimate your monthly cloud resource usage and enter the dollar amount below. Note these estimates are for initial approval only. After the request is approved, you will be asked to provide a valid Task Order number with specific CLIN amounts for cloud services.',
+        description='Use the <a href="#" target="_blank" class="icon-link">JEDI CSP Calculator</a> to estimate your monthly cloud resource usage and enter the dollar amount below. Note these estimates are for initial approval only. After the request is approved, you will be asked to provide a valid Task Order number with specific CLIN amounts for cloud services.',
     )
 
     dollar_value = IntegerField(

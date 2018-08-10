@@ -86,6 +86,10 @@
     font-weight: normal;
     padding: $gap/2 0;
     @include line-max;
+
+    .icon-link {
+      padding: $gap/2;
+    }
   }
 
   .icon-tooltip .icon {

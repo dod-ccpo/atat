@@ -24,11 +24,11 @@
 {{ TextInput(f.email_request,placeholder='jane@mail.mil') }}
 {{ TextInput(f.phone_number,placeholder='(123) 456-7890') }}
 
-<p>We want to collect the following information from you for security auditing and determining priviledged user access</p>
+<p>We want to collect the following information from you for security auditing and determining priviledged user access.</p>
 
-{{ TextInput(f.service_branch,placeholder='e.g. US Air Force, US Army, US Navy, Marine Corps, Defense Media Agency', tooltip="Which services and organizations do you belong to within the DoD?") }}
+{{ TextInput(f.service_branch,placeholder='e.g. US Air Force, US Army, US Navy, Marine Corps, Defense Media Agency') }}
 {{ OptionsInput(f.citizenship) }}
 {{ OptionsInput(f.designation) }}
-{{ TextInput(f.date_latest_training,tooltip="To complete the training, you can find it here: https://iatraining.disa.mil/eta/disa_cac2018/launchPage.htm") }}
+{{ TextInput(f.date_latest_training,tooltip="When was the last time you completed the IA training? <br> Information Assurance (IA) training is an important step in cyber awareness.") }}
 
 {% endblock %}
