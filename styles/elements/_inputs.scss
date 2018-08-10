@@ -88,6 +88,15 @@
     @include line-max;
   }
 
+  .icon-tooltip .icon {
+    @include icon-color($color-blue);
+
+    &:hover {
+      @include icon-color($color-aqua);
+      cursor: pointer;
+    }
+  }
+
   input,
   textarea,
   select {
