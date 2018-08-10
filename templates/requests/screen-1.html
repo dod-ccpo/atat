@@ -37,11 +37,12 @@
 {{ OptionsInput(f.cloud_native, tooltip="Cloud native is architecting and designing your application to use all the benefits of the commercial cloud. Specifically, designing applications so that they are decoupled from a physical resource.") }}
 
 <h2>Financial Usage</h2>
-{{ TextInput(f.estimated_monthly_spend) }}
+{{ TextInput(f.estimated_monthly_spend, tooltip="Refer to financial verification step help docs") }}
 <p>So this means you are spending approximately <b>$X</b> annually</p>
 {{ TextInput(f.dollar_value) }}
 {{ TextInput(f.number_user_sessions) }}
-{{ TextInput(f.average_daily_traffic) }}
+{{ TextInput(f.average_daily_traffic, tooltip="Requests are the client-to-server network traffic that is being transferred to your systems") }}
+{{ TextInput(f.average_daily_traffic_gb, tooltip="GB uploaded is the gigabyte amount of data traffic that is being transferred to your systems") }}
 {{ TextInput(f.start_date) }}
 
 

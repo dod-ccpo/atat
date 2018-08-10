@@ -109,6 +109,12 @@ class RequestForm(ValidatedForm):
     )
 
     average_daily_traffic = IntegerField(
+        "Average Daily Traffic (Number of Requests)",
+        description="What is the average daily traffic you expect the systems under this cloud contract to use?"
+    )
+
+    average_daily_traffic_gb = IntegerField(
+        "Average Daily Traffic (GB)",
         description="What is the average daily traffic you expect the systems under this cloud contract to use?"
     )
 
