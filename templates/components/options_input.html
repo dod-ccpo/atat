@@ -1,11 +1,14 @@
 {% from "components/icon.html" import Icon %}
+{% from "components/tooltip.html" import Tooltip %}
 
-{% macro OptionsInput(field, inline=False) -%}
+{% macro OptionsInput(field, tooltip, inline=False) -%}
   <div class='usa-input {% if field.errors %}usa-input--error{% endif %}'>
 
     <fieldset class="usa-input__choices {% if inline %}usa-input__choices--inline{% endif %}">
       <legend>
         {{ field.label | striptags}}
+
+        {% if tooltip %}{{ Tooltip(tooltip) }}{% endif %}
 
         {% if field.description %}
           <span class='usa-input__help'>{{ field.description | safe }}</span>

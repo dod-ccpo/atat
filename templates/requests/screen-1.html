@@ -26,15 +26,15 @@
 {{ TextInput(f.jedi_usage,placeholder="e.g. We are migrating XYZ application to the cloud so that...",tooltip="Your answer will help us provide tangible examples to DoD leadership how and why commercial cloud resources are accelerating the Departments missions.<br>Please tell us more about what the systems / applications you are working with and why the cloud is a good place to host these applications.") }}
 
 <h2>Cloud Readiness</h2>
-{{ TextInput(f.num_software_systems,placeholder="Number of systems") }}
-{{ OptionsInput(f.jedi_migration) }}
-{{ OptionsInput(f.rationalization_software_systems) }}
+{{ TextInput(f.num_software_systems,placeholder="Number of systems",tooltip="A software system can be any code that you plan to host on cloud infrastructure. For example, it could be a custom-developed web application, or a large ERP system.") }}
+{{ OptionsInput(f.jedi_migration, tooltip="Cloud migration is the process of moving data, applications or other business elements from an organization\\'s onsite computers/data centers to the cloud, or moving them from one cloud environment to another.") }}
+{{ OptionsInput(f.rationalization_software_systems, tooltip="Rationalization is the DoD process to determine whether the application should move to the cloud.") }}
 {{ OptionsInput(f.technical_support_team) }}
 {{ OptionsInput(f.organization_providing_assistance) }}
-{{ OptionsInput(f.engineering_assessment) }}
+{{ OptionsInput(f.engineering_assessment, tooltip="An engineering assessment is an evaluation to convert your application architecture from on-premises to using the commercial cloud") }}
 {{ TextInput(f.data_transfers) }}
 {{ TextInput(f.expected_completion_date) }}
-{{ OptionsInput(f.cloud_native) }}
+{{ OptionsInput(f.cloud_native, tooltip="Cloud native is architecting and designing your application to use all the benefits of the commercial cloud. Specifically, designing applications so that they are decoupled from a physical resource.") }}
 
 <h2>Financial Usage</h2>
 {{ TextInput(f.estimated_monthly_spend) }}
