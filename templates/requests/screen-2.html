@@ -26,9 +26,9 @@
 
 <p>We want to collect the following information from you for security auditing and determining priviledged user access</p>
 
-{{ TextInput(f.service_branch,placeholder='e.g. US Air Force, US Army, US Navy, Marine Corps, Defense Media Agency') }}
+{{ TextInput(f.service_branch,placeholder='e.g. US Air Force, US Army, US Navy, Marine Corps, Defense Media Agency', tooltip="Which services and organizations do you belong to within the DoD?") }}
 {{ OptionsInput(f.citizenship) }}
 {{ OptionsInput(f.designation) }}
-{{ TextInput(f.date_latest_training) }}
+{{ TextInput(f.date_latest_training,tooltip="To complete the training, you can find it here: https://iatraining.disa.mil/eta/disa_cac2018/launchPage.htm") }}
 
 {% endblock %}
