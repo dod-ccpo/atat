@@ -283,15 +283,27 @@
         </div>
 
       </form>
+    </div>
+  </div>
 
+  <div class="panel">
+    <div class="panel__content">
       <h5>Tooltips</h5>
       {{ Tooltip('this is a tooltip text') }}<code>default</code> <br>
       <span v-tooltip.top-start="'this is a tooltip text'">{{ Icon('help') }}</span><code>top-start</code> <br>
       <span v-tooltip.right="'this is a tooltip text'">{{ Icon('help') }}</span><code>right</code> <br>
       <span v-tooltip.bottom="'this is a tooltip text'">{{ Icon('help') }}</span><code>bottom</code> <br>
+    </div>
+  </div>
 
-
-
+  <div class="panel">
+    <div class="panel__content">
+      <h5>Labels</h5>
+      <span class="label">Label</span>
+      <span class="label label--info">Label Info</span>
+      <span class="label label--warning">Label Warning</span>
+      <span class="label label--error">Label Error</span>
+      <span class="label label--success">Label Success</span>
     </div>
   </div>
 
