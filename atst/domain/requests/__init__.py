@@ -1,7 +1,7 @@
 from atst.models.request import Request
 from atst.models.request_status_event import RequestStatusEvent, RequestStatus
 
-from atst.query.requests import RequestQuery
+from atst.domain.requests.query import RequestQuery
 
 
 def deep_merge(source, destination: dict):
