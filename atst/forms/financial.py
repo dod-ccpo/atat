@@ -160,3 +160,8 @@ class FinancialForm(ValidatedForm):
         "<dl><dt>CLIN 2003</dt> - <dd>Unclassified Cloud Support Package <br> OPTION PERIOD 2</dd></dl>",
         # validators=[Required()],
     )
+
+    to_upload = StringField(
+        "Upload a copy of your Task Order",
+        # validators=[Required()],
+    )
