@@ -64,7 +64,7 @@ class FinancialForm(ValidatedForm):
     task_order_id = StringField(
         "Task Order Number associated with this request",
         description="Include the original Task Order number (including the 000X at the end); this field is not requesting any modification numbers.",
-        # validators=[Required()]
+        validators=[Required()]
     )
 
     uii_ids = NewlineListField(
@@ -73,7 +73,7 @@ class FinancialForm(ValidatedForm):
     )
 
     pe_id = StringField("Program Element (PE) Number related to your request",
-        # validators=[Required()]
+        validators=[Required()]
     )
 
     treasury_code = StringField("Program Treasury Code")
@@ -81,42 +81,42 @@ class FinancialForm(ValidatedForm):
     ba_code = StringField("Program BA Code")
 
     fname_co = StringField("Contracting Officer First Name",
-        # validators=[Required()]
+        validators=[Required()]
     )
     lname_co = StringField("Contracting Officer Last Name",
-        # validators=[Required()]
+        validators=[Required()]
     )
 
     email_co = EmailField("Contracting Officer Email",
-        # validators=[Required(), Email()]
+        validators=[Required(), Email()]
     )
 
     office_co = StringField("Contracting Office Office",
-        # validators=[Required()]
+        validators=[Required()]
     )
 
     fname_cor = StringField(
         "Contracting Officer Representative (COR) First Name",
-        # validators=[Required()]
+        validators=[Required()]
     )
 
     lname_cor = StringField(
         "Contracting Officer Representative (COR) Last Name",
-        # validators=[Required()]
+        validators=[Required()]
     )
 
     email_cor = EmailField(
         "Contracting Officer Representative (COR) Email",
-        # validators=[Required(), Email()],
+        validators=[Required(), Email()],
     )
 
     office_cor = StringField(
         "Contracting Officer Representative (COR) Office",
-        # validators=[Required()]
+        validators=[Required()]
     )
 
     funding_type = SelectField(
-        # validators=[Required()],
+        validators=[Required()],
         choices=[
             ("", "- Select -"),
             ("RDTE", "Research, Development, Testing & Evaluation (RDT&E)"),
@@ -128,40 +128,40 @@ class FinancialForm(ValidatedForm):
 
     funding_type_other = StringField(
         "If other, please specify",
-        # validators=[Required()]
+        validators=[Required()]
     )
 
     clin_0001 = StringField(
         "<dl><dt>CLIN 0001</dt> - <dd>Unclassified IaaS and PaaS Amount</dd></dl>",
-        # validators=[Required()],
+        validators=[Required()],
     )
 
     clin_0003 = StringField(
         "<dl><dt>CLIN 0003</dt> - <dd>Unclassified Cloud Support Package</dd></dl>",
-        # validators=[Required()],
+        validators=[Required()],
     )
 
     clin_1001 = StringField(
         "<dl><dt>CLIN 1001</dt> - <dd>Unclassified IaaS and PaaS Amount <br> OPTION PERIOD 1</dd></dl>",
-        # validators=[Required()],
+        validators=[Required()],
     )
 
     clin_1003 = StringField(
         "<dl><dt>CLIN 1003</dt> - <dd>Unclassified Cloud Support Package <br> OPTION PERIOD 1</dd></dl>",
-        # validators=[Required()],
+        validators=[Required()],
     )
 
     clin_2001 = StringField(
         "<dl><dt>CLIN 2001</dt> - <dd>Unclassified IaaS and PaaS Amount <br> OPTION PERIOD 2</dd></dl>",
-        # validators=[Required()],
+        validators=[Required()],
     )
 
     clin_2003 = StringField(
         "<dl><dt>CLIN 2003</dt> - <dd>Unclassified Cloud Support Package <br> OPTION PERIOD 2</dd></dl>",
-        # validators=[Required()],
+        validators=[Required()],
     )
 
     to_upload = StringField(
         "Upload a copy of your Task Order",
-        # validators=[Required()],
+        validators=[Required()],
     )
