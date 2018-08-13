@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "components/alert.html" import Alert %}
 
 {% block content %}
 
@@ -6,12 +7,13 @@
 
   <div class="panel">
 
+    <div class="panel__heading">
+      <h1>Order #{{ request_id }}</h1>
+      <div class="subtitle" id="financial-verification"><h2>Financial Verification</h2></div>
+    </div>
+
     <div class="panel__content">
 
-      <div class="panel__heading">
-        <h1>Order #{{ request_id }}</h1>
-        <h2 id="financial-verification">Financial Verification</h2>
-      </div>
 
       {% block form_action %}
         <form method='POST' action="{{ url_for('requests.financial_verification', request_id=request_id) }}" autocomplete="off">
@@ -20,8 +22,12 @@
       {{ f.csrf_token }}
       {% block form %}
         {% autoescape false %}
+
         {% if f.errors %}
-          <b class="usa-input-error-message">There were some errors, see below.</b>
+          {{ Alert('There were some errors',
+            message="<p>Please see below.</p>",
+            level='error'
+          ) }}
         {% endif %}
 
         <p>In order to get you access to the JEDI Cloud, we will need you to enter the details below that will help us verify and account for your Task Order.</p>
