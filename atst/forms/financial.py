@@ -62,12 +62,14 @@ class FinancialForm(ValidatedForm):
         return valid
 
     task_order_id = StringField(
-        "Task Order Number associated with this request.",
+        "Task Order Number associated with this request",
+        description="Include the original Task Order number (including the 000X at the end); this field is not requesting any modification numbers.",
         # validators=[Required()]
     )
 
     uii_ids = NewlineListField(
-        "Unique Item Identifier (UII)s related to your application(s) if you already have them."
+        "Unique Item Identifier (UII)s related to your application(s) if you already have them",
+        description="consult a finance or contracting expert in your office to help identify which applications have a UII number and where they are located."
     )
 
     pe_id = StringField("Program Element (PE) Number related to your request",

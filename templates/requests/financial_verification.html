@@ -34,9 +34,9 @@
 
         <p>In order to get you access to the JEDI Cloud, we will need you to enter the details below that will help us verify and account for your Task Order.</p>
 
-        {{ TextInput(f.task_order_id,placeholder="Example: 1234567899C0001") }}
-        {{ TextInput(f.uii_ids,placeholder="Example: \nDI 0CVA5786950 \nUN1945326361234786950") }}
-        {{ TextInput(f.pe_id,placeholder="Example: 0203752A") }}
+        {{ TextInput(f.task_order_id,placeholder="Example: 1234567899C0001",tooltip="Note that there may be a lag between the time you have created and approved the task order to the time it is searchable within the electronic. <br>A Contracting Officer will likely be the best source for this number.") }}
+        {{ TextInput(f.uii_ids,placeholder="Example: \nDI 0CVA5786950 \nUN1945326361234786950",tooltip="A Unique Item Identifer is a unique code that helps the Department of Defense track and report on where and how digital assets are stored. <br>Not all applications have an existing UII number assigned.") }}
+        {{ TextInput(f.pe_id,placeholder="Example: 0203752A",tooltip="Program Element numbers helps the Department of Defense identify which offices\\' budgets are contributing towards this resource use.") }}
         {{ TextInput(f.treasury_code,placeholder="Example: 1200") }}
         {{ TextInput(f.ba_code,placeholder="Example: 02") }}
 
@@ -58,12 +58,12 @@
 
         {{ TextInput(f.funding_type) }}
         {{ TextInput(f.funding_type_other) }}
-        {{ TextInput(f.clin_0001,placeholder="50,000") }}
-        {{ TextInput(f.clin_0003,placeholder="13,000") }}
-        {{ TextInput(f.clin_1001,placeholder="30,000") }}
-        {{ TextInput(f.clin_1003,placeholder="7,000") }}
-        {{ TextInput(f.clin_2001,placeholder="30,000") }}
-        {{ TextInput(f.clin_2003,placeholder="7,000") }}
+        {{ TextInput(f.clin_0001,placeholder="50,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_0003,placeholder="13,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_1001,placeholder="30,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_1003,placeholder="7,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_2001,placeholder="30,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_2003,placeholder="7,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
 
       {% endautoescape %}
       {% endblock form %}
