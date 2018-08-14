@@ -1,17 +1,21 @@
 {% extends "base.html" %}
 
+{% from "components/alert.html" import Alert %}
+{% from "components/text_input.html" import TextInput %}
+{% from "components/options_input.html" import OptionsInput %}
+
 {% block content %}
 
 <div class="col">
 
   <div class="panel">
 
-    <div class="panel__content">
+    <div class="panel__heading">
+      <h1>Order #{{ request_id }}</h1>
+      <div class="subtitle" id="financial-verification"><h2>Financial Verification</h2></div>
+    </div>
 
-      <div class="panel__heading">
-        <h1>Order #{{ request_id }}</h1>
-        <h2 id="financial-verification">Financial Verification</h2>
-      </div>
+    <div class="panel__content">
 
       {% block form_action %}
         <form method='POST' action="{{ url_for('requests.financial_verification', request_id=request_id) }}" autocomplete="off">
@@ -20,192 +24,47 @@
       {{ f.csrf_token }}
       {% block form %}
         {% autoescape false %}
+
         {% if f.errors %}
-          <b class="usa-input-error-message">There were some errors, see below.</b>
+          {{ Alert('There were some errors',
+            message="<p>Please see below.</p>",
+            level='error'
+          ) }}
         {% endif %}
 
         <p>In order to get you access to the JEDI Cloud, we will need you to enter the details below that will help us verify and account for your Task Order.</p>
 
-        {{ f.task_order_id.label }}
-        {{ f.task_order_id(placeholder="Example: 1234567899C0001") }}
-        {% for e in f.task_order_id.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.uii_ids.label }}
-        {{ f.uii_ids(placeholder="Example: \nDI 0CVA5786950 \nUN1945326361234786950") }}
-        {% for e in f.uii_ids.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.pe_id.label }}
-        {{ f.pe_id(placeholder="Example: 0203752A") }}
-        {% for e in f.pe_id.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.treasury_code.label }}
-        {{ f.treasury_code(placeholder="Example: 1200") }}
-        {% for e in f.treasury_code.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.ba_code.label }}
-        {{ f.ba_code(placeholder="Example: 02") }}
-        {% for e in f.ba_code.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        <!-- KO Information -->
+        {{ TextInput(f.task_order_id,placeholder="Example: 1234567899C0001",tooltip="Note that there may be a lag between the time you have created and approved the task order to the time it is searchable within the electronic. <br>A Contracting Officer will likely be the best source for this number.") }}
+        {{ TextInput(f.uii_ids,placeholder="Example: \nDI 0CVA5786950 \nUN1945326361234786950",tooltip="A Unique Item Identifer is a unique code that helps the Department of Defense track and report on where and how digital assets are stored. <br>Not all applications have an existing UII number assigned.") }}
+        {{ TextInput(f.pe_id,placeholder="Example: 0203752A",tooltip="Program Element numbers helps the Department of Defense identify which offices\\' budgets are contributing towards this resource use.") }}
+        {{ TextInput(f.treasury_code,placeholder="Example: 1200") }}
+        {{ TextInput(f.ba_code,placeholder="Example: 02") }}
 
         <h3>Contracting Officer (KO) Information</h3>
+        {{ TextInput(f.fname_co,placeholder="Contracting Officer First Name") }}
+        {{ TextInput(f.lname_co,placeholder="Contracting Officer Last Name") }}
+        {{ TextInput(f.email_co,placeholder="jane@mail.mil") }}
+        {{ TextInput(f.office_co,placeholder="Example: WHS") }}
 
-        {{ f.fname_co.label }}
-        {{ f.fname_co(placeholder="Contracting Officer first name") }}
-        {% for e in f.fname_co.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.lname_co.label }}
-        {{ f.lname_co(placeholder="Contracting Officer last name") }}
-        {% for e in f.lname_co.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.email_co.label }}
-        {{ f.email_co(placeholder="jane@mail.mil") }}
-        {% for e in f.email_co.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.office_co.label }}
-        {{ f.office_co(placeholder="Example: WHS") }}
-        {% for e in f.office_co.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-
-        <!-- COR Information -->
 
         <h3>Contracting Officer Representative (COR) Information</h3>
-
-        {{ f.fname_cor.label }}
-        {{ f.fname_cor(placeholder="Contracting Officer Representative first name") }}
-        {% for e in f.fname_cor.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.lname_cor.label }}
-        {{ f.lname_cor(placeholder="Contracting Officer Representative last name") }}
-        {% for e in f.lname_cor.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.email_cor.label }}
-        {{ f.email_cor(placeholder="jane@mail.mil") }}
-        {% for e in f.email_cor.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.office_cor.label }}
-        {{ f.office_cor(placeholder="Example: WHS") }}
-        {% for e in f.office_cor.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
+        {{ TextInput(f.fname_cor,placeholder="Contracting Officer Representative First Name") }}
+        {{ TextInput(f.lname_cor,placeholder="Contracting Officer Representative Last Name") }}
+        {{ TextInput(f.email_cor,placeholder="jane@mail.mil") }}
+        {{ TextInput(f.office_cor,placeholder="Example: WHS") }}
 
         <br><hr>
         <em>&darr; FIELDS NEEDED FOR MANUAL ENTRY OF TASK ORDER INFORMATION (only necessary if EDA info not available)</em>
 
+        {{ TextInput(f.funding_type) }}
+        {{ TextInput(f.funding_type_other) }}
+        {{ TextInput(f.clin_0001,placeholder="50,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_0003,placeholder="13,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_1001,placeholder="30,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_1003,placeholder="7,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_2001,placeholder="30,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_2003,placeholder="7,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
 
-        {{ f.funding_type.label }}
-        {{ f.funding_type }}
-        {% for e in f.funding_type.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.funding_type_other.label }}
-        {{ f.funding_type_other(placeholder="") }}
-        {% for e in f.funding_type_other.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.clin_0001.label }}
-        {{ f.clin_0001(placeholder="50,000") }}
-        {% for e in f.clin_0001.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.clin_0003.label }}
-        {{ f.clin_0003(placeholder="13,000") }}
-        {% for e in f.clin_0003.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.clin_1001.label }}
-        {{ f.clin_1001(placeholder="30,000") }}
-        {% for e in f.clin_1001.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.clin_1003.label }}
-        {{ f.clin_1003(placeholder="7,000") }}
-        {% for e in f.clin_1003.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.clin_2001.label }}
-        {{ f.clin_2001(placeholder="30,000") }}
-        {% for e in f.clin_2001.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
-
-        {{ f.clin_2003.label }}
-        {{ f.clin_2003(placeholder="7,000") }}
-        {% for e in f.clin_2003.errors %}
-          <div class="usa-input-error-message">
-            {{ e }}
-          </div>
-        {% endfor %}
       {% endautoescape %}
       {% endblock form %}
       {% block next %}
