@@ -25,10 +25,10 @@
 
     <h2>General</h2>
     {{ OptionsInput(f.dod_component) }}
-    {{ TextInput(f.jedi_usage, paragraph=True, placeholder="Briefly describe how you are expecting to use the JEDI Cloud. \n e.g. We are migrating XYZ application to the cloud so that...",tooltip="Your answer will help us provide tangible examples to DoD leadership how and why commercial cloud resources are accelerating the Department\\'s missions.") }}
+    {{ TextInput(f.jedi_usage, paragraph=True, placeholder="Briefly describe how you are expecting to use the JEDI Cloud. \n e.g. We are migrating XYZ application to the cloud so that...") }}
 
     <h2>Cloud Readiness</h2>
-    {{ TextInput(f.num_software_systems,validation="integer",tooltip="A software system can be any code that you plan to host on cloud infrastructure. For example, it could be a custom-developed web application, or a large ERP system.") }}
+    {{ TextInput(f.num_software_systems,validation="integer",tooltip="A software system can be any code that you plan to host on cloud infrastructure. For example, it could be a custom-developed web application, or a large ERP system.",placeholder="42") }}
     {{ OptionsInput(f.jedi_migration, tooltip="Cloud migration is the process of moving data, applications or other business elements from an organization\\'s onsite computers/data centers to the cloud, or moving them from one cloud environment to another.") }}
 
     <transition name='slide'>
@@ -54,7 +54,7 @@
     </transition>
 
     <h2>Financial Usage</h2>
-    {{ TextInput(f.estimated_monthly_spend, tooltip="Refer to financial verification step help docs", validation="dollars") }}
+    {{ TextInput(f.estimated_monthly_spend, tooltip="Refer to financial verification step help docs", validation="dollars", placeholder="$42,000") }}
 
     <div class='alert alert-info'>
       <div class='alert__content'>
@@ -68,14 +68,14 @@
       <template v-if="annualSpend > 1000000">
         <fieldset class='form__sub-fields'>
           <h3>Because the approximate annual spend is over $1,000,000, please answer a few additional questions.</h3>
-          {{ TextInput(f.number_user_sessions, validation='integer') }}
-          {{ TextInput(f.average_daily_traffic, tooltip="Requests are the client-to-server network traffic that is being transferred to your systems",validation="integer") }}
-          {{ TextInput(f.average_daily_traffic_gb, tooltip="GB uploaded is the gigabyte amount of data traffic that is being transferred to your systems",validation="gigabytes") }}
+          {{ TextInput(f.number_user_sessions, validation='integer', placeholder="42") }}
+          {{ TextInput(f.average_daily_traffic, tooltip="Requests are the client-to-server network traffic that is being transferred to your systems",validation="integer", placeholder="42") }}
+          {{ TextInput(f.average_daily_traffic_gb, tooltip="GB uploaded is the gigabyte amount of data traffic that is being transferred to your systems",validation="gigabytes", placeholder="42GB") }}
         </fieldset>
       </template>
     </transition>
 
-    {{ TextInput(f.dollar_value, validation='dollars') }}
+    {{ TextInput(f.dollar_value, validation='dollars', placeholder="$42,000") }}
     {{ TextInput(f.start_date, validation='date', placeholder='MM / DD / YYYY') }}
 
   </div>

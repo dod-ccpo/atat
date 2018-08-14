@@ -22,9 +22,9 @@ export default {
     validationError: 'Please enter a dollar amount.'
   },
   gigabytes: {
-    mask: createNumberMask({ prefix: '', suffix:'GB', allowDecimal: false }),
+    mask: createNumberMask({ prefix: '', suffix:' GB', allowDecimal: false }),
     match: /^[1-9]\d*$/,
-    unmask: [',','GB'],
+    unmask: [',',' GB'],
     validationError: 'Please enter an amount of data in gigabytes.'
   },
   email: {
