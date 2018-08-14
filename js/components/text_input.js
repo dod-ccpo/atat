@@ -18,7 +18,8 @@ export default {
       type: String,
       default: () => ''
     },
-    initialErrors: Array
+    initialErrors: Array,
+    paragraph: String
   },
 
   data: function () {

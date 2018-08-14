@@ -5,13 +5,14 @@
   <textinput
     name='{{ field.name }}'
     validation='{{ validation }}'
+    {% if paragraph %}paragraph='true'{% endif %}
     {% if field.data %}initial-value='{{ field.data }}'{% endif %}
     {% if field.errors %}v-bind:initial-errors='{{ field.errors }}'{% endif %}
     key='{{ field.name }}'
     inline-template>
 
     <div
-      v-bind:class="['usa-input usa-input--validation--' + validation, { 'usa-input--error': showError, 'usa-input--success': showValid }]">
+      v-bind:class="['usa-input usa-input--validation--' + validation, { 'usa-input--error': showError, 'usa-input--success': showValid, 'usa-input--validation--paragraph': paragraph }]">
 
       <label for={{field.name}}>
         <div class="usa-input__title">{{ field.label | striptags }} {% if tooltip %}{{ Tooltip(tooltip) }}{% endif %}</div>

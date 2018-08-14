@@ -74,11 +74,12 @@
 
     .icon-validation {
       position: absolute;
-      left: 100%;
+      // left: 0%;
       top: 100%;
       margin-top: 1.4rem;
       margin-left: $gap;
     }
+
   }
 
   .usa-input__title {
@@ -109,6 +110,7 @@
     @include line-max;
     margin: 0;
     box-sizing: border-box;
+    max-width: 32em;
 
     &:hover,
     &:focus {
@@ -173,7 +175,55 @@
   .usa-input__message {
     @include h5;
     display: inline-block;
-    padding-top: $gap;
+  }
+
+  &--validation {
+
+    &--anything,
+    &--email {
+      input {
+        max-width: 26em;
+      }
+      .icon-validation {
+        left: 26em;
+      }
+    }
+
+    &--paragraph {
+      .icon-validation {
+        left: 32em;
+      }
+    }
+
+    &--integer,
+    &--dollars,
+    &--gigabytes, {
+      input {
+        max-width: 16em;
+      }
+      .icon-validation {
+        left: 16em;
+      }
+    }
+
+    &--date,
+    &--usPhone {
+      input {
+        max-width: 10em;
+      }
+      .icon-validation {
+        left: 10em;
+      }
+    }
+
+    &--dodId {
+      input {
+        max-width: 18em;
+      }
+      .icon-validation {
+        left: 18em;
+      }
+    }
   }
 
   &.usa-input--error {
