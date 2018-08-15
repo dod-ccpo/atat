@@ -66,7 +66,7 @@ class RequestFactory(factory.alchemy.SQLAlchemyModelFactory):
                 "start_date": "2018-08-08",
                 "cloud_native": "yes",
                 "dollar_value": dollar_value,
-                "dod_component": "us_navy",
+                "dod_component": "Army and Air Force Exchange Service",
                 "data_transfers": "less_than_100gb",
                 "jedi_migration": "yes",
                 "num_software_systems": 1,
@@ -87,7 +87,7 @@ class RequestFactory(factory.alchemy.SQLAlchemyModelFactory):
                 "email_request": user.email,
                 "fname_request": user.first_name,
                 "lname_request": user.last_name,
-                "service_branch": "ads",
+                "service_branch": "Air Force, Department of the",
                 "date_latest_training": "2018-08-06"
             }
         }

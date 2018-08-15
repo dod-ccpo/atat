@@ -6,7 +6,7 @@ from atst.forms.request import RequestForm
 class TestRequestForm:
 
     form_data = {
-        'dod_component': 'us_air_force',
+        'dod_component': 'Army and Air Force Exchange Service',
         'jedi_usage': 'cloud-ify all the things',
         'num_software_systems': '12',
         'estimated_monthly_spend': '1000000',
