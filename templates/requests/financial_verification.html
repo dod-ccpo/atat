@@ -34,36 +34,36 @@
 
         <p>In order to get you access to the JEDI Cloud, we will need you to enter the details below that will help us verify and account for your Task Order.</p>
 
-        {{ TextInput(f.task_order_id,placeholder="Example: 1234567899C0001",tooltip="Note that there may be a lag between the time you have created and approved the task order to the time it is searchable within the electronic. <br>A Contracting Officer will likely be the best source for this number.") }}
-        {{ TextInput(f.uii_ids,placeholder="Example: \nDI 0CVA5786950 \nUN1945326361234786950",tooltip="A Unique Item Identifer is a unique code that helps the Department of Defense track and report on where and how digital assets are stored. <br>Not all applications have an existing UII number assigned.") }}
-        {{ TextInput(f.pe_id,placeholder="Example: 0203752A",tooltip="Program Element numbers helps the Department of Defense identify which offices\\' budgets are contributing towards this resource use.") }}
-        {{ TextInput(f.treasury_code,placeholder="Example: 1200") }}
-        {{ TextInput(f.ba_code,placeholder="Example: 02") }}
+        {{ TextInput(f.task_order_id,placeholder="e.g.: 1234567899C0001",tooltip="Note that there may be a lag between the time you have created and approved the task order to the time it is searchable within the electronic. <br>A Contracting Officer will likely be the best source for this number.") }}
+        {{ TextInput(f.uii_ids,paragraph=True,placeholder="e.g.: DI 0CVA5786950 \nUN1945326361234786950",tooltip="A Unique Item Identifer is a unique code that helps the Department of Defense track and report on where and how digital assets are stored. <br>Not all applications have an existing UII number assigned.") }}
+        {{ TextInput(f.pe_id,placeholder="e.g.: 0203752A",tooltip="Program Element numbers helps the Department of Defense identify which offices\\' budgets are contributing towards this resource use.") }}
+        {{ TextInput(f.treasury_code,placeholder="e.g.: 1200") }}
+        {{ TextInput(f.ba_code,placeholder="e.g.: 02") }}
 
         <h3>Contracting Officer (KO) Information</h3>
         {{ TextInput(f.fname_co,placeholder="Contracting Officer First Name") }}
         {{ TextInput(f.lname_co,placeholder="Contracting Officer Last Name") }}
-        {{ TextInput(f.email_co,placeholder="jane@mail.mil") }}
-        {{ TextInput(f.office_co,placeholder="Example: WHS") }}
+        {{ TextInput(f.email_co,validation='email',placeholder="jane@mail.mil") }}
+        {{ TextInput(f.office_co,placeholder="e.g.: WHS") }}
 
 
         <h3>Contracting Officer Representative (COR) Information</h3>
         {{ TextInput(f.fname_cor,placeholder="Contracting Officer Representative First Name") }}
         {{ TextInput(f.lname_cor,placeholder="Contracting Officer Representative Last Name") }}
-        {{ TextInput(f.email_cor,placeholder="jane@mail.mil") }}
-        {{ TextInput(f.office_cor,placeholder="Example: WHS") }}
+        {{ TextInput(f.email_cor,validation='email',placeholder="jane@mail.mil") }}
+        {{ TextInput(f.office_cor,placeholder="e.g.: WHS") }}
 
         <br><hr>
         <em>&darr; FIELDS NEEDED FOR MANUAL ENTRY OF TASK ORDER INFORMATION (only necessary if EDA info not available)</em>
 
-        {{ TextInput(f.funding_type) }}
+        {{ OptionsInput(f.funding_type) }}
         {{ TextInput(f.funding_type_other) }}
-        {{ TextInput(f.clin_0001,placeholder="50,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
-        {{ TextInput(f.clin_0003,placeholder="13,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
-        {{ TextInput(f.clin_1001,placeholder="30,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
-        {{ TextInput(f.clin_1003,placeholder="7,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
-        {{ TextInput(f.clin_2001,placeholder="30,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
-        {{ TextInput(f.clin_2003,placeholder="7,000", tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_0001,placeholder="50,000", validation='integer', tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_0003,placeholder="13,000", validation='integer', tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_1001,placeholder="30,000", validation='integer', tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_1003,placeholder="7,000", validation='integer', tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_2001,placeholder="30,000", validation='integer', tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
+        {{ TextInput(f.clin_2003,placeholder="7,000", validation='integer', tooltip="Review your task order document, the amounts for each CLIN must match exactly here.") }}
 
       {% endautoescape %}
       {% endblock form %}
