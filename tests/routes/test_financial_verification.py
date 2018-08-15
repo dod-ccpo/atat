@@ -47,7 +47,7 @@ class TestPENumberInForm:
 
         response = self.submit_data(client, self.required_data)
 
-        assert "We couldn\'t find that PE number" in response.data.decode()
+        assert "We couldn&#39;t find that PE number" in response.data.decode()
         assert response.status_code == 200
 
     def test_submit_request_form_with_unchanged_pe_id(self, monkeypatch, client):
@@ -81,5 +81,5 @@ class TestPENumberInForm:
 
         response = self.submit_data(client, data)
 
-        assert "There were some errors, see below" in response.data.decode()
+        assert "There were some errors" in response.data.decode()
         assert response.status_code == 200
