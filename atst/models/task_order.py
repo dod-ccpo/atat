@@ -20,7 +20,7 @@ class TaskOrder(Base):
     __tablename__ = "task_order"
 
     id = Column(Integer, primary_key=True)
-    number = Column(String)
+    number = Column(String, unique=True)
     source = Column(SQLAEnum(Source))
     funding_type = Column(SQLAEnum(FundingType))
     funding_type_other = Column(String)

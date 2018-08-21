@@ -5,8 +5,10 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.attributes import flag_modified
 
 from atst.models.request import Request
+from atst.models.task_order import TaskOrder, Source as TaskOrderSource
 from atst.models.request_status_event import RequestStatusEvent, RequestStatus
 from atst.database import db
+from atst.domain.task_orders import TaskOrders
 
 from .exceptions import NotFoundError
 
@@ -105,14 +107,20 @@ class Requests(object):
         except NoResultFound:
             return
 
+        request = Requests._merge_body(request, request_delta)
+
+        db.session.add(request)
+        db.session.commit()
+
+    @classmethod
+    def _merge_body(cls, request, request_delta):
         request.body = deep_merge(request_delta, request.body)
 
         # Without this, sqlalchemy won't notice the change to request.body,
         # since it doesn't track dictionary mutations by default.
         flag_modified(request, "body")
 
-        db.session.add(request)
-        db.session.commit()
+        return request
 
     @classmethod
     def set_status(cls, request: Request, status: RequestStatus):
@@ -201,3 +209,25 @@ WHERE requests_with_status.status = :status
     def completed_count(cls):
         return Requests.status_count(RequestStatus.APPROVED)
 
+    _TASK_ORDER_DATA = [col.name for col in TaskOrder.__table__.c if col.name != "id"]
+
+    @classmethod
+    def update_financial_verification(cls, request_id, financial_data):
+        request = Requests.get(request_id)
+
+        request_data = financial_data.copy()
+        task_order_data = {k: request_data.pop(k) for (k,v) in financial_data.items() if k in Requests._TASK_ORDER_DATA}
+
+        task_order = None
+        if task_order_data:
+            task_order_data["number"] = request_data.pop("task_order_number")
+            task_order = TaskOrders.create(**task_order_data, source=TaskOrderSource.MANUAL)
+        else:
+            task_order = TaskOrders.get(financial_data["task_order_number"])
+
+        request.task_order = task_order
+        Requests._merge_body(request, {"financial_verification": request_data})
+
+        db.session.add(task_order)
+        db.session.add(request)
+        db.session.commit()

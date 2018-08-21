@@ -5,8 +5,9 @@ from atst.domain.exceptions import NotFoundError
 from atst.domain.requests import Requests
 from atst.models.request import Request
 from atst.models.request_status_event import RequestStatus
+from atst.models.task_order import Source as TaskOrderSource
 
-from tests.factories import RequestFactory, UserFactory, RequestStatusEventFactory
+from tests.factories import RequestFactory, UserFactory, RequestStatusEventFactory, TaskOrderFactory
 
 
 @pytest.fixture(scope="function")
@@ -91,3 +92,48 @@ def test_status_count_scoped_to_creator(session):
 
     assert Requests.status_count(RequestStatus.STARTED) == 2
     assert Requests.status_count(RequestStatus.STARTED, creator=user) == 1
+
+
+request_financial_data = {
+    "pe_id": "123",
+    "task_order_number": "021345",
+    "fname_co": "Contracting",
+    "lname_co": "Officer",
+    "email_co": "jane@mail.mil",
+    "office_co": "WHS",
+    "fname_cor": "Officer",
+    "lname_cor": "Representative",
+    "email_cor": "jane@mail.mil",
+    "office_cor": "WHS",
+    "uii_ids": "1234",
+    "treasury_code": "00123456",
+    "ba_code": "024A",
+}
+task_order_financial_data = {
+    "funding_type": "RDTE",
+    "funding_type_other": "other",
+    "clin_0001": 50000,
+    "clin_0003": 13000,
+    "clin_1001": 30000,
+    "clin_1003": 7000,
+    "clin_2001": 30000,
+    "clin_2003": 7000,
+}
+
+
+# without a matching task order, should create one with status "MANUAL";
+# with a matching task order, should associate to an existing one
+def test_update_financial_verification():
+    request1 = RequestFactory.create()
+    financial_data = { **request_financial_data, **task_order_financial_data }
+    Requests.update_financial_verification(request1.id, financial_data)
+    assert request1.task_order
+    assert request1.task_order.clin_0001 == task_order_financial_data["clin_0001"]
+    assert request1.task_order.source == TaskOrderSource.MANUAL
+
+    task_order = TaskOrderFactory.create(source=TaskOrderSource.EDA)
+    new_financial_verification_data = { **request_financial_data, "task_order_number": task_order.number }
+    request2 = RequestFactory.create()
+    Requests.update_financial_verification(request2.id, new_financial_verification_data)
+    assert request2.task_order == task_order
+
