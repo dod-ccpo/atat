@@ -218,7 +218,7 @@ WHERE requests_with_status.status = :status
     _TASK_ORDER_DATA = [col.name for col in TaskOrder.__table__.c if col.name != "id"]
 
     @classmethod
-    def update_financial_verification(cls, request_id, financial_data, completed=False):
+    def update_financial_verification(cls, request_id, financial_data):
         request = Requests._get_with_lock(request_id)
         if not request:
             return
@@ -235,9 +235,6 @@ WHERE requests_with_status.status = :status
 
         Requests._merge_body(request, {"financial_verification": request_data})
 
-        if completed:
-            Requests.set_status(request, RequestStatus.PENDING_CCPO_APPROVAL)
-
         db.session.add(request)
         db.session.commit()
 
@@ -250,3 +247,15 @@ WHERE requests_with_status.status = :status
                 return TaskOrders.get(number)
             except NotFoundError:
                 return
+
+    @classmethod
+    def submit_financial_verification(cls, request_id):
+        request = Requests._get_with_lock(request_id)
+        if not request:
+            return
+
+        Requests.set_status(request, RequestStatus.PENDING_CCPO_APPROVAL)
+
+        db.session.add(request)
+        db.session.commit()
+

@@ -37,8 +37,9 @@ def update_financial_verification(request_id):
         valid = form.perform_extra_validation(
             existing_request.body.get("financial_verification")
         )
-        Requests.update_financial_verification(request_id, form.data, completed=valid)
+        Requests.update_financial_verification(request_id, form.data)
         if valid:
+            Requests.submit_financial_verification(request_id)
             return redirect(url_for("requests.financial_verification_submitted"))
 
         else:

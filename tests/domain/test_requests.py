@@ -143,9 +143,3 @@ def test_update_financial_verification_with_invalid_task_order():
     Requests.update_financial_verification(request.id, request_financial_data)
     assert not request.task_order
 
-
-def test_update_financial_verification_completed():
-    request = RequestFactory.create()
-    Requests.update_financial_verification(request.id, request_financial_data, completed=True)
-    assert request.status == RequestStatus.PENDING_CCPO_APPROVAL
-
