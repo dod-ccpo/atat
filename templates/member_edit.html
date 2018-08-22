@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% from "components/alert.html" import Alert %}
+{% from "components/icon.html" import Icon %}
+
+{% block content %}
+
+
+{{ Alert('A Success Alert',
+  message="<p>Congratulations! You did a thing.</p>",
+  level='success'
+) }}
+
+
+<div class='panel member-card'>
+  <div class='member-card__header'>
+    <h1 class='member-card__heading'>Danny Knight</h1>
+    <dl><dt>Workspace Role</dt> <dd><span class='label label--info'>Billing Auditor</span></dd></dl>
+  </div>
+  <div class='member-card__details'>
+    <dl>
+      <div>
+        <dt>DOD ID:</dt>
+        <dd>789</dd>
+      </div>
+      <div>
+        <dt>Email:</dt>
+        <dd>knight@mil.gov</dd>
+      </div>
+    </dl>
+    <a href='#' class='icon-link'>edit account details</a>
+  </div>
+</div>
+
+
+<form class='search-bar'>
+  <div class='usa-input search-input'>
+    <label for='project-search'>Search by project name</label>
+    <input type='search' id='project-search' name='project-search' placeholder="Search by project name"/>
+    <button type="submit">
+      <span class="hide">Search</span>
+    </button>
+  </div>
+</form>
+
+<div class='block-list project-list-item'>
+  <header class='block-list__header'>
+    <h2 class='block-list__title'>{{ Icon('arrow-down') }}Code.mil</h2>
+    <span><a href="#" class="icon-link icon-link--danger">revoke all access</a></span>
+  </header>
+  <ul>
+    <li class='block-list__item project-list-item__environment'>
+      <span class='project-list-item__environment'>
+        Development
+      </span>
+      <div class='project-list-item__environment__actions'>
+        <span class="label">no access </span><a href="#" class="icon-link">set role</a>
+      </div>
+    </li>
+    <li class='block-list__item project-list-item__environment'>
+      <span class='project-list-item__environment'>
+        Sandbox
+      </span>
+      <div class='project-list-item__environment__actions'>
+        <span class="label">no access</span><a href="#" class="icon-link">set role</a>
+      </div>
+    </li>
+    <li class='block-list__item project-list-item__environment'>
+      <span class='project-list-item__environment'>
+        Production
+      </span>
+      <div class='project-list-item__environment__actions'>
+        <span class="label label--success">Billing</span><a href="#" class="icon-link">set role</a>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class='block-list project-list-item'>
+  <header class='block-list__header'>
+    <h2 class='block-list__title'>{{ Icon('arrow-right') }} Digital Dojo</h2>
+    <span class="label">no access</span>
+  </header>
+</div>
+
+<div class='action-group'>
+  <a href='#' class='action-group__action usa-button usa-button-big'>
+    {% if is_new_member %}Create{% else %}Save{% endif %}
+  </a>
+  <a href='#' class='action-group__action icon-link'>
+    {{ Icon('x') }}
+    <span>Cancel</span>
+  </a>
+</div>
+
+
+
+{% endblock %}
