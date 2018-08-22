@@ -218,23 +218,16 @@ WHERE requests_with_status.status = :status
     _TASK_ORDER_DATA = [col.name for col in TaskOrder.__table__.c if col.name != "id"]
 
     @classmethod
-    def update_financial_verification(cls, request_id, financial_data):
+    def update_financial_verification(cls, request_id, financial_data, completed=False):
         request = Requests._get_with_lock(request_id)
         if not request:
             return
 
         request_data = financial_data.copy()
         task_order_data = {k: request_data.pop(k) for (k,v) in financial_data.items() if k in Requests._TASK_ORDER_DATA}
+        task_order_number = request_data.pop("task_order_number")
 
-        task_order = None
-        if task_order_data:
-            task_order_data["number"] = request_data.pop("task_order_number")
-            task_order = TaskOrders.create(**task_order_data, source=TaskOrderSource.MANUAL)
-        else:
-            try:
-                task_order = TaskOrders.get(financial_data["task_order_number"])
-            except NotFoundError:
-                pass
+        task_order = Requests._get_or_create_task_order(task_order_number, task_order_data)
 
         if task_order:
             request.task_order = task_order
@@ -242,5 +235,18 @@ WHERE requests_with_status.status = :status
 
         Requests._merge_body(request, {"financial_verification": request_data})
 
+        if completed:
+            Requests.set_status(request, RequestStatus.PENDING_CCPO_APPROVAL)
+
         db.session.add(request)
         db.session.commit()
+
+    @classmethod
+    def _get_or_create_task_order(cls, number, task_order_data={}):
+        if task_order_data:
+            return TaskOrders.create(**task_order_data, number=number, source=TaskOrderSource.MANUAL)
+        else:
+            try:
+                return TaskOrders.get(number)
+            except NotFoundError:
+                return
