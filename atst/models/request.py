@@ -20,6 +20,9 @@ class Request(Base):
     user_id = Column(ForeignKey("users.id"), nullable=False)
     creator = relationship("User")
 
+    task_order_id = Column(ForeignKey("task_order.id"))
+    task_order = relationship("TaskOrder")
+
     @property
     def status(self):
         return self.status_events[-1].new_status

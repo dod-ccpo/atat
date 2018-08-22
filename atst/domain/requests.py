@@ -5,8 +5,10 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.attributes import flag_modified
 
 from atst.models.request import Request
+from atst.models.task_order import TaskOrder, Source as TaskOrderSource
 from atst.models.request_status_event import RequestStatusEvent, RequestStatus
 from atst.database import db
+from atst.domain.task_orders import TaskOrders
 
 from .exceptions import NotFoundError
 
@@ -93,10 +95,21 @@ class Requests(object):
 
     @classmethod
     def update(cls, request_id, request_delta):
+        request = Requests._get_with_lock(request_id)
+        if not request:
+            return
+
+        request = Requests._merge_body(request, request_delta)
+
+        db.session.add(request)
+        db.session.commit()
+
+    @classmethod
+    def _get_with_lock(cls, request_id):
         try:
             # Query for request matching id, acquiring a row-level write lock.
             # https://www.postgresql.org/docs/10/static/sql-select.html#SQL-FOR-UPDATE-SHARE
-            request = (
+            return (
                 db.session.query(Request)
                 .filter_by(id=request_id)
                 .with_for_update(of=Request)
@@ -105,14 +118,15 @@ class Requests(object):
         except NoResultFound:
             return
 
+    @classmethod
+    def _merge_body(cls, request, request_delta):
         request.body = deep_merge(request_delta, request.body)
 
         # Without this, sqlalchemy won't notice the change to request.body,
         # since it doesn't track dictionary mutations by default.
         flag_modified(request, "body")
 
-        db.session.add(request)
-        db.session.commit()
+        return request
 
     @classmethod
     def set_status(cls, request: Request, status: RequestStatus):
@@ -200,4 +214,48 @@ WHERE requests_with_status.status = :status
     @classmethod
     def completed_count(cls):
         return Requests.status_count(RequestStatus.APPROVED)
+
+    _TASK_ORDER_DATA = [col.name for col in TaskOrder.__table__.c if col.name != "id"]
+
+    @classmethod
+    def update_financial_verification(cls, request_id, financial_data):
+        request = Requests._get_with_lock(request_id)
+        if not request:
+            return
+
+        request_data = financial_data.copy()
+        task_order_data = {k: request_data.pop(k) for (k,v) in financial_data.items() if k in Requests._TASK_ORDER_DATA}
+        task_order_number = request_data.pop("task_order_number")
+
+        task_order = Requests._get_or_create_task_order(task_order_number, task_order_data)
+
+        if task_order:
+            request.task_order = task_order
+            db.session.add(task_order)
+
+        Requests._merge_body(request, {"financial_verification": request_data})
+
+        db.session.add(request)
+        db.session.commit()
+
+    @classmethod
+    def _get_or_create_task_order(cls, number, task_order_data={}):
+        if task_order_data:
+            return TaskOrders.create(**task_order_data, number=number, source=TaskOrderSource.MANUAL)
+        else:
+            try:
+                return TaskOrders.get(number)
+            except NotFoundError:
+                return
+
+    @classmethod
+    def submit_financial_verification(cls, request_id):
+        request = Requests._get_with_lock(request_id)
+        if not request:
+            return
+
+        Requests.set_status(request, RequestStatus.PENDING_CCPO_APPROVAL)
+
+        db.session.add(request)
+        db.session.commit()
 

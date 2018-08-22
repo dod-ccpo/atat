@@ -1,7 +1,7 @@
 import re
 from wtforms.fields.html5 import EmailField
 from wtforms.fields import StringField
-from wtforms.validators import Required, Email, Regexp, ValidationError
+from wtforms.validators import Required, Email, Regexp
 
 from atst.domain.exceptions import NotFoundError
 from atst.domain.pe_numbers import PENumbers
@@ -56,6 +56,23 @@ def validate_pe_id(field, existing_request):
         return False
 
     return True
+
+
+def validate_task_order_number(field):
+    try:
+        TaskOrders.get(field.data)
+    except NotFoundError:
+        field.errors += ("Task Order number not found",)
+        return False
+
+    return True
+
+
+def formatted_number_to_int(num):
+    if not num:
+        return
+    else:
+        return int(num.replace(",",""))
 
 
 class BaseFinancialForm(ValidatedForm):
@@ -119,11 +136,10 @@ class BaseFinancialForm(ValidatedForm):
 
 
 class FinancialForm(BaseFinancialForm):
-    def validate_task_order_number(form, field):
-        try:
-            TaskOrders.get(field.data)
-        except NotFoundError:
-            raise ValidationError("Task Order number not found")
+    def perform_extra_validation(self, existing_request):
+        previous_valid = super().perform_extra_validation(existing_request)
+        task_order_valid = validate_task_order_number(self.task_order_number)
+        return previous_valid and task_order_valid
 
     @property
     def is_missing_task_order_number(self):
@@ -154,35 +170,41 @@ class ExtendedFinancialForm(BaseFinancialForm):
     clin_0001 = StringField(
         "<dl><dt>CLIN 0001</dt> - <dd>Unclassified IaaS and PaaS Amount</dd></dl>",
         validators=[Required()],
-        description="Review your task order document, the amounts for each CLIN must match exactly here"
+        description="Review your task order document, the amounts for each CLIN must match exactly here",
+        filters=[formatted_number_to_int]
     )
 
     clin_0003 = StringField(
         "<dl><dt>CLIN 0003</dt> - <dd>Unclassified Cloud Support Package</dd></dl>",
         validators=[Required()],
-        description="Review your task order document, the amounts for each CLIN must match exactly here"
+        description="Review your task order document, the amounts for each CLIN must match exactly here",
+        filters=[formatted_number_to_int]
     )
 
     clin_1001 = StringField(
         "<dl><dt>CLIN 1001</dt> - <dd>Unclassified IaaS and PaaS Amount <br> OPTION PERIOD 1</dd></dl>",
         validators=[Required()],
-        description="Review your task order document, the amounts for each CLIN must match exactly here"
+        description="Review your task order document, the amounts for each CLIN must match exactly here",
+        filters=[formatted_number_to_int]
     )
 
     clin_1003 = StringField(
         "<dl><dt>CLIN 1003</dt> - <dd>Unclassified Cloud Support Package <br> OPTION PERIOD 1</dd></dl>",
         validators=[Required()],
-        description="Review your task order document, the amounts for each CLIN must match exactly here"
+        description="Review your task order document, the amounts for each CLIN must match exactly here",
+        filters=[formatted_number_to_int]
     )
 
     clin_2001 = StringField(
         "<dl><dt>CLIN 2001</dt> - <dd>Unclassified IaaS and PaaS Amount <br> OPTION PERIOD 2</dd></dl>",
         validators=[Required()],
-        description="Review your task order document, the amounts for each CLIN must match exactly here"
+        description="Review your task order document, the amounts for each CLIN must match exactly here",
+        filters=[formatted_number_to_int]
     )
 
     clin_2003 = StringField(
         "<dl><dt>CLIN 2003</dt> - <dd>Unclassified Cloud Support Package <br> OPTION PERIOD 2</dd></dl>",
         validators=[Required()],
-        description="Review your task order document, the amounts for each CLIN must match exactly here"
+        description="Review your task order document, the amounts for each CLIN must match exactly here",
+        filters=[formatted_number_to_int]
     )

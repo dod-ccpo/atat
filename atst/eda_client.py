@@ -73,6 +73,9 @@ class MockEDAClient(EDAClientBase):
 
     MOCK_CONTRACT_NUMBER = "DCA10096D0052"
 
+    # TODO: It seems likely that this will have to supply CLIN data form the
+    # EDA returnclinXML API call, in addition to the basic task order data
+    # below. See the EDA docs.
     def get_contract(self, contract_number, status):
         if contract_number == self.MOCK_CONTRACT_NUMBER and status == "y":
             return {

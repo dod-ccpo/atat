@@ -1,5 +1,6 @@
 import pytest
 
+from atst.models.task_order import Source as TaskOrderSource
 from atst.domain.exceptions import NotFoundError
 from atst.domain.task_orders import TaskOrders
 from atst.eda_client import MockEDAClient
@@ -19,6 +20,7 @@ def test_can_get_task_order_from_eda(monkeypatch):
     to = TaskOrders.get(MockEDAClient.MOCK_CONTRACT_NUMBER)
 
     assert to.number == MockEDAClient.MOCK_CONTRACT_NUMBER
+    assert to.source == TaskOrderSource.EDA
 
 
 def test_nonexistent_task_order_raises_without_client():
