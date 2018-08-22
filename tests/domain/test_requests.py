@@ -121,19 +121,25 @@ task_order_financial_data = {
 }
 
 
-# without a matching task order, should create one with status "MANUAL";
-# with a matching task order, should associate to an existing one
-def test_update_financial_verification():
-    request1 = RequestFactory.create()
+def test_update_financial_verification_without_task_order():
+    request = RequestFactory.create()
     financial_data = { **request_financial_data, **task_order_financial_data }
-    Requests.update_financial_verification(request1.id, financial_data)
-    assert request1.task_order
-    assert request1.task_order.clin_0001 == task_order_financial_data["clin_0001"]
-    assert request1.task_order.source == TaskOrderSource.MANUAL
+    Requests.update_financial_verification(request.id, financial_data)
+    assert request.task_order
+    assert request.task_order.clin_0001 == task_order_financial_data["clin_0001"]
+    assert request.task_order.source == TaskOrderSource.MANUAL
 
+
+def test_update_financial_verification_with_task_order():
     task_order = TaskOrderFactory.create(source=TaskOrderSource.EDA)
-    new_financial_verification_data = { **request_financial_data, "task_order_number": task_order.number }
-    request2 = RequestFactory.create()
-    Requests.update_financial_verification(request2.id, new_financial_verification_data)
-    assert request2.task_order == task_order
+    financial_data = { **request_financial_data, "task_order_number": task_order.number }
+    request = RequestFactory.create()
+    Requests.update_financial_verification(request.id, financial_data)
+    assert request.task_order == task_order
+
+
+def test_update_financial_verification_with_invalid_task_order():
+    request = RequestFactory.create()
+    Requests.update_financial_verification(request.id, request_financial_data)
+    assert not request.task_order
 

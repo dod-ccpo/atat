@@ -95,10 +95,21 @@ class Requests(object):
 
     @classmethod
     def update(cls, request_id, request_delta):
+        request = Requests._get_with_lock(request_id)
+        if not request:
+            return
+
+        request = Requests._merge_body(request, request_delta)
+
+        db.session.add(request)
+        db.session.commit()
+
+    @classmethod
+    def _get_with_lock(cls, request_id):
         try:
             # Query for request matching id, acquiring a row-level write lock.
             # https://www.postgresql.org/docs/10/static/sql-select.html#SQL-FOR-UPDATE-SHARE
-            request = (
+            return (
                 db.session.query(Request)
                 .filter_by(id=request_id)
                 .with_for_update(of=Request)
@@ -106,11 +117,6 @@ class Requests(object):
             )
         except NoResultFound:
             return
-
-        request = Requests._merge_body(request, request_delta)
-
-        db.session.add(request)
-        db.session.commit()
 
     @classmethod
     def _merge_body(cls, request, request_delta):
@@ -213,7 +219,9 @@ WHERE requests_with_status.status = :status
 
     @classmethod
     def update_financial_verification(cls, request_id, financial_data):
-        request = Requests.get(request_id)
+        request = Requests._get_with_lock(request_id)
+        if not request:
+            return
 
         request_data = financial_data.copy()
         task_order_data = {k: request_data.pop(k) for (k,v) in financial_data.items() if k in Requests._TASK_ORDER_DATA}
@@ -223,11 +231,16 @@ WHERE requests_with_status.status = :status
             task_order_data["number"] = request_data.pop("task_order_number")
             task_order = TaskOrders.create(**task_order_data, source=TaskOrderSource.MANUAL)
         else:
-            task_order = TaskOrders.get(financial_data["task_order_number"])
+            try:
+                task_order = TaskOrders.get(financial_data["task_order_number"])
+            except NotFoundError:
+                pass
 
-        request.task_order = task_order
+        if task_order:
+            request.task_order = task_order
+            db.session.add(task_order)
+
         Requests._merge_body(request, {"financial_verification": request_data})
 
-        db.session.add(task_order)
         db.session.add(request)
         db.session.commit()
