@@ -60,7 +60,7 @@
       <tbody>
         {% for m in workspace.members %}
         <tr>
-          <td><a href="/workspaces/123456/members/789/edit" class="icon-link icon-link--large">{{ m['first_name'] }} {{ m['last_name'] }}</a></td>
+          <td><a href="/member_edit" class="icon-link icon-link--large">{{ m['first_name'] }} {{ m['last_name'] }}</a></td>
           <td class='table-cell--shrink'>{% if m['num_projects'] == '0' %} <span class="label label--info">No Project Access</span> {% endif %}</td>
           <td>{{ m['status'] }}</a></td>
           <td>{{ m['workspace_role'] }}</a></td>
