@@ -7,7 +7,19 @@
 <div class='panel member-card'>
   <div class='member-card__header'>
     <h1 class='member-card__heading'>Danny Knight</h1>
-    <dl><dt>Workspace Role</dt> <dd><span class='label label--info'>Billing Auditor</span></dd></dl>
+
+    <div class="usa-input member-card__input">
+      <label for="filter-status">Workspace Role</label>
+      <select id="filter-status" name="filter-status">
+        <option value="Admin">Admin</option>
+        <option value="Billing Auditor" selected="selected">Billing Auditor</option>
+        <option value="CCPO">CCPO</option>
+        <option value="Developer">Developer</option>
+        <option value="Owner">Owner</option>
+        <option value="Security Auditor">Security Auditor</option>
+      </select>
+    </div>
+
   </div>
   <div class='member-card__details'>
     <dl>

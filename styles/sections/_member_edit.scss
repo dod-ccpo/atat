@@ -31,11 +31,25 @@
     @include h2;
   }
 
-  .member-card__details {
-   text-align: right;
+  .member-card__input {
+    margin: 0;
+    display: flex;
+    margin-top: $gap;
 
-   .icon-link {
-    margin: 0 -$gap;
-   }
- }
+    label {
+      flex: none;
+      margin-top: $gap*1.5;
+      font-weight: $font-normal;
+      margin-right: $gap*2;
+    }
+  }
+
+
+  .member-card__details {
+    text-align: right;
+
+    .icon-link {
+      margin: 0 -$gap;
+    }
+  }
 }
