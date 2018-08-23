@@ -42,44 +42,82 @@
   </div>
 </div>
 
-<div class='block-list project-list-item'>
-  <header class='block-list__header'>
-    <h3 class='block-list__title'>{{ Icon('arrow-down') }}Code.mil</h3>
-    <span><a href="#" class="icon-link icon-link--danger">revoke all access</a></span>
-  </header>
-  <ul>
-    <li class='block-list__item project-list-item__environment'>
-      <span class='project-list-item__environment'>
-        Development
-      </span>
-      <div class='project-list-item__environment__actions'>
-        <span class="label">no access </span><a href="#" class="icon-link">set role</a>
-      </div>
-    </li>
-    <li class='block-list__item project-list-item__environment'>
-      <span class='project-list-item__environment'>
-        Sandbox
-      </span>
-      <div class='project-list-item__environment__actions'>
-        <span class="label">no access</span><a href="#" class="icon-link">set role</a>
-      </div>
-    </li>
-    <li class='block-list__item project-list-item__environment'>
-      <span class='project-list-item__environment'>
-        Production
-      </span>
-      <div class='project-list-item__environment__actions'>
-        <span class="label label--success">Billing</span><a href="#" class="icon-link">set role</a>
-      </div>
-    </li>
-  </ul>
+<div is="toggler" class='block-list project-list-item'>
+  <template slot-scope='{ isVisible, toggle }'>
+    <header class='block-list__header'>
+    <button v-on:click='toggle' class='icon-link icon-link--large icon-link--default spend-table__project__toggler'>
+        <template v-if='isVisible'>{{ Icon('caret_down') }}</template>
+        <template v-else>{{ Icon('caret_right') }}</template>
+        <h3 class="block-list__title">Code.mil</h3>
+      </button>
+      <span><a href="#" class="icon-link icon-link--danger">revoke all access</a></span>
+    </header>
+    <ul v-show='isVisible'>
+      <li class='block-list__item project-list-item__environment'>
+        <span class='project-list-item__environment'>
+          Development
+        </span>
+        <div class='project-list-item__environment__actions'>
+          <span class="label">no access </span><a href="#" class="icon-link">set role</a>
+        </div>
+      </li>
+      <li class='block-list__item project-list-item__environment'>
+        <span class='project-list-item__environment'>
+          Sandbox
+        </span>
+        <div class='project-list-item__environment__actions'>
+          <span class="label">no access</span><a href="#" class="icon-link">set role</a>
+        </div>
+      </li>
+      <li class='block-list__item project-list-item__environment'>
+        <span class='project-list-item__environment'>
+          Production
+        </span>
+        <div class='project-list-item__environment__actions'>
+          <span class="label label--success">Billing</span><a href="#" class="icon-link">set role</a>
+        </div>
+      </li>
+    </ul>
+  </template>
 </div>
 
-<div class='block-list project-list-item'>
-  <header class='block-list__header'>
-    <h3 class='block-list__title'>{{ Icon('arrow-right') }} Digital Dojo</h3>
-    <span class="label">no access</span>
-  </header>
+<div is="toggler" class='block-list project-list-item'>
+  <template slot-scope='{ isVisible, toggle }'>
+    <header class='block-list__header'>
+    <button v-on:click='toggle' class='icon-link icon-link--large icon-link--default spend-table__project__toggler'>
+        <template v-if='isVisible'>{{ Icon('caret_down') }}</template>
+        <template v-else>{{ Icon('caret_right') }}</template>
+        <h3 class="block-list__title">Digital Dojo</h3>
+      </button>
+      <span class="label">no access</span>
+    </header>
+    <ul v-show='isVisible'>
+      <li class='block-list__item project-list-item__environment'>
+        <span class='project-list-item__environment'>
+          Development
+        </span>
+        <div class='project-list-item__environment__actions'>
+          <span class="label">no access </span><a href="#" class="icon-link">set role</a>
+        </div>
+      </li>
+      <li class='block-list__item project-list-item__environment'>
+        <span class='project-list-item__environment'>
+          Sandbox
+        </span>
+        <div class='project-list-item__environment__actions'>
+          <span class="label">no access</span><a href="#" class="icon-link">set role</a>
+        </div>
+      </li>
+      <li class='block-list__item project-list-item__environment'>
+        <span class='project-list-item__environment'>
+          Production
+        </span>
+        <div class='project-list-item__environment__actions'>
+          <span class="label">no access</span><a href="#" class="icon-link">set role</a>
+        </div>
+      </li>
+    </ul>
+  </template>
 </div>
 
 <div class='action-group'>
