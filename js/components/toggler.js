@@ -1,9 +1,16 @@
 export default {
   name: 'toggler',
 
+  props: {
+    defaultVisible: {
+      type: Boolean,
+      default: () => false
+    }
+  },
+
   data: function () {
     return {
-      isVisible: false
+      isVisible: this.defaultVisible
     }
   },
 
