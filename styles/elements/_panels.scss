@@ -67,9 +67,17 @@
       margin: $gap * 4;
     }
 
+    &--tight {
+      margin: $gap*2;
+    }
+
     h1, h2, h3, h4, h5, h6 {
       margin: 0;
       display: inline-block;
+
+      .subtitle {
+        color: $color-gray;
+      }
     }
 
     .icon-tooltip {
