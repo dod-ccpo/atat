@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-{% from "components/alert.html" import Alert %}
 {% from "components/icon.html" import Icon %}
 
 {% block content %}
@@ -25,6 +24,11 @@
   </div>
 </div>
 
+<div class="panel">
+  <div class="panel__heading panel__heading--tight">
+    <h2 class="h3">Manage Access <div class="subtitle">Grant access to an environment</div></h2>
+  </div>
+</div>
 
 <form class='search-bar'>
   <div class='usa-input search-input'>
@@ -35,12 +39,6 @@
     </button>
   </div>
 </form>
-
-<div class="panel">
-  <div class="panel__heading panel__heading--tight">
-    <h2 class="h3">Manage Access <div class="subtitle">Grant access to an environment</div></h2>
-  </div>
-</div>
 
 <div is="toggler" class='block-list project-list-item'>
   <template slot-scope='{ isVisible, toggle }'>
