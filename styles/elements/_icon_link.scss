@@ -33,12 +33,7 @@
 
 @mixin icon-link-large {
   @include h4;
-  font-weight: normal;
-
-  .icon {
-    @include icon-size(16);
-    margin-right: $gap * 2;
-  }
+  font-weight: $font-normal;
 }
 
 @mixin icon-link-vertical {
