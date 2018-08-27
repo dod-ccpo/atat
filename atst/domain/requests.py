@@ -244,7 +244,10 @@ WHERE requests_with_status.status = :status
             for (k, v) in financial_data.items()
             if k in TaskOrders.TASK_ORDER_DATA
         }
-        task_order_number = request_data.pop("task_order_number")
+        if task_order_data:
+            task_order_number = request_data.pop("task_order_number")
+        else:
+            task_order_number = request_data.get("task_order_number")
 
         task_order = TaskOrders.get_or_create_task_order(
             task_order_number, task_order_data
