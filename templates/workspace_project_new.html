@@ -32,8 +32,8 @@
       </p>
 
       <div class='action-group'>
-        <button type='submit' class='action-group__action usa-button'>Create Project</button>
-        <a v-on:click="closeModal('{{ modalName }}')" class='action-group__action'>Cancel</a>
+        <button type='submit' class='action-group__action usa-button' tabindex='0'>Create Project</button>
+        <button v-on:click="closeModal('{{ modalName }}')" class='icon-link action-group__action' tabindex='0'>Cancel</button>
       </div>
     {% endcall %}
 
@@ -80,13 +80,13 @@
         </ul>
 
         <div class="block-list__footer">
-          <a v-on:click="addEnvironment" class="icon-link">Add another environment</a>
+          <button v-on:click="addEnvironment" class="icon-link" tabindex="0" type="button">Add another environment</button>
         </div>
       </div>
 
 
       <div class="action-group">
-        <div v-on:click="openModal('{{ modalName }}')" class="usa-button usa-button-primary">Create Project</div>
+        <button v-on:click="openModal('{{ modalName }}')" class="usa-button usa-button-primary" tabindex="0" type="button">Create Project</button>
       </div>
 
     </div>
