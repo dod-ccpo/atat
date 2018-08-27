@@ -21,13 +21,14 @@
 <new-project inline-template v-bind:initial-data='{{ form.data|tojson }}'>
   <form method="POST" action="{{ url_for('workspaces.update_project', workspace_id=workspace.id) }}" >
     {% call Modal(name=modalName, dismissable=False) %}
-      <h1>Are you sure you want to create <strong>!{ name }</strong> project?</h1>
+      <h1>Create project !{ name }</h1>
 
       <p>
-      When you click "Create Project" the following environments will be created as individual cloud resource groups under <strong>!{ name }</strong> project:
+      When you click <em>Create Project</em>, the environments
       <span v-for="(environment, index) in environments">
         <strong>!{environment.name}</strong><template v-if="index < (environments.length - 1)">, </template>
       </span>
+      will be created as individual cloud resource groups under <strong>!{ name }</strong> project.
       </p>
 
       <div class='action-group'>
