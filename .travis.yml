@@ -59,4 +59,5 @@ deploy:
 
 notifications:
   slack:
-    secure: $SLACK_TRAVIS_CI_CRED
+    rooms:
+      secure: $SLACK_TRAVIS_CI_CRED
