@@ -49,6 +49,85 @@
     </div>
   </div>
 
+  {% call Modal(name='rolesModal', dismissable=False) %}
+  <div class="block-list">
+    <header class="block-list__header">
+      <h2 class="block-list__title">
+        Environment access for Danny Knight
+        <div class='subtitle'>Project Name - Environment Name</div>
+      </h2>
+    </header>
+
+    <form method="post" action="">
+      <ul>
+        <li class='block-list__item block-list__item--selectable'>
+          <input type='radio' name='radio' id='radio-1' />
+          <label for='radio-1'>
+            <dl>
+              <dt>CCPO</dt>
+              <dd>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat dicta voluptate vitae quasi, cumque rem dolores, quae quas cum in recusandae? Libero deleniti minus ab accusantium vel necessitatibus placeat, rerum?</dd>
+            </dl>
+          </label>
+        </li>
+        <li class='block-list__item block-list__item--selectable'>
+          <input type='radio' name='radio' id='radio-2' />
+          <label for='radio-2'>
+            <dl>
+              <dt>Security</dt>
+              <dd>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat vel ea, eaque, odio sint explicabo officia, debitis dolore, et repudiandae possimus deserunt eveniet laborum. Sunt blanditiis deleniti minus. Et, mollitia.</dd>
+            </dl>
+          </label>
+        </li>
+        <li class='block-list__item block-list__item--selectable'>
+          <input type='radio' name='radio' id='radio-3' />
+          <label for='radio-3'>
+            <dl>
+              <dt>Audit</dt>
+              <dd>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem itaque reprehenderit dolorum nobis voluptatibus quae, facilis voluptatum necessitatibus alias laboriosam, esse blanditiis culpa possimus tempore consectetur recusandae. Nihil, vel, dolorem!</dd>
+            </dl>
+          </label>
+        </li>
+        <li class='block-list__item block-list__item--selectable'>
+          <input type='radio' name='radio' id='radio-4' />
+          <label for='radio-4'>
+            <dl>
+              <dt>Application Developer</dt>
+              <dd>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea esse ab consequuntur aliquam. Porro ea mollitia sapiente blanditiis quaerat quam beatae vitae adipisci quisquam dolore reiciendis tenetur, eius nemo quibusdam!</dd>
+            </dl>
+          </label>
+        </li>
+        <li class='block-list__item block-list__item--selectable'>
+          <input type='radio' name='radio' id='radio-5' />
+          <label for='radio-5'>
+            <dl>
+              <dt>Dev Ops</dt>
+              <dd>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore incidunt obcaecati, quidem ullam sint iusto. Natus ex distinctio eveniet cumque laudantium veritatis nemo asperiores, esse hic quis perspiciatis, quia impedit.</dd>
+            </dl>
+          </label>
+        </li>
+        <li class='block-list__item block-list__item--selectable'>
+          <input type='radio' name='radio' id='radio-6' />
+          <label for='radio-6'>
+            <dl>
+              <dt>Billing</dt>
+              <dd>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem delectus at, voluptatibus dolores, nobis temporibus. Ipsum dignissimos corrupti qui nisi et alias totam commodi maiores hic possimus ipsam error, ullam.</dd>
+            </dl>
+          </label>
+        </li>
+      </ul>
+
+      <div class='block-list__footer'>
+        <div class='action-group'>
+          <a v-on:click="closeModal('rolesModal')" class='action-group__action usa-button'>Select Access Role</a>
+          <a class='action-group__action icon-link icon-link--danger' v-on:click="closeModal('rolesModal')">No Access</a>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+  {% endcall %}
+
   <div is='toggler' default-visible class='block-list project-list-item'>
     <template slot-scope='{ isVisible, toggle }'>
       <header class='block-list__header'>
