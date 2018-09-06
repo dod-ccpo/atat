@@ -16,10 +16,10 @@
 
     {% block template_vars %}{% endblock %}
 
-    {% include 'navigation/topbar.html' %}
+    {% if request.path != '/jedi' %} {% include 'navigation/topbar.html' %} {% endif %}
 
     <div class='global-layout'>
-      {% include 'navigation/global_navigation.html' %}
+     {% if request.path != '/jedi' %} {% include 'navigation/global_navigation.html' %} {% endif %}
 
       <div class='global-panel-container'>
         {% block sidenav %}{% endblock %}
