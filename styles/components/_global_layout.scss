@@ -29,8 +29,24 @@
     overflow-x: hidden;
     flex-grow: 1;
 
+    @include ie-only {
+      max-width: 85%;
+    }
+
     @include media($medium-screen) {
       margin: $gap * 2;
+    }
+
+    @include media($large-screen) {
+      @include ie-only {
+        max-width: 80%;
+      }
+    }
+
+    @include media($xlarge-screen) {
+      @include ie-only {
+        max-width: $site-max-width;
+      }
     }
   }
 }
