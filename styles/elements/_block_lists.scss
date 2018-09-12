@@ -120,6 +120,15 @@
         color: $color-primary;
       }
     }
+
+    @include ie-only {
+
+      dl {
+        width: 100%;
+        padding-left: $gap*4;
+      }
+    }
+
   }
 }
 
