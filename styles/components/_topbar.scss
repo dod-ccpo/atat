@@ -50,6 +50,7 @@
       flex-direction: row;
       align-items: stretch;
       justify-content: flex-end;
+      -ms-flex-pack: start;
 
       .topbar__link {
         &:first-child {
