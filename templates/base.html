@@ -21,7 +21,7 @@
     <div class='global-layout'>
      {% if request.path != '/jedi' %} {% include 'navigation/global_navigation.html' %} {% endif %}
 
-      <div class='global-panel-container'>
+      <div class='{% if request.path != '/jedi' %}global-panel-container{% endif %}'>
         {% block sidenav %}{% endblock %}
 
         {% block content %}
