@@ -35,3 +35,10 @@
 [v-cloak] {
   display: none
 }
+
+@mixin ie-only {
+  // Applies to IE 10+
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    @content;
+  }
+}
