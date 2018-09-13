@@ -156,7 +156,7 @@ class InformationAboutYouForm(ValidatedForm):
 
     service_branch = SelectField(
         "Service Branch or Agency",
-        description="Which services and organizations do you belong to within the DoD?",
+        description="Which service or organization do you belong to within the DoD?",
         choices=SERVICE_BRANCHES,
     )
 
