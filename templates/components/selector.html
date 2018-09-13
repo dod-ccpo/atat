@@ -13,7 +13,7 @@
   <fieldset v-bind:class="['selector usa-input', { 'usa-input--error': initialErrors }]">
     <v-popover v-bind:container='false' ref='popover'>
       <legend>
-        {{ field.label | striptags }}
+        <div class="usa-input__title">{{ field.label | striptags }}</div>
 
         {% if field.description %}
           <span class='usa-input__help'>{{ field.description | safe }}</span>

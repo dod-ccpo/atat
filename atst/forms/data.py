@@ -108,35 +108,35 @@ WORKSPACE_ROLES = [
         "owner",
         {
             "name": "Workspace Owner",
-            "description": "Can add, edit, deactivate access to all projects, environments, and members. Can view budget reports. Can start and edit JEDI Cloud requests.",
+            "description": "Adds, edits, deactivates access to all projects, environments, and members. Views budget reports. Initiates and edits JEDI Cloud requests.",
         },
     ),
     (
         "admin",
         {
             "name": "Administrator",
-            "description": "Can add and edit projects, environments, members, but cannot deactivate. Cannot view budget reports or JEDI Cloud requests.",
+            "description": "Adds and edits projects, environments, members, but cannot deactivate. Cannot view budget reports or JEDI Cloud requests.",
         },
     ),
     (
         "developer",
         {
             "name": "Developer",
-            "description": "Can view only the projects and environments they are granted access to. Can also view members associated with each environment.",
+            "description": "Views only the projects and environments they are granted access to. Can also view members associated with each environment.",
         },
     ),
     (
         "billing_auditor",
         {
             "name": "Billing Auditor",
-            "description": "Can view only the projects and environments they are granted access to. Can also view budgets and reports associated with the workspace.",
+            "description": "Views only the projects and environments they are granted access to. Can also view budgets and reports associated with the workspace.",
         },
     ),
     (
         "security_auditor",
         {
             "name": "Security Auditor",
-            "description": "Can view only the projects and environments they are granted access to. Can also view activity logs.",
+            "description": "Views only the projects and environments they are granted access to. Can also view activity logs.",
         },
     ),
 ]
