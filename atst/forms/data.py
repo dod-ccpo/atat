@@ -141,6 +141,51 @@ WORKSPACE_ROLES = [
     ),
 ]
 
+ENVIRONMENT_ROLES = [
+    (
+        "developer",
+        {
+            "name": "Developer",
+            "description": "Configures cloud-based IaaS and PaaS computing, networking, and storage services.",
+        },
+    ),
+    (
+        "database_administrator",
+        {
+            "name": "Database Administrator",
+            "description": "Configures cloud-based database services.",
+        },
+    ),
+    (
+        "devops",
+        {
+            "name": "DevOps",
+            "description": "Provisions, deprovisions, and deploys cloud-based IaaS and PaaS computing, networking, and storage services, including pre-configured machine images.",
+        },
+    ),
+    (
+        "billing_administrator",
+        {
+            "name": "Billing Administrator",
+            "description": "Views cloud resource usage, budget reports, and invoices; Tracks budgets, including spend reports, cost planning and projections, and sets limits based on cloud service usage.",
+        },
+    ),
+    (
+        "security_administrator",
+        {
+            "name": "Security Administrator",
+            "description": "Accesses information security and control tools of cloud resources which include viewing cloud resource usage logging, user roles and permissioning history.",
+        },
+    ),
+    (
+        "financial_auditor",
+        {
+            "name": "Financial Auditor",
+            "description": "Views cloud resource usage and budget reports.",
+        },
+    ),
+]
+
 FUNDING_TYPES = [
     ("", "- Select -"),
     ("RDTE", "Research, Development, Testing & Evaluation (RDT&E)"),
