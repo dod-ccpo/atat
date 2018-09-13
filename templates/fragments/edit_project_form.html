@@ -60,7 +60,7 @@
           <li v-for="(environment, i) in environments" class="block-list__item project-edit__env-list-item">
             <div class="usa-input">
               <label :for="'environment_names-' + i">Environment Name</label>
-              <input type="text" :name="'environment_names-' + i" :id="'environment_names-' + i" v-model="environment.name">
+              <input type="text" :name="'environment_names-' + i" :id="'environment_names-' + i" v-model="environment.name" placeholder="e.g. Development, Staging, Production">
             </div>
             <button v-on:click="removeEnvironment(i)" v-if="environments.length > 1" type="button" class='project-edit__env-list-item__remover'>
               {{ Icon('trash') }}
