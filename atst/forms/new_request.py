@@ -221,7 +221,7 @@ class WorkspaceOwnerForm(ValidatedForm):
     email_poc = EmailField("Email Address", validators=[Required(), Email()])
 
     dodid_poc = StringField(
-        "DOD ID", validators=[Required(), Length(min=10), IsNumber()]
+        "DoD ID", validators=[Required(), Length(min=10), IsNumber()]
     )
 
 
