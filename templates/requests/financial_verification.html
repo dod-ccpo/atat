@@ -16,7 +16,7 @@
     ) }}
   {% endif %}
 
-  {% if not f.is_missing_task_order_number %}
+  {% if f.is_missing_task_order_number %}
     {% set extended_url = url_for('requests.financial_verification', request_id=request_id, extended=True) %}
     {{ Alert('Task Order not found in EDA',
         message="We could not find your Task Order in our system of record, EDA.
