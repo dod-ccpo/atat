@@ -68,7 +68,7 @@
     <transition name='slide'>
       <template v-if="annualSpend > {{ annual_spend_threshold }}">
         <fieldset class='form__sub-fields'>
-          <h3>Because the approximate annual spend is over $1,000,000, please answer a few additional questions.</h3>
+          <h3>Please provide additional details regarding your planned usage.</h3>
           {{ TextInput(f.number_user_sessions, validation='integer', placeholder="0") }}
           {{ TextInput(f.average_daily_traffic, tooltip="Requests are the client-to-server network traffic that is being transferred to your systems",validation="integer", placeholder="0") }}
           {{ TextInput(f.average_daily_traffic_gb, tooltip="GB uploaded is the gigabyte amount of data traffic that is being transferred to your systems",validation="gigabytes", placeholder="0GB") }}
