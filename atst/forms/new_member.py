@@ -16,6 +16,9 @@ class NewMemberForm(Form):
     email = EmailField("Email Address", validators=[Required(), Email()])
     dod_id = StringField("DOD ID", validators=[Required(), Length(min=10), IsNumber()])
     workspace_role = SelectField(
-        "Workspace Role", choices=WORKSPACE_ROLES, validators=[Required()], default="",
-        description="The workspace role controls whether a member is permitted to organize a workspace into projects and environments, add members to this workspace, and view billing information."
+        "Workspace Role",
+        choices=WORKSPACE_ROLES,
+        validators=[Required()],
+        default="",
+        description="The workspace role controls whether a member is permitted to organize a workspace into projects and environments, add members to this workspace, and view billing information.",
     )
