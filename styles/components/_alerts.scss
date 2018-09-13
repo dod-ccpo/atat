@@ -22,6 +22,14 @@
   } @else if $level == 'warning' {
     $background-color: $color-gold-lightest;
     $border-color: $color-gold;
+    .usa-button {
+      background-color: $color-gold;
+      box-shadow: inset 0 0 0 2px $color-gold;
+      &:hover {
+        background-color: $color-gold-dark;
+        box-shadow: inset 0 0 0 2px $color-gold-dark;
+      }
+    }
 
   } @else if $level == 'error' {
     $background-color: $color-red-lightest;
