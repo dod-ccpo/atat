@@ -5,12 +5,6 @@
 
 {% block workspace_content %}
 
-{{ Alert(
-  "UI Mock",
-  message="<p>Please note, this screen is a non-functional UI mockup.</p>",
-  level="warning"
-) }}
-
 {% set modalName = "updateProjectConfirmation" %}
 {% include "fragments/edit_project_form.html" %}
 
