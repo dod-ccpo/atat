@@ -76,7 +76,7 @@
       </template>
     </transition>
 
-    {{ TextInput(f.dollar_value, validation='dollars', placeholder='$0') }}
+    {{ TextInput(f.dollar_value, validation='dollars', placeholder='$0', tooltip='You may specify a different Total Spend amount to cover other JEDI Cloud services that the JEDI cost calculator was not able to estimate. Examples may include support packages from the cloud service provider.') }}
     {{ DateInput(f.start_date, placeholder='MM / DD / YYYY', validation='date') }}
 
   </div>
