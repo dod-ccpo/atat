@@ -16,7 +16,7 @@
     action_label='Add a New Project' if can_create_projects else None,
     action_href=url_for('workspaces.new_project', workspace_id=workspace.id) if can_create_projects else None,
     icon='cloud',
-    sub_message=None if can_create_projects else 'Please contact your JEDI workspace administrator to set up a new project.'
+    sub_message=None if can_create_projects else 'Please contact your JEDI Cloud workspace administrator to set up a new project.'
   ) }}
 
 {% else %}

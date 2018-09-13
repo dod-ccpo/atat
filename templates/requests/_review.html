@@ -39,11 +39,11 @@
 
   {{ DefinitionReviewField("DoD Component", "details_of_use", "dod_component", filter="getOptionLabel", filter_args=[service_branches]) }}
 
-  {{ DefinitionReviewField("JEDI Usage", "details_of_use", "jedi_usage") }}
+  {{ DefinitionReviewField("JEDI Cloud Usage", "details_of_use", "jedi_usage") }}
 
   {{ DefinitionReviewField("Number of software systems", "details_of_use", "num_software_systems", filter="readableInteger") }}
 
-  {{ DefinitionReviewField("JEDI Migration", "details_of_use", "jedi_migration") }}
+  {{ DefinitionReviewField("JEDI Cloud Migration", "details_of_use", "jedi_migration") }}
 
   {% if data['details_of_use']['jedi_migration'] == 'yes' %}
     {{ DefinitionReviewField("Rationalization of Software Systems", "details_of_use", "rationalization_software_systems") }}
