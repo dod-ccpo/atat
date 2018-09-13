@@ -100,7 +100,7 @@ class TestPENumberInForm:
 
         response = self.submit_data(client, user, data)
 
-        assert "enter TO information manually" in response.data.decode()
+        assert "extended=True" in response.data.decode()
 
     def test_submit_financial_form_with_valid_task_order(
         self, monkeypatch, user_session, client
