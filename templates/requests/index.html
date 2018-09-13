@@ -130,7 +130,7 @@
             <td>{{ r.annual_usage | dollars }}</td>
             <td>
               {% if r.status == 'Approved' %}
-                <a href="{{ url_for('workspaces.workspace_projects', workspace_id=r.workspace_id) }}">
+                <a class="icon-link icon-link--large" href="{{ url_for('workspaces.workspace_projects', workspace_id=r.workspace_id) }}">
                   {{ r.status }}
                 </a>
               {% else %}
