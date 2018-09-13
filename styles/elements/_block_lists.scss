@@ -35,6 +35,10 @@
   line-height: 3rem;
 }
 
+@mixin block-list__description {
+  margin-top: $gap*2;
+}
+
 @mixin block-list__footer {
   @include panel-base;
   @include panel-theme-default;
@@ -91,6 +95,10 @@
 
 .block-list__title {
   @include block-list__title;
+}
+
+.block-list__description {
+  @include block-list__description;
 }
 
 .block-list__item {
