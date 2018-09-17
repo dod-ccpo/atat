@@ -7,6 +7,12 @@
     padding: 0;
   }
 
+  &--two {
+    .progress-menu__item {
+      width: 49%;
+    }
+  }
+
   &--three {
     .progress-menu__item {
       width: 32%;
