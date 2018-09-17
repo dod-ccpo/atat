@@ -6,9 +6,7 @@
 <div class="col">
 
   {% if request.is_pending_ccpo_acceptance %}
-
     {{ Alert('Request submitted. Approval pending.', fragment="fragments/pending_ccpo_acceptance_alert.html") }}
-
   {% elif request.is_pending_ccpo_approval %}
 
     {% call Alert('Pending CCPO Approval') %}
@@ -18,15 +16,15 @@
 
   {% elif requires_fv_action %}
 
-    {{ Alert('Pending Financial Verification', fragment="fragments/pending_financial_verification.html") }}
     {% include 'requests/review_menu.html' %}
+    {{ Alert('Pending Financial Verification', fragment="fragments/pending_financial_verification.html") }}
 
   {% endif %}
 
   <div class="panel">
     <div class="panel__heading">
-      <h1>Request Details</h1><br/>
-      <h2>#{{ request.id }} <span class="label label--info">{{ request.status_displayname }}</span></h2>
+      <h1>Request Details</h1>
+      <h2><span class="subtitle">#{{ request.id }}</span> <span class="label label--info">{{ request.status_displayname }}</span></h2>
     </div>
 
     <div class="panel__content">
