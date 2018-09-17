@@ -21,7 +21,7 @@
 
   {% if extended %}
     {{ Alert('Task Order not found in EDA',
-      message="Since the Task Order (TO) number was not found in our system of record, EDA, please populate the additional fields in the form below.",
+      message="We could not find your Task Order in the EDA, our system of record. Please confirm that you have entered the information correctly and resubmit or click on the button below to enter the TO manually.",
       level='warning'
     ) }}
   {% endif %}
