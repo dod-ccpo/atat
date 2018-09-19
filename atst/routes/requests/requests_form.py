@@ -116,7 +116,7 @@ def requests_update(screen=1, request_id=None):
 @requests_bp.route("/requests/submit/<string:request_id>", methods=["POST"])
 def requests_submit(request_id=None):
     request = Requests.get(g.current_user, request_id)
-    Requests.submit(request)
+    Requests.submit(g.current_user, request)
 
     if request.status == RequestStatus.PENDING_FINANCIAL_VERIFICATION:
         return redirect("/requests?modal=pendingFinancialVerification")

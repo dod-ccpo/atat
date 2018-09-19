@@ -3,6 +3,7 @@ from atst.domain.authz import Authorization
 from atst.models.permissions import Permissions
 from atst.domain.users import Users
 from atst.domain.workspace_users import WorkspaceUsers
+from atst.domain.audit_log import AuditLog
 
 from .query import WorkspacesQuery
 from .scopes import ScopedWorkspace
@@ -15,6 +16,7 @@ class Workspaces(object):
         workspace = WorkspacesQuery.create(request=request, name=name)
         Workspaces._create_workspace_role(request.creator, workspace, "owner")
         WorkspacesQuery.add_and_commit(workspace)
+        AuditLog.log_system_event(workspace, "create workspace")
         return workspace
 
     @classmethod
@@ -86,7 +88,11 @@ class Workspaces(object):
             last_name=data["last_name"],
             email=data["email"],
         )
-        return Workspaces.add_member(workspace, new_user, data["workspace_role"])
+        member = Workspaces.add_member(workspace, new_user, data["workspace_role"])
+        AuditLog.log_workspace_event(
+            user, workspace, member.workspace_role, "create workspace role"
+        )
+        return member
 
     @classmethod
     def add_member(cls, workspace, member, role_name):
@@ -101,8 +107,11 @@ class Workspaces(object):
             Permissions.ASSIGN_AND_UNASSIGN_ATAT_ROLE,
             "edit workspace member",
         )
-
-        return WorkspaceUsers.update_role(member, workspace.id, role_name)
+        member = WorkspaceUsers.update_role(member, workspace.id, role_name)
+        AuditLog.log_workspace_event(
+            user, workspace, member.workspace_role, "update workspace_role"
+        )
+        return member
 
     @classmethod
     def _create_workspace_role(cls, user, workspace, role_name):

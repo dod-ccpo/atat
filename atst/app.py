@@ -18,6 +18,7 @@ from atst.routes.dev import bp as dev_routes
 from atst.routes.errors import make_error_pages
 from atst.domain.authnid.crl import CRLCache
 from atst.domain.auth import apply_authentication
+from atst.domain.authz import Authorization
 from atst.eda_client import MockEDAClient
 from atst.uploader import Uploader
 
@@ -76,6 +77,7 @@ def make_flask_callbacks(app):
             "atat_role": "default",
             "atat_permissions": [],
         }
+        g.Authorization = Authorization
 
 
 def map_config(config):

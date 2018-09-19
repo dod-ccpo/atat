@@ -46,6 +46,7 @@ def financial_verification(request_id=None):
 
 @requests_bp.route("/requests/verify/<string:request_id>", methods=["POST"])
 def update_financial_verification(request_id):
+    user = g.current_user
     post_data = http_request.form
     existing_request = Requests.get(g.current_user, request_id)
     form = financial_form(existing_request, post_data)
@@ -57,11 +58,17 @@ def update_financial_verification(request_id):
         valid = form.perform_extra_validation(
             existing_request.body.get("financial_verification")
         )
-        updated_request = Requests.update_financial_verification(request_id, form.data)
+        updated_request = Requests.update_financial_verification(
+            user, request_id, form.data
+        )
         if valid:
-            submitted_request = Requests.submit_financial_verification(updated_request)
+            submitted_request = Requests.submit_financial_verification(
+                user, updated_request
+            )
             if submitted_request.is_financially_verified:
-                new_workspace = Requests.approve_and_create_workspace(submitted_request)
+                new_workspace = Requests.approve_and_create_workspace(
+                    user, submitted_request
+                )
                 return redirect(
                     url_for(
                         "workspaces.new_project",

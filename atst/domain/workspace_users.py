@@ -6,17 +6,13 @@ from atst.models.workspace_user import WorkspaceUser
 from atst.models.user import User
 
 from .roles import Roles
-from .users import Users
 from .exceptions import NotFoundError
 
 
 class WorkspaceUsers(object):
     @classmethod
     def get(cls, workspace_id, user_id):
-        try:
-            user = Users.get(user_id)
-        except NoResultFound:
-            raise NotFoundError("user")
+        user = cls._get_user(user_id)
 
         try:
             workspace_role = (
@@ -88,7 +84,7 @@ class WorkspaceUsers(object):
 
         for user_dict in workspace_user_dicts:
             try:
-                user = Users.get(user_dict["id"])
+                user = cls._get_user(user_dict["id"])
             except NoResultFound:
                 default_role = Roles.get("developer")
                 user = User(id=user_dict["id"], atat_role=default_role)
@@ -123,3 +119,11 @@ class WorkspaceUsers(object):
         db.session.commit()
 
         return workspace_users
+
+    @classmethod
+    def _get_user(cls, id_):
+        try:
+            user = db.session.query(User).filter_by(id=id_).one()
+        except NoResultFound:
+            raise NotFoundError("user")
+        return user

@@ -6,6 +6,7 @@ from atst.models import User
 
 from .roles import Roles
 from .exceptions import NotFoundError, AlreadyExistsError
+from atst.domain.audit_log import AuditLog
 
 
 class Users(object):
@@ -39,6 +40,8 @@ class Users(object):
             db.session.rollback()
             raise AlreadyExistsError("user")
 
+        AuditLog.log_system_event(user, "create user")
+
         return user
 
     @classmethod
@@ -61,5 +64,7 @@ class Users(object):
 
         db.session.add(user)
         db.session.commit()
+
+        AuditLog.log_system_event(user, "update user")
 
         return user

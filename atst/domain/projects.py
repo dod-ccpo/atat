@@ -6,19 +6,22 @@ from atst.models.permissions import Permissions
 from atst.models.project import Project
 from atst.models.environment import Environment
 from atst.models.environment_role import EnvironmentRole
+from atst.domain.audit_log import AuditLog
 
 
 class Projects(object):
     @classmethod
     def create(cls, user, workspace, name, description, environment_names):
         project = Project(workspace=workspace, name=name, description=description)
-        Environments.create_many(project, environment_names)
+        Environments.create_many(user, project, environment_names)
 
         for environment in project.environments:
             Environments.add_member(user, environment, user)
 
         db.session.add(project)
         db.session.commit()
+
+        AuditLog.log_workspace_event(user, workspace, project, "create project")
 
         return project
 

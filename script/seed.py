@@ -60,7 +60,7 @@ def seed_db():
             db.session.add(request)
             db.session.commit()
 
-            Requests.submit(request)
+            Requests.submit(user, request)
             requests.append(request)
 
         workspace = Workspaces.create(requests[0], name="{}'s workspace".format(user.first_name))

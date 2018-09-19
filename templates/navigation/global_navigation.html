@@ -25,5 +25,9 @@
     {% if g.current_user.has_workspaces %}
       {{ SidenavItem("Workspaces", href="/workspaces", icon="cloud", active=g.matchesPath('/workspaces')) }}
     {% endif %}
+
+    {% if g.Authorization.can_view_audit_log(g.current_user) %}
+      {{ SidenavItem("Activity History", url_for('atst.activity_history'), icon="document", active=g.matchesPath('/activity-history')) }}
+    {% endif %}
   </ul>
 </div>

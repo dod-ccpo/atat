@@ -5,6 +5,7 @@ import pendulum
 from atst.domain.requests import Requests
 from atst.domain.users import Users
 from atst.domain.authnid import AuthenticationContext
+from atst.domain.audit_log import AuditLog
 
 
 bp = Blueprint("atst", __name__)
@@ -78,3 +79,9 @@ def logout():
         del (session["user_id"])
 
     return redirect(url_for(".home"))
+
+
+@bp.route("/activity-history")
+def activity_history():
+    audit_events = AuditLog.get_all_events(g.current_user)
+    return render_template("audit_log.html", audit_events=audit_events)

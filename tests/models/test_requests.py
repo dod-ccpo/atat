@@ -8,16 +8,20 @@ from atst.domain.requests import Requests
 from atst.models.request_status_event import RequestStatus
 
 
+def request_with_status(status):
+    user = UserFactory.create()
+    request = RequestFactory.create(creator=user)
+    return Requests.set_status(user, request, status)
+
+
 def test_pending_financial_requires_mo_action():
-    request = RequestFactory.create()
-    request = Requests.set_status(request, RequestStatus.PENDING_FINANCIAL_VERIFICATION)
+    request = request_with_status(RequestStatus.PENDING_FINANCIAL_VERIFICATION)
 
     assert request.action_required_by == "mission_owner"
 
 
 def test_pending_ccpo_approval_requires_ccpo():
-    request = RequestFactory.create()
-    request = Requests.set_status(request, RequestStatus.PENDING_CCPO_APPROVAL)
+    request = request_with_status(RequestStatus.PENDING_CCPO_APPROVAL)
 
     assert request.action_required_by == "ccpo"
 
@@ -30,43 +34,37 @@ def test_request_has_creator():
 
 
 def test_request_status_started_displayname():
-    request = RequestFactory.create()
-    request = Requests.set_status(request, RequestStatus.STARTED)
+    request = request_with_status(RequestStatus.STARTED)
 
     assert request.status_displayname == "Started"
 
 
 def test_request_status_pending_financial_displayname():
-    request = RequestFactory.create()
-    request = Requests.set_status(request, RequestStatus.PENDING_FINANCIAL_VERIFICATION)
+    request = request_with_status(RequestStatus.PENDING_FINANCIAL_VERIFICATION)
 
     assert request.status_displayname == "Pending Financial Verification"
 
 
 def test_request_status_pending_ccpo_displayname():
-    request = RequestFactory.create()
-    request = Requests.set_status(request, RequestStatus.PENDING_CCPO_APPROVAL)
+    request = request_with_status(RequestStatus.PENDING_CCPO_APPROVAL)
 
     assert request.status_displayname == "Pending CCPO Approval"
 
 
 def test_request_status_pending_approved_displayname():
-    request = RequestFactory.create()
-    request = Requests.set_status(request, RequestStatus.APPROVED)
+    request = request_with_status(RequestStatus.APPROVED)
 
     assert request.status_displayname == "Approved"
 
 
 def test_request_status_pending_expired_displayname():
-    request = RequestFactory.create()
-    request = Requests.set_status(request, RequestStatus.EXPIRED)
+    request = request_with_status(RequestStatus.EXPIRED)
 
     assert request.status_displayname == "Expired"
 
 
 def test_request_status_pending_deleted_displayname():
-    request = RequestFactory.create()
-    request = Requests.set_status(request, RequestStatus.DELETED)
+    request = request_with_status(RequestStatus.DELETED)
 
     assert request.status_displayname == "Deleted"
 

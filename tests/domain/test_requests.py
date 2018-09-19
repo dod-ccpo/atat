@@ -42,21 +42,21 @@ def test_new_request_has_started_status():
 
 def test_auto_approve_less_than_1m():
     new_request = RequestFactory.create(initial_revision={"dollar_value": 999999})
-    request = Requests.submit(new_request)
+    request = Requests.submit(new_request.creator, new_request)
 
     assert request.status == RequestStatus.PENDING_FINANCIAL_VERIFICATION
 
 
 def test_dont_auto_approve_if_dollar_value_is_1m_or_above():
     new_request = RequestFactory.create(initial_revision={"dollar_value": 1000000})
-    request = Requests.submit(new_request)
+    request = Requests.submit(new_request.creator, new_request)
 
     assert request.status == RequestStatus.PENDING_CCPO_ACCEPTANCE
 
 
 def test_dont_auto_approve_if_no_dollar_value_specified():
     new_request = RequestFactory.create(initial_revision={})
-    request = Requests.submit(new_request)
+    request = Requests.submit(new_request.creator, new_request)
 
     assert request.status == RequestStatus.PENDING_CCPO_ACCEPTANCE
 
@@ -79,7 +79,7 @@ def test_should_allow_submission():
 
 
 def test_request_knows_its_last_submission_timestamp(new_request):
-    submitted_request = Requests.submit(new_request)
+    submitted_request = Requests.submit(new_request.creator, new_request)
     assert submitted_request.last_submission_timestamp
 
 
@@ -147,7 +147,7 @@ def test_update_financial_verification_without_task_order(
 ):
     request = RequestFactory.create()
     financial_data = {**request_financial_data, **extended_financial_verification_data}
-    Requests.update_financial_verification(request.id, financial_data)
+    Requests.update_financial_verification(request.creator, request.id, financial_data)
     assert request.task_order
     assert request.task_order.clin_0001 == int(
         extended_financial_verification_data["clin_0001"]
@@ -160,13 +160,15 @@ def test_update_financial_verification_with_task_order():
     task_order = TaskOrderFactory.create(source=TaskOrderSource.EDA)
     financial_data = {**request_financial_data, "task_order_number": task_order.number}
     request = RequestFactory.create()
-    Requests.update_financial_verification(request.id, financial_data)
+    Requests.update_financial_verification(request.creator, request.id, financial_data)
     assert request.task_order == task_order
 
 
 def test_update_financial_verification_with_invalid_task_order():
     request = RequestFactory.create()
-    Requests.update_financial_verification(request.id, request_financial_data)
+    Requests.update_financial_verification(
+        request.creator, request.id, request_financial_data
+    )
     assert not request.task_order
     assert "task_order_number" in request.body.get("financial_verification")
     assert (
@@ -177,7 +179,7 @@ def test_update_financial_verification_with_invalid_task_order():
 
 def test_set_status_sets_revision():
     request = RequestFactory.create()
-    Requests.set_status(request, RequestStatus.APPROVED)
+    Requests.set_status(request.creator, request, RequestStatus.APPROVED)
     assert request.latest_revision == request.status_events[-1].revision
 
 

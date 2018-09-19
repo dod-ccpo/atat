@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+  <div class="panel">
+    <section class="block-list">
+      <header class="block-list__header">
+        <h1 class="block-list__title">Acitivity History</h1>
+      </header>
+
+      <ul>
+        {% for event in audit_events %}
+          <li class="block-list__item">{{ event }}</li>
+        {% endfor %}
+      </ul>
+
+    </section>
+
+  </div>
+
+{% endblock %}
