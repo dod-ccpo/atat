@@ -1,100 +1,54 @@
-{% extends "base.html" %}
+{% extends "base_public.html" %}
 
 {% block content %}
 
-<section class="usa-banner site-banner">
-<div class="usa-grid usa-banner-inner">
-  <img src="/assets/img/us_flag.png" alt="U.S. flag">
-  <p>An official website of the United States government</p>
-  <button class="usa-accordion-button usa-banner-button" aria-expanded="false" aria-controls="gov-banner">
-    <span class="usa-banner-button-text">Here’s how you know</span>
-  </button>
-</div>
-</section>
+<section class="home-layout">
+  <div class="home-container">
 
-<section class="usa-hero">
-  <div class="usa-grid">
-    <div class="usa-hero-callout usa-section-dark">
-      <h2><span class="usa-hero-callout-alt">Joint Enterprise Defense Infrastructure (JEDI) Cloud</span></h2>
-      <p>JEDI Cloud is an enterprise-level acquisition of commercial infrastructure as a service (IaaS) and platform as a service (PaaS) offerings to support DoD business and mission operations.</p>
-    </div>
+    <img class="home-container__logo" src="/static/img/ccpo-logo.svg" alt="Cloud Computing Program Office Logo">
+
+    <h1>Joint Enterprise Defense Infrastructure (JEDI) Cloud</h1>
+    <p>
+      JEDI Cloud provides commercial Infrastructure as a Service (IaaS) and Platform as a Service (PaaS) offerings to support DoD business and mission operations.<br>
+      <b>Anyone with a DoD mission may use JEDI</b>.
+    </p>
+    <a class="usa-button" href="login"><span>New JEDI Request</span></a>
+
+    <h2>Five Steps to the JEDI Cloud</h2>
+    <p>Approval to use JEDI can be granted in hours once a task order has been created and financial verification provided. Follow the five steps below:</p>
+
+    <ol>
+      <li>
+        <div>Complete a JEDI Cloud access request</div>
+        <p>
+          A JEDI Cloud Access Request will inform the the Cloud Computing Program Office (CCPO) about your intention to use JEDI's commercial cloud services and provide the preliminary information needed to grant access.
+          Any DoD employee with a CAC may initiate this request. <a class="icon-link" href="login">Start a Request</a>
+        </p>
+        {{ Icon('ok') }}
+      </li>
+      <li>
+        <div>Prepare a Task Order</div>
+        <p>After submitting a JEDI Cloud Access Request, you will need to work with a contracting officer to prepare a Task Order. The JEDI Cloud is offered by the Department of Defense through an Indefinite Delivery/Indefinite Quantity (ID/IQ) contract vehicle which allows for organizations to quickly order commercial cloud services.</p>
+        {{ Icon('document') }}
+      </li>
+      <li>
+        <div>Complete Financial Verfication</div>
+        <p>After your Task Order is approved you must add that information to your JEDI Cloud Access Request for financial verification.</p>
+        {{ Icon('briefcase') }}
+      </li>
+      <li>
+        <div>Designate Workspace Users</div>
+        <p>Once your JEDI Cloud Access Request is approved by the CCPO the workspace owner will need to set up projects, environments, and users. The workspace owner is the technical POC you originally designated on the request.</p>
+        {{ Icon('avatar') }}
+      </li>
+      <li>
+        <div>Use JEDI Cloud</div>
+        <p>Users you grant access can log into this site, the Account Tracking and Automation Tool (AT-AT), in order to log in directly to the Cloud Service Provider's portal and use cloud resources.</p>
+        {{ Icon('cloud') }}
+      </li>
+    </ol>
+
   </div>
-</section>
-
-<section>
-
-  <h2>Benefits of JEDI Cloud</h2>
-
-
-  <div class="row">
-    <div class="col col--grow">
-      <h3>Benefit 1</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur architecto reprehenderit explicabo maxime natus dolores, accusamus, quis est fugit rerum praesentium blanditiis temporibus. Veniam sapiente iure non rerum, veritatis tempore.</p>
-    </div>
-    <div class="col col--grow">
-      <h3>Benefit 2</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur architecto reprehenderit explicabo maxime natus dolores, accusamus, quis est fugit rerum praesentium blanditiis temporibus. Veniam sapiente iure non rerum, veritatis tempore.</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col col--grow">
-      <h3>Benefit 3</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur architecto reprehenderit explicabo maxime natus dolores, accusamus, quis est fugit rerum praesentium blanditiis temporibus. Veniam sapiente iure non rerum, veritatis tempore.</p>
-    </div>
-    <div class="col col--grow">
-      <h3>Benefit 4</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur architecto reprehenderit explicabo maxime natus dolores, accusamus, quis est fugit rerum praesentium blanditiis temporibus. Veniam sapiente iure non rerum, veritatis tempore.</p>
-    </div>
-  </div>
-
-</section>
-
-<section>
-  <h2>Technical Specifications</h2>
-
-  <p>Learn more about the <a class="icon-link" href="#">security and technical capabilities of JEDI Cloud.</a></p>
-</section>
-
-<section>
-
-  <h2>Steps to use JEDI Cloud</h2>
-
-  <ol>
-    <li>
-      <h4>Complete a JEDI Cloud access request</h4>
-      A JEDI Cloud Access Request will inform the the Cloud Computing Program Office (CCPO) about how you intend to use commercial cloud services. Any DoD employee with a CAC may initiate this request.
-      <a class="icon-link" href="#">Start Request</a>
-    </li>
-
-    <li>
-      <h4>Prepare a Task Order</h4>
-      After the initial access request, you will need to work with a contracting officer to prepare a Task Order (T.O.) against the JEDI Cloud contract vehicle. The JEDI Cloud is offered to the Department of Defense through the Indefinite Delivery/Indefinite Quantity contract vehicle which allows for organizations to quickly order commercial cloud services through a Task Order.
-
-      After issuing a Task Order, you must enter the TO information into the JEDI Cloud Access Request, along with program specific questions, so that we can verify your financial resources to use the commercial cloud.
-
-      Through each checkpoint, the CCPO either automatically approve your access or will let you know of any issues.
-    </li>
-    <li>
-      <h4>Designate a Technical Point of Contact</h4>
-      Once your request is approved, you may appoint a technical point of contact (technical POC) to manage your JEDI Workspace.
-
-      In the JEDI Workspace, a Technical Point of Contact will be able to:
-      <ol>
-        <li>Organize your cloud resources into discreet projects and environments</li>
-        <li>Add and manage user roles and access</li>
-        <li>Access the commercial cloud console</li>
-      </ol>
-
-      JEDI Workspaces are administered outside the commercial cloud environment through a tool called Account Tracking and Automation Tool (AT-AT).
-    </li>
-
-    <li>
-      <h4>Use JEDI Cloud</h4>
-      Users added to the JEDI Workspace will then be gain access to the commercial cloud console through AT-AT.
-    </li>
-
-  </ol>
-
 </section>
 
 

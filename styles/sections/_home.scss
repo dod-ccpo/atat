@@ -1,0 +1,19 @@
+.home-layout {
+  display: block;
+    background-color: $color-white;
+
+  .home-container {
+    max-width: 70rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 8rem;
+
+    .home-container__logo {
+      display: block;
+      max-width: 20rem;
+      margin: $gap * 2;
+    }
+
+  }
+
+}
