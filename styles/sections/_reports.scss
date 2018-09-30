@@ -14,6 +14,10 @@
       flex-direction: row;
       flex-basis: 50%;
 
+      @include ie-only {
+        max-width: 50%;
+      }
+
       &:first-child {
         padding-left: 0;
       }
@@ -26,7 +30,11 @@
 
     .panel {
       padding: $gap * 2;
-      flex-grow: 1;
+      width: 100%;
+
+      @include ie-only {
+        max-width: 100%;
+      }
 
 
       // Spending Summary
@@ -38,19 +46,33 @@
 
         .row {
           justify-content: space-between;
+
+          @include ie-only {
+            max-width: 100%;
+            flex-wrap: wrap;
+          }
         }
 
         .spend-summary__heading {
           @include h3;
           margin: 0 $gap 0 0;
+          -ms-flex-negative: 1;
         }
 
         .spend-summary__budget {
           margin: 0 0 0 $gap;
 
+          @include ie-only {
+            margin: $gap 0 0 0;
+          }
+
           > div {
             text-align: right;
             margin: 0 0 ($gap / 2) 0;
+
+            @include ie-only {
+              text-align: left;
+            }
 
             dd, dt {
               display: inline;

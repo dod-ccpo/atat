@@ -34,6 +34,7 @@ export default {
   mounted: function () {
     this._setDisplayedMonths()
     this._setMetrics()
+    addEventListener('load', this._setMetrics)
     addEventListener('resize', this._setMetrics)
   },
 

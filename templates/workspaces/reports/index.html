@@ -365,7 +365,9 @@
               <td class='table-cell--align-right previous-month'>{{ workspace_totals.get(prev_month_index, 0) | dollars }}</td>
               <td class='table-cell--align-right current-month'>{{ workspace_totals.get(current_month_index, 0) | dollars }}</td>
               <td class='table-cell--expand current-month meter-cell'>
-                <meter value='{{ workspace_totals.get(current_month_index, 0) }}' min='0' max='{{ workspace_totals.get(current_month_index, 0) }}'></meter>
+                <meter value='{{ workspace_totals.get(current_month_index, 0) }}' min='0' max='{{ workspace_totals.get(current_month_index, 0) }}'>
+                  <div class='meter__fallback' style='width: 100%'></div>
+                </meter>
               </td>
             </tr>
           </tbody>

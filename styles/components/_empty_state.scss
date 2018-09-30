@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 100%;
 
   @include media($medium-screen) {
     padding: 8rem ($gap * 4) 0;
@@ -28,6 +29,7 @@
   .empty-state__sub-message {
     @include h4;
     color: $color-gray;
+    max-width: 100%;
 
     @include media($large-screen) {
       @include h3;
