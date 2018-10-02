@@ -2,11 +2,16 @@
 
 <footer class='app-footer'>
   <div class='app-footer__info'>
-    <h5 class='app-footer__info__title'>Joint Enterprise Defense Infrastructure</h5>
+    <h5 class='app-footer__info__title'><a href="{{ url_for('atst.about') }}" class='icon-link' target='_blank' rel='noopener noreferrer'>Joint Enterprise Defense Infrastructure</a></h5>
 
-    <a href='{{ url_for('atst.helpdocs') }}' class='icon-link app-footer__info__link' target='_blank' rel='noopener noreferrer'>
+    <a href="{{ url_for('atst.helpdocs') }}" class='icon-link app-footer__info__link' target='_blank' rel='noopener noreferrer'>
       {{ Icon('help') }}
       <span>JEDI Help</span>
     </a>
   </div>
+
+  <dl class='app-footer__browser-support'>
+    <dt>JEDI Cloud supported on these web browsers</dt>
+    <dd>Chrome</dd><dd>Firefox</dd><dd>Safari</dd><dd>Edge</dd><dd>IE11 on Windows 10</dd><dd>IE10 on Windows 7</dd>
+  </dl>
 </footer>
