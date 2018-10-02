@@ -121,3 +121,7 @@ def user():
 def save_user():
     # no op
     return redirect(url_for(".home"))
+
+@bp.route("/about")
+def about():
+    return render_template("about.html")

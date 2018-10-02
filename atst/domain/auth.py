@@ -10,6 +10,7 @@ UNPROTECTED_ROUTES = [
     "atst.unauthorized",
     "atst.helpdocs",
     "static",
+    "atst.about",
 ]
 
 
