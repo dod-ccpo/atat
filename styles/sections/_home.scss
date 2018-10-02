@@ -11,28 +11,60 @@
     padding-right: $gap * 4;
     padding-left: $gap * 4;
 
+    @include media($medium-screen) {
+      display: flex;
+    }
+
     h1 {
       font-weight: 200;
     }
 
-    h2, h4 {
-      color: $color-blue;
+    h2, h3, h4 {
+      color: $color-primary;
     }
 
     .home-container__logo {
-      display: block;
-      max-width: 20rem;
       margin: $gap * 2;
+
+      img {
+        width: 20rem;
+
+
+        @include media($medium-screen) {
+          width: 25rem;
+        }
+      }
+    }
+
+    .home-container__body {
+      padding-left: $gap * 2;
     }
 
     .home-container__list {
 
       ol {
         list-style: none;
-        counter-reset: li;
-        color: red;}
+        counter-reset: home-counter;
+        padding-left: 0;
+
+        li {
+          counter-increment: home-counter;
+          position: relative;
+
+          &::before {
+            content: counter(home-counter) ". ";
+            color: $color-primary;
+            font-weight: bold;
+            position: absolute;
+            left: -2rem;
+          }
+
+        }
       }
+
+
 
     }
 
   }
+}
