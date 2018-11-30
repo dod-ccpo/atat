@@ -143,7 +143,7 @@ def update_member(workspace_id, member_id):
     form = EditMemberForm(http_request.form)
     if form.validate():
         new_role_name = None
-        if form.data["workspace_role"] != member.role:
+        if form.data["workspace_role"] != member.role.name:
             member = Workspaces.update_member(
                 g.current_user, workspace, member, form.data["workspace_role"]
             )
