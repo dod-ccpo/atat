@@ -23,8 +23,20 @@ def post_to_task_order_step(client, data, screen, task_order_id=None):
 
 
 def slice_data_for_section(task_order_data, section):
-    attrs = TaskOrders.SECTIONS[section]
-    return {k: v for k, v in task_order_data.items() if k in attrs}
+    if section in TaskOrders.SECTIONS.keys():
+        form = TaskOrders.SECTIONS[section]()
+
+        form_fields = {}
+
+        for attr in form.data:
+            if attr in task_order_data.keys():
+                _a = task_order_data[attr]
+                if _a.__class__.__name__ == "date":
+                    _a = _a.strftime("%m/%d/%Y")
+
+                form_fields[attr] = _a
+
+        return form_fields
 
 
 def serialize_dates(data):
@@ -126,6 +138,18 @@ def task_order():
     portfolio = PortfolioFactory.create(owner=user)
 
     return TaskOrderFactory.create(creator=user, portfolio=portfolio)
+
+
+def test_create_new_task_order_with_errors(client, user_session):
+    user = UserFactory.create()
+    to_data = TaskOrderFactory.dictionary()
+    to_data["scope"] = None
+    to_data["potfolio_name"] = "Hello"
+
+    workflow = UpdateTaskOrderWorkflow(user, to_data)
+
+    assert workflow.validate() is False
+    assert "This field is required." in workflow.form.errors["scope"]
 
 
 def test_show_task_order(task_order):

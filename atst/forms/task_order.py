@@ -8,9 +8,9 @@ from wtforms.fields import (
     TextAreaField,
     FileField,
 )
+from wtforms.validators import Required, StopValidation, Length
 from wtforms.fields.html5 import DateField, TelField
 from wtforms.widgets import ListWidget, CheckboxInput
-from wtforms.validators import Required, Length
 
 from atst.forms.validators import IsNumber, PhoneNumber, RequiredIfNot
 
@@ -26,28 +26,44 @@ from .data import (
 from atst.utils.localization import translate
 
 
+def OptionalAsDraft():
+    def _requiredUnlessDraft(form, field):
+        if form.is_draft.data:
+            field.errors[:] = []
+            raise StopValidation()
+
+    return _requiredUnlessDraft
+
+
 class AppInfoForm(CacheableForm):
+    is_draft = BooleanField("Is draft", default=False)
     portfolio_name = StringField(
         translate("forms.task_order.portfolio_name_label"),
         description=translate("forms.task_order.portfolio_name_description"),
+        validators=[OptionalAsDraft(), Required()],
     )
     scope = TextAreaField(
         translate("forms.task_order.scope_label"),
         description=translate("forms.task_order.scope_description"),
+        validators=[OptionalAsDraft(), Required()],
     )
     defense_component = SelectField(
-        translate("forms.task_order.defense_component_label"), choices=SERVICE_BRANCHES
+        translate("forms.task_order.defense_component_label"),
+        choices=SERVICE_BRANCHES,
+        validators=[OptionalAsDraft()],
     )
     app_migration = RadioField(
         translate("forms.task_order.app_migration.label"),
         description=translate("forms.task_order.app_migration.description"),
         choices=APP_MIGRATION,
         default="",
+        validators=[OptionalAsDraft()],
     )
     native_apps = RadioField(
         translate("forms.task_order.native_apps_label"),
         description=translate("forms.task_order.native_apps_description"),
         choices=[("yes", "Yes"), ("no", "No"), ("not_sure", "Not Sure")],
+        validators=[OptionalAsDraft()],
     )
     complexity = SelectMultipleField(
         translate("forms.task_order.complexity.label"),
@@ -56,6 +72,7 @@ class AppInfoForm(CacheableForm):
         default="",
         widget=ListWidget(prefix_label=False),
         option_widget=CheckboxInput(),
+        validators=[OptionalAsDraft(), Required()],
     )
     complexity_other = StringField(translate("forms.task_order.complexity_other_label"))
     dev_team = SelectMultipleField(
@@ -65,6 +82,7 @@ class AppInfoForm(CacheableForm):
         default="",
         widget=ListWidget(prefix_label=False),
         option_widget=CheckboxInput(),
+        validators=[OptionalAsDraft(), Required()],
     )
     dev_team_other = StringField(translate("forms.task_order.dev_team_other_label"))
     team_experience = RadioField(
@@ -72,28 +90,44 @@ class AppInfoForm(CacheableForm):
         description=translate("forms.task_order.team_experience.description"),
         choices=TEAM_EXPERIENCE,
         default="",
+        validators=[OptionalAsDraft()],
     )
 
 
 class FundingForm(CacheableForm):
+    is_draft = BooleanField("Is draft", default=False)
     performance_length = SelectField(
         translate("forms.task_order.performance_length.label"),
         choices=PERIOD_OF_PERFORMANCE_LENGTH,
+        validators=[OptionalAsDraft()],
     )
     start_date = DateField(
-        translate("forms.task_order.start_date_label"), format="%m/%d/%Y"
+        translate("forms.task_order.start_date_label"),
+        format="%m/%d/%Y",
+        validators=[OptionalAsDraft()],
     )
     end_date = DateField(
-        translate("forms.task_order.end_date_label"), format="%m/%d/%Y"
+        translate("forms.task_order.end_date_label"),
+        format="%m/%d/%Y",
+        validators=[OptionalAsDraft()],
     )
     pdf = FileField(
         translate("forms.task_order.pdf_label"),
         description=translate("forms.task_order.pdf_description"),
+        validators=[OptionalAsDraft()],
     )
-    clin_01 = IntegerField(translate("forms.task_order.clin_01_label"))
-    clin_02 = IntegerField(translate("forms.task_order.clin_02_label"))
-    clin_03 = IntegerField(translate("forms.task_order.clin_03_label"))
-    clin_04 = IntegerField(translate("forms.task_order.clin_04_label"))
+    clin_01 = IntegerField(
+        translate("forms.task_order.clin_01_label"), validators=[OptionalAsDraft()]
+    )
+    clin_02 = IntegerField(
+        translate("forms.task_order.clin_02_label"), validators=[OptionalAsDraft()]
+    )
+    clin_03 = IntegerField(
+        translate("forms.task_order.clin_03_label"), validators=[OptionalAsDraft()]
+    )
+    clin_04 = IntegerField(
+        translate("forms.task_order.clin_04_label"), validators=[OptionalAsDraft()]
+    )
 
 
 class UnclassifiedFundingForm(FundingForm):
@@ -107,17 +141,26 @@ class UnclassifiedFundingForm(FundingForm):
 
 
 class OversightForm(CacheableForm):
+    is_draft = BooleanField("Is draft", default=False)
     ko_first_name = StringField(
-        translate("forms.task_order.oversight_first_name_label")
+        translate("forms.task_order.oversight_first_name_label"),
+        validators=[OptionalAsDraft(), Required()],
     )
-    ko_last_name = StringField(translate("forms.task_order.oversight_last_name_label"))
-    ko_email = StringField(translate("forms.task_order.oversight_email_label"))
+    ko_last_name = StringField(
+        translate("forms.task_order.oversight_last_name_label"),
+        validators=[OptionalAsDraft(), Required()],
+    )
+    ko_email = StringField(
+        translate("forms.task_order.oversight_email_label"),
+        validators=[OptionalAsDraft(), Required()],
+    )
     ko_phone_number = TelField(
-        translate("forms.task_order.oversight_phone_label"), validators=[PhoneNumber()]
+        translate("forms.task_order.oversight_phone_label"),
+        validators=[OptionalAsDraft(), PhoneNumber()],
     )
     ko_dod_id = StringField(
         translate("forms.task_order.oversight_dod_id_label"),
-        validators=[Required(), Length(min=10), IsNumber()],
+        validators=[OptionalAsDraft(), Required(), Length(min=10), IsNumber()],
     )
 
     am_cor = BooleanField(translate("forms.task_order.oversight_am_cor_label"))
@@ -128,11 +171,16 @@ class OversightForm(CacheableForm):
     cor_email = StringField(translate("forms.task_order.oversight_email_label"))
     cor_phone_number = TelField(
         translate("forms.task_order.oversight_phone_label"),
-        validators=[RequiredIfNot("am_cor"), PhoneNumber()],
+        validators=[OptionalAsDraft(), RequiredIfNot("am_cor"), PhoneNumber()],
     )
     cor_dod_id = StringField(
         translate("forms.task_order.oversight_dod_id_label"),
-        validators=[RequiredIfNot("am_cor"), Length(min=10), IsNumber()],
+        validators=[
+            OptionalAsDraft(),
+            RequiredIfNot("am_cor"),
+            Length(min=10),
+            IsNumber(),
+        ],
     )
 
     so_first_name = StringField(
@@ -141,11 +189,12 @@ class OversightForm(CacheableForm):
     so_last_name = StringField(translate("forms.task_order.oversight_last_name_label"))
     so_email = StringField(translate("forms.task_order.oversight_email_label"))
     so_phone_number = TelField(
-        translate("forms.task_order.oversight_phone_label"), validators=[PhoneNumber()]
+        translate("forms.task_order.oversight_phone_label"),
+        validators=[OptionalAsDraft(), PhoneNumber()],
     )
     so_dod_id = StringField(
         translate("forms.task_order.oversight_dod_id_label"),
-        validators=[Required(), Length(min=10), IsNumber()],
+        validators=[OptionalAsDraft(), Required(), Length(min=10), IsNumber()],
     )
 
     ko_invite = BooleanField(

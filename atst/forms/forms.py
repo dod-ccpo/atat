@@ -16,6 +16,9 @@ class ValidatedForm(FlaskForm):
         _data.pop("csrf_token", None)
         return _data
 
+    def validate_without_flash(self, *args, **kwargs):
+        return super().validate(*args, **kwargs)
+
     def validate(self, *args, **kwargs):
         valid = super().validate(*args, **kwargs)
         if not valid:

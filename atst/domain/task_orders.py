@@ -7,6 +7,8 @@ from atst.domain.portfolios import Portfolios
 from atst.domain.authz import Authorization
 from .exceptions import NotFoundError
 
+from atst.forms.task_order import AppInfoForm, FundingForm, OversightForm
+
 
 class TaskOrderError(Exception):
     pass
@@ -14,40 +16,9 @@ class TaskOrderError(Exception):
 
 class TaskOrders(object):
     SECTIONS = {
-        "app_info": [
-            "scope",
-            "defense_component",
-            "app_migration",
-            "native_apps",
-            "complexity",
-            "dev_team",
-            "team_experience",
-        ],
-        "funding": [
-            "performance_length",
-            # "pdf",
-            "clin_01",
-            "clin_02",
-            "clin_03",
-            "clin_04",
-        ],
-        "oversight": [
-            "ko_first_name",
-            "ko_last_name",
-            "ko_email",
-            "ko_phone_number",
-            "ko_dod_id",
-            "cor_first_name",
-            "cor_last_name",
-            "cor_email",
-            "cor_phone_number",
-            "cor_dod_id",
-            "so_first_name",
-            "so_last_name",
-            "so_email",
-            "so_phone_number",
-            "so_dod_id",
-        ],
+        "app_info": AppInfoForm,
+        "funding": FundingForm,
+        "oversight": OversightForm,
     }
 
     @classmethod
@@ -89,13 +60,31 @@ class TaskOrders(object):
         return task_order
 
     @classmethod
-    def is_section_complete(cls, task_order, section):
-        if section in TaskOrders.SECTIONS:
-            for attr in TaskOrders.SECTIONS[section]:
-                if getattr(task_order, attr) is None:
-                    return False
+    def section_completion_status(cls, task_order, section):
+        if section in TaskOrders.SECTIONS.keys():
+            form = TaskOrders.SECTIONS[section]()
 
-            return True
+            form_fields = {}
+
+            for attr in form.data:
+                value = getattr(task_order, attr, None)
+                if value is not None:
+                    if value.__class__.__name__ == "date":
+                        value = value.strftime("%m/%d/%Y")
+
+                    form_fields[attr] = value
+
+            checking_form = TaskOrders.SECTIONS[section](form_fields)
+            is_valid = checking_form.validate_without_flash()
+
+            form.validate_without_flash()
+
+            if is_valid or checking_form.errors.keys() == {"csrf_token"}:
+                return "complete"
+            elif checking_form.errors == form.errors:
+                return "incomplete"
+            else:
+                return "draft"
 
         else:
             return False
@@ -103,7 +92,10 @@ class TaskOrders(object):
     @classmethod
     def all_sections_complete(cls, task_order):
         for section in TaskOrders.SECTIONS.keys():
-            if not TaskOrders.is_section_complete(task_order, section):
+            if (
+                not TaskOrders.section_completion_status(task_order, section)
+                == "complete"
+            ):
                 return False
 
         return True

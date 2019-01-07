@@ -28,6 +28,7 @@ import MembersList from './components/members_list'
 import LocalDatetime from './components/local_datetime'
 import RequestsList from './components/requests_list'
 import ConfirmationPopover from './components/confirmation_popover'
+import savedraft from './components/savedraft'
 
 Vue.config.productionTip = false
 
@@ -41,6 +42,7 @@ const app = new Vue({
     toggler,
     optionsinput,
     multicheckboxinput,
+    savedraft,
     textinput,
     checkboxinput,
     DetailsOfUse,

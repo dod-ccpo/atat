@@ -10,9 +10,9 @@
 
   {% block form_action %}
     {% if task_order_id %}
-      <form method='POST' action="{{ url_for('task_orders.new', screen=current, task_order_id=task_order_id) }}" autocomplete="off">
+      <form id="form" method='POST' action="{{ url_for('task_orders.new', screen=current, task_order_id=task_order_id) }}" autocomplete="off">
     {% else %}
-      <form method='POST' action="{{ url_for('task_orders.update', screen=current, portfolio_id=portfolio_id) }}" autocomplete="off">
+      <form id="form" method='POST' action="{{ url_for('task_orders.update', screen=current, portfolio_id=portfolio_id) }}" autocomplete="off">
     {% endif %}
   {% endblock %}
 
@@ -40,7 +40,13 @@
 
       <div class='action-group'>
         <input type='submit' class='usa-button usa-button-primary' value='Save & Continue' />
-        <input class='usa-button usa-button-secondary' value='Save Draft' />
+
+        <savedraft inline-template v-bind:is_draft_initial="false">
+          <div>
+            <div class="usa-button usa-button-secondary usa-button-save-draft" v-on:click="save">Save Draft</div>
+            <input name="is_draft" type="hidden" value="true" v-if="is_draft" />
+          </div>
+        </savedraft>
       </div>
 
     {% endblock %}

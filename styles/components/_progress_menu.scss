@@ -101,6 +101,13 @@
       padding: 1px 2px;
     }
 
+    &--draft:before {
+      background: $color-gold;
+      border: none;
+      font-size: $h6-font-size;
+      mask-image: url('#{$asset-path}/icons/alert.svg');
+    }
+
     &--incomplete:before {
       border: 2px solid $color-gray-light;
     }

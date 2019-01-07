@@ -1,8 +1,10 @@
 <div class="progress-menu progress-menu--four">
   <ul>
     {% for s in screens %}
-      {% if s.complete %}
+      {% if s.complete == 'complete' %}
         {% set step_indicator = 'complete' %}
+      {% elif s.complete == 'draft' %}
+        {% set step_indicator = 'draft' %}
       {% elif loop.index == current %}
         {% set step_indicator = 'active' %}
       {% else %}

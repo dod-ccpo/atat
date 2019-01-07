@@ -97,8 +97,9 @@ class ShowTaskOrderWorkflow:
 
         if self.task_order:
             for section in screen_info:
-                if TaskOrders.is_section_complete(self.task_order, section["section"]):
-                    section["complete"] = True
+                section["complete"] = TaskOrders.section_completion_status(
+                    self.task_order, section["section"]
+                )
 
         return screen_info
 

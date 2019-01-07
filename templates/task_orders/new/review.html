@@ -147,7 +147,9 @@
         </tr>
         <tr>
           <td><h4 class='task-order-form__heading funding-summary__td'>{{ "task_orders.new.review.clin_3"| translate }}</h4></td>
-          <td class="table-cell--align-right">{{ '${:,.2f}'.format(task_order.clin_03) }}</td>
+          {% if task_order.clin_03 %}
+            <td class="table-cell--align-right">{{ '${:,.2f}'.format(task_order.clin_03) }}</td>
+          {% endif %}
         </tr>
         <tr>
             <td><h4 class="task-order-form__heading funding-summary__td{% if not config.CLASSIFIED %} inactive{% endif %}">
