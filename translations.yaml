@@ -20,7 +20,9 @@ base_public:
   login: Log in
   title_tag: JEDI Cloud
 common:
+  back: Back
   save_and_continue: Save & Continue
+  sign: Sign
 components:
   modal:
     close: Close
@@ -394,6 +396,15 @@ requests:
     questions_title_text: Questions related to JEDI Cloud migration
     rationalization_software_systems_tooltip: Rationalization is the DoD process to determine whether the application should move to the cloud.
 task_orders:
+  sign:
+    digital_signature_description: I acknowledge that I have read and fully understand the DoD CCPO JEDI agreements and completed all the necessary steps, as detailed in the FAR (Federal Acquisition Regulation).
+    digital_signature_label: Digital Signature
+    level_of_warrant_description: This is a dollar value indicating that you have permission to sign any Task Order under this max value.
+    level_of_warrant_label: Level of Warrant
+    task_order_builder_title: Task Order Builder
+    title: Sign Task Order
+    unlimited_level_of_warrant_description: Unlimited Level of Warrant funds
+    verify_warrant_level_paragraph: Verify your level of warrant and provide your digital signature to authorize this Task Order.
   new:
     app_info:
       section_title: "What You're Making"

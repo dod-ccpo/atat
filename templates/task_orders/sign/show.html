@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% from "components/text_input.html" import TextInput %}
+{% from "components/checkbox_input.html" import CheckboxInput %}
+
+{% block content %}
+<form method="POST" action='{{ form_action }}'>
+  {{ form.csrf_token }}
+  <div class="row row--pad">
+    <div class="col col--pad">
+      <div class="panel">
+        <div class="panel__heading">
+          <h1 class="task-order-form__heading subheading">
+            <div class="h2">{{ "task_orders.sign.task_order_builder_title" | translate }}</div>
+            {{ "task_orders.sign.title" | translate }}
+          </h1>
+        </div>
+
+        <div class="panel__content">
+          {{ TextInput(form.level_of_warrant, placeholder='$0.00') }}
+          {{ CheckboxInput(form.unlimited_level_of_warrant) }}
+          {{ CheckboxInput(form.signature) }}
+        </div>
+      </div>
+      <div class="action-group">
+        <p>{{ "common.back" | translate }}</p>
+        <input
+          class="usa-button usa-button-primary"
+          type="submit"
+          value='{{ "common.sign" | translate }}'
+        />
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
+

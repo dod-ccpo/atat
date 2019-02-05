@@ -215,3 +215,24 @@ class OversightForm(CacheableForm):
 
 class ReviewForm(CacheableForm):
     pass
+
+
+class SignatureForm(CacheableForm):
+    signer_id = StringField(
+        translate("forms.task_order.skip_invite_description"),
+        description=translate("forms.task_order.skip_invite_description"),
+    )
+
+    unlimited_level_of_warrant = BooleanField(
+        translate("task_orders.sign.unlimited_level_of_warrant_description")
+    )
+
+    level_of_warrant = DecimalField(
+        translate("task_orders.sign.level_of_warrant_label"),
+        description=translate("task_orders.sign.level_of_warrant_description"),
+    )
+
+    signature = BooleanField(
+        translate("task_orders.sign.digital_signature_label"),
+        description=translate("task_orders.sign.digital_signature_description"),
+    )
