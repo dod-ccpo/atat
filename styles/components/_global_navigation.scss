@@ -2,29 +2,16 @@
   background-color: $color-white;
 
   .sidenav__link {
-    padding-right: $gap;
+    padding-right: $gap * 2;
 
     @include media($large-screen) {
       padding-right: $gap * 2;
     }
   }
 
-  .sidenav__link-label {
-    @include hide;
-
-    @include media($large-screen) {
-      @include unhide;
-      padding-left: $gap;
-    }
-  }
-
   &.global-navigation__context--portfolio {
     .sidenav__link {
       padding-right: $gap;
-    }
-
-    .sidenav__link-label {
-      @include hide;
     }
   }
 }

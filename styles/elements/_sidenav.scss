@@ -13,9 +13,9 @@
 
   .sidenav {
     @include media($large-screen) {
-      width: 25rem;
       margin: 0px;
     }
+    width: 25rem;
 
     box-shadow: 0 6px 18px 0 rgba(48,58,65,0.15);
 
