@@ -1,6 +1,7 @@
 .portfolio-panel-container {
   @include media($large-screen) {
     @include grid-row;
+    min-height: 500px;
   }
 
   margin-left: 2 * $gap;
