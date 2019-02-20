@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import { getDaysInMonth } from 'date-fns'
 
 var paddedNumber = function(number) {
@@ -9,7 +8,9 @@ var paddedNumber = function(number) {
   }
 }
 
-export default Vue.component('date-selector', {
+export default {
+  name: 'date-selector',
+
   props: ['initialday', 'initialmonth', 'initialyear', 'mindate', 'maxdate'],
 
   data() {
@@ -123,4 +124,4 @@ export default Vue.component('date-selector', {
   render(createElement) {
     return createElement('p', 'Please implement inline-template')
   },
-})
+}

@@ -13,6 +13,7 @@
   initialmonth="{{ field.data.month }}"
   initialday="{{ field.data.day }}"
   initialyear="{{ field.data.year }}"
+  key="{{ field.name }}"
   inline-template>
 
     <fieldset class="usa-input date-picker" v-bind:class="{ 'usa-input--success': isDateValid }">
