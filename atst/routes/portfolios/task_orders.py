@@ -65,10 +65,14 @@ def view_task_order(portfolio_id, task_order_id):
     dd_254_complete = DD254s.is_complete(task_order.dd_254)
     return render_template(
         "portfolios/task_orders/show.html",
+        dd_254_complete=dd_254_complete,
+        is_cor=Authorization.is_cor(g.current_user, task_order),
+        is_ko=Authorization.is_ko(g.current_user, task_order),
+        is_so=Authorization.is_so(g.current_user, task_order),
+        is_to_signed=TaskOrders.is_signed_by_ko(task_order),
         portfolio=portfolio,
         task_order=task_order,
         to_form_complete=to_form_complete,
-        dd_254_complete=dd_254_complete,
         user=g.current_user,
     )
 
@@ -78,7 +82,8 @@ def ko_review(portfolio_id, task_order_id):
     task_order = TaskOrders.get(g.current_user, task_order_id)
     portfolio = Portfolios.get(g.current_user, portfolio_id)
 
-    Authorization.check_is_ko(g.current_user, task_order)
+    Authorization.check_is_ko_or_cor(g.current_user, task_order)
+
     return render_template(
         "/portfolios/task_orders/review.html",
         portfolio=portfolio,
@@ -95,12 +100,22 @@ def submit_ko_review(portfolio_id, task_order_id, form=None):
     form_data = {**http_request.form, **http_request.files}
     form = KOReviewForm(form_data)
 
-    Authorization.check_is_ko(g.current_user, task_order)
+    Authorization.check_is_ko_or_cor(g.current_user, task_order)
+
     if form.validate():
         TaskOrders.update(user=g.current_user, task_order=task_order, **form.data)
-        return redirect(
-            url_for("task_orders.signature_requested", task_order_id=task_order_id)
-        )
+        if Authorization.is_ko(g.current_user, task_order):
+            return redirect(
+                url_for("task_orders.signature_requested", task_order_id=task_order_id)
+            )
+        else:
+            return redirect(
+                url_for(
+                    "portfolios.view_task_order",
+                    task_order_id=task_order_id,
+                    portfolio_id=portfolio_id,
+                )
+            )
     else:
         return render_template(
             "/portfolios/task_orders/review.html",

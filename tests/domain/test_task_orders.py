@@ -13,6 +13,17 @@ from tests.factories import (
 )
 
 
+def test_is_signed_by_ko():
+    user = UserFactory.create()
+    task_order = TaskOrderFactory.create(contracting_officer=user)
+
+    assert not TaskOrders.is_signed_by_ko(task_order)
+
+    TaskOrders.update(user, task_order, signer_dod_id=user.dod_id)
+
+    assert TaskOrders.is_signed_by_ko(task_order)
+
+
 def test_section_completion_status():
     dict_keys = [k for k in TaskOrders.SECTIONS.keys()]
     section = dict_keys[0]

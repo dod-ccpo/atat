@@ -20,6 +20,7 @@ base_public:
   title_tag: JEDI Cloud
 common:
   back: Back
+  edit: Edit
   manage: manage
   save_and_continue: Save & Continue
   sign: Sign

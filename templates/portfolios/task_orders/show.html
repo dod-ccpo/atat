@@ -124,27 +124,37 @@
     <div id="next-steps" class="task-order-next-steps">
       <div class="panel">
         <h3 class="task-order-next-steps__panel-head panel__content">{{ "task_orders.view.whats_next" | translate }}</h3>
-        {% call Step(
-          description="task_orders.view.steps.draft" | translate({
-            "contact": officer_name(task_order.creator)
-          })| safe,
-          button_url=url_for("task_orders.new", screen=1, task_order_id=task_order.id),
-          button_text='Edit',
-          complete=to_form_complete) %}
-        {% endcall %}
-        {% set is_so = user == task_order.security_officer %}
-        {{ Step(
-          description="task_orders.view.steps.security" | translate({
-            "security_officer": officer_name(task_order.security_officer)
-          }) | safe,
-          button_url=is_so and url_for("portfolios.so_review", portfolio_id=portfolio.id, task_order_id=task_order.id),
-          button_text=is_so and 'Edit',
-          complete=dd_254_complete) }}
+        {{
+          Step(
+            button_text='Edit',
+            button_url=url_for("task_orders.new", screen=1, task_order_id=task_order.id),
+            complete=to_form_complete,
+            description="task_orders.view.steps.draft" | translate({
+              "contact": officer_name(task_order.creator)
+            })| safe,
+          )
+        }}
+        {{
+          Step(
+            button_text=is_so and ("common.edit" | translate),
+            button_url=is_so and url_for("portfolios.so_review", portfolio_id=portfolio.id, task_order_id=task_order.id),
+            complete=dd_254_complete,
+            description="task_orders.view.steps.security" | translate({
+              "security_officer": officer_name(task_order.security_officer)
+            }) | safe,
+          )
+        }}
         {% call Step(
           description="task_orders.view.steps.record" | translate({
             "contracting_officer": officer_name(task_order.contracting_officer),
             "contracting_officer_representative": officer_name(task_order.contracting_officer_representative)
           }) | safe,
+          button_url=url_for(
+            "portfolios.ko_review",
+            portfolio_id=portfolio.id,
+            task_order_id=task_order.id,
+          ),
+          button_text=(is_cor or is_ko) and ("common.edit" | translate),
           complete=False) %}
           <div class='alert alert--warning'>
             <div class='alert__content'>
@@ -154,14 +164,16 @@
             </div>
           </div>
         {% endcall %}
-        {% set is_ko = user == task_order.contracting_officer %}
-        {{ Step(
-          description="task_orders.view.steps.sign" | translate({
-            "contracting_officer": officer_name(task_order.contracting_officer)
-          }) | safe,
-          button_url=is_ko and url_for("portfolios.ko_review", portfolio_id=portfolio.id, task_order_id=task_order.id),
-          button_text=is_ko and 'Sign',
-          complete=False) }}
+        {{
+          Step(
+            button_text=is_ko and not is_to_signed and ("common.sign" | translate),
+            button_url=is_ko and url_for("task_orders.signature_requested", task_order_id=task_order.id),
+            complete=is_to_signed,
+            description="task_orders.view.steps.sign" | translate({
+              "contracting_officer": officer_name(task_order.contracting_officer)
+            }) | safe,
+          )
+        }}
       </div>
     </div>
     <div class="task-order-sidebar col">

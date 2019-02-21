@@ -14,7 +14,7 @@ def find_unsigned_ko_to(task_order_id):
     task_order = TaskOrders.get(g.current_user, task_order_id)
     Authorization.check_is_ko(g.current_user, task_order)
 
-    if task_order.signer_dod_id is not None:
+    if TaskOrders.is_signed_by_ko(task_order):
         raise NotFoundError("task_order")
 
     return task_order

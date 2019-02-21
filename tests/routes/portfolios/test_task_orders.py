@@ -234,22 +234,49 @@ def test_cant_view_task_order_invitations_when_not_complete(client, user_session
 def test_ko_can_view_ko_review_page(client, user_session):
     portfolio = PortfolioFactory.create()
     ko = UserFactory.create()
+    cor = UserFactory.create()
+
     PortfolioRoleFactory.create(
         role=Roles.get("officer"),
         portfolio=portfolio,
         user=ko,
         status=PortfolioStatus.ACTIVE,
     )
-    task_order = TaskOrderFactory.create(portfolio=portfolio, contracting_officer=ko)
-    user_session(ko)
-    response = client.get(
-        url_for(
-            "portfolios.ko_review",
-            portfolio_id=portfolio.id,
-            task_order_id=task_order.id,
-        )
+    PortfolioRoleFactory.create(
+        role=Roles.get("officer"),
+        portfolio=portfolio,
+        user=cor,
+        status=PortfolioStatus.ACTIVE,
     )
+    task_order = TaskOrderFactory.create(
+        portfolio=portfolio,
+        contracting_officer=ko,
+        contracting_officer_representative=cor,
+    )
+    request_url = url_for(
+        "portfolios.ko_review", portfolio_id=portfolio.id, task_order_id=task_order.id
+    )
+
+    #
+    # KO returns 200
+    #
+    user_session(ko)
+    response = client.get(request_url)
     assert response.status_code == 200
+
+    #
+    # COR returns 200
+    #
+    user_session(cor)
+    response = client.get(request_url)
+    assert response.status_code == 200
+
+    #
+    # Random user raises UnauthorizedError
+    #
+    user_session(UserFactory.create())
+    response = client.get(request_url)
+    assert response.status_code == 404
 
 
 def test_mo_redirected_to_build_page(client, user_session):
@@ -282,17 +309,66 @@ def test_cor_redirected_to_build_page(client, user_session):
     assert response.status_code == 200
 
 
-def test_submit_completed_ko_review_page(client, user_session, pdf_upload):
+def test_submit_completed_ko_review_page_as_cor(client, user_session, pdf_upload):
     portfolio = PortfolioFactory.create()
+
+    cor = UserFactory.create()
+
+    PortfolioRoleFactory.create(
+        role=Roles.get("officer"),
+        portfolio=portfolio,
+        user=cor,
+        status=PortfolioStatus.ACTIVE,
+    )
+
+    task_order = TaskOrderFactory.create(
+        portfolio=portfolio, contracting_officer_representative=cor
+    )
+
+    form_data = {
+        "start_date": "02/10/2019",
+        "end_date": "03/10/2019",
+        "number": "1938745981",
+        "loa": "0813458013405",
+        "custom_clauses": "hi im a custom clause",
+        "pdf": pdf_upload,
+    }
+
+    user_session(cor)
+
+    response = client.post(
+        url_for(
+            "portfolios.ko_review",
+            portfolio_id=portfolio.id,
+            task_order_id=task_order.id,
+        ),
+        data=form_data,
+    )
+
+    assert task_order.pdf
+    assert response.headers["Location"] == url_for(
+        "portfolios.view_task_order",
+        task_order_id=task_order.id,
+        portfolio_id=portfolio.id,
+        _external=True,
+    )
+
+
+def test_submit_completed_ko_review_page_as_ko(client, user_session, pdf_upload):
+    portfolio = PortfolioFactory.create()
+
     ko = UserFactory.create()
+
     PortfolioRoleFactory.create(
         role=Roles.get("officer"),
         portfolio=portfolio,
         user=ko,
         status=PortfolioStatus.ACTIVE,
     )
+
     task_order = TaskOrderFactory.create(portfolio=portfolio, contracting_officer=ko)
     user_session(ko)
+
     form_data = {
         "start_date": "02/10/2019",
         "end_date": "03/10/2019",
@@ -310,7 +386,6 @@ def test_submit_completed_ko_review_page(client, user_session, pdf_upload):
         ),
         data=form_data,
     )
-
     assert task_order.pdf
     assert response.headers["Location"] == url_for(
         "task_orders.signature_requested", task_order_id=task_order.id, _external=True

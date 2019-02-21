@@ -15,6 +15,8 @@ class TaskOrderError(Exception):
 
 
 class TaskOrders(object):
+    INFORMATION_RECORDED_ATTRIBUTES = ["end_date", "loa", "number", "start_date"]
+
     SECTIONS = {
         "app_info": [
             "portfolio_name",
@@ -119,6 +121,10 @@ class TaskOrders(object):
                 return False
 
         return True
+
+    @classmethod
+    def is_signed_by_ko(cls, task_order):
+        return task_order.signer_dod_id is not None
 
     @classmethod
     def mission_owner_sections(cls):
