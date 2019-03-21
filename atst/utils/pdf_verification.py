@@ -207,7 +207,7 @@ def pdf_signature_validations(pdf=None, crl_check=None):
         )
         start_byte = n
 
-    response = {"result": None, "signature_count": len(signatures), "signatures": []}
+    response = {"result": True, "signature_count": len(signatures), "signatures": []}
 
     for signature in signatures:
         sig = signature.to_dict
@@ -215,8 +215,6 @@ def pdf_signature_validations(pdf=None, crl_check=None):
 
         if not sig["is_valid"]:
             response["result"] = False
-        elif response["result"] is not False:
-            response["result"] = True
 
     if len(signatures) == 0:
         response["result"] = False
