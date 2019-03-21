@@ -58,7 +58,8 @@ class PDFSignature:
                 ):
                     cert = cert.dump()
                     self._signers_cert = pem.armor("CERTIFICATE", cert)
-                    break
+                else:
+                    next
 
         return self._signers_cert
 
@@ -107,7 +108,8 @@ class PDFSignature:
         for attr in self.signed_binary_data["signer_infos"][0]["signed_attrs"]:
             if attr["type"].native == "message_digest":
                 stored_hash = attr["values"].native[0]
-                break
+            else:
+                next
 
         return stored_hash
 
