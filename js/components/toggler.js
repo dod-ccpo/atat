@@ -6,13 +6,17 @@ export default {
 
   mixins: [FormMixin],
 
+  props: {
+    initialSelectedSection: String,
+  },
+
   components: {
     textinput,
   },
 
   data: function() {
     return {
-      selectedSection: null,
+      selectedSection: this.initialSelectedSection,
     }
   },
 

@@ -13,13 +13,20 @@ from atst.models.permissions import Permissions
 from atst.utils.flash import formatted_flash as flash
 
 
-def get_environments_obj_for_app(application):
+def get_environments_obj_for_app(application, form=None):
     environments_obj = []
     for env in application.environments:
+        edit_form = None
+
+        if form == None or form.data["id"] != env.id:
+            edit_form = EditEnvironmentForm(obj=env)
+        else:
+            edit_form = form
+
         env_data = {
             "id": env.id,
             "name": env.name,
-            "edit_form": EditEnvironmentForm(obj=env),
+            "edit_form": edit_form,
             "members_form": EnvironmentRolesForm(data=data_for_env_members_form(env)),
             "members": sort_env_users_by_role(env),
         }
@@ -85,21 +92,35 @@ def update_environment(environment_id):
     environment = Environments.get(environment_id)
     application = environment.application
 
-    form = EditEnvironmentForm(formdata=http_request.form)
+    env_form = EditEnvironmentForm(obj=environment, formdata=http_request.form)
 
-    if form.validate():
-        Environments.update(environment=environment, name=form.name.data)
+    if env_form.validate():
+        Environments.update(environment=environment, name=env_form.name.data)
 
-    flash("application_environments_updated")
+        flash("application_environments_updated")
 
-    return redirect(
-        url_for(
-            "applications.settings",
-            application_id=application.id,
-            fragment="application-environments",
-            _anchor="application-environments",
+        return redirect(
+            url_for(
+                "applications.settings",
+                application_id=application.id,
+                fragment="application-environments",
+                _anchor="application-environments",
+            )
         )
-    )
+    else:
+        return (
+            render_template(
+                "portfolios/applications/settings.html",
+                application=application,
+                form=ApplicationForm(
+                    name=application.name, description=application.description
+                ),
+                environments_obj=get_environments_obj_for_app(
+                    application=application, form=env_form
+                ),
+            ),
+            400,
+        )
 
 
 @applications_bp.route("/applications/<application_id>/edit", methods=["POST"])

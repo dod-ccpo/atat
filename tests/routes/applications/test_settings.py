@@ -27,7 +27,7 @@ from atst.forms.app_settings import EnvironmentRolesForm
 from tests.utils import captured_templates
 
 
-def test_updating_application_environments(client, user_session):
+def test_updating_application_environments_success(client, user_session):
     portfolio = PortfolioFactory.create()
     application = ApplicationFactory.create(portfolio=portfolio)
     environment = EnvironmentFactory.create(application=application)
@@ -50,6 +50,26 @@ def test_updating_application_environments(client, user_session):
         _anchor="application-environments",
     )
     assert environment.name == "new name a"
+
+
+def test_updating_application_environments_failure(client, user_session):
+    portfolio = PortfolioFactory.create()
+    application = ApplicationFactory.create(portfolio=portfolio)
+    environment = EnvironmentFactory.create(
+        application=application, name="original name"
+    )
+
+    user_session(portfolio.owner)
+
+    form_data = {"name": ""}
+
+    response = client.post(
+        url_for("applications.update_environment", environment_id=environment.id),
+        data=form_data,
+    )
+
+    assert response.status_code == 400
+    assert environment.name == "original name"
 
 
 def test_application_settings(client, user_session):

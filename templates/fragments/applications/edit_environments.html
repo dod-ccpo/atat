@@ -45,11 +45,12 @@
 
     <ul class="accordion-table__items">
       {% for env in environments_obj %}
+        {% set edit_form = env['edit_form'] %}
         {% set member_count = env['members_form'].data['team_roles'] | length %}
         {% set members_by_role = env['members'] %}
         {% set unassigned = members_by_role['no_access'] %}
 
-        <toggler inline-template>
+        <toggler inline-template {% if edit_form.errors %}initial-selected-section="edit"{% endif %}>
           <li class="accordion-table__item">
             <div class="accordion-table__item-content">
               <span>
@@ -97,10 +98,9 @@
             {% call ToggleSection(section_name="edit") %}
               <ul>
                 <li class="accordion-table__item__expanded">
-                  {% set edit_form = env['edit_form'] %}
-                  <form action="{{ url_for('applications.update_environment', environment_id=env['id']) }}" method="post">
+                  <form action="{{ url_for('applications.update_environment', environment_id=env['id'], fragment='application-environments', _anchor='application-environments') }}" method="post">
                     {{ edit_form.csrf_token }}
-                    {{ TextInput(edit_form.name) }}
+                    {{ TextInput(edit_form.name, validation='requiredField') }}
                     {{
                       SaveButton(
                         text=("portfolios.applications.update_button_text" | translate)
