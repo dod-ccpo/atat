@@ -1,12 +1,12 @@
 {% macro ToggleButton(action, open_html, close_html, section_name) %}
-  <span v-on:click="toggleSection('{{ section_name }}')">
+  <div v-on:click="toggleSection('{{ section_name }}')">
     <div v-if="selectedSection === '{{ section_name }}'">
       {{ close_html }}
     </div>
     <div v-else>
       {{ open_html }}
     </div>
-  </span>
+  </div>
 {% endmacro %}
 
 {% macro ToggleSection(section_name) %}
