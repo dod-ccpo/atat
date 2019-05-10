@@ -318,3 +318,10 @@ class DD254Factory(Base):
     required_distribution = factory.LazyFunction(
         lambda: [random_choice(data.REQUIRED_DISTRIBUTIONS)]
     )
+
+
+class NotificationRecipientFactory(Base):
+    class Meta:
+        model = NotificationRecipient
+
+    email = factory.Faker("email")
