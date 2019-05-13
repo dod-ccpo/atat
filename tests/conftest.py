@@ -14,7 +14,7 @@ import tests.factories as factories
 from tests.mocks import PDF_FILENAME, PDF_FILENAME2
 from tests.utils import FakeLogger
 
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
