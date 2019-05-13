@@ -29,6 +29,7 @@ from atst.utils import mailer
 from atst.utils.form_cache import FormCache
 from atst.utils.json import CustomJSONEncoder
 from atst.queue import queue
+from atst.utils.notification_sender import NotificationSender
 
 from logging.config import dictConfig
 from atst.utils.logging import JsonFormatter, RequestContextFilter
@@ -63,6 +64,7 @@ def make_app(config):
     make_csp_provider(app)
     make_crl_validator(app)
     make_mailer(app)
+    make_notification_sender(app)
     queue.init_app(app)
 
     db.init_app(app)
@@ -245,6 +247,10 @@ def make_mailer(app):
         )
     sender = app.config.get("MAIL_SENDER")
     app.mailer = mailer.Mailer(mailer_connection, sender)
+
+
+def make_notification_sender(app):
+    app.notification_sender = NotificationSender(queue, app.logger)
 
 
 def apply_json_logger():
