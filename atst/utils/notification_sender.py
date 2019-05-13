@@ -1,4 +1,4 @@
-from atst.queue import ATSTQueue
+from atst.queue import ATSTQueue, queue
 from atst.database import db
 from atst.models import NotificationRecipient
 
@@ -18,3 +18,6 @@ class NotificationSender(object):
             recipient.email
             for recipient in db.session.query(NotificationRecipient).all()
         ]
+
+
+notification_sender = NotificationSender(queue)

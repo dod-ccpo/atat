@@ -11,6 +11,7 @@ from atst.domain.invitations import (
 from atst.domain.authnid.crl import CRLInvalidException
 from atst.domain.portfolios import PortfolioError
 from atst.utils.flash import formatted_flash as flash
+from atst.utils.notification_sender import notification_sender
 
 
 def log_error(e):
@@ -20,6 +21,7 @@ def log_error(e):
 
 def handle_error(e, message="Not Found", code=404):
     log_error(e)
+    notification_sender.send(message)
     return render_template("error.html", message=message), code
 
 
