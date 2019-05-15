@@ -30,6 +30,9 @@ class ATSTQueue(RQ):
     def send_mail(self, recipients, subject, body):
         self._queue_job(ATSTQueue._send_mail, recipients, subject, body)
 
+    def send_notification_mail(self, recipients, subject, body):
+        self._queue_job(ATSTQueue._send_mail, recipients, subject, body)
+
     # pylint: disable=pointless-string-statement
     """Class methods to actually perform the work.
 

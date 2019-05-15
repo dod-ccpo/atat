@@ -20,7 +20,7 @@ class NotificationSender(object):
                 recipients, body
             )
         )
-        self.queue.send_mail(recipients, self.EMAIL_SUBJECT, body)
+        self.queue.send_notification_mail(recipients, self.EMAIL_SUBJECT, body)
 
     def _get_recipients(self, type_):
         query = select([NotificationRecipient.email])

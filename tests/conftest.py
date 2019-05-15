@@ -310,7 +310,7 @@ def mock_logger(app):
 
 
 @pytest.fixture
-def mock_notification_sender(app):
+def notification_sender(app):
     real_notification_sender = app.notification_sender
     app.notification_sender = FakeNotificationSender()
 

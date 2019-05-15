@@ -22,6 +22,6 @@ def test_can_send_notification(mock_queue, notification_sender):
     NotificationRecipientFactory.create(email=recipient_email)
     notification_sender.send(email_body)
 
-    mock_queue.send_mail.assert_called_once_with(
+    mock_queue.send_notification_mail.assert_called_once_with(
         ("test@example.com",), notification_sender.EMAIL_SUBJECT, email_body
     )
