@@ -250,7 +250,7 @@ def make_mailer(app):
 
 
 def make_notification_sender(app):
-    app.notification_sender = NotificationSender(queue, app.logger)
+    app.notification_sender = NotificationSender(queue)
 
 
 def apply_json_logger():

@@ -11,8 +11,8 @@ def mock_queue(queue):
 
 
 @pytest.fixture
-def notification_sender(mock_queue, mock_logger):
-    return NotificationSender(mock_queue, mock_logger)
+def notification_sender(mock_queue):
+    return NotificationSender(mock_queue)
 
 
 def test_can_send_notification(mock_queue, notification_sender):

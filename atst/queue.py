@@ -31,7 +31,7 @@ class ATSTQueue(RQ):
         self._queue_job(ATSTQueue._send_mail, recipients, subject, body)
 
     def send_notification_mail(self, recipients, subject, body):
-        self._queue_job(ATSTQueue._send_mail, recipients, subject, body)
+        self._queue_job(ATSTQueue._send_notification_mail, recipients, subject, body)
 
     # pylint: disable=pointless-string-statement
     """Class methods to actually perform the work.
@@ -42,6 +42,15 @@ class ATSTQueue(RQ):
 
     @classmethod
     def _send_mail(self, recipients, subject, body):
+        app.mailer.send(recipients, subject, body)
+
+    @classmethod
+    def _send_notification_mail(self, recipients, subject, body):
+        app.logger.info(
+            "Sending a notification to these recipients: {}\n\n{}".format(
+                recipients, body
+            )
+        )
         app.mailer.send(recipients, subject, body)
 
 
