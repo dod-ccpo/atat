@@ -12,15 +12,22 @@ from atst.domain.authnid.crl import CRLInvalidException
 from atst.domain.portfolios import PortfolioError
 from atst.utils.flash import formatted_flash as flash
 
+NO_NOTIFY_STATUS_CODES = set([404, 401])
+
 
 def log_error(e):
     error_message = e.message if hasattr(e, "message") else str(e)
     current_app.logger.exception(error_message)
 
 
+def notify(e, message, code):
+    if code not in NO_NOTIFY_STATUS_CODES:
+        current_app.notification_sender.send(message)
+
+
 def handle_error(e, message="Not Found", code=404):
     log_error(e)
-    current_app.notification_sender.send(message)
+    notify(e, message, code)
     return render_template("error.html", message=message), code
 
 
@@ -57,13 +64,9 @@ def make_error_pages(app):
     @app.errorhandler(Exception)
     # pylint: disable=unused-variable
     def exception(e):
-        log_error(e)
         if current_app.debug:
             raise e
-        return (
-            render_template("error.html", message="An Unexpected Error Occurred"),
-            500,
-        )
+        return handle_error(e, message="An Unexpected Error Occurred", code=500)
 
     @app.errorhandler(InvitationError)
     @app.errorhandler(InvitationWrongUserError)

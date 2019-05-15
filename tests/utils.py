@@ -42,4 +42,4 @@ class FakeLogger:
             self.extras.append(kwargs["extra"])
 
 
-FakeNotificationSender = Mock(spec=NotificationSender)
+FakeNotificationSender = lambda: Mock(spec=NotificationSender)
