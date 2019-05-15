@@ -1,4 +1,5 @@
 from logging import Logger
+from sqlalchemy import select
 
 from atst.queue import ATSTQueue
 from atst.database import db
@@ -22,7 +23,5 @@ class NotificationSender(object):
         self.queue.send_mail(recipients, self.EMAIL_SUBJECT, body)
 
     def _get_recipients(self, type_):
-        return [
-            recipient.email
-            for recipient in db.session.query(NotificationRecipient).all()
-        ]
+        query = select([NotificationRecipient.email])
+        return db.session.execute(query).fetchone()
