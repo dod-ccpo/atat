@@ -1,5 +1,8 @@
 from flask import template_rendered
 from contextlib import contextmanager
+from unittest.mock import Mock
+
+from atst.utils.notification_sender import NotificationSender
 
 
 @contextmanager
@@ -37,3 +40,6 @@ class FakeLogger:
         self.messages.append(msg)
         if "extra" in kwargs:
             self.extras.append(kwargs["extra"])
+
+
+FakeNotificationSender = Mock(spec=NotificationSender)
