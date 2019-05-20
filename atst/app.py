@@ -22,6 +22,7 @@ from atst.domain.authnid.crl import CRLCache, NoOpCRLCache
 from atst.domain.auth import apply_authentication
 from atst.domain.authz import Authorization
 from atst.domain.csp import make_csp_provider
+from atst.domain.portfolios import Portfolios
 from atst.models.permissions import Permissions
 from atst.eda_client import MockEDAClient
 from atst.utils import mailer
@@ -102,6 +103,14 @@ def make_flask_callbacks(app):
         g.modal = request.args.get("modal", None)
         g.Authorization = Authorization
         g.Permissions = Permissions
+
+    @app.context_processor
+    def _portfolios():
+        if not g.current_user:
+            return {}
+
+        portfolios = Portfolios.for_user(g.current_user)
+        return {"portfolios": portfolios}
 
     @app.after_request
     def _cleanup(response):
