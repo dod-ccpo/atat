@@ -100,8 +100,6 @@ def test_portfolio_reports(client, user_session):
     response = client.get(url_for("portfolios.reports", portfolio_id=portfolio.id))
     assert response.status_code == 200
     assert portfolio.name in response.data.decode()
-    expiration_date = task_order.end_date.strftime("%Y-%m-%d")
-    assert expiration_date in response.data.decode()
 
 
 def test_portfolio_reports_with_mock_portfolio(client, user_session):
