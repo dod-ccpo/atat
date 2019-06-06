@@ -1,7 +1,7 @@
 # Add root application dir to the python path
 import os
 import sys
-from datetime import timedelta, date
+from datetime import timedelta, date, timedelta
 import random
 from faker import Faker
 
@@ -31,6 +31,7 @@ from tests.factories import (
     random_service_branch,
     random_task_order_number,
     TaskOrderFactory,
+    CLINFactory,
 )
 
 fake = Faker()
@@ -160,16 +161,26 @@ def add_members_to_portfolio(portfolio):
 
 
 def add_task_orders_to_portfolio(portfolio):
-    # TODO: after CLINs are implemented, vary the start/end dates of TOs
-    create_task_order(portfolio)
-    create_task_order(portfolio)
-    create_task_order(portfolio)
+    today = date.today()
+    future = today + timedelta(days=100)
+    yesterday = today - timedelta(days=1)
 
+    draft_to = TaskOrderFactory.build(portfolio=portfolio, pdf=None)
+    unsigned_to = TaskOrderFactory.build(portfolio=portfolio)
+    upcoming_to = TaskOrderFactory.build(portfolio=portfolio, signed_at=yesterday)
+    expired_to = TaskOrderFactory.build(portfolio=portfolio, signed_at=yesterday)
+    active_to = TaskOrderFactory.build(portfolio=portfolio, signed_at=yesterday)
 
-def create_task_order(portfolio):
-    # TODO: after CLINs are implemented add them to TO
-    task_order = TaskOrderFactory.build(portfolio=portfolio)
-    db.session.add(task_order)
+    clins = [
+        CLINFactory.build(task_order=unsigned_to, start_date=today, end_date=today),
+        CLINFactory.build(task_order=upcoming_to, start_date=future, end_date=future),
+        CLINFactory.build(task_order=expired_to, start_date=yesterday, end_date=yesterday),
+        CLINFactory.build(task_order=active_to, start_date=yesterday, end_date=future),
+    ]
+
+    task_orders = [draft_to, unsigned_to, upcoming_to, expired_to, active_to]
+
+    db.session.add_all(task_orders + clins)
     db.session.commit()
 
 

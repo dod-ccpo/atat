@@ -1,5 +1,5 @@
 from enum import Enum
-from datetime import date, datetime
+from datetime import date
 
 from sqlalchemy import Column, DateTime, ForeignKey, String
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -11,12 +11,10 @@ from atst.models.clin import JEDICLINType
 
 
 class Status(Enum):
-    STARTED = "Started"
-    PENDING = "Pending"
-    ACTIVE = "Active"
-    EXPIRED = "Expired"
     DRAFT = "Draft"
+    ACTIVE = "Active"
     UPCOMING = "Upcoming"
+    EXPIRED = "Expired"
     UNSIGNED = "Unsigned"
 
 
@@ -90,7 +88,7 @@ class TaskOrder(Base, mixins.TimestampsMixin):
 
     @property
     def start_date(self):
-        return min((c.start_date for c in self.clins), default=None)
+        return min((c.start_date for c in self.clins), default=self.time_created.date())
 
     @property
     def end_date(self):

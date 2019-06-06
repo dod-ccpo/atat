@@ -29,15 +29,11 @@ def test_period_of_performance_is_first_to_last_clin():
             CLINFactory.create(
                 start_date=intermediate_start_date, end_date=intermediate_end_date
             ),
-            CLINFactory.create(
-                start_date=start_date, end_date=intermediate_end_date
-            ),
+            CLINFactory.create(start_date=start_date, end_date=intermediate_end_date),
             CLINFactory.create(
                 start_date=intermediate_start_date, end_date=intermediate_end_date
             ),
-            CLINFactory.create(
-                start_date=intermediate_start_date, end_date=end_date
-            ),
+            CLINFactory.create(start_date=intermediate_start_date, end_date=end_date),
             CLINFactory.create(
                 start_date=intermediate_start_date, end_date=intermediate_end_date
             ),

@@ -70,25 +70,15 @@
 
 <div class="portfolio-funding">
 
-  {% if not active_task_orders and not pending_task_orders %}
+  {% if task_orders  %}
+    {{ TaskOrderList(task_orders) }}
+  {% else %}
     {{ EmptyState(
       'This portfolio doesn’t have any active or pending task orders.',
       action_label='Add a New Task Order',
       action_href=url_for('task_orders.edit', portfolio_id=portfolio.id),
       icon='cloud',
     ) }}
-  {% endif %}
-
-  {% if pending_task_orders %}
-    {{ TaskOrderList(pending_task_orders, label='warning') }}
-  {% endif %}
-
-  {% if active_task_orders %}
-    {{ TaskOrderList(active_task_orders, label='success') }}
-  {% endif %}
-
-  {% if expired_task_orders %}
-    {{ TaskOrderList(expired_task_orders, label='error') }}
   {% endif %}
 </div>
 

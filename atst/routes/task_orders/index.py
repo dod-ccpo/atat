@@ -34,19 +34,7 @@ def review_task_order(task_order_id):
 @user_can(Permissions.VIEW_PORTFOLIO_FUNDING, message="view portfolio funding")
 def portfolio_funding(portfolio_id):
     portfolio = Portfolios.get(g.current_user, portfolio_id)
-    task_orders_by_status = defaultdict(list)
-
-    for task_order in portfolio.task_orders:
-        task_orders_by_status[task_order.status].append(task_order)
-
-    active_task_orders = task_orders_by_status.get(TaskOrderStatus.ACTIVE, [])
 
     return render_template(
-        "portfolios/task_orders/index.html",
-        pending_task_orders=(
-            task_orders_by_status.get(TaskOrderStatus.STARTED, [])
-            + task_orders_by_status.get(TaskOrderStatus.PENDING, [])
-        ),
-        active_task_orders=active_task_orders,
-        expired_task_orders=task_orders_by_status.get(TaskOrderStatus.EXPIRED, []),
+        "portfolios/task_orders/index.html", task_orders=portfolio.task_orders
     )
