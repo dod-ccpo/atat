@@ -17,36 +17,42 @@ from tests.factories import (
 from tests.mocks import PDF_FILENAME
 
 
-class TestPeriodOfPerformance:
-    def test_period_of_performance_is_first_to_last_clin(self):
-        start_date = date(2019, 6, 6)
-        end_date = date(2020, 6, 6)
+def test_period_of_performance_is_first_to_last_clin():
+    start_date = date(2019, 6, 6)
+    end_date = date(2020, 6, 6)
 
-        intermediate_start_date = date(2019, 7, 1)
-        intermediate_end_date = date(2020, 3, 1)
+    intermediate_start_date = date(2019, 7, 1)
+    intermediate_end_date = date(2020, 3, 1)
 
-        task_order = TaskOrderFactory.create(
-            clins=[
-                CLINFactory.create(
-                    start_date=intermediate_start_date, end_date=intermediate_end_date
-                ),
-                CLINFactory.create(
-                    start_date=start_date, end_date=intermediate_end_date
-                ),
-                CLINFactory.create(
-                    start_date=intermediate_start_date, end_date=intermediate_end_date
-                ),
-                CLINFactory.create(
-                    start_date=intermediate_start_date, end_date=end_date
-                ),
-                CLINFactory.create(
-                    start_date=intermediate_start_date, end_date=intermediate_end_date
-                ),
-            ]
-        )
+    task_order = TaskOrderFactory.create(
+        clins=[
+            CLINFactory.create(
+                start_date=intermediate_start_date, end_date=intermediate_end_date
+            ),
+            CLINFactory.create(
+                start_date=start_date, end_date=intermediate_end_date
+            ),
+            CLINFactory.create(
+                start_date=intermediate_start_date, end_date=intermediate_end_date
+            ),
+            CLINFactory.create(
+                start_date=intermediate_start_date, end_date=end_date
+            ),
+            CLINFactory.create(
+                start_date=intermediate_start_date, end_date=intermediate_end_date
+            ),
+        ]
+    )
 
-        assert task_order.start_date == start_date
-        assert task_order.end_date == end_date
+    assert task_order.start_date == start_date
+    assert task_order.end_date == end_date
+
+
+def test_task_order_completed():
+    assert TaskOrderFactory.create(clins=[CLINFactory.create()]).is_completed
+    assert not TaskOrderFactory.create().is_completed
+    assert not TaskOrderFactory.create(clins=[]).is_completed
+    assert not TaskOrderFactory.create(number=None).is_completed
 
 
 class TestTaskOrderStatus:

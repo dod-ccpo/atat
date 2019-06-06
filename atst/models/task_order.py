@@ -67,7 +67,7 @@ class TaskOrder(Base, mixins.TimestampsMixin):
 
     @property
     def is_completed(self):
-        return True
+        return all([self.pdf, self.number, len(self.clins)])
 
     @property
     def is_signed(self):

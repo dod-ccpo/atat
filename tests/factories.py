@@ -267,6 +267,7 @@ class TaskOrderFactory(Base):
 
     portfolio = factory.SubFactory(PortfolioFactory)
     number = factory.LazyFunction(random_task_order_number)
+    _pdf = factory.SubFactory(AttachmentFactory)
 
 
 class CLINFactory(Base):
