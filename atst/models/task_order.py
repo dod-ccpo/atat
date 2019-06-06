@@ -1,5 +1,5 @@
 from enum import Enum
-from datetime import date
+from datetime import date, datetime
 
 from sqlalchemy import Column, DateTime, ForeignKey, String
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -15,6 +15,9 @@ class Status(Enum):
     PENDING = "Pending"
     ACTIVE = "Active"
     EXPIRED = "Expired"
+    DRAFT = "Draft"
+    UPCOMING = "Upcoming"
+    UNSIGNED = "Unsigned"
 
 
 class TaskOrder(Base, mixins.TimestampsMixin):
@@ -63,18 +66,35 @@ class TaskOrder(Base, mixins.TimestampsMixin):
         return self.status == Status.EXPIRED
 
     @property
+    def is_completed(self):
+        return True
+
+    @property
+    def is_signed(self):
+        return self.signed_at is not None
+
+    @property
     def status(self):
-        # TODO: fix task order -- implement correctly using CLINs
-        # Faked for display purposes
-        return Status.ACTIVE
+        today = date.today()
+
+        if not self.is_completed and not self.is_signed:
+            return Status.DRAFT
+        elif self.is_completed and not self.is_signed:
+            return Status.UNSIGNED
+        elif today < self.start_date:
+            return Status.UPCOMING
+        elif today >= self.end_date:
+            return Status.EXPIRED
+        elif self.start_date <= today < self.end_date:
+            return Status.ACTIVE
 
     @property
     def start_date(self):
-        return min(c.start_date for c in self.clins)
+        return min((c.start_date for c in self.clins), default=None)
 
     @property
     def end_date(self):
-        return max(c.end_date for c in self.clins)
+        return max((c.end_date for c in self.clins), default=None)
 
     @property
     def days_to_expiration(self):
