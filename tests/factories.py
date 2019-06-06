@@ -278,7 +278,7 @@ class CLINFactory(Base):
     start_date = datetime.date.today()
     end_date = factory.LazyFunction(random_future_date)
     obligated_amount = random.randint(100, 999999)
-    jedi_clin_type = random.choice([e for e in clin.JEDICLINType])
+    jedi_clin_type = random.choice(list(clin.JEDICLINType))
 
 
 class NotificationRecipientFactory(Base):

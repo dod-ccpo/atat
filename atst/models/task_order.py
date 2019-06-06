@@ -70,15 +70,11 @@ class TaskOrder(Base, mixins.TimestampsMixin):
 
     @property
     def start_date(self):
-        # TODO: fix task order -- reimplement using CLINs
-        # Faked for display purposes
-        return date.today()
+        return min(c.start_date for c in self.clins)
 
     @property
     def end_date(self):
-        # TODO: fix task order -- reimplement using CLINs
-        # Faked for display purposes
-        return date.today()
+        return max(c.end_date for c in self.clins)
 
     @property
     def days_to_expiration(self):

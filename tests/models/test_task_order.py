@@ -1,5 +1,6 @@
 from werkzeug.datastructures import FileStorage
-import pytest, datetime
+import pytest
+from datetime import date
 
 from atst.models import *
 from atst.models.clin import JEDICLINType
@@ -12,6 +13,38 @@ from tests.factories import (
     TaskOrderFactory,
 )
 from tests.mocks import PDF_FILENAME
+
+
+class TestPeriodOfPerformance:
+    def test_period_of_performance_is_first_to_last_clin(self):
+        start_date = date(2019, 6, 6)
+        end_date = date(2020, 6, 6)
+
+        intermediate_start_date = date(2019, 7, 1)
+        intermediate_end_date = date(2020, 3, 1)
+
+        task_order = TaskOrderFactory.create(
+            clins=[
+                CLINFactory.create(
+                    start_date=intermediate_start_date, end_date=intermediate_end_date
+                ),
+                CLINFactory.create(
+                    start_date=start_date, end_date=intermediate_end_date
+                ),
+                CLINFactory.create(
+                    start_date=intermediate_start_date, end_date=intermediate_end_date
+                ),
+                CLINFactory.create(
+                    start_date=intermediate_start_date, end_date=end_date
+                ),
+                CLINFactory.create(
+                    start_date=intermediate_start_date, end_date=intermediate_end_date
+                ),
+            ]
+        )
+
+        assert task_order.start_date == start_date
+        assert task_order.end_date == end_date
 
 
 class TestTaskOrderStatus:
