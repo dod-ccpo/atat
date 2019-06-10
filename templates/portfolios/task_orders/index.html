@@ -45,7 +45,7 @@
     {% for task_order in task_orders %}
       <div class="card task-order-card">
         <div class="card__status">
-          <span class='label label--{{ label }}'>{{ task_order.display_status }}</span>
+          <span class='label label--{{ label_colors[task_order.status] }}'>{{ task_order.display_status }}</span>
           {{ TaskOrderDate(task_order) }}
           <span class="card__status-spacer"></span>
           <span class="card__button">

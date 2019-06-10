@@ -15,7 +15,7 @@ class Status(Enum):
     ACTIVE = "Active"
     UPCOMING = "Upcoming"
     EXPIRED = "Expired"
-    UNSIGNED = "Unsigned"
+    UNSIGNED = "Not signed"
 
 
 SORT_ORDERING = {

@@ -4,6 +4,7 @@ from . import task_orders_bp
 from atst.domain.authz.decorator import user_can_access_decorator as user_can
 from atst.domain.portfolios import Portfolios
 from atst.domain.task_orders import TaskOrders
+from atst.models.task_order import Status
 from atst.models import Permissions
 
 
@@ -32,4 +33,11 @@ def review_task_order(task_order_id):
 def portfolio_funding(portfolio_id):
     portfolio = Portfolios.get(g.current_user, portfolio_id)
     task_orders = TaskOrders.sort(portfolio.task_orders)
-    return render_template("portfolios/task_orders/index.html", task_orders=task_orders)
+    label_colors = {
+        Status.DRAFT: "warning",
+        Status.ACTIVE: "success",
+        Status.UPCOMING: "info",
+        Status.EXPIRED: "error",
+        Status.UNSIGNED: "purple"
+    }
+    return render_template("portfolios/task_orders/index.html", task_orders=task_orders, label_colors=label_colors)

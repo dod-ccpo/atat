@@ -73,6 +73,9 @@
 .task-order-card .label {
   font-size: $small-font-size;
   margin-right: 2 * $gap;
+  min-width: 7rem;
+  display: flex;
+  justify-content: space-around;
 }
 
 .task-order-card__buttons .usa-button {
