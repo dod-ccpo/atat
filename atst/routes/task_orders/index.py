@@ -38,6 +38,10 @@ def portfolio_funding(portfolio_id):
         Status.ACTIVE: "success",
         Status.UPCOMING: "info",
         Status.EXPIRED: "error",
-        Status.UNSIGNED: "purple"
+        Status.UNSIGNED: "purple",
     }
-    return render_template("portfolios/task_orders/index.html", task_orders=task_orders, label_colors=label_colors)
+    return render_template(
+        "portfolios/task_orders/index.html",
+        task_orders=task_orders,
+        label_colors=label_colors,
+    )
