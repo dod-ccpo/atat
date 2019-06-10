@@ -18,6 +18,14 @@ class Status(Enum):
     UNSIGNED = "Unsigned"
 
 
+SORT_ORDERING = {
+    status: order
+    for (order, status) in enumerate(
+        [Status.DRAFT, Status.ACTIVE, Status.UPCOMING, Status.EXPIRED, Status.UNSIGNED]
+    )
+}
+
+
 class TaskOrder(Base, mixins.TimestampsMixin):
     __tablename__ = "task_orders"
 

@@ -1,7 +1,7 @@
 from flask import current_app as app
 
 from atst.database import db
-from atst.models.task_order import TaskOrder
+from atst.models.task_order import TaskOrder, SORT_ORDERING
 from . import BaseDomainClass
 
 
@@ -75,3 +75,10 @@ class TaskOrders(BaseDomainClass):
         if not app.config.get("CLASSIFIED"):
             section_list["funding"] = TaskOrders.UNCLASSIFIED_FUNDING
         return section_list
+
+    @classmethod
+    def sort(cls, task_orders: [TaskOrder]) -> [TaskOrder]:
+        # Sorts a list of task orders on two keys: status (primary) and time_created (secondary)
+        by_time_created = sorted(task_orders, key=lambda to: to.time_created)
+        by_status = sorted(by_time_created, key=lambda to: SORT_ORDERING.get(to.status))
+        return by_status
