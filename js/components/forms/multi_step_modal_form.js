@@ -67,8 +67,10 @@ export default {
       return valid
     },
     handleFieldMount: function(event) {
-      const { name, optional } = event
-      this.fields[name] = optional
+      if (event.parent_uid == this._uid) {
+        const { name, optional } = event
+        this.fields[name] = optional
+      }
     },
     handleModalOpen: function(_bool) {
       this.step = 0

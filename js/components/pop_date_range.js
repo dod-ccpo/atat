@@ -1,5 +1,7 @@
 import { format } from 'date-fns'
 
+import { emitEvent } from '../lib/emitters'
+
 import DateSelector from './date_selector'
 
 const START_DATE = 'start_date'
@@ -76,6 +78,12 @@ export default {
         return this.minEndDate
       }
     },
+
+    handleFieldMount: function(event) {
+      if (event.parent_uid === this._uid) {
+        emitEvent('field-mount', this, event)
+      }
+    },
   },
 
   computed: {
@@ -86,5 +94,9 @@ export default {
     minEndProp: function() {
       return format(this.minEndDate, 'YYYY-MM-DD')
     },
+  },
+
+  created: function() {
+    this.$root.$on('field-mount', this.handleFieldMount)
   },
 }

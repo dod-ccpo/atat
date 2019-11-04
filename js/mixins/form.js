@@ -29,10 +29,15 @@ export default {
     },
 
     handleFieldMount: function(event) {
-      const { name, optional, valid } = event
-      this.fields[name] = optional || valid
-      const formValid = this.validateForm()
-      this.invalid = !formValid
+      if (
+        event.parent_uid === this._uid ||
+        this.$children.some(c => c._uid === event.parent_uid)
+      ) {
+        const { name, optional, valid } = event
+        this.fields[name] = optional || valid
+        const formValid = this.validateForm()
+        this.invalid = !formValid
+      }
     },
 
     validateForm: function() {

@@ -72,10 +72,6 @@
           </div>
         </div>
       </form>
-      {% if user_can(permissions.CREATE_PORTFOLIO_USERS) %}
-        {% include "portfolios/fragments/add_new_portfolio_member.html" %}
-      {% endif %}
-
       {% if user_can(permissions.EDIT_PORTFOLIO_USERS) %}
         {% for subform in member_perms_form.members_permissions %}
           {% set modal_id = "portfolio_id_{}_user_id_{}".format(portfolio.id, subform.member_id.data) %}
@@ -103,4 +99,7 @@
       {% endif %}
     </div>
   </base-form>
+  {% if user_can(permissions.CREATE_PORTFOLIO_USERS) %}
+    {% include "portfolios/fragments/add_new_portfolio_member.html" %}
+  {% endif %}
 </section>

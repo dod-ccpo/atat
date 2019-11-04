@@ -1,10 +1,7 @@
 import { emitEvent } from '../lib/emitters'
-import FormMixin from '../mixins/form'
 
 export default {
   name: 'optionsinput',
-
-  mixins: [FormMixin],
 
   props: {
     name: String,
