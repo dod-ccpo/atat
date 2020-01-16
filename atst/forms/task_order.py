@@ -7,18 +7,23 @@ from wtforms.fields import (
     HiddenField,
 )
 from wtforms.fields.html5 import DateField
-from wtforms.validators import Required, Length, NumberRange, ValidationError, Regexp
+from wtforms.validators import (
+    Required,
+    Length,
+    NumberRange,
+    ValidationError,
+)
 from flask_wtf import FlaskForm
 from numbers import Number
+from atst.forms.validators import IsNumber, AlphaNumeric
 
 from .data import JEDI_CLIN_TYPES
 from .fields import SelectField
 from .forms import BaseForm, remove_empty_string
 from atst.utils.localization import translate
-from .validators import REGEX_ALPHA_NUMERIC
 from flask import current_app as app
 
-MAX_CLIN_AMOUNT = 1000000000
+MAX_CLIN_AMOUNT = 1_000_000_000
 
 
 def coerce_enum(enum_inst):
@@ -62,7 +67,10 @@ class CLINForm(FlaskForm):
         coerce=coerce_enum,
     )
 
-    number = StringField(label=translate("task_orders.form.clin_number_label"))
+    number = StringField(
+        label=translate("task_orders.form.clin_number_label"),
+        validators=[IsNumber(), Length(max=4)],
+    )
     start_date = DateField(
         translate("task_orders.form.pop_start"),
         description=translate("task_orders.form.pop_example"),
@@ -120,7 +128,7 @@ class AttachmentForm(BaseForm):
             Length(
                 max=100, message=translate("forms.attachment.filename.length_error")
             ),
-            Regexp(regex=REGEX_ALPHA_NUMERIC),
+            AlphaNumeric(),
         ],
     )
     object_name = HiddenField(
@@ -129,7 +137,7 @@ class AttachmentForm(BaseForm):
             Length(
                 max=40, message=translate("forms.attachment.object_name.length_error")
             ),
-            Regexp(regex=REGEX_ALPHA_NUMERIC),
+            AlphaNumeric(),
         ],
     )
     accept = ".pdf,application/pdf"
@@ -142,6 +150,7 @@ class TaskOrderForm(BaseForm):
     number = StringField(
         label=translate("forms.task_order.number_description"),
         filters=[remove_empty_string],
+        validators=[IsNumber(), Length(max=13)],
     )
     pdf = FormField(
         AttachmentForm,

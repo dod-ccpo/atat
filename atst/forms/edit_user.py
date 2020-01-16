@@ -9,22 +9,26 @@ from .forms import BaseForm
 from .data import SERVICE_BRANCHES
 from atst.models.user import User
 from atst.utils.localization import translate
+from wtforms.validators import Length
+from atst.forms.validators import IsNumber
 
 from .validators import Name, DateRange, PhoneNumber
 
 
 USER_FIELDS = {
     "first_name": StringField(
-        translate("forms.edit_user.first_name_label"), validators=[Name()]
+        translate("forms.edit_user.first_name_label"),
+        validators=[Name(), Length(max=100)],
     ),
     "last_name": StringField(
-        translate("forms.edit_user.last_name_label"), validators=[Name()]
+        translate("forms.edit_user.last_name_label"),
+        validators=[Name(), Length(max=100)],
     ),
     "email": EmailField(translate("forms.edit_user.email_label"), validators=[Email()]),
     "phone_number": TelField(
         translate("forms.edit_user.phone_number_label"), validators=[PhoneNumber()]
     ),
-    "phone_ext": StringField("Extension"),
+    "phone_ext": StringField("Extension", validators=[IsNumber(), Length(max=10)]),
     "service_branch": SelectField(
         translate("forms.edit_user.service_branch_label"), choices=SERVICE_BRANCHES
     ),

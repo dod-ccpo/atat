@@ -37,6 +37,10 @@ def random_task_order_number():
     return "".join(random.choices(string.digits, k=10))
 
 
+def random_clin_number():
+    return "".join(random.choices(string.digits, k=4))
+
+
 def random_past_date(year_min=1, year_max=5):
     return _random_date(year_min, year_max, operator.sub)
 
@@ -327,7 +331,7 @@ class CLINFactory(Base):
         model = CLIN
 
     task_order = factory.SubFactory(TaskOrderFactory)
-    number = factory.LazyFunction(random_task_order_number)
+    number = factory.LazyFunction(random_clin_number)
     start_date = datetime.date.today()
     end_date = factory.LazyFunction(random_future_date)
     total_amount = factory.LazyFunction(lambda *args: random.randint(50000, 999999))

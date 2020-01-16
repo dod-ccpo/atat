@@ -2,13 +2,10 @@ from datetime import datetime
 import re
 
 from werkzeug.datastructures import FileStorage
-from wtforms.validators import ValidationError
+from wtforms.validators import ValidationError, Regexp
 import pendulum
 
 from atst.utils.localization import translate
-
-
-REGEX_ALPHA_NUMERIC = "^[A-Za-z0-9\-_ \.]*$"
 
 
 def DateRange(lower_bound=None, upper_bound=None, message=None):
@@ -101,3 +98,7 @@ def FileLength(max_length=50000000, message=None):
             field.data.seek(0)
 
     return _file_length
+
+
+def AlphaNumeric(message=translate("forms.validators.alpha_numeric_message")):
+    return Regexp(regex=r"^[A-Za-z0-9\-_ \.]*$", message=message)

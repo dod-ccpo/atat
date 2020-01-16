@@ -1,17 +1,17 @@
 # How to use text containing html tags in .html files:
-  # In the template add the `safe` filter when referencing the string
-  # from the template file. ie:
+# In the template add the `safe` filter when referencing the string
+# from the template file. ie:
 
-  # login:
-  #   title: A title with <a href="#">a link</a>!
+# login:
+#   title: A title with <a href="#">a link</a>!
 
-  # `{{ "login.title" | translate | safe }}`
+# `{{ "login.title" | translate | safe }}`
 audit_log:
   events:
     default:
-      change: '{from} to {to}'
-      changes: 'Changes:'
-      details: 'Details:'
+      change: "{from} to {to}"
+      changes: "Changes:"
+      details: "Details:"
 base_public:
   login: Log in
   title_tag: JEDI Cloud
@@ -51,7 +51,7 @@ common:
   continue: Continue
   delete: Delete
   deactivate: Deactivate
-  delete_confirm: 'Please type the word {word} to confirm:'
+  delete_confirm: "Please type the word {word} to confirm:"
   dod_id: DoD ID
   disable: Disable
   edit: Edit
@@ -60,8 +60,8 @@ common:
   members: Members
   name: Name
   next: Next
-  'yes': 'Yes'
-  'no': 'No'
+  "yes": "Yes"
+  "no": "No"
   previous: Previous
   response_label: Response required
   save: Save
@@ -111,13 +111,13 @@ flash:
   application:
     created:
       title: Application Saved
-      message: '{application_name} has been successfully created. You may continue on to provision environments and assign team members now, or come back and complete these tasks at a later time.'
-    updated: 'You have successfully updated the {application_name} application.'
-    deleted: 'You have successfully deleted the {application_name} application. To view the retained activity log, visit the portfolio administration page.'
+      message: "{application_name} has been successfully created. You may continue on to provision environments and assign team members now, or come back and complete these tasks at a later time."
+    updated: "You have successfully updated the {application_name} application."
+    deleted: "You have successfully deleted the {application_name} application. To view the retained activity log, visit the portfolio administration page."
     name_error:
-      message: 'The application name {name} has already been used in this portfolio. Please enter a unique name.'
+      message: "The application name {name} has already been used in this portfolio. Please enter a unique name."
     env_name_error:
-      message: 'The environment name {name} has already been used in this application. Please enter a unique name.'
+      message: "The environment name {name} has already been used in this application. Please enter a unique name."
   application_invite:
     error:
       title: Application invitation error
@@ -143,7 +143,7 @@ flash:
       message: You have successfully given {user_name} CCPO permissions.
     removed:
       message: You have successfully removed {user_name}'s CCPO permissions.
-  delete_member_success: 'You have successfully deleted {member_name} from the portfolio.'
+  delete_member_success: "You have successfully deleted {member_name} from the portfolio."
   deleted_member: Portfolio member deleted
   environment_added: 'The environment "{environment_name}" has been added to the application.'
   environment:
@@ -162,8 +162,8 @@ flash:
   logged_out:
     title: Logged out
     message: You've been logged out.
-  new_portfolio_member: 'You have successfully invited {user_name} to the portfolio.'
-  new_ppoc_message: 'You have successfully added {ppoc_name} as the primary point of contact. You are no longer the PPoC.'
+  new_portfolio_member: "You have successfully invited {user_name} to the portfolio."
+  new_ppoc_message: "You have successfully added {ppoc_name} as the primary point of contact. You are no longer the PPoC."
   new_ppoc_title: Primary point of contact updated
   portfolio_member:
     revoked:
@@ -178,7 +178,7 @@ flash:
     message: Your session expired due to inactivity. Please log in again to continue.
   success: Success!
   task_order_number_error:
-    message: 'The TO number has already been entered for a JEDI task order #{to_number}. Please double-check the TO number you are entering. If you believe this is in error, please contact support@cloud.mil.'
+    message: "The TO number has already been entered for a JEDI task order #{to_number}. Please double-check the TO number you are entering. If you believe this is in error, please contact support@cloud.mil."
   task_order:
     insufficient_funds:
       title: Insufficient Funds
@@ -188,7 +188,7 @@ flash:
   new_application_member:
     title: "{user_name}'s invitation has been sent"
     message: "{user_name}'s access to this Application is pending until they sign in for the first time."
-  updated_application_team_settings: 'You have updated the {application_name} team settings.'
+  updated_application_team_settings: "You have updated the {application_name} team settings."
   user:
     complete_profile:
       title: You must complete your profile
@@ -196,7 +196,7 @@ flash:
     updated:
       title: User information updated.
 footer:
-  login: 'Last login:'
+  login: "Last login:"
 forms:
   application:
     description_label: Application Description
@@ -205,7 +205,7 @@ forms:
     environment_names_unique_validation_message: Environment names must be unique.
     name_label: Application Name
   assign_ppoc:
-    dod_id: 'Select new primary point of contact:'
+    dod_id: "Select new primary point of contact:"
   environments:
     name_label: Environment Name
   edit_user:
@@ -319,9 +319,10 @@ forms:
     is_required: This field is required.
     list_item_required_message: Please provide at least one.
     list_items_unique_message: Items must be unique
-    name_message: 'This field accepts letters, numbers, commas, apostrophes, hyphens, and periods.'
+    name_message: "This field accepts letters, numbers, commas, apostrophes, hyphens, and periods."
     phone_number_message: Please enter a valid 5 or 10 digit phone number.
     file_length: Your file may not exceed 50 MB.
+    alpha_numeric_message: This field may only contain alphanumeric characters.
 fragments:
   delete_portfolio:
     title: Deactivate Portfolio
@@ -345,7 +346,7 @@ fragments:
       title: Warning!
     assign_user_button_text: Assign member
     confirm_alert:
-      title: 'Once you assign a new PPoC, you will no longer be able to request portfolio deactivation or manage the PPoC role.'
+      title: "Once you assign a new PPoC, you will no longer be able to request portfolio deactivation or manage the PPoC role."
     subtitle: The PPoC has the ability to edit all aspects of a portfolio and is the only one who can manage the PPoC role.
     title: Primary point of contact (PPoC)
     update_btn: Update
@@ -358,7 +359,7 @@ login:
   ccpo_logo_alt_text: Cloud Computing Program Office Logo
   certificate_selection:
     learn_more: Learn more
-    message: 'When you are prompted to select a certificate, please select Email Certificate from the provided choices.'
+    message: "When you are prompted to select a certificate, please select Email Certificate from the provided choices."
     title: Certificate Selection
   h1_title: Access the JEDI cloud
   login_button: Sign in with CAC
@@ -378,7 +379,7 @@ portfolios:
     activity_log_title: Activity log
     add_new_member: Add a new member
     alert_header: Are you sure you want to delete this member?
-    alert_message: 'The member will be removed from the portfolio, but their log history will be retained.'
+    alert_message: "The member will be removed from the portfolio, but their log history will be retained."
     alert_title: Warning! You  are about to delete a member from the portfolio.
     defense_component_label: Department of Defense Component
     no_members: There are currently no members in this portfolio.
@@ -389,17 +390,17 @@ portfolios:
     portfolio_name: Portfolio name
     members:
       perms_portfolio_mgmt:
-        'False': View Portfolio
-        'True': Edit Portfolio
+        "False": View Portfolio
+        "True": Edit Portfolio
       perms_app_mgmt:
-        'False': View Applications
-        'True': Edit Applications
+        "False": View Applications
+        "True": Edit Applications
       perms_funding:
-        'False': View Funding
-        'True': Edit Funding
+        "False": View Funding
+        "True": Edit Funding
       perms_reporting:
-        'False': View Reporting
-        'True': Edit Reporting
+        "False": View Reporting
+        "True": Edit Reporting
   applications:
     add_application_text: Add a new application
     add_environment: Create an Environment
@@ -452,7 +453,7 @@ portfolios:
     csp_link: Cloud Service Provider Link
     remove_member:
       alert:
-        message: '{user_name} will no longer be able to access this application or any of its environments'
+        message: "{user_name} will no longer be able to access this application or any of its environments"
       button: Remove member
       header: Are you sure you want to remove this team member?
     delete:
@@ -469,8 +470,8 @@ portfolios:
         button: Delete environment
       edit_name: Edit name
     environments_heading: Application Environments
-    existing_application_title: '{application_name} Application Settings'
-    member_count: '{count} members'
+    existing_application_title: "{application_name} Application Settings"
+    member_count: "{count} members"
     new_application_title: New Application
     settings_heading: Application Settings
     settings:
@@ -484,8 +485,8 @@ portfolios:
           delete_access: Delete Access
           environment_management: Environment Management
           team_management: Team Management
-        title: '{application_name} Team'
-      title: '{application_name} Team Settings'
+        title: "{application_name} Team"
+      title: "{application_name} Team Settings"
       add_to_environment: Add to existing environment
     team_text: Team
     members:
@@ -521,20 +522,20 @@ portfolios:
       new:
         assign_roles: Assign Member Environments and Roles
         learn_more: Learn more about these roles
-        manage_perms: 'Manage permissions for {application_name}'
-        manage_envs: 'Allow member to <strong>add</strong> and <strong>rename environments</strong> within the application.'
-        delete_envs: 'Allow member to <strong>delete environments</strong> within the application.'
-        manage_team: 'Allow member to <strong>add, update,</strong> and <strong>remove members</strong> from the application team.'
+        manage_perms: "Manage permissions for {application_name}"
+        manage_envs: "Allow member to <strong>add</strong> and <strong>rename environments</strong> within the application."
+        delete_envs: "Allow member to <strong>delete environments</strong> within the application."
+        manage_team: "Allow member to <strong>add, update,</strong> and <strong>remove members</strong> from the application team."
         verify: Verify Member Information
       perms_team_mgmt:
-        'False': View Team
-        'True': Edit Team
+        "False": View Team
+        "True": Edit Team
       perms_env_mgmt:
-        'False': View Environments
-        'True': Edit Environments
+        "False": View Environments
+        "True": Edit Environments
       perms_del_env:
-        'False': ""
-        'True': Delete Application
+        "False": ""
+        "True": Delete Application
   index:
     empty:
       start_button: Start a new JEDI portfolio
@@ -556,7 +557,7 @@ portfolios:
       sub_message:
         can_create_applications: This portfolio has no cloud environments set up, so there is no spending data to report. Create an application with some cloud environments to get started.
         cannot_create_applications: This portfolio has no cloud environments set up, so there is no spending data to report. Contact the portfolio owner to set up some cloud environments.
-      action_label: 'Add a new application'
+      action_label: "Add a new application"
 
 task_orders:
   add_new_button: Add New Task Order
@@ -576,10 +577,10 @@ task_orders:
       total_amount: CLIN Value
       obligated: Amount Obligated
       JEDICLINType:
-        JEDI_CLIN_1: 'Unclassified IaaS and PaaS (IDIQ CLIN 0001)'
-        JEDI_CLIN_2: 'Classified IaaS and PaaS (IDIQ CLIN 0002)'
-        JEDI_CLIN_3: 'Unclassified Cloud Support Package (IDIQ CLIN 0003)'
-        JEDI_CLIN_4: 'Classified Cloud Support Package (IDIQ CLIN 0004)'
+        JEDI_CLIN_1: "Unclassified IaaS and PaaS (IDIQ CLIN 0001)"
+        JEDI_CLIN_2: "Classified IaaS and PaaS (IDIQ CLIN 0002)"
+        JEDI_CLIN_3: "Unclassified Cloud Support Package (IDIQ CLIN 0003)"
+        JEDI_CLIN_4: "Classified Cloud Support Package (IDIQ CLIN 0004)"
     tooltip:
       obligated_funds: Funds committed to fund your portfolio. This may represent 100% of your total Task Order value, or a portion of it.
       total_value: All obligated and projected funds for the Task Order’s Base and Option CLINs.
@@ -595,7 +596,7 @@ task_orders:
     clin_funding: CLIN Funding
     clin_number_label: CLIN
     clin_type_label: Corresponding IDIQ CLIN
-    clin_remove_text: 'Do you want to remove '
+    clin_remove_text: "Do you want to remove "
     clin_remove_confirm: Yes, remove CLIN
     clin_remove_cancel: No, go back
     cloud_funding_header: Add the summary of cloud funding
@@ -614,15 +615,15 @@ task_orders:
     supporting_docs_size_limit: Your file may not exceed 64MB
     supporting_docs_text: Upload a single PDF containing all relevant information.
     step_3:
-      next_button: 'Next: Review Task Order'
+      next_button: "Next: Review Task Order"
     step_5:
       title: Confirm Signature
       description: Prior to submitting the Task Order, you must acknowledge, by marking the appropriate box below, that the uploaded Task Order is signed by an appropriate, duly warranted Contracting Officer who has the authority to execute the uploaded Task Order on your Agency’s behalf and has authorized you to upload the Task Order in accordance with Agency policy and procedures. You must further acknowledge, by marking the appropriate box below, that all information entered herein matches that of the submitted Task Order.
       alert_message: All task orders require a Contracting Officer signature.
-      next_button: 'Confirm & Submit'
-    sticky_header_text: 'Add a Task Order'
+      next_button: "Confirm & Submit"
+    sticky_header_text: "Add a Task Order"
     sticky_header_review_text: Review Changes
-    sticky_header_context: 'Step {step} of 5'
+    sticky_header_context: "Step {step} of 5"
   empty_state:
     header: Add approved task orders
     message: Upload your approved Task Order here. You are required to confirm you have the appropriate signature. You will have the ability to add additional approved Task Orders with more funding to this Portfolio in the future.
@@ -640,15 +641,15 @@ task_orders:
     acknowledge:
       title: Acknowledge Statement
       text: I acknowledge, by executing the confirmation above and submitting this verification, that I am subject to potential penalties that may include fines, imprisonment, or both, under the U.S. law and regulations for any false statement or misrepresentation in association with this Task Order submission or on any accompanying documentation.
-  status_empty_state: 'This Portfolio has no {status} Task Orders.'
-  status_list_title: '{status} Task Orders'
+  status_empty_state: "This Portfolio has no {status} Task Orders."
+  status_list_title: "{status} Task Orders"
 JEDICLINType:
-  JEDI_CLIN_1: 'IDIQ CLIN 0001 Unclassified IaaS/PaaS'
-  JEDI_CLIN_2: 'IDIQ CLIN 0002 Classified IaaS/PaaS'
-  JEDI_CLIN_3: 'IDIQ CLIN 0003 Unclassified Cloud Support Package'
-  JEDI_CLIN_4: 'IDIQ CLIN 0004 Classified Cloud Support Package'
+  JEDI_CLIN_1: "IDIQ CLIN 0001 Unclassified IaaS/PaaS"
+  JEDI_CLIN_2: "IDIQ CLIN 0002 Classified IaaS/PaaS"
+  JEDI_CLIN_3: "IDIQ CLIN 0003 Unclassified Cloud Support Package"
+  JEDI_CLIN_4: "IDIQ CLIN 0004 Classified Cloud Support Package"
 testing:
   example_string: Hello World
-  example_with_variables: 'Hello, {name}!'
+  example_with_variables: "Hello, {name}!"
   nested:
     example: Hello nested example
