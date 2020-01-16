@@ -219,7 +219,7 @@ def test_task_orders_submit_form_step_three_add_clins(client, user_session, task
     user_session(task_order.portfolio.owner)
     form_data = {
         "clins-0-jedi_clin_type": "JEDI_CLIN_1",
-        "clins-0-clin_number": "12312",
+        "clins-0-number": "12312",
         "clins-0-start_date": "01/01/2020",
         "clins-0-end_date": "01/01/2021",
         "clins-0-obligated_amount": "5000",
@@ -269,7 +269,7 @@ def test_task_orders_submit_form_step_three_add_clins_existing_to(
     user_session(task_order.portfolio.owner)
     form_data = {
         "clins-0-jedi_clin_type": "JEDI_CLIN_1",
-        "clins-0-clin_number": "12312",
+        "clins-0-number": "12312",
         "clins-0-start_date": "01/01/2020",
         "clins-0-end_date": "01/01/2021",
         "clins-0-obligated_amount": "5000",
