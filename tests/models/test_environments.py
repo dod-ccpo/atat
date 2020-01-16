@@ -28,7 +28,7 @@ def test_add_user_to_environment():
     EnvironmentRoleFactory.create(
         application_role=application_role,
         environment=dev_environment,
-        role=CSPRole.BASIC_ACCESS.value,
+        role=CSPRole.ADMIN,
     )
     assert developer in dev_environment.users
 
@@ -75,9 +75,9 @@ def test_environment_provisioning_status(env_data, expected_status):
 
 def test_environment_roles_do_not_include_deleted():
     member_list = [
-        {"role_name": CSPRole.BASIC_ACCESS.value},
-        {"role_name": CSPRole.BASIC_ACCESS.value},
-        {"role_name": CSPRole.BASIC_ACCESS.value},
+        {"role_name": CSPRole.ADMIN},
+        {"role_name": CSPRole.ADMIN},
+        {"role_name": CSPRole.ADMIN},
     ]
     env = EnvironmentFactory.create(members=member_list)
     role_1 = env.roles[0]

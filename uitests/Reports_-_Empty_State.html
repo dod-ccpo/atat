@@ -16,7 +16,7 @@
 <meta name="ghost-inspector-screenshotTarget" content="" />
 <meta name="ghost-inspector-screenshotExclusions" content="div.global-navigation, time" />
 <meta name="ghost-inspector-screenshotCompareEnabled" content="true" />
-<meta name="ghost-inspector-screenshotCompareThreshold" content="0.02" />
+<meta name="ghost-inspector-screenshotCompareThreshold" content="0.03" />
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -117,7 +117,7 @@ Imported from: AT-AT CI - login-->
 <tr>
 <td>type</td>
 <td>css=#name</td>
-<td>Tatooine Energy Maintenance Systems</td>
+<td>Tatooine Energy Maintenance Systems ${alphanumeric}</td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>
@@ -219,12 +219,12 @@ Imported from: AT-AT CI - login-->
 </tr>
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(1) > .reporting-summary-item__value</td>
+<td>css=.row > .col.col--grow.summary-item:nth-of-type(1) > .summary-item__value</td>
 <td></td>
 </tr>
 <tr>
 <td>assertText</td>
-<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(1) > .reporting-summary-item__value</td>
+<td>css=.row > .col.col--grow.summary-item:nth-of-type(1) > .summary-item__value</td>
 <td>*$0.00*</td>
 </tr>
 <tr>
@@ -234,12 +234,12 @@ Imported from: AT-AT CI - login-->
 </tr>
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(3) > .reporting-summary-item__value</td>
+<td>css=.row > .col.col--grow.summary-item:nth-of-type(3) > .summary-item__value</td>
 <td></td>
 </tr>
 <tr>
 <td>assertText</td>
-<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(3) > .reporting-summary-item__value</td>
+<td>css=.row > .col.col--grow.summary-item:nth-of-type(3) > .summary-item__value</td>
 <td>*0 days*</td>
 </tr>
 </tbody>

@@ -14,7 +14,7 @@ SERVICE_BRANCHES = [
 ]
 
 ENV_ROLE_NO_ACCESS = "No Access"
-ENV_ROLES = [(role.value, role.value) for role in CSPRole] + [
+ENV_ROLES = [(role.name, role.value) for role in CSPRole] + [
     (ENV_ROLE_NO_ACCESS, ENV_ROLE_NO_ACCESS)
 ]
 

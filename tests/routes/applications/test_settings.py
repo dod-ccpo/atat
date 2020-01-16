@@ -129,11 +129,11 @@ def test_edit_application_environments_obj(app, client, user_session):
     env = application.environments[0]
     app_role1 = ApplicationRoleFactory.create(application=application)
     env_role1 = EnvironmentRoleFactory.create(
-        application_role=app_role1, environment=env, role=CSPRole.BASIC_ACCESS.value
+        application_role=app_role1, environment=env, role=CSPRole.ADMIN
     )
     app_role2 = ApplicationRoleFactory.create(application=application, user=None)
     env_role2 = EnvironmentRoleFactory.create(
-        application_role=app_role2, environment=env, role=CSPRole.NETWORK_ADMIN.value
+        application_role=app_role2, environment=env, role=CSPRole.CONTRIBUTOR
     )
 
     user_session(portfolio.owner)
@@ -180,7 +180,7 @@ def test_get_members_data(app, client, user_session):
         environments=[
             {
                 "name": "testing",
-                "members": [{"user": user, "role_name": CSPRole.BASIC_ACCESS.value}],
+                "members": [{"user": user, "role_name": CSPRole.ADMIN}],
             }
         ],
     )
@@ -212,7 +212,7 @@ def test_get_members_data(app, client, user_session):
             {
                 "environment_id": str(environment.id),
                 "environment_name": environment.name,
-                "role": env_role.role,
+                "role": env_role.role.value,
             }
         ]
         assert member["role_status"]
@@ -402,7 +402,7 @@ def test_create_member(monkeypatch, client, user_session, session):
             "user_data-dod_id": user.dod_id,
             "user_data-email": user.email,
             "environment_roles-0-environment_id": env.id,
-            "environment_roles-0-role": "Basic Access",
+            "environment_roles-0-role": "ADMIN",
             "environment_roles-0-environment_name": env.name,
             "environment_roles-1-environment_id": env_1.id,
             "environment_roles-1-role": NO_ACCESS,
@@ -511,10 +511,10 @@ def test_update_member(client, user_session, session):
     env_2 = EnvironmentFactory.create(application=application)
     # add user to two of the environments: env and env_1
     updated_role = EnvironmentRoleFactory.create(
-        environment=env, application_role=app_role, role=CSPRole.BASIC_ACCESS.value
+        environment=env, application_role=app_role, role=CSPRole.ADMIN
     )
     suspended_role = EnvironmentRoleFactory.create(
-        environment=env_1, application_role=app_role, role=CSPRole.BASIC_ACCESS.value
+        environment=env_1, application_role=app_role, role=CSPRole.ADMIN
     )
 
     user_session(application.portfolio.owner)
@@ -528,13 +528,13 @@ def test_update_member(client, user_session, session):
         ),
         data={
             "environment_roles-0-environment_id": env.id,
-            "environment_roles-0-role": CSPRole.TECHNICAL_READ.value,
+            "environment_roles-0-role": "CONTRIBUTOR",
             "environment_roles-0-environment_name": env.name,
             "environment_roles-1-environment_id": env_1.id,
             "environment_roles-1-environment_name": env_1.name,
             "environment_roles-1-disabled": "True",
             "environment_roles-2-environment_id": env_2.id,
-            "environment_roles-2-role": CSPRole.NETWORK_ADMIN.value,
+            "environment_roles-2-role": "BILLING_READ",
             "environment_roles-2-environment_name": env_2.name,
             "perms_env_mgmt": True,
             "perms_team_mgmt": True,
@@ -565,7 +565,7 @@ def test_update_member(client, user_session, session):
     environment_roles = application.roles[0].environment_roles
     # check that the user has roles in the correct envs
     assert len(environment_roles) == 3
-    assert updated_role.role == CSPRole.TECHNICAL_READ.value
+    assert updated_role.role == CSPRole.CONTRIBUTOR
     assert suspended_role.disabled
 
 
@@ -695,7 +695,7 @@ def test_handle_create_member(monkeypatch, set_g, session):
             "user_data-dod_id": user.dod_id,
             "user_data-email": user.email,
             "environment_roles-0-environment_id": env.id,
-            "environment_roles-0-role": "Basic Access",
+            "environment_roles-0-role": "ADMIN",
             "environment_roles-0-environment_name": env.name,
             "environment_roles-1-environment_id": env_1.id,
             "environment_roles-1-role": NO_ACCESS,
@@ -718,7 +718,7 @@ def test_handle_create_member(monkeypatch, set_g, session):
     assert job_mock.called
 
 
-def test_handle_update_member(set_g):
+def test_handle_update_member_success(set_g):
     user = UserFactory.create()
     application = ApplicationFactory.create(
         environments=[{"name": "Naboo"}, {"name": "Endor"}]
@@ -732,7 +732,7 @@ def test_handle_update_member(set_g):
     form_data = ImmutableMultiDict(
         {
             "environment_roles-0-environment_id": env.id,
-            "environment_roles-0-role": "Basic Access",
+            "environment_roles-0-role": "ADMIN",
             "environment_roles-0-environment_name": env.name,
             "environment_roles-1-environment_id": env_1.id,
             "environment_roles-1-role": NO_ACCESS,
@@ -772,7 +772,7 @@ def test_handle_update_member_with_error(set_g, monkeypatch, mock_logger):
     form_data = ImmutableMultiDict(
         {
             "environment_roles-0-environment_id": env.id,
-            "environment_roles-0-role": "Basic Access",
+            "environment_roles-0-role": "ADMIN",
             "environment_roles-0-environment_name": env.name,
             "environment_roles-1-environment_id": env_1.id,
             "environment_roles-1-role": NO_ACCESS,

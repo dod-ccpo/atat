@@ -153,7 +153,7 @@ def test_post_new_member(monkeypatch, client, user_session, session):
             "user_data-dod_id": user.dod_id,
             "user_data-email": user.email,
             "environment_roles-0-environment_id": env.id,
-            "environment_roles-0-role": "Basic Access",
+            "environment_roles-0-role": "ADMIN",
             "environment_roles-0-environment_name": env.name,
             "environment_roles-1-environment_id": env_1.id,
             "environment_roles-1-role": NO_ACCESS,
@@ -201,7 +201,7 @@ def test_post_update_member(client, user_session):
         ),
         data={
             "environment_roles-0-environment_id": env.id,
-            "environment_roles-0-role": "Basic Access",
+            "environment_roles-0-role": "ADMIN",
             "environment_roles-0-environment_name": env.name,
             "environment_roles-1-environment_id": env_1.id,
             "environment_roles-1-role": NO_ACCESS,

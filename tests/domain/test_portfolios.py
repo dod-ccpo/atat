@@ -1,5 +1,4 @@
 import pytest
-import random
 from uuid import uuid4
 
 from atst.domain.exceptions import NotFoundError, UnauthorizedError
@@ -7,6 +6,7 @@ from atst.domain.portfolios import (
     Portfolios,
     PortfolioError,
     PortfolioDeletionApplicationsExistError,
+    PortfolioStateMachines,
 )
 from atst.domain.portfolio_roles import PortfolioRoles
 from atst.domain.applications import Applications
@@ -15,6 +15,7 @@ from atst.domain.environments import Environments
 from atst.domain.permission_sets import PermissionSets, PORTFOLIO_PERMISSION_SETS
 from atst.models.application_role import Status as ApplicationRoleStatus
 from atst.models.portfolio_role import Status as PortfolioRoleStatus
+from atst.models import FSMStates
 
 from tests.factories import (
     ApplicationFactory,
@@ -22,6 +23,7 @@ from tests.factories import (
     UserFactory,
     PortfolioRoleFactory,
     PortfolioFactory,
+    PortfolioStateMachineFactory,
     get_all_portfolio_permission_sets,
 )
 
@@ -94,11 +96,11 @@ def test_scoped_portfolio_for_admin_missing_view_apps_perms(portfolio_owner, por
 def test_scoped_portfolio_returns_all_applications_for_portfolio_admin(
     portfolio, portfolio_owner
 ):
-    for _ in range(5):
+    for i in range(5):
         Applications.create(
             portfolio.owner,
             portfolio,
-            "My Application %s" % (random.randrange(1, 1000)),
+            f"My Application {i}",
             "My application",
             ["dev", "staging", "prod"],
         )
@@ -117,11 +119,11 @@ def test_scoped_portfolio_returns_all_applications_for_portfolio_admin(
 def test_scoped_portfolio_returns_all_applications_for_portfolio_owner(
     portfolio, portfolio_owner
 ):
-    for _ in range(5):
+    for i in range(5):
         Applications.create(
             portfolio.owner,
             portfolio,
-            "My Application %s" % (random.randrange(1, 1000)),
+            f"My Application {i}",
             "My application",
             ["dev", "staging", "prod"],
         )
@@ -254,3 +256,17 @@ def test_for_user_does_not_include_deleted_application_roles():
         status=ApplicationRoleStatus.ACTIVE, user=user2, application=app, deleted=True
     )
     assert len(Portfolios.for_user(user2)) == 0
+
+
+def test_create_state_machine(portfolio):
+    fsm = PortfolioStateMachines.create(portfolio)
+    assert fsm
+
+
+def test_get_portfolios_pending_provisioning(session):
+    for x in range(5):
+        portfolio = PortfolioFactory.create()
+        sm = PortfolioStateMachineFactory.create(portfolio=portfolio)
+        if x == 2:
+            sm.state = FSMStates.COMPLETED
+    assert len(Portfolios.get_portfolios_pending_provisioning()) == 4

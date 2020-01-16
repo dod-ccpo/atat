@@ -25,6 +25,9 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     min_count             = var.min_count # FIXME: if auto_scaling disabled, set to 0
   }
 
+  identity {
+    type = "SystemAssigned"
+  }
   lifecycle {
     ignore_changes = [
       default_node_pool.0.node_count

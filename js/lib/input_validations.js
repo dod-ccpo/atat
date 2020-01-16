@@ -104,4 +104,11 @@ export default {
     unmask: ['(', ')', '-', ' '],
     validationError: 'Please enter a 10-digit phone number',
   },
+  restrictedFileName: {
+    mask: false,
+    match: /^[A-Za-z0-9\-_ \.]+$/,
+    unmask: [],
+    validationError:
+      'File names can only contain the characters A-Z, 0-9, space, hyphen, underscore, and period.',
+  },
 }

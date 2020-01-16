@@ -147,7 +147,7 @@ def test_invite():
         user_data=user_data,
         permission_sets_names=permission_sets_names,
         environment_roles_data=[
-            {"environment_id": env1.id, "role": CSPRole.BASIC_ACCESS.value},
+            {"environment_id": env1.id, "role": CSPRole.ADMIN},
             {"environment_id": env2.id, "role": None},
         ],
     )
@@ -173,8 +173,8 @@ def test_invite_to_nonexistent_environment():
             inviter=application.portfolio.owner,
             user_data=user_data,
             environment_roles_data=[
-                {"environment_id": env1.id, "role": CSPRole.BASIC_ACCESS.value},
-                {"environment_id": uuid4(), "role": CSPRole.BASIC_ACCESS.value},
+                {"environment_id": env1.id, "role": CSPRole.ADMIN},
+                {"environment_id": uuid4(), "role": CSPRole.ADMIN},
             ],
         )
 

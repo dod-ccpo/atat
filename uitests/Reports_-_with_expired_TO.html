@@ -16,7 +16,7 @@
 <meta name="ghost-inspector-screenshotTarget" content="" />
 <meta name="ghost-inspector-screenshotExclusions" content="div.global-navigation, time" />
 <meta name="ghost-inspector-screenshotCompareEnabled" content="true" />
-<meta name="ghost-inspector-screenshotCompareThreshold" content="0.02" />
+<meta name="ghost-inspector-screenshotCompareThreshold" content="0.03" />
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -186,7 +186,7 @@ Imported from: AT-AT CI - New Portfolio-->
 <tr>
 <td>type</td>
 <td>css=#name</td>
-<td>Tatooine Energy Maintenance Systems</td>
+<td>Tatooine Energy Maintenance Systems ${alphanumeric}</td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>
@@ -1387,12 +1387,12 @@ Ghost Inspector flow control because button tends to take a little while to beco
 </tr>
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(1) > .reporting-summary-item__value</td>
+<td>css=.row > .col.col--grow.summary-item:nth-of-type(1) > .summary-item__value</td>
 <td></td>
 </tr>
 <tr>
 <td>assertText</td>
-<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(1) > .reporting-summary-item__value</td>
+<td>css=.row > .col.col--grow.summary-item:nth-of-type(1) > .summary-item__value</td>
 <td>*$100,000.00*</td>
 </tr>
 <tr>
@@ -1402,15 +1402,13 @@ Ghost Inspector flow control because button tends to take a little while to beco
 </tr>
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(2) > .reporting-summary-item__value</td>
+<td>css=.row > .col.col--grow.summary-item:nth-of-type(2) > .summary-item__value</td>
 <td></td>
 </tr>
 <tr>
 <td>assertText</td>
-<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(2) > .reporting-summary-item__value</td>
-<td>*October 01, 2019
-        - 
-        June 30, 2020*</td>
+<td>css=.row > .col.col--grow.summary-item:nth-of-type(2) > .summary-item__value</td>
+<td>*October 01, 2019 - June 30, 2020*</td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>
@@ -1425,7 +1423,7 @@ Ghost Inspector flow control because button tends to take a little while to beco
 <tr>
 <td>assertText</td>
 <td>css=h3.h5</td>
-<td>*IDIQ CLIN 0002 Classified IaaS/PaaS*</td>
+<td>*IDIQ CLIN 0002*</td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>

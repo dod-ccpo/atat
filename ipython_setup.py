@@ -6,4 +6,6 @@ app = make_app(make_config())
 ctx = app.app_context()
 ctx.push()
 
-print("\nWelcome to atst. This shell has all models in scope, and a SQLAlchemy session called db.")
+print(
+    "\nWelcome to atst. This shell has all models in scope, and a SQLAlchemy session called db."
+)

@@ -8,6 +8,9 @@ import pendulum
 from atst.utils.localization import translate
 
 
+REGEX_ALPHA_NUMERIC = "^[A-Za-z0-9\-_ \.]*$"
+
+
 def DateRange(lower_bound=None, upper_bound=None, message=None):
     def _date_range(form, field):
         if field.data is None:

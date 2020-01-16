@@ -7,6 +7,10 @@ celery = Celery(__name__)
 def update_celery(celery, app):
     celery.conf.update(app.config)
     celery.conf.CELERYBEAT_SCHEDULE = {
+        "beat-dispatch_provision_portfolio": {
+            "task": "atst.jobs.dispatch_provision_portfolio",
+            "schedule": 60,
+        },
         "beat-dispatch_create_environment": {
             "task": "atst.jobs.dispatch_create_environment",
             "schedule": 60,

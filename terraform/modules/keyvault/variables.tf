@@ -22,3 +22,8 @@ variable "tenant_id" {
   type        = string
   description = "The Tenant ID"
 }
+
+variable "principal_id" {
+  type        = string
+  description = "The service principal_id of the k8s cluster"
+}

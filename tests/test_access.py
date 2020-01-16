@@ -213,7 +213,7 @@ def test_applications_access_environment_access(get_url_assert_status):
                 "environments": [
                     {
                         "name": "thebar",
-                        "members": [{"user": dev, "role_name": "devops"}],
+                        "members": [{"user": dev, "role_name": "ADMIN"}],
                     }
                 ],
             }

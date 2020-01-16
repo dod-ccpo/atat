@@ -1,12 +1,12 @@
-from typing import Dict
 import re
+from typing import Dict
 from uuid import uuid4
 
+from pydantic import BaseModel
+
 from atst.models.user import User
-from atst.models.application import Application
 from atst.models.environment import Environment
 from atst.models.environment_role import EnvironmentRole
-from .policy import AzurePolicyManager
 
 
 class GeneralCSPException(Exception):
@@ -140,6 +140,97 @@ class BaselineProvisionException(GeneralCSPException):
         return "Could not complete baseline provisioning for environment ({}): {}".format(
             self.env_identifier, self.reason
         )
+
+
+class BaseCSPPayload(BaseModel):
+    # {"username": "mock-cloud", "pass": "shh"}
+    creds: Dict
+
+
+class TenantCSPPayload(BaseCSPPayload):
+    user_id: str
+    password: str
+    domain_name: str
+    first_name: str
+    last_name: str
+    country_code: str
+    password_recovery_email_address: str
+
+
+class TenantCSPResult(BaseModel):
+    user_id: str
+    tenant_id: str
+    user_object_id: str
+
+
+class BillingProfileAddress(BaseModel):
+    address: Dict
+    """
+    "address": {
+        "firstName": "string",
+        "lastName": "string",
+        "companyName": "string",
+        "addressLine1": "string",
+        "addressLine2": "string",
+        "addressLine3": "string",
+        "city": "string",
+        "region": "string",
+        "country": "string",
+        "postalCode": "string"
+    },
+    """
+
+
+class BillingProfileCLINBudget(BaseModel):
+    clinBudget: Dict
+    """
+        "clinBudget": {
+            "amount": 0,
+            "startDate": "2019-12-18T16:47:40.909Z",
+            "endDate": "2019-12-18T16:47:40.909Z",
+            "externalReferenceId": "string"
+        }
+    """
+
+
+class BillingProfileCSPPayload(
+    BaseCSPPayload, BillingProfileAddress, BillingProfileCLINBudget
+):
+    displayName: str
+    poNumber: str
+    invoiceEmailOptIn: str
+
+    """
+    {
+        "displayName": "string",
+        "poNumber": "string",
+        "address": {
+            "firstName": "string",
+            "lastName": "string",
+            "companyName": "string",
+            "addressLine1": "string",
+            "addressLine2": "string",
+            "addressLine3": "string",
+            "city": "string",
+            "region": "string",
+            "country": "string",
+            "postalCode": "string"
+        },
+        "invoiceEmailOptIn": true,
+        Note: These last 2 are also the body for adding/updating new TOs/clins
+        "enabledAzurePlans": [
+            {
+            "skuId": "string"
+            }
+        ],
+        "clinBudget": {
+            "amount": 0,
+            "startDate": "2019-12-18T16:47:40.909Z",
+            "endDate": "2019-12-18T16:47:40.909Z",
+            "externalReferenceId": "string"
+        }
+    }
+    """
 
 
 class CloudProviderInterface:
@@ -325,6 +416,68 @@ class MockCloudProvider(CloudProviderInterface):
 
         return {"id": self._id(), "credentials": self._auth_credentials}
 
+    def create_tenant(self, payload):
+        """
+        payload is an instance of TenantCSPPayload data class
+        """
+
+        self._authorize(payload.creds)
+
+        self._delay(1, 5)
+
+        self._maybe_raise(self.NETWORK_FAILURE_PCT, self.NETWORK_EXCEPTION)
+        self._maybe_raise(self.SERVER_FAILURE_PCT, self.SERVER_EXCEPTION)
+        self._maybe_raise(self.UNAUTHORIZED_RATE, self.AUTHORIZATION_EXCEPTION)
+        # return tenant id, tenant owner id and tenant owner object id from:
+        response = {"tenantId": "string", "userId": "string", "objectId": "string"}
+        return {
+            "tenant_id": response["tenantId"],
+            "user_id": response["userId"],
+            "user_object_id": response["objectId"],
+        }
+
+    def create_billing_profile(self, creds, tenant_admin_details, billing_owner_id):
+        # call billing profile creation endpoint, specifying owner
+        # Payload:
+        """
+        {
+            "displayName": "string",
+            "poNumber": "string",
+            "address": {
+                "firstName": "string",
+                "lastName": "string",
+                "companyName": "string",
+                "addressLine1": "string",
+                "addressLine2": "string",
+                "addressLine3": "string",
+                "city": "string",
+                "region": "string",
+                "country": "string",
+                "postalCode": "string"
+            },
+            "invoiceEmailOptIn": true,
+            Note: These last 2 are also the body for adding/updating new TOs/clins
+            "enabledAzurePlans": [
+                {
+                "skuId": "string"
+                }
+            ],
+            "clinBudget": {
+                "amount": 0,
+                "startDate": "2019-12-18T16:47:40.909Z",
+                "endDate": "2019-12-18T16:47:40.909Z",
+                "externalReferenceId": "string"
+            }
+        }
+        """
+        # response will be mostly the same as the body, but we only really care about the id
+        self._maybe_raise(self.NETWORK_FAILURE_PCT, self.NETWORK_EXCEPTION)
+        self._maybe_raise(self.SERVER_FAILURE_PCT, self.SERVER_EXCEPTION)
+        self._maybe_raise(self.UNAUTHORIZED_RATE, self.AUTHORIZATION_EXCEPTION)
+
+        response = {"id": "string"}
+        return {"billing_profile_id": response["id"]}
+
     def create_or_update_user(self, auth_credentials, user_info, csp_role_id):
         self._authorize(auth_credentials)
 
@@ -401,18 +554,15 @@ REMOTE_ROOT_ROLE_DEF_ID = "/providers/Microsoft.Authorization/roleDefinitions/00
 
 class AzureSDKProvider(object):
     def __init__(self):
-        from azure.mgmt import subscription, authorization, managementgroups
-        from azure.mgmt.resource import policy
+        from azure.mgmt import subscription, authorization
         import azure.graphrbac as graphrbac
         import azure.common.credentials as credentials
         from msrestazure.azure_cloud import AZURE_PUBLIC_CLOUD
 
         self.subscription = subscription
         self.authorization = authorization
-        self.managementgroups = managementgroups
         self.graphrbac = graphrbac
         self.credentials = credentials
-        self.policy = policy
         # may change to a JEDI cloud
         self.cloud = AZURE_PUBLIC_CLOUD
 
@@ -430,28 +580,45 @@ class AzureCloudProvider(CloudProviderInterface):
         else:
             self.sdk = azure_sdk_provider
 
-        self.policy_manager = AzurePolicyManager(config["AZURE_POLICY_LOCATION"])
-
     def create_environment(
         self, auth_credentials: Dict, user: User, environment: Environment
     ):
-        # since this operation would only occur within a tenant, should we source the tenant
-        # via lookup from environment once we've created the portfolio csp data schema
-        # something like this:
-        # environment_tenant = environment.application.portfolio.csp_data.get('tenant_id', None)
-        # though we'd probably source the whole credentials for these calls from the portfolio csp
-        # data, as it would have to be where we store the creds for the at-at user within the portfolio tenant
-        # credentials = self._get_credential_obj(environment.application.portfolio.csp_data.get_creds())
         credentials = self._get_credential_obj(self._root_creds)
-        display_name = f"{environment.application.name}_{environment.name}_{environment.id}"  # proposed format
-        management_group_id = "?"  # management group id chained from environment
-        parent_id = "?"  # from environment.application
+        sub_client = self.sdk.subscription.SubscriptionClient(credentials)
 
-        management_group = self._create_management_group(
-            credentials, management_group_id, display_name, parent_id,
+        display_name = f"{environment.application.name}_{environment.name}_{environment.id}"  # proposed format
+
+        billing_profile_id = "?"  # something chained from environment?
+        sku_id = AZURE_SKU_ID
+        # we want to set AT-AT as an owner here
+        # we could potentially associate subscriptions with "management groups" per DOD component
+        body = self.sdk.subscription.models.ModernSubscriptionCreationParameters(
+            display_name,
+            billing_profile_id,
+            sku_id,
+            # owner=<AdPrincipal: for AT-AT user>
         )
 
-        return management_group
+        # These 2 seem like something that might be worthwhile to allow tiebacks to
+        # TOs filed for the environment
+        billing_account_name = "?"
+        invoice_section_name = "?"
+        # We may also want to create billing sections in the enrollment account
+        sub_creation_operation = sub_client.subscription_factory.create_subscription(
+            billing_account_name, invoice_section_name, body
+        )
+
+        # the resulting object from this process is a link to the new subscription
+        # not a subscription model, so we'll have to unpack the ID
+        new_sub = sub_creation_operation.result()
+
+        subscription_id = self._extract_subscription_id(new_sub.subscription_link)
+        if subscription_id:
+            return subscription_id
+        else:
+            # troublesome error, subscription should exist at this point
+            # but we just don't have a valid ID
+            pass
 
     def create_atat_admin_user(
         self, auth_credentials: Dict, csp_environment_id: str
@@ -490,126 +657,135 @@ class AzureCloudProvider(CloudProviderInterface):
             "role_name": role_assignment_id,
         }
 
-    def _create_application(self, auth_credentials: Dict, application: Application):
-        management_group_name = str(uuid4())  # can be anything, not just uuid
-        display_name = application.name  # Does this need to be unique?
-        credentials = self._get_credential_obj(auth_credentials)
-        parent_id = "?"  # application.portfolio.csp_details.management_group_id
+    def create_tenant(self, payload):
+        # auth as SP that is allowed to create tenant? (tenant creation sp creds)
+        # create tenant with owner details (populated from portfolio point of contact, pw is generated)
 
-        return self._create_management_group(
-            credentials, management_group_name, display_name, parent_id,
+        # return tenant id, tenant owner id and tenant owner object id from:
+        response = {"tenantId": "string", "userId": "string", "objectId": "string"}
+        return self._ok(
+            {
+                "tenant_id": response["tenantId"],
+                "user_id": response["userId"],
+                "user_object_id": response["objectId"],
+            }
         )
 
-    def _create_management_group(
-        self, credentials, management_group_id, display_name, parent_id=None,
-    ):
-        mgmgt_group_client = self.sdk.managementgroups.ManagementGroupsAPI(credentials)
-        create_parent_grp_info = self.sdk.managementgroups.models.CreateParentGroupInfo(
-            id=parent_id
-        )
-        create_mgmt_grp_details = self.sdk.managementgroups.models.CreateManagementGroupDetails(
-            parent=create_parent_grp_info
-        )
-        mgmt_grp_create = self.sdk.managementgroups.models.CreateManagementGroupRequest(
-            name=management_group_id,
-            display_name=display_name,
-            details=create_mgmt_grp_details,
-        )
-        create_request = mgmgt_group_client.management_groups.create_or_update(
-            management_group_id, mgmt_grp_create
-        )
+    def create_billing_owner(self, creds, tenant_admin_details):
+        # authenticate as tenant_admin
+        # create billing owner identity
 
-        # result is a synchronous wait, might need to do a poll instead to handle first mgmt group create
-        # since we were told it could take 10+ minutes to complete, unless this handles that polling internally
-        return create_request.result()
+        # TODO: Lookup response format
+        # Managed service identity?
+        response = {"id": "string"}
+        return self._ok({"billing_owner_id": response["id"]})
 
-    def _create_subscription(
-        self,
-        credentials,
-        display_name,
-        billing_profile_id,
-        sku_id,
-        management_group_id,
-        billing_account_name,
-        invoice_section_name,
-    ):
-        sub_client = self.sdk.subscription.SubscriptionClient(credentials)
-
-        billing_profile_id = "?"  # where do we source this?
-        sku_id = AZURE_SKU_ID
-        # These 2 seem like something that might be worthwhile to allow tiebacks to
-        # TOs filed for the environment
-        billing_account_name = "?"  # from TO?
-        invoice_section_name = "?"  # from TO?
-
-        body = self.sdk.subscription.models.ModernSubscriptionCreationParameters(
-            display_name=display_name,
-            billing_profile_id=billing_profile_id,
-            sku_id=sku_id,
-            management_group_id=management_group_id,
-        )
-
-        # We may also want to create billing sections in the enrollment account
-        sub_creation_operation = sub_client.subscription_factory.create_subscription(
-            billing_account_name, invoice_section_name, body
-        )
-
-        # the resulting object from this process is a link to the new subscription
-        # not a subscription model, so we'll have to unpack the ID
-        new_sub = sub_creation_operation.result()
-
-        subscription_id = self._extract_subscription_id(new_sub.subscription_link)
-        if subscription_id:
-            return subscription_id
-        else:
-            # troublesome error, subscription should exist at this point
-            # but we just don't have a valid ID
-            pass
-
-    AZURE_MANAGEMENT_API = "https://management.azure.com"
-
-    def _create_policy_definition(
-        self, credentials, subscription_id, management_group_id, properties,
-    ):
+    def assign_billing_owner(self, creds, billing_owner_id, tenant_id):
+        # TODO: Do we source role definition ID from config, api or self-defined?
+        # TODO: If from api,
         """
-        Requires credentials that have AZURE_MANAGEMENT_API
-        specified as the resource. The Service Principal
-        specified in the credentials must have the "Resource
-        Policy Contributor" role assigned with a scope at least
-        as high as the management group specified by
-        management_group_id.
-
-        Arguments:
-            credentials -- ServicePrincipalCredentials
-            subscription_id -- str, ID of the subscription (just the UUID, not the path)
-            management_group_id -- str, ID of the management group (just the UUID, not the path)
-            properties -- dictionary, the "properties" section of a valid Azure policy definition document
-
-        Returns:
-            azure.mgmt.resource.policy.[api version].models.PolicyDefinition: the PolicyDefinition object provided to Azure
-
-        Raises:
-            TBD
+        {
+            "principalId": "string",
+            "principalTenantId": "string",
+            "billingRoleDefinitionId": "string"
+        }
         """
-        # TODO: which subscription would this be?
-        client = self.sdk.policy.PolicyClient(credentials, subscription_id)
 
-        definition = client.policy_definitions.models.PolicyDefinition(
-            policy_type=properties.get("policyType"),
-            mode=properties.get("mode"),
-            display_name=properties.get("displayName"),
-            description=properties.get("description"),
-            policy_rule=properties.get("policyRule"),
-            parameters=properties.get("parameters"),
+        return self.ok()
+
+    def create_billing_profile(self, creds, tenant_admin_details, billing_owner_id):
+        # call billing profile creation endpoint, specifying owner
+        # Payload:
+        """
+        {
+            "displayName": "string",
+            "poNumber": "string",
+            "address": {
+                "firstName": "string",
+                "lastName": "string",
+                "companyName": "string",
+                "addressLine1": "string",
+                "addressLine2": "string",
+                "addressLine3": "string",
+                "city": "string",
+                "region": "string",
+                "country": "string",
+                "postalCode": "string"
+            },
+            "invoiceEmailOptIn": true,
+            Note: These last 2 are also the body for adding/updating new TOs/clins
+            "enabledAzurePlans": [
+                {
+                "skuId": "string"
+                }
+            ],
+            "clinBudget": {
+                "amount": 0,
+                "startDate": "2019-12-18T16:47:40.909Z",
+                "endDate": "2019-12-18T16:47:40.909Z",
+                "externalReferenceId": "string"
+            }
+        }
+        """
+
+        # response will be mostly the same as the body, but we only really care about the id
+        response = {"id": "string"}
+        return self._ok({"billing_profile_id": response["id"]})
+
+    def report_clin(self, creds, clin_id, clin_amount, clin_start, clin_end, clin_to):
+        # should consumer be responsible for reporting each clin or
+        # should this take a list and manage the sequential reporting?
+        """ Payload
+        {
+            "enabledAzurePlans": [
+                {
+                "skuId": "string"
+                }
+            ],
+            "clinBudget": {
+                "amount": 0,
+                "startDate": "2019-12-18T16:47:40.909Z",
+                "endDate": "2019-12-18T16:47:40.909Z",
+                "externalReferenceId": "string"
+            }
+        }
+        """
+
+        # we don't need any of the returned info for this
+        return self._ok()
+
+    def create_remote_admin(self, creds, tenant_details):
+        # create app/service principal within tenant, with name constructed from tenant details
+        # assign principal global admin
+
+        # needs to call out to CLI with tenant owner username/password, prototyping for that underway
+
+        # return identifier and creds to consumer for storage
+        response = {"clientId": "string", "secretKey": "string", "tenantId": "string"}
+        return self._ok(
+            {
+                "client_id": response["clientId"],
+                "secret_key": response["secret_key"],
+                "tenant_id": response["tenantId"],
+            }
         )
 
-        name = properties.get("displayName")
+    def force_tenant_admin_pw_update(self, creds, tenant_owner_id):
+        # use creds to update to force password recovery?
+        # not sure what the endpoint/method for this is, yet
 
-        return client.policy_definitions.create_or_update_at_management_group(
-            policy_definition_name=name,
-            parameters=definition,
-            management_group_id=management_group_id,
-        )
+        return self._ok()
+
+    def create_billing_alerts(self, TBD):
+        # TODO: Add azure-mgmt-consumption for Budget and Notification entities/operations
+        # TODO: Determine how to auth against that API using the SDK, doesn't seeem possible at the moment
+        # TODO: billing alerts are registered as Notifications on Budget objects, which have start/end dates
+        # TODO: determine what the keys in the Notifications dict are supposed to be
+        # we may need to rotate budget objects when new TOs/CLINs are reported?
+
+        # we likely only want the budget ID, can be updated or replaced?
+        response = {"id": "id"}
+        return self._ok({"budget_id": response["id"]})
 
     def _get_management_service_principal(self):
         # we really should be using graph.microsoft.com, but i'm getting
@@ -663,6 +839,7 @@ class AzureCloudProvider(CloudProviderInterface):
             return sub_id_match.group(1)
 
     def _get_credential_obj(self, creds, resource=None):
+
         return self.sdk.credentials.ServicePrincipalCredentials(
             client_id=creds.get("client_id"),
             secret=creds.get("secret_key"),
@@ -670,6 +847,27 @@ class AzureCloudProvider(CloudProviderInterface):
             resource=resource,
             cloud_environment=self.sdk.cloud,
         )
+
+    def _make_tenant_admin_cred_obj(self, username, password):
+        return self.sdk.credentials.UserPassCredentials(username, password)
+
+    def _ok(self, body=None):
+        return self._make_response("ok", body)
+
+    def _error(self, body=None):
+        return self._make_response("error", body)
+
+    def _make_response(self, status, body=dict()):
+        """Create body for responses from API
+
+        Arguments:
+            status {string} -- "ok" or "error"
+            body {dict} -- dict containing details of response or error, if applicable
+
+        Returns:
+            dict -- status of call with body containing details
+        """
+        return {"status": status, "body": body}
 
     @property
     def _root_creds(self):

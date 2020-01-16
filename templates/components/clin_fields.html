@@ -23,7 +23,7 @@
     inline-template>
     <div class="clin-card" v-if="showClin">
       <div class="card__title">
-        <span class="h4" v-html='clinTitle'></span>
+        <span class="h4" v-text='clinTitle'></span>
         <button
           v-if='clinIndex > 0'
           class="icon-link icon-link__remove-clin"
@@ -119,7 +119,7 @@
         {% endif %}
 
         <div class="h5 clin-card__title">Percent Obligated</div>
-        <p id="percent-obligated" v-html='percentObligated'></p>
+        <p id="percent-obligated" v-text='percentObligated'></p>
 
         <hr>
         <div class="form-row">
@@ -140,7 +140,7 @@
             <div class='modal__dialog' role='dialog' aria-modal='true'>
               <div class='modal__body'>
                 <div class="task-order__modal-cancel">
-                  <h1 v-html='"{{ 'task_orders.form.clin_remove_text' | translate }}" + clinTitle + "?"'></h1>
+                  <h1 v-text='"{{ 'task_orders.form.clin_remove_text' | translate }}" + clinTitle + "?"'></h1>
                   <div class="task-order__modal-cancel_buttons">
                     <button
                       v-on:click='closeModal(removeModalId)'
