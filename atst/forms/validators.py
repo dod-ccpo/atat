@@ -36,10 +36,11 @@ def DateRange(lower_bound=None, upper_bound=None, message=None):
 
 def IsNumber(message=translate("forms.validators.is_number_message")):
     def _is_number(form, field):
-        try:
-            int(field.data)
-        except (ValueError, TypeError):
-            raise ValidationError(message)
+        if field.data:
+            try:
+                int(field.data)
+            except (ValueError, TypeError):
+                raise ValidationError(message)
 
     return _is_number
 
