@@ -222,7 +222,7 @@ def make_config(direct_config=None):
         config.read_dict({"default": direct_config})
 
     # Assemble DATABASE_URI value
-    database_uri = "postgres://{}:{}@{}:{}/{}".format(  # pragma: allowlist secret
+    database_uri = "postgresql://{}:{}@{}:{}/{}".format(  # pragma: allowlist secret
         config.get("default", "PGUSER"),
         config.get("default", "PGPASSWORD"),
         config.get("default", "PGHOST"),
