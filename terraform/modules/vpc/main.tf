@@ -81,7 +81,7 @@ resource "azurerm_subnet" "gateway" {
 
 
 resource "azurerm_public_ip" "vpn_ip" {
-  name                = "${var.name}-${var.environment}-vpn-ip"
+  name                = "test"
   location            = azurerm_resource_group.vpc.location
   resource_group_name = azurerm_resource_group.vpc.name
 
@@ -89,7 +89,7 @@ resource "azurerm_public_ip" "vpn_ip" {
 }
 
 resource "azurerm_virtual_network_gateway" "vnet_gateway" {
-  name                = "${var.name}-${var.environment}-gateway"
+  name                = "test"
   location            = azurerm_resource_group.vpc.location
   resource_group_name = azurerm_resource_group.vpc.name
 

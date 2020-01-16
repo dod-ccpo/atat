@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atst-envvars
+  namespace: atat
+data:
+  TZ: UTC
+  FLASK_ENV: dev
+  OVERRIDE_CONFIG_FULLPATH: /opt/atat/atst/atst-overrides.ini
+  UWSGI_CONFIG_FULLPATH: /opt/atat/atst/uwsgi.ini
+  CRL_STORAGE_PROVIDER: CLOUDFILES
+  LOG_JSON: "true"
+  REDIS_URI: "redis://redis-svc:6379"
+  PGHOST: postgres-svc

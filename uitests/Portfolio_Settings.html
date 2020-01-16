@@ -16,7 +16,7 @@
 <meta name="ghost-inspector-screenshotTarget" content="" />
 <meta name="ghost-inspector-screenshotExclusions" content="div.global-navigation, time" />
 <meta name="ghost-inspector-screenshotCompareEnabled" content="true" />
-<meta name="ghost-inspector-screenshotCompareThreshold" content="0.03" />
+<meta name="ghost-inspector-screenshotCompareThreshold" content="0.02" />
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -117,7 +117,7 @@ Imported from: AT-AT CI - login-->
 <tr>
 <td>type</td>
 <td>css=#name</td>
-<td>Tatooine Energy Maintenance Systems ${alphanumeric}</td>
+<td>Tatooine Energy Maintenance Systems</td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>
@@ -219,12 +219,12 @@ Imported from: AT-AT CI - login-->
 </tr>
 <tr>
 <td>waitForElementPresent</td>
-<td>css=th.table-cell--third</td>
+<td>css=td.name</td>
 <td></td>
 </tr>
 <tr>
 <td>assertElementPresent</td>
-<td>css=th.table-cell--third</td>
+<td>css=td.name</td>
 <td></td>
 </tr>
 <tr>
@@ -240,7 +240,7 @@ Imported from: AT-AT CI - login-->
 <tr>
 <td>assertText</td>
 <td>css=button.usa-button.usa-button-primary.usa-button-big</td>
-<td>Save Changes</td>
+<td>Save</td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>
@@ -256,6 +256,21 @@ Imported from: AT-AT CI - login-->
 <td>assertText</td>
 <td>css=button.usa-button.usa-button-primary</td>
 <td>*Update*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=input.usa-button.usa-button-primary</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=input.usa-button.usa-button-primary</td>
+<td>Save</td>
 </tr>
 </tbody>
 </table>

@@ -7,7 +7,7 @@ from wtforms.fields import (
     HiddenField,
 )
 from wtforms.fields.html5 import DateField
-from wtforms.validators import Required, Length, NumberRange, ValidationError, Regexp
+from wtforms.validators import Required, Length, NumberRange, ValidationError
 from flask_wtf import FlaskForm
 from numbers import Number
 
@@ -15,7 +15,6 @@ from .data import JEDI_CLIN_TYPES
 from .fields import SelectField
 from .forms import BaseForm, remove_empty_string
 from atst.utils.localization import translate
-from .validators import REGEX_ALPHA_NUMERIC
 from flask import current_app as app
 
 MAX_CLIN_AMOUNT = 1000000000
@@ -117,10 +116,7 @@ class AttachmentForm(BaseForm):
     filename = HiddenField(
         id="attachment_filename",
         validators=[
-            Length(
-                max=100, message=translate("forms.attachment.filename.length_error")
-            ),
-            Regexp(regex=REGEX_ALPHA_NUMERIC),
+            Length(max=100, message=translate("forms.attachment.filename.length_error"))
         ],
     )
     object_name = HiddenField(
@@ -128,8 +124,7 @@ class AttachmentForm(BaseForm):
         validators=[
             Length(
                 max=40, message=translate("forms.attachment.object_name.length_error")
-            ),
-            Regexp(regex=REGEX_ALPHA_NUMERIC),
+            )
         ],
     )
     accept = ".pdf,application/pdf"

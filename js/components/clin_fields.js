@@ -1,4 +1,5 @@
 import { emitFieldChange } from '../lib/emitters'
+import escape from '../lib/escape'
 import optionsinput from './options_input'
 import textinput from './text_input'
 import clindollaramount from './clin_dollar_amount'
@@ -99,7 +100,7 @@ export default {
   computed: {
     clinTitle: function() {
       if (!!this.clinNumber) {
-        return `CLIN ${this.clinNumber}`
+        return escape(`CLIN ${this.clinNumber}`)
       } else {
         return `CLIN`
       }

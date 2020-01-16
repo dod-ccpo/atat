@@ -49,13 +49,6 @@ spec:
               subPath: uwsgi.ini
             - name: flask-secret
               mountPath: "/config"
-          resources:
-            requests:
-              memory: 200Mi
-              cpu: 400m
-            limits:
-              memory: 200Mi
-              cpu: 400m
         - name: nginx
           image: nginx:alpine
           ports:
@@ -84,13 +77,6 @@ spec:
               mountPath: "/etc/nginx/snippets/"
             - name: nginx-secret
               mountPath: "/etc/ssl/"
-          resources:
-            requests:
-              memory: 20Mi
-              cpu: 10m
-            limits:
-              memory: 20Mi
-              cpu: 10m
       volumes:
         - name: nginx-client-ca-bundle
           configMap:
@@ -204,13 +190,6 @@ spec:
               subPath: pgsslrootcert.crt
             - name: flask-secret
               mountPath: "/config"
-          resources:
-            requests:
-              memory: 280Mi
-              cpu: 20m
-            limits:
-              memory: 280Mi
-              cpu: 20m
       volumes:
         - name: pgsslrootcert
           configMap:
@@ -276,13 +255,6 @@ spec:
               subPath: pgsslrootcert.crt
             - name: flask-secret
               mountPath: "/config"
-          resources:
-            requests:
-              memory: 80Mi
-              cpu: 10m
-            limits:
-              memory: 80Mi
-              cpu: 10m
       volumes:
         - name: pgsslrootcert
           configMap:

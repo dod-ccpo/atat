@@ -15,7 +15,7 @@
   <div>
     <div v-show="valid" class="uploaded-file">
       {{ Icon("ok") }}
-      <a class="uploaded-file__name" v-text="baseName" v-bind:href="downloadLink"></a>
+      <a class="uploaded-file__name" v-html="baseName" v-bind:href="downloadLink"></a>
       <a href="#" class="uploaded-file__remove" v-on:click="removeAttachment">Remove</a>
     </div>
     <div v-show="valid === false" v-bind:class='{ "usa-input": true, "usa-input--error": showErrors }'>
@@ -48,9 +48,6 @@
       </template>
       <template v-if="sizeError">
         <span class="usa-input__message">{{ "forms.task_order.size_error" | translate }}</span>
-      </template>
-      <template v-if="filenameError">
-        <span class="usa-input__message">{{ "forms.task_order.filename_error" | translate }}</span>
       </template>
       {% for error, error_messages in field.errors.items() %}
         <span class="usa-input__message">{{error_messages[0]}}</span>

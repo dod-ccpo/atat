@@ -15,7 +15,7 @@ PASSWORD = os.getenv("ATAT_BA_PASSWORD", "")
 DISABLE_VERIFY = os.getenv("DISABLE_VERIFY", "true").lower() == "true"
 
 # Alpha numerics for random entity names
-LETTERS = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"  # pragma: allowlist secret
+LETTERS = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890" #pragma: allowlist secret
 
 NEW_PORTFOLIO_CHANCE = 10
 NEW_APPLICATION_CHANCE = 10
@@ -27,6 +27,10 @@ def login(l):
 
 def logout(l):
     l.client.get("/logout")
+
+
+def get_index(l):
+    l.client.get("/")
 
 
 def get_csrf_token(response):
@@ -48,9 +52,14 @@ def extract_id(path):
 
 
 def get_portfolios(l):
-    response = l.client.get("/home")
+    response = l.client.get("/portfolios")
     d = pq(response.text)
-    portfolio_links = [p.attr("href") for p in d(".sidenav__link").items()]
+    portfolio_links = [
+        p.attr("href")
+        for p in d(
+            ".global-panel-container .atat-table tbody tr td:first-child a"
+        ).items()
+    ]
     force_new_portfolio = randrange(0, 100) < NEW_PORTFOLIO_CHANCE
     if len(portfolio_links) == 0 or force_new_portfolio:
         portfolio_links += [create_portfolio(l)]
@@ -64,7 +73,7 @@ def get_portfolio(l):
     d = pq(response.text)
     application_links = [
         p.attr("href")
-        for p in d(".portfolio-applications .accordion__header-text a").items()
+        for p in d(".application-list .accordion__actions a:first-child").items()
     ]
     if len(application_links) > 0:
         portfolio_id = extract_id(portfolio_link)
@@ -152,14 +161,18 @@ class UserBehavior(TaskSequence):
         login(self)
 
     @seq_task(1)
+    def home(l):
+        get_index(l)
+
+    @seq_task(2)
     def portfolios(l):
         get_portfolios(l)
 
-    @seq_task(2)
+    @seq_task(3)
     def pick_a_portfolio(l):
         get_portfolio(l)
 
-    @seq_task(3)
+    @seq_task(4)
     def pick_an_app(l):
         get_app(l)
 
@@ -176,3 +189,4 @@ class WebsiteUser(HttpLocust):
 if __name__ == "__main__":
     # if run as the main file, will spin up a single locust
     WebsiteUser().run()
+

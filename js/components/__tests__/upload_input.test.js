@@ -70,7 +70,7 @@ describe('UploadInput Test', () => {
     })
 
     const component = wrapper.find(uploadinput)
-    const event = { target: { value: '', files: [{ name: 'sample.pdf' }] } }
+    const event = { target: { value: '', files: [{ name: '' }] } }
 
     component.setMethods({
       getUploader: async () => new MockUploader('token', 'objectName'),

@@ -26,8 +26,8 @@ def test_create_environments():
 
 
 def test_update_env_role():
-    env_role = EnvironmentRoleFactory.create(role=CSPRole.ADMIN)
-    new_role = CSPRole.BILLING_READ
+    env_role = EnvironmentRoleFactory.create(role=CSPRole.BASIC_ACCESS.value)
+    new_role = CSPRole.TECHNICAL_READ.value
     Environments.update_env_role(
         env_role.environment, env_role.application_role, new_role
     )
@@ -35,7 +35,7 @@ def test_update_env_role():
 
 
 def test_update_env_role_no_access():
-    env_role = EnvironmentRoleFactory.create(role=CSPRole.ADMIN)
+    env_role = EnvironmentRoleFactory.create(role=CSPRole.BASIC_ACCESS.value)
     Environments.update_env_role(env_role.environment, env_role.application_role, None)
 
     assert not EnvironmentRoles.get(
@@ -46,13 +46,15 @@ def test_update_env_role_no_access():
 
 
 def test_update_env_role_disabled_role():
-    env_role = EnvironmentRoleFactory.create(role=CSPRole.ADMIN)
+    env_role = EnvironmentRoleFactory.create(role=CSPRole.BASIC_ACCESS.value)
     Environments.update_env_role(env_role.environment, env_role.application_role, None)
 
     # An exception should be raised when a new role is passed to Environments.update_env_role
     with pytest.raises(DisabledError):
         Environments.update_env_role(
-            env_role.environment, env_role.application_role, CSPRole.BILLING_READ,
+            env_role.environment,
+            env_role.application_role,
+            CSPRole.TECHNICAL_READ.value,
         )
 
     assert env_role.role is None

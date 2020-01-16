@@ -16,7 +16,7 @@
 <meta name="ghost-inspector-screenshotTarget" content="" />
 <meta name="ghost-inspector-screenshotExclusions" content="div.global-navigation, time" />
 <meta name="ghost-inspector-screenshotCompareEnabled" content="true" />
-<meta name="ghost-inspector-screenshotCompareThreshold" content="0.03" />
+<meta name="ghost-inspector-screenshotCompareThreshold" content="0.02" />
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -129,7 +129,7 @@ Imported from: AT-AT CI - New Portfolio-->
 <tr>
 <td>type</td>
 <td>css=#name</td>
-<td>Tatooine Energy Maintenance Systems ${alphanumeric}</td>
+<td>Tatooine Energy Maintenance Systems</td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>
@@ -646,12 +646,12 @@ Imported from: AT-AT CI - Create New TO-->
 <!--Imported from: AT-AT CI - Reports - Basics-->
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(1) > .summary-item__value</td>
+<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(1) > .reporting-summary-item__value</td>
 <td></td>
 </tr>
 <tr>
 <td>assertText</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(1) > .summary-item__value</td>
+<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(1) > .reporting-summary-item__value</td>
 <td>*$100,000.00*</td>
 </tr>
 <tr>
@@ -662,13 +662,15 @@ Imported from: AT-AT CI - Create New TO-->
 <!--Imported from: AT-AT CI - Reports - Basics-->
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(2) > .summary-item__value</td>
+<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(2) > .reporting-summary-item__value</td>
 <td></td>
 </tr>
 <tr>
 <td>assertText</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(2) > .summary-item__value</td>
-<td>*October 01, 2019 - June 30, 2020*</td>
+<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(2) > .reporting-summary-item__value</td>
+<td>*October 01, 2019
+        - 
+        June 30, 2020*</td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>
@@ -678,12 +680,12 @@ Imported from: AT-AT CI - Create New TO-->
 <!--Imported from: AT-AT CI - Reports - Basics-->
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(3) > h5.summary-item__header > .summary-item__header-text</td>
+<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(3) > h5.reporting-summary-item__header > .reporting-summary-item__header-text</td>
 <td></td>
 </tr>
 <tr>
 <td>assertText</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(3) > h5.summary-item__header > .summary-item__header-text</td>
+<td>css=.row > .col.col--grow.reporting-summary-item:nth-of-type(3) > h5.reporting-summary-item__header > .reporting-summary-item__header-text</td>
 <td>*Days Remaining*</td>
 </tr>
 <tr>
@@ -700,7 +702,7 @@ Imported from: AT-AT CI - Create New TO-->
 <tr>
 <td>assertText</td>
 <td>css=h3.h5</td>
-<td>*IDIQ CLIN 0002*</td>
+<td>*IDIQ CLIN 0002 Classified IaaS/PaaS*</td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>
@@ -826,7 +828,7 @@ Imported from: AT-AT CI - Create New TO-->
 <tr>
 <td>assertText</td>
 <td>css=.sticky-cta-text > h3</td>
-<td>*Task Order #*</td>
+<td>*Task order details*</td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>
@@ -835,12 +837,12 @@ Imported from: AT-AT CI - Create New TO-->
 </tr>
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(1) > .summary-item__value--large</td>
+<td>css=.totals-box > .h3:nth-of-type(2)</td>
 <td></td>
 </tr>
 <tr>
 <td>assertText</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(1) > .summary-item__value--large</td>
+<td>css=.totals-box > .h3:nth-of-type(2)</td>
 <td>*$100,000.00*</td>
 </tr>
 <tr>
@@ -850,13 +852,28 @@ Imported from: AT-AT CI - Create New TO-->
 </tr>
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(2) > .summary-item__value--large</td>
+<td>css=.totals-box > .h3:nth-of-type(4)</td>
 <td></td>
 </tr>
 <tr>
 <td>assertText</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(2) > .summary-item__value--large</td>
+<td>css=.totals-box > .h3:nth-of-type(4)</td>
 <td>*$800,000.00*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.col.task-order__details > div:nth-of-type(2)</td>
+<td></td>
+</tr>
+<tr>
+<td>assertElementPresent</td>
+<td>css=.col.task-order__details > div:nth-of-type(2)</td>
+<td></td>
 </tr>
 </tbody>
 </table>

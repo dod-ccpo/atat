@@ -4,20 +4,6 @@
   background-color: $color-gray-lightest;
   margin-top: $gap * 5;
 
-  &--white {
-    background-color: $color-white;
-  }
-
-  &--centered {
-    text-align: center;
-  }
-
-  &__message {
-    display: inline-block;
-    font-weight: bold;
-    margin-top: 3rem;
-  }
-
   hr {
     margin-left: -$gap * 3;
     margin-right: -$gap * 3;

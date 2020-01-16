@@ -7,25 +7,12 @@ from atst.models import (
     EnvironmentJobFailure,
     EnvironmentRoleJobFailure,
     EnvironmentRole,
-    PortfolioJobFailure,
 )
 from atst.domain.csp.cloud import CloudProviderInterface, GeneralCSPException
 from atst.domain.environments import Environments
-from atst.domain.portfolios import Portfolios
-
 from atst.domain.environment_roles import EnvironmentRoles
 from atst.models.utils import claim_for_update
 from atst.utils.localization import translate
-
-
-class RecordPortfolioFailure(celery.Task):
-    def on_failure(self, exc, task_id, args, kwargs, einfo):
-        if "portfolio_id" in kwargs:
-            failure = PortfolioJobFailure(
-                portfolio_id=kwargs["portfolio_id"], task_id=task_id
-            )
-            db.session.add(failure)
-            db.session.commit()
 
 
 class RecordEnvironmentFailure(celery.Task):
@@ -138,17 +125,6 @@ def do_work(fn, task, csp, **kwargs):
         raise task.retry(exc=e)
 
 
-def do_provision_portfolio(csp: CloudProviderInterface, portfolio_id=None):
-    portfolio = Portfolios.get_for_update(portfolio_id)
-    fsm = Portfolios.get_or_create_state_machine(portfolio)
-    fsm.trigger_next_transition()
-
-
-@celery.task(bind=True, base=RecordPortfolioFailure)
-def provision_portfolio(self, portfolio_id=None):
-    do_work(do_provision_portfolio, self, app.csp.cloud, portfolio_id=portfolio_id)
-
-
 @celery.task(bind=True, base=RecordEnvironmentFailure)
 def create_environment(self, environment_id=None):
     do_work(do_create_environment, self, app.csp.cloud, environment_id=environment_id)
@@ -166,15 +142,6 @@ def provision_user(self, environment_role_id=None):
     do_work(
         do_provision_user, self, app.csp.cloud, environment_role_id=environment_role_id
     )
-
-
-@celery.task(bind=True)
-def dispatch_provision_portfolio(self):
-    """
-    Iterate over portfolios with a corresponding State Machine that have not completed.
-    """
-    for portfolio_id in Portfolios.get_portfolios_pending_provisioning():
-        provision_portfolio.delay(portfolio_id=portfolio_id)
 
 
 @celery.task(bind=True)

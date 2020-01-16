@@ -51,19 +51,6 @@ For Ubuntu 19.10
 snap install powershell --classic
 ```
 
-# Preview Features
-To create all the resources we need for this environment we'll need to enable some _Preview_ features.
-
-This registers the specific feature for _SystemAssigned_ principals
-```
-az feature register --namespace Microsoft.ContainerService --name MSIPreview
-```
-
-To apply the registration, run the following
-```
-az provider register -n Microsoft.ContainerService
-```
-
 # Running Terraform
 First, you'll need to log in to Azure. With the Azure CLI installed, you can run the following.
 
@@ -88,50 +75,6 @@ terraform apply
 ```
 
 Check the output for errors. Sometimes the syntax is valid, but some of the configuration may be wrong and only rejected by the Azure API at run time. If this is the case, fix your mistake, and re-run.
-
-# After running TF (Manual Steps)
-
-## VM Scale Set 
-After running terraform, we need to make a manual change to the VM Scale Set that is used in the kubernetes. Terraform has a bug that is not applying this as of `v1.40` of the `azurerm` provider.
-
-In order to get the `SystemAssigned` identity to be set, it needs to be set manually in the console.
-
-Navigate to the VM Scale Set for the k8s cluster you're managing (in the console).
-
-![SystemAssigned Identity](images/system-assigned.png)
-_Just click the `Status` to `On`_
-
-## KeyVault Policy
-There is a bug (missing feature really) in the `azurerm` terraform provider which exposes the wrong `object_id/principal_id` in the `azurerm_kubernetes_cluster` output. The `id` that it exposes is the `object_id` of the cluster itself, and _not_ the Virtual Machine Scale Set SystemAssigned identity. This needs to be updated manually after running terraform for the first time.
-
-To update, just edit the `keyvault.tf`. Set the `principal_id` to the `object_id` of the Virtual Machine Scale set. This can be found in the Azure portal, or via cli.
-
-```
-az vmss list
-```
-In that list, find the scale set for the k8s cluster you're working on. You'll want the value of `principal_id`.
-
-
-The error looks like the following
-```
-  Warning  FailedMount  8s (x6 over 25s)   kubelet, aks-default-54410534-vmss000001  MountVolume.SetUp failed for volume "flask-secret" : mount command failed, status: Failure, reason: /etc/kubernetes/volumeplugins/azure~kv/azurekeyvault-flex
-volume failed, Access denied. Caller was not found on any access policy. r nCaller: appid=e6651156-7127-432d-9617-4425177c48f1;oid=f9bcbe58-8b73-4957-aee2-133dc3e58063;numgroups=0;iss=https://sts.windows.net/b5ab0e1e-09f8-4258-afb7-fb17654bc5
-b3/ r nVault: cloudzero-dev-keyvault;location=eastus2 InnerError={code:AccessDenied}
-```
-
-Final configuration will look like this.
-**keyvault.tf**
-```
-module "keyvault" {
-  source       = "../../modules/keyvault"
-  name         = var.name
-  region       = var.region
-  owner        = var.owner
-  environment  = var.environment
-  tenant_id    = var.tenant_id
-  principal_id = "f9bcbe58-8b73-4957-aee2-133dc3e58063"
-}
-```
 
 # Shutting down and environment
 To shutdown and remove an environment completely as to not incur any costs you would need to run a `terraform destroy`.

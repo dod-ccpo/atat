@@ -292,7 +292,6 @@ forms:
   task_order:
     upload_error: There was an error uploading your file. Please try again. If you encounter repeated problems uploading this file, please contact CCPO.
     size_error: The file you have selected is too large. Please choose a file no larger than 64MB.
-    filename_error: File names can only contain the characters A-Z, 0-9, space, hyphen, underscore, and period.
     defense_component_label: Select DoD component(s) funding your Portfolio
     file_format_not_allowed: Only PDF or PNG files can be uploaded.
     number_description: Task order number (13 digits)
@@ -403,7 +402,7 @@ portfolios:
   applications:
     add_application_text: Add a new application
     add_environment: Create an Environment
-    add_member: Add New Member
+    add_member: Add Team Member
     add_another_environment: Add another environment
     app_settings_text: App settings
     create_button: Create Application

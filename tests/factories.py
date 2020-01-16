@@ -255,7 +255,7 @@ class EnvironmentRoleFactory(Base):
         model = EnvironmentRole
 
     environment = factory.SubFactory(EnvironmentFactory)
-    role = random.choice([e for e in CSPRole])
+    role = random.choice([e.value for e in CSPRole])
     application_role = factory.SubFactory(ApplicationRoleFactory)
 
 
@@ -342,17 +342,3 @@ class NotificationRecipientFactory(Base):
         model = NotificationRecipient
 
     email = factory.Faker("email")
-
-
-class PortfolioStateMachineFactory(Base):
-    class Meta:
-        model = PortfolioStateMachine
-
-    portfolio = factory.SubFactory(PortfolioFactory)
-
-    @classmethod
-    def _create(cls, model_class, *args, **kwargs):
-        portfolio = kwargs.pop("portfolio", PortfolioFactory.create())
-        kwargs.update({"portfolio": portfolio})
-        fsm = super()._create(model_class, *args, **kwargs)
-        return fsm

@@ -11,8 +11,6 @@ from atst.domain.permission_sets import PermissionSets
 from atst.utils import first_or_none
 from atst.database import db
 
-from sqlalchemy_json import NestedMutableJson
-
 
 class Portfolio(
     Base, mixins.TimestampsMixin, mixins.AuditableMixin, mixins.DeletableMixin
@@ -21,31 +19,16 @@ class Portfolio(
 
     id = types.Id()
     name = Column(String, nullable=False)
-    defense_component = Column(
-        String, nullable=False
-    )  # Department of Defense Component
-
-    app_migration = Column(String)  # App Migration
-    complexity = Column(ARRAY(String))  # Application Complexity
-    complexity_other = Column(String)
     description = Column(String)
-    dev_team = Column(ARRAY(String))  # Development Team
-    dev_team_other = Column(String)
-    native_apps = Column(String)  # Native Apps
-    team_experience = Column(String)  # Team Experience
-
-    csp_data = Column(NestedMutableJson, nullable=True)
+    defense_component = Column(
+        ARRAY(String), nullable=False
+    )  # Department of Defense Component
 
     applications = relationship(
         "Application",
         back_populates="portfolio",
         primaryjoin="and_(Application.portfolio_id == Portfolio.id, Application.deleted == False)",
     )
-
-    state_machine = relationship(
-        "PortfolioStateMachine", uselist=False, back_populates="portfolio"
-    )
-
     roles = relationship("PortfolioRole")
 
     task_orders = relationship("TaskOrder")
@@ -94,7 +77,7 @@ class Portfolio(
         """
         Return the earliest period of performance start date and latest period
         of performance end date for all active task orders in a portfolio.
-        @return: (datetime.date or None, datetime.date or None)
+        @return: (datetime.date or None, datetime.date or None)  
         """
         start_dates = (
             task_order.start_date

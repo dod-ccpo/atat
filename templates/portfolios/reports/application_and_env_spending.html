@@ -37,19 +37,19 @@
               <tr>              
                 <td>
                   <button v-on:click='toggle($event, applicationIndex)' class='icon-link icon-link--large'>
-                    <span v-text='application.name'></span>
+                    <span v-html='application.name'></span>
                     <template v-if='application.isVisible'>{{ Icon('caret_down') }}</template>
                     <template v-else>{{ Icon('caret_up') }}</template>
                   </button>
                 </td>
                 <td class="table-cell--align-right">
-                  <span v-text='formatDollars(application.this_month || 0)'></span>
+                  <span v-html='formatDollars(application.this_month || 0)'></span>
                 </td>
                 <td class="table-cell--align-right">
-                  <span v-text='formatDollars(application.last_month || 0)'></span>
+                  <span v-html='formatDollars(application.last_month || 0)'></span>
                 </td>
                 <td class="table-cell--align-right">
-                  <span v-text='formatDollars(application.total || 0)'></span>
+                  <span v-html='formatDollars(application.total || 0)'></span>
                 </td>
               </tr>
               <tr 
@@ -58,16 +58,16 @@
                 v-bind:class="[ index == application.environments.length -1 ? 'reporting-spend-table__env-row--last' : '']"
               >
                 <td>
-                  <span class="reporting-spend-table__env-row-label" v-text='environment.name'></span>
+                  <span class="reporting-spend-table__env-row-label" v-html='environment.name'></span>
                 </td>
                 <td class="table-cell--align-right">
-                  <span v-text='formatDollars(environment.this_month || 0)'></span>
+                  <span v-html='formatDollars(environment.this_month || 0)'></span>
                 </td>
                 <td class="table-cell--align-right">
-                  <span v-text='formatDollars(environment.last_month || 0)'></span>
+                  <span v-html='formatDollars(environment.last_month || 0)'></span>
                 </td>
                 <td class="table-cell--align-right">
-                  <span v-text='formatDollars(environment.total || 0)'></span>
+                  <span v-html='formatDollars(environment.total || 0)'></span>
                 </td>
               </tr>
             </template>

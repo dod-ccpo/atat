@@ -8,13 +8,6 @@ from atst.models.application_role import (
     Status as ApplicationRoleStatus,
 )
 from atst.models.application import Application
-from atst.models.portfolio_state_machine import PortfolioStateMachine
-
-# from atst.models.application import Application
-
-
-class PortfolioStateMachinesQuery(Query):
-    model = PortfolioStateMachine
 
 
 class PortfoliosQuery(Query):

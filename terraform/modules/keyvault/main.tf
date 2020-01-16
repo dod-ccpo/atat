@@ -22,15 +22,19 @@ resource "azurerm_key_vault" "keyvault" {
 resource "azurerm_key_vault_access_policy" "keyvault" {
   key_vault_id = azurerm_key_vault.keyvault.id
 
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = var.principal_id
+  tenant_id = "b5ab0e1e-09f8-4258-afb7-fb17654bc5b3"
+  object_id = "ca8cfc48-9995-4973-a8cc-6c7f755e84de"
 
   key_permissions = [
     "get",
+    "list",
+    "create",
   ]
 
   secret_permissions = [
     "get",
+    "list",
+    "set",
   ]
 }
 

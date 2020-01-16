@@ -16,7 +16,7 @@
 <meta name="ghost-inspector-screenshotTarget" content="" />
 <meta name="ghost-inspector-screenshotExclusions" content="div.global-navigation, time" />
 <meta name="ghost-inspector-screenshotCompareEnabled" content="true" />
-<meta name="ghost-inspector-screenshotCompareThreshold" content="0.03" />
+<meta name="ghost-inspector-screenshotCompareThreshold" content="0.02" />
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -135,7 +135,7 @@ Imported from: AT-AT CI - New Portfolio-->
 <tr>
 <td>type</td>
 <td>css=#name</td>
-<td>Tatooine Energy Maintenance Systems ${alphanumeric}</td>
+<td>Tatooine Energy Maintenance Systems</td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>
@@ -727,27 +727,12 @@ Imported from: AT-AT CI - TO Step 2-->
 </tr>
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.task-order__header > p > strong</td>
-<td></td>
-</tr>
-<tr>
-<td>assertElementPresent</td>
-<td>css=.task-order__header > p > strong</td>
-<td></td>
-</tr>
-<tr>
-<td>waitForPageToLoad</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>waitForElementPresent</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(1) > .summary-item__value--large</td>
+<td>css=.totals-box > .h3:nth-of-type(2)</td>
 <td></td>
 </tr>
 <tr>
 <td>assertText</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(1) > .summary-item__value--large</td>
+<td>css=.totals-box > .h3:nth-of-type(2)</td>
 <td>*$100,000.00*</td>
 </tr>
 <tr>
@@ -757,12 +742,12 @@ Imported from: AT-AT CI - TO Step 2-->
 </tr>
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(2) > .summary-item__value--large</td>
+<td>css=.totals-box > .h3:nth-of-type(4)</td>
 <td></td>
 </tr>
 <tr>
 <td>assertText</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(2) > .summary-item__value--large</td>
+<td>css=.totals-box > .h3:nth-of-type(4)</td>
 <td>*$800,000.00*</td>
 </tr>
 <tr>
@@ -772,13 +757,13 @@ Imported from: AT-AT CI - TO Step 2-->
 </tr>
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(3) > .summary-item__value--large</td>
+<td>css=.col.task-order__details > div:nth-of-type(2)</td>
 <td></td>
 </tr>
 <tr>
-<td>verifyText</td>
-<td>css=.row > .col.col--grow.summary-item:nth-of-type(3) > .summary-item__value--large</td>
-<td>*$0.00*</td>
+<td>assertElementPresent</td>
+<td>css=.col.task-order__details > div:nth-of-type(2)</td>
+<td></td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>

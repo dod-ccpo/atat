@@ -9,9 +9,10 @@ import atst.models.types as types
 
 
 class CSPRole(Enum):
-    ADMIN = "Admin"
-    BILLING_READ = "Billing Read-only"
-    CONTRIBUTOR = "Contributor"
+    BASIC_ACCESS = "Basic Access"
+    NETWORK_ADMIN = "Network Admin"
+    BUSINESS_READ = "Business Read-only"
+    TECHNICAL_READ = "Technical Read-only"
 
 
 class EnvironmentRole(
@@ -25,7 +26,7 @@ class EnvironmentRole(
     )
     environment = relationship("Environment")
 
-    role = Column(SQLAEnum(CSPRole, native_enum=False), nullable=True)
+    role = Column(String())
 
     application_role_id = Column(
         UUID(as_uuid=True), ForeignKey("application_roles.id"), nullable=False

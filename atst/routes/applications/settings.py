@@ -78,7 +78,7 @@ def filter_env_roles_data(roles):
             {
                 "environment_id": str(role.environment.id),
                 "environment_name": role.environment.name,
-                "role": (role.role.value if role.role else "None"),
+                "role": role.role,
             }
             for role in roles
         ],
@@ -99,9 +99,8 @@ def filter_env_roles_form_data(member, environments):
 
         if len(env_roles_set) == 1:
             (env_role,) = env_roles_set
+            env_data["role"] = env_role.role
             env_data["disabled"] = env_role.disabled
-            if env_role.role:
-                env_data["role"] = env_role.role.name
 
         env_roles_form_data.append(env_data)
 
