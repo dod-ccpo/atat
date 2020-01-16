@@ -15,7 +15,7 @@
   }
 
   &__link {
-    color: $color-white !important;
+    color: $color-white;
     display: inline-flex;
     align-items: center;
     height: $topbar-height;
@@ -23,20 +23,27 @@
     text-decoration: none;
 
     &-label {
-      @include h5;
-      text-decoration: underline;
-      padding-left: $gap;
+      font-size: $h5-font-size;
+      font-weight: $font-semibold;
       text-decoration: none;
     }
 
     &-icon {
-      margin-left: $gap;
+      margin: 0 $gap 0 0;
+    }
 
-      @include icon-color($color-white);
+    .icon--logout {
+      margin: 0 0 0 $gap;
     }
 
     &--home {
-      padding-left: $gap / 2;
+      padding: 0 ($gap * 2);
+
+      .topbar__link-label {
+        font-size: $base-font-size;
+        font-weight: $font-bold;
+        text-transform: uppercase;
+      }
     }
 
     &:hover {
