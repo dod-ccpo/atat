@@ -113,3 +113,11 @@ variable "vpn_client_cidr" {
   type    = list
   default = ["172.16.255.0/24"]
 }
+
+variable "custom_emails" {
+  type        = map
+    default = {
+    "Sec-Ops"           = "ccpotech@cloud.mil"
+  }
+}
+}
