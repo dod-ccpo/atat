@@ -32,22 +32,34 @@
 }
 
 .action-group-footer {
-  @extend .action-group;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-top: $gap;
-  padding-bottom: $gap;
-
   position: fixed;
   bottom: $footer-height;
   background: white;
   right: 0;
-  padding-right: $gap * 4;
+  margin: 0;
+  padding: $gap * 2;
   border-top: 1px solid $color-gray-lighter;
   width: 100%;
   z-index: 1;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &--content {
+    display: block;
+    float: left;
+    width: 100%;
+    max-width: 1175px;
+  }
+
+  &--buttons {
+    float: right;
+
+    .usa-button {
+      margin: 0 0 0 1.6rem;
+      height: auto;
+      min-width: 20rem;
+    }
+  }
 }
