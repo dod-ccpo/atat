@@ -32,6 +32,11 @@
   &.row--max {
     max-width: $site-max-width;
   }
+
+  &--portfolio-create {
+    max-width: $max-form-width;
+    margin-bottom: 10rem;
+  }
 }
 
 .col {

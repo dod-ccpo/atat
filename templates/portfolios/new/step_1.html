@@ -17,7 +17,7 @@
     </div>
   {{ StickyCTA(text="portfolios.new.cta_step_1"|translate, context=("portfolios.new.sticky_header_context"|translate({"step": "1"}) )) }}
   <base-form inline-template>
-    <div class="row row-portfolio-create">
+    <div class="row row--portfolio-create">
       <form id="portfolio-create" class="col" action="{{ url_for('portfolios.create_portfolio') }}" method="POST">
         {{ form.csrf_token }}
         <div class="form-row">
