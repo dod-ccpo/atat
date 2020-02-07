@@ -1,6 +1,7 @@
 import pytest
 
 from atst.domain.csp import MockCloudProvider
+from atst.domain.csp.cloud.models import EnvironmentCSPPayload, EnvironmentCSPResult
 
 from tests.factories import EnvironmentFactory, EnvironmentRoleFactory, UserFactory
 
@@ -14,20 +15,17 @@ def mock_csp():
 
 def test_create_environment(mock_csp: MockCloudProvider):
     environment = EnvironmentFactory.create()
-    user = UserFactory.create()
-    environment_id = mock_csp.create_environment(CREDENTIALS, user, environment)
-    assert isinstance(environment_id, str)
-
-
-def test_create_admin_user(mock_csp: MockCloudProvider):
-    admin_user = mock_csp.create_atat_admin_user(CREDENTIALS, "env_id")
-    assert isinstance(admin_user["id"], str)
-    assert isinstance(admin_user["credentials"], dict)
-
-
-def test_create_environment_baseline(mock_csp: MockCloudProvider):
-    baseline = mock_csp.create_atat_admin_user(CREDENTIALS, "env_id")
-    assert isinstance(baseline, dict)
+    environment.application.cloud_id = "parent_id"
+    environment.application.portfolio.csp_data = {"tenant_id": "fake"}
+    payload = EnvironmentCSPPayload(
+        **dict(
+            tenant_id=environment.application.portfolio.csp_data.get("tenant_id"),
+            display_name=environment.name,
+            parent_id=environment.application.cloud_id,
+        )
+    )
+    result = mock_csp.create_environment(payload)
+    assert isinstance(result, EnvironmentCSPResult)
 
 
 def test_create_or_update_user(mock_csp: MockCloudProvider):

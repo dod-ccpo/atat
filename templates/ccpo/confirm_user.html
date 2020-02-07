@@ -3,31 +3,33 @@
 {% from "components/text_input.html" import TextInput %}
 
 {% block content %}
-  {% if new_user %}
-    <h3>{{ 'ccpo.form.confirm_user_title' | translate }}</h3>
-    <form id="add-ccpo-user-form" action="{{ url_for('ccpo.confirm_new_user') }}" method="POST">
-      {{ form.csrf_token }}
-      <input type="hidden" name="dod_id" value="{{ form.dod_id.data }}">
-      <div>
-        <p>
-          {{ "ccpo.form.confirm_user_text" | translate }}
-        </p>
-        <p>
-          {{ new_user.full_name }}
-        </p>
-        <p>
-          {{ new_user.email }}
-        </p>
-      </div>
-      <div class='action-group'>
-        <input
-            type='submit'
-            class='action-group__action usa-button'
-            value='{{ "ccpo.form.confirm_button" | translate }}'>
-        <a class='action-group__action icon-link icon-link--default' href="{{ url_for('ccpo.users') }}">
-          {{ "common.cancel" | translate }}
-        </a>
-      </div>
-    </form>
-  {% endif %}
+  <div class="ccpo-panel-container">
+    {% if new_user %}
+      <h3>{{ 'ccpo.form.confirm_user_title' | translate }}</h3>
+      <form id="add-ccpo-user-form" action="{{ url_for('ccpo.confirm_new_user') }}" method="POST">
+        {{ form.csrf_token }}
+        <input type="hidden" name="dod_id" value="{{ form.dod_id.data }}">
+        <div>
+          <p>
+            {{ "ccpo.form.confirm_user_text" | translate }}
+          </p>
+          <p>
+            {{ new_user.full_name }}
+          </p>
+          <p>
+            {{ new_user.email }}
+          </p>
+        </div>
+        <div class='action-group'>
+          <input
+              type='submit'
+              class='action-group__action usa-button'
+              value='{{ "ccpo.form.confirm_button" | translate }}'>
+          <a class='action-group__action icon-link icon-link--default' href="{{ url_for('ccpo.users') }}">
+            {{ "common.cancel" | translate }}
+          </a>
+        </div>
+      </form>
+    {% endif %}
+  </div>
 {% endblock %}

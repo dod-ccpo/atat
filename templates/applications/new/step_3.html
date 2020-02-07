@@ -25,16 +25,20 @@
     action_update="applications.update_new_application_step_3") }}
 
 
-  <span class="action-group-footer">
-    <a class="usa-button" href="{{ url_for('applications.settings', application_id=application_id) }}">
-      {{ "portfolios.applications.new.step_3_button_text" | translate }}
-    </a>
-    <a class="usa-button usa-button-secondary" href="{{ url_for('applications.view_new_application_step_2', application_id=application.id) }}">
-      {{ "common.previous" | translate }}
-    </a>
-    <a href="{{ url_for('applications.portfolio_applications', portfolio_id=portfolio.id) }}">
-      {{ "common.cancel" | translate }}
-    </a>
-  </span>
+  <div
+    class="action-group-footer"
+    v-bind:class="{'action-group-footer--expand-offset': this.$root.sidenavExpanded, 'action-group-footer--collapse-offset': !this.$root.sidenavExpanded}">
+    <div class="action-group-footer--container">
+      <a class="usa-button" href="{{ url_for('applications.settings', application_id=application_id) }}">
+        {{ "portfolios.applications.new.step_3_button_text" | translate }}
+      </a>
+      <a class="usa-button usa-button-secondary" href="{{ url_for('applications.view_new_application_step_2', application_id=application.id) }}">
+        {{ "common.previous" | translate }}
+      </a>
+      <a href="{{ url_for('applications.portfolio_applications', portfolio_id=portfolio.id) }}">
+        {{ "common.cancel" | translate }}
+      </a>
+    </div>
+  </div>
 
 {% endblock %}

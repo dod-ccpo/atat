@@ -1,5 +1,4 @@
 import pytest
-import pendulum
 from uuid import uuid4
 
 from atst.domain.environments import Environments
@@ -14,6 +13,7 @@ from tests.factories import (
     EnvironmentRoleFactory,
     ApplicationRoleFactory,
 )
+from tests.utils import EnvQueryTest
 
 
 def test_create_environments():
@@ -119,40 +119,6 @@ def test_update_does_not_duplicate_names_within_application():
         Environments.update(dupe_env, name)
 
 
-class EnvQueryTest:
-    @property
-    def NOW(self):
-        return pendulum.now()
-
-    @property
-    def YESTERDAY(self):
-        return self.NOW.subtract(days=1)
-
-    @property
-    def TOMORROW(self):
-        return self.NOW.add(days=1)
-
-    def create_portfolio_with_clins(self, start_and_end_dates, env_data=None):
-        env_data = env_data or {}
-        return PortfolioFactory.create(
-            applications=[
-                {
-                    "name": "Mos Eisley",
-                    "description": "Where Han shot first",
-                    "environments": [{"name": "thebar", **env_data}],
-                }
-            ],
-            task_orders=[
-                {
-                    "create_clins": [
-                        {"start_date": start_date, "end_date": end_date}
-                        for (start_date, end_date) in start_and_end_dates
-                    ]
-                }
-            ],
-        )
-
-
 class TestGetEnvironmentsPendingCreate(EnvQueryTest):
     def test_with_expired_clins(self, session):
         self.create_portfolio_with_clins([(self.YESTERDAY, self.YESTERDAY)])
@@ -168,37 +134,16 @@ class TestGetEnvironmentsPendingCreate(EnvQueryTest):
         self.create_portfolio_with_clins([(self.TOMORROW, self.TOMORROW)])
         assert len(Environments.get_environments_pending_creation(self.NOW)) == 0
 
+    def test_with_already_provisioned_app(self, session):
+        self.create_portfolio_with_clins(
+            [(self.YESTERDAY, self.TOMORROW)], app_data={"cloud_id": uuid4().hex}
+        )
+        assert len(Environments.get_environments_pending_creation(self.NOW)) == 1
+
     def test_with_already_provisioned_env(self, session):
         self.create_portfolio_with_clins(
-            [(self.YESTERDAY, self.TOMORROW)], env_data={"cloud_id": uuid4().hex}
+            [(self.YESTERDAY, self.TOMORROW)],
+            env_data={"cloud_id": uuid4().hex},
+            app_data={"cloud_id": uuid4().hex},
         )
         assert len(Environments.get_environments_pending_creation(self.NOW)) == 0
-
-
-class TestGetEnvironmentsPendingAtatUserCreation(EnvQueryTest):
-    def test_with_provisioned_environment(self):
-        self.create_portfolio_with_clins(
-            [(self.YESTERDAY, self.TOMORROW)],
-            {"cloud_id": uuid4().hex, "root_user_info": {}},
-        )
-        assert (
-            len(Environments.get_environments_pending_atat_user_creation(self.NOW)) == 0
-        )
-
-    def test_with_unprovisioned_environment(self):
-        self.create_portfolio_with_clins(
-            [(self.YESTERDAY, self.TOMORROW)],
-            {"cloud_id": uuid4().hex, "root_user_info": None},
-        )
-        assert (
-            len(Environments.get_environments_pending_atat_user_creation(self.NOW)) == 1
-        )
-
-    def test_with_unprovisioned_expired_clins_environment(self):
-        self.create_portfolio_with_clins(
-            [(self.YESTERDAY, self.YESTERDAY)],
-            {"cloud_id": uuid4().hex, "root_user_info": None},
-        )
-        assert (
-            len(Environments.get_environments_pending_atat_user_creation(self.NOW)) == 0
-        )

@@ -14,7 +14,7 @@
   action_new,
   action_update) %}
 
-  <h3  id="application-members">
+  <h3 id="application-members">
     {{ 'portfolios.applications.settings.team_members' | translate }}
   </h3>
 
@@ -22,7 +22,7 @@
       {% include "fragments/flash.html" %}
   {% endif %}
 
-  <div class="panel">
+  <div class="panel{% if new_member_form%} form{% endif %}">
   {% if not application.members %}
     <div class='empty-state empty-state--centered empty-state--white panel__content'>
       <p class='empty-state__message'>

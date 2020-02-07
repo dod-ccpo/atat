@@ -47,7 +47,7 @@
                         <span>
                           {{ env['name'] }}
                         </span>
-                        {{ Label(type="pending_creation", classes='label--below')}}
+                        {{ Label(type="pending_creation")}}
                       {%- endif %}
                       {% if user_can(permissions.EDIT_ENVIRONMENT) -%}
                         {{

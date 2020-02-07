@@ -26,6 +26,7 @@ from tests.factories import (
     PortfolioStateMachineFactory,
     get_all_portfolio_permission_sets,
 )
+from tests.utils import EnvQueryTest
 
 
 @pytest.fixture(scope="function")
@@ -263,10 +264,44 @@ def test_create_state_machine(portfolio):
     assert fsm
 
 
-def test_get_portfolios_pending_provisioning(session):
-    for x in range(5):
-        portfolio = PortfolioFactory.create()
-        sm = PortfolioStateMachineFactory.create(portfolio=portfolio)
-        if x == 2:
-            sm.state = FSMStates.COMPLETED
-    assert len(Portfolios.get_portfolios_pending_provisioning()) == 4
+class TestGetPortfoliosPendingCreate(EnvQueryTest):
+    def test_finds_unstarted(self):
+        for x in range(5):
+            if x == 2:
+                state = "COMPLETED"
+            else:
+                state = "UNSTARTED"
+            self.create_portfolio_with_clins(
+                [(self.YESTERDAY, self.TOMORROW)], state_machine_status=state
+            )
+        assert len(Portfolios.get_portfolios_pending_provisioning(self.NOW)) == 4
+
+    def test_finds_created(self):
+        self.create_portfolio_with_clins(
+            [(self.YESTERDAY, self.TOMORROW)], state_machine_status="TENANT_CREATED"
+        )
+        assert len(Portfolios.get_portfolios_pending_provisioning(self.NOW)) == 1
+
+    def test_does_not_find_failed(self):
+        self.create_portfolio_with_clins(
+            [(self.YESTERDAY, self.TOMORROW)], state_machine_status="TENANT_FAILED"
+        )
+        assert len(Portfolios.get_portfolios_pending_provisioning(self.NOW)) == 0
+
+    def test_with_expired_clins(self):
+        self.create_portfolio_with_clins([(self.YESTERDAY, self.YESTERDAY)])
+        assert len(Portfolios.get_portfolios_pending_provisioning(self.NOW)) == 0
+
+    def test_with_active_clins(self):
+        portfolio = self.create_portfolio_with_clins([(self.YESTERDAY, self.TOMORROW)])
+        Portfolios.get_portfolios_pending_provisioning(self.NOW) == [portfolio.id]
+
+    def test_with_future_clins(self):
+        self.create_portfolio_with_clins([(self.TOMORROW, self.TOMORROW)])
+        assert len(Portfolios.get_portfolios_pending_provisioning(self.NOW)) == 0
+
+    def test_with_already_provisioned_env(self):
+        self.create_portfolio_with_clins(
+            [(self.YESTERDAY, self.TOMORROW)], env_data={"cloud_id": uuid4().hex}
+        )
+        assert len(Portfolios.get_portfolios_pending_provisioning(self.NOW)) == 0

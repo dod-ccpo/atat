@@ -467,9 +467,10 @@ def revoke_invite(application_id, application_role_id):
     if invite.is_pending:
         ApplicationInvitations.revoke(invite.token)
         flash(
-            "application_invite_revoked",
+            "invite_revoked",
+            resource="Application",
             user_name=app_role.user_name,
-            application_name=g.application.name,
+            resource_name=g.application.name,
         )
     else:
         flash(

@@ -15,6 +15,8 @@ from atst.models import (
     Permissions,
     PortfolioRole,
     PortfolioRoleStatus,
+    TaskOrder,
+    CLIN,
 )
 
 from .query import PortfoliosQuery, PortfolioStateMachinesQuery
@@ -144,7 +146,7 @@ class Portfolios(object):
         return db.session.query(Portfolio.id)
 
     @classmethod
-    def get_portfolios_pending_provisioning(cls) -> List[UUID]:
+    def get_portfolios_pending_provisioning(cls, now) -> List[UUID]:
         """
         Any portfolio with a corresponding State Machine that is either:
             not started yet,
@@ -153,22 +155,18 @@ class Portfolios(object):
         """
 
         results = (
-            cls.base_provision_query()
+            db.session.query(Portfolio.id)
             .join(PortfolioStateMachine)
+            .join(TaskOrder)
+            .join(CLIN)
+            .filter(Portfolio.deleted == False)
+            .filter(CLIN.start_date <= now)
+            .filter(CLIN.end_date > now)
             .filter(
                 or_(
                     PortfolioStateMachine.state == FSMStates.UNSTARTED,
-                    PortfolioStateMachine.state == FSMStates.FAILED,
-                    PortfolioStateMachine.state == FSMStates.TENANT_FAILED,
+                    PortfolioStateMachine.state.like("%CREATED"),
                 )
             )
         )
         return [id_ for id_, in results]
-
-        # db.session.query(PortfolioStateMachine).\
-        #        filter(
-        #            or_(
-        #                PortfolioStateMachine.state==FSMStates.UNSTARTED,
-        #                PortfolioStateMachine.state==FSMStates.UNSTARTED,
-        #            )
-        #        ).all()

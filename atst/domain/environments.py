@@ -124,18 +124,9 @@ class Environments(object):
         Any environment with an active CLIN that doesn't yet have a `cloud_id`.
         """
         results = (
-            cls.base_provision_query(now).filter(Environment.cloud_id == None).all()
-        )
-        return [id_ for id_, in results]
-
-    @classmethod
-    def get_environments_pending_atat_user_creation(cls, now) -> List[UUID]:
-        """
-        Any environment with an active CLIN that has a cloud_id but no `root_user_info`.
-        """
-        results = (
             cls.base_provision_query(now)
-            .filter(Environment.cloud_id != None)
-            .filter(Environment.root_user_info == None)
-        ).all()
+            .filter(Application.cloud_id != None)
+            .filter(Environment.cloud_id.is_(None))
+            .all()
+        )
         return [id_ for id_, in results]

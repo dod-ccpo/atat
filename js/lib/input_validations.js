@@ -9,6 +9,12 @@ export default {
     unmask: [],
     validationError: 'Please enter a response',
   },
+  applicationName: {
+    mask: false,
+    match: /^[A-Za-z0-9\-_,'".\s]{4,100}$$/,
+    unmask: [],
+    validationError: 'Application names can be between 4-100 characters',
+  },
   clinNumber: {
     mask: false,
     match: /^\d{4}$/,
@@ -42,14 +48,14 @@ export default {
   },
   defaultStringField: {
     mask: false,
-    match: /^[A-Za-z0-9\-_ \.]{1,100}$/,
+    match: /^[A-Za-z0-9\-_,'".\s]{1,1000}$/,
     unmask: [],
     validationError:
       'Please enter a response of no more than 100 alphanumeric characters',
   },
   defaultTextAreaField: {
     mask: false,
-    match: /^[A-Za-z0-9\-_ \.]{1,1000}$/,
+    match: /^[A-Za-z0-9\-_,'".\s]{1,1000}$/,
     unmask: [],
     validationError:
       'Please enter a response of no more than 1000 alphanumeric characters',
@@ -94,7 +100,7 @@ export default {
   },
   portfolioName: {
     mask: false,
-    match: /^.{4,100}$/,
+    match: /^[A-Za-z0-9\-_,'".\s]{4,100}$$/,
     unmask: [],
     validationError: 'Portfolio names can be between 4-100 characters',
   },

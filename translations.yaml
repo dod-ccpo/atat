@@ -128,9 +128,6 @@ flash:
       message: There was an error processing the invitation for {user_name} from {application_name}
     resent:
       message: "{email} has been sent an invitation to access this Application"
-    revoked:
-      title: Application invitation revoked
-      message: You have successfully revoked the invite for {user_name} from {application_name}
   application_member:
     removed:
       title: Team member removed from application
@@ -166,6 +163,9 @@ flash:
     errors:
       title: There were some errors
       message: Please see below.
+  invite_revoked:
+    title: "{resource} invitation revoked"
+    message: "You have successfully revoked the invite for {user_name} from {resource_name}"
   login_required_message: After you log in, you will be redirected to your destination page.
   login_required_title: Log in required
   logged_out:

@@ -15,14 +15,16 @@
       <p>{{ "portfolios.header" | translate }}</p>
       <h1>{{ 'portfolios.new.title' | translate }}</h1>
     </div>
+  </div>
   {{ StickyCTA(text="portfolios.new.cta_step_1"|translate, context=("portfolios.new.sticky_header_context"|translate({"step": "1"}) )) }}
   <base-form inline-template>
     <div class="row row--portfolio-create">
-      <form id="portfolio-create" class="col" action="{{ url_for('portfolios.create_portfolio') }}" method="POST">
+    <div class="row">
+      <form id="portfolio-create" class="col form" action="{{ url_for('portfolios.create_portfolio') }}" method="POST">
         {{ form.csrf_token }}
         <div class="form-row">
           <div class="form-col">
-            {{ TextInput(form.name, validation="name", optional=False, classes="form-col") }}
+            {{ TextInput(form.name, validation="portfolioName", optional=False, classes="form-col") }}
             {{"forms.portfolio.name.help_text" | translate | safe }}
           </div>
         </div>

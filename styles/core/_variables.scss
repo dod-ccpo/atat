@@ -20,6 +20,8 @@ $max-panel-width: 90rem;
 $max-form-width: 46rem;
 $home-pg-icon-width: 6rem;
 $large-spacing: 4rem;
+$max-page-width: $max-panel-width + $sidenav-expanded-width + $large-spacing;
+$action-footer-height: 6rem;
 
 /*
  * USWDS Variables

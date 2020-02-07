@@ -51,28 +51,6 @@ def test_audit_event_for_environment_deletion(session):
     assert after
 
 
-@pytest.mark.parametrize(
-    "env_data,expected_status",
-    [
-        [
-            {"cloud_id": None, "root_user_info": None},
-            Environment.ProvisioningStatus.PENDING,
-        ],
-        [
-            {"cloud_id": 1, "root_user_info": None},
-            Environment.ProvisioningStatus.PENDING,
-        ],
-        [
-            {"cloud_id": 1, "root_user_info": {}},
-            Environment.ProvisioningStatus.COMPLETED,
-        ],
-    ],
-)
-def test_environment_provisioning_status(env_data, expected_status):
-    environment = EnvironmentFactory.create(**env_data)
-    assert environment.provisioning_status == expected_status
-
-
 def test_environment_roles_do_not_include_deleted():
     member_list = [
         {"role_name": CSPRole.ADMIN},

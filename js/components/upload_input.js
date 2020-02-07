@@ -17,7 +17,7 @@ export default {
     filename: {
       type: String,
     },
-    objectName: {
+    initialObjectName: {
       type: String,
     },
     initialErrors: {
@@ -42,6 +42,7 @@ export default {
       filenameError: false,
       downloadLink: '',
       fileSizeLimit: this.sizeLimit,
+      objectName: this.initialObjectName,
     }
   },
 
@@ -72,6 +73,7 @@ export default {
       const response = await uploader.upload(file)
       if (uploadResponseOkay(response)) {
         this.attachment = e.target.value
+        this.objectName = uploader.objectName
         this.$refs.attachmentFilename.value = file.name
         this.$refs.attachmentObjectName.value = response.objectName
         this.$refs.attachmentInput.disabled = true

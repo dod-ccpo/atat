@@ -10,29 +10,30 @@
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }} " />
 </head>
 <body class="{% if g.modalOpen %} modalOpen{% endif %}">
+  <div id='app-root'>
+    {% block template_vars %}{% endblock %}
 
-  {% block template_vars %}{% endblock %}
+    {% include 'components/usa_header.html' %}
 
-  {% include 'components/usa_header.html' %}
+    {% include 'navigation/topbar.html' %}
 
-  {% include 'navigation/topbar.html' %}
+    <div class='global-layout'>
 
-  <div class='global-layout'>
+      <div class='global-panel-container'>
+        {% block sidenav %}{% endblock %}
 
-    <div class='global-panel-container'>
-      {% block sidenav %}{% endblock %}
-
-      {% block content %}
-        these are not the droids you are looking for
-      {% endblock %}
+        {% block content %}
+          these are not the droids you are looking for
+        {% endblock %}
+      </div>
     </div>
+
+    {% include 'footer.html' %}
+
+    {% block modal %}{% endblock %}
+    {% assets "js_all" %}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
   </div>
-
-  {% include 'footer.html' %}
-
-  {% block modal %}{% endblock %}
-  {% assets "js_all" %}
-    <script src="{{ ASSET_URL }}"></script>
-  {% endassets %}
 </body>
 </html>

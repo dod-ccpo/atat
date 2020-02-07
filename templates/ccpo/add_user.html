@@ -4,21 +4,23 @@
 {% from "components/text_input.html" import TextInput %}
 
 {% block content %}
-  <base-form inline-template>
-    <form id="add-ccpo-user-form" action="{{ url_for('ccpo.submit_new_user') }}" method="POST">
-      {{ form.csrf_token }}
-      <h1>{{ "ccpo.form.add_user_title" | translate }}</h1>
-      <div class='form-row'>
-        <div class='form-col form-col--two-thirds'>
-          {{ TextInput(form.dod_id, validation='dodId', optional=False) }}
-        </div>
-        <div class="form-col form-col--third">
-          <div class='action-group'>
-            {{ SaveButton(text="common.next"|translate, element="input", additional_classes="action-group__action", form="add-ccpo-user-form") }}
-            <a class='action-group__action icon-link icon-link--default' href="{{ url_for('ccpo.users') }}">{{ "common.cancel" | translate }}</a>
+  <div class="ccpo-panel-container">
+    <base-form inline-template>
+      <form id="add-ccpo-user-form" action="{{ url_for('ccpo.submit_new_user') }}" method="POST">
+        {{ form.csrf_token }}
+        <h1>{{ "ccpo.form.add_user_title" | translate }}</h1>
+        <div class='form-row'>
+          <div class='form-col form-col--two-thirds'>
+            {{ TextInput(form.dod_id, validation='dodId', optional=False) }}
+          </div>
+          <div class="form-col form-col--third">
+            <div class='action-group'>
+              {{ SaveButton(text="common.next"|translate, element="input", additional_classes="action-group__action", form="add-ccpo-user-form") }}
+              <a class='action-group__action icon-link icon-link--default' href="{{ url_for('ccpo.users') }}">{{ "common.cancel" | translate }}</a>
+            </div>
           </div>
         </div>
-      </div>
-    </form>
-  </base-form>
+      </form>
+    </base-form>
+  </div>
 {% endblock %}

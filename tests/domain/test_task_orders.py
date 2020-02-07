@@ -1,5 +1,5 @@
 import pytest
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from decimal import Decimal
 
 from atst.domain.exceptions import AlreadyExistsError
@@ -178,3 +178,21 @@ def test_allows_alphanumeric_number():
 
     for number in valid_to_numbers:
         assert TaskOrders.create(portfolio.id, number, [], None)
+
+
+def test_get_for_send_task_order_files():
+    new_to = TaskOrderFactory.create(create_clins=[{}])
+    updated_to = TaskOrderFactory.create(
+        create_clins=[{"last_sent_at": datetime(2020, 2, 1)}],
+        pdf_last_sent_at=datetime(2020, 1, 1),
+    )
+    sent_to = TaskOrderFactory.create(
+        create_clins=[{"last_sent_at": datetime(2020, 1, 1)}],
+        pdf_last_sent_at=datetime(2020, 1, 1),
+    )
+
+    updated_and_new_task_orders = TaskOrders.get_for_send_task_order_files()
+    assert len(updated_and_new_task_orders) == 2
+    assert sent_to not in updated_and_new_task_orders
+    assert updated_to in updated_and_new_task_orders
+    assert new_to in updated_and_new_task_orders

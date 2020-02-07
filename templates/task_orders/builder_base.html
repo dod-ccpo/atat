@@ -28,10 +28,13 @@
 
       {% include "fragments/flash.html" %}
 
-      <div class="task-order">
+      <div class="task-order form">
         {% block to_builder_form_field %}{% endblock %}
       </div>
-       <span class="action-group-footer">
+      <div
+        class="action-group-footer"
+        v-bind:class="{'action-group-footer--expand-offset': this.$root.sidenavExpanded, 'action-group-footer--collapse-offset': !this.$root.sidenavExpanded}">
+        <div class="action-group-footer--container">
           {% block next_button %}
             <input
               type="submit"
@@ -58,14 +61,13 @@
               </a>
             {%- endif %}
           {% endif %}
-
           <a
             v-on:click="openModal('cancel')"
             class="action-group__action icon-link">
             {{ "common.cancel" | translate }}
           </a>
-        </span>
-
+        </div>
+      </div>
     </form>
   </to-form>
 {% endblock %}

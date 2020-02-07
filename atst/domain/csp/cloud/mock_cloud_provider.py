@@ -4,9 +4,7 @@ from .cloud_provider_interface import CloudProviderInterface
 from .exceptions import (
     AuthenticationException,
     AuthorizationException,
-    BaselineProvisionException,
     ConnectionException,
-    EnvironmentCreationException,
     GeneralCSPException,
     UnknownServerException,
     UserProvisioningException,
@@ -25,16 +23,21 @@ from .models import (
     BillingProfileTenantAccessCSPResult,
     BillingProfileVerificationCSPPayload,
     BillingProfileVerificationCSPResult,
+    CostManagementQueryCSPResult,
+    CostManagementQueryProperties,
     ProductPurchaseCSPPayload,
     ProductPurchaseCSPResult,
     ProductPurchaseVerificationCSPPayload,
     ProductPurchaseVerificationCSPResult,
     PrincipalAdminRoleCSPPayload,
     PrincipalAdminRoleCSPResult,
+    ReportingCSPPayload,
     SubscriptionCreationCSPPayload,
     SubscriptionCreationCSPResult,
     SubscriptionVerificationCSPPayload,
     SuscriptionVerificationCSPResult,
+    EnvironmentCSPPayload,
+    EnvironmentCSPResult,
     TaskOrderBillingCreationCSPPayload,
     TaskOrderBillingCreationCSPResult,
     TaskOrderBillingVerificationCSPPayload,
@@ -91,34 +94,6 @@ class MockCloudProvider(CloudProviderInterface):
     def get_secret(self, secret_key: str, default=dict()):
         return default
 
-    def create_environment(self, auth_credentials, user, environment):
-        self._authorize(auth_credentials)
-
-        self._delay(1, 5)
-        self._maybe_raise(self.NETWORK_FAILURE_PCT, self.NETWORK_EXCEPTION)
-        self._maybe_raise(self.SERVER_FAILURE_PCT, self.SERVER_EXCEPTION)
-        self._maybe_raise(
-            self.ENV_CREATE_FAILURE_PCT,
-            EnvironmentCreationException(
-                environment.id, "Could not create environment."
-            ),
-        )
-
-        csp_environment_id = self._id()
-
-        self._delay(1, 5)
-        self._maybe_raise(self.NETWORK_FAILURE_PCT, self.NETWORK_EXCEPTION)
-        self._maybe_raise(self.SERVER_FAILURE_PCT, self.SERVER_EXCEPTION)
-        self._maybe_raise(
-            self.ATAT_ADMIN_CREATE_FAILURE_PCT,
-            BaselineProvisionException(
-                csp_environment_id, "Could not create environment baseline."
-            ),
-        )
-        self._maybe_raise(self.UNAUTHORIZED_RATE, self.AUTHORIZATION_EXCEPTION)
-
-        return csp_environment_id
-
     def create_subscription(self, payload: SubscriptionCreationCSPPayload):
         return self.create_subscription_creation(payload)
 
@@ -141,23 +116,6 @@ class MockCloudProvider(CloudProviderInterface):
         return SuscriptionVerificationCSPResult(
             subscription_id="subscriptions/60fbbb72-0516-4253-ab18-c92432ba3230"
         )
-
-    def create_atat_admin_user(self, auth_credentials, csp_environment_id):
-        self._authorize(auth_credentials)
-
-        self._delay(1, 5)
-        self._maybe_raise(self.NETWORK_FAILURE_PCT, self.NETWORK_EXCEPTION)
-        self._maybe_raise(self.SERVER_FAILURE_PCT, self.SERVER_EXCEPTION)
-        self._maybe_raise(
-            self.ATAT_ADMIN_CREATE_FAILURE_PCT,
-            UserProvisioningException(
-                csp_environment_id, "atat_admin", "Could not create admin user."
-            ),
-        )
-
-        self._maybe_raise(self.UNAUTHORIZED_RATE, self.AUTHORIZATION_EXCEPTION)
-
-        return {"id": self._id(), "credentials": self._auth_credentials}
 
     def create_tenant(self, payload: TenantCSPPayload):
         """
@@ -477,6 +435,13 @@ class MockCloudProvider(CloudProviderInterface):
             id=f"{AZURE_MGMNT_PATH}{payload.management_group_name}"
         )
 
+    def create_environment(self, payload: EnvironmentCSPPayload):
+        self._maybe_raise(self.UNAUTHORIZED_RATE, GeneralCSPException)
+
+        return EnvironmentCSPResult(
+            id=f"{AZURE_MGMNT_PATH}{payload.management_group_name}"
+        )
+
     def create_user(self, payload: UserCSPPayload):
         self._maybe_raise(self.UNAUTHORIZED_RATE, GeneralCSPException)
 
@@ -487,3 +452,25 @@ class MockCloudProvider(CloudProviderInterface):
 
     def update_tenant_creds(self, tenant_id, secret):
         return secret
+
+    def get_reporting_data(self, payload: ReportingCSPPayload):
+        self._maybe_raise(self.NETWORK_FAILURE_PCT, self.NETWORK_EXCEPTION)
+        self._maybe_raise(self.SERVER_FAILURE_PCT, self.SERVER_EXCEPTION)
+        self._maybe_raise(self.UNAUTHORIZED_RATE, self.AUTHORIZATION_EXCEPTION)
+        object_id = str(uuid4())
+
+        properties = CostManagementQueryProperties(
+            **dict(
+                columns=[
+                    {"name": "PreTaxCost", "type": "Number"},
+                    {"name": "UsageDate", "type": "Number"},
+                    {"name": "InvoiceId", "type": "String"},
+                    {"name": "Currency", "type": "String"},
+                ],
+                rows=[],
+            )
+        )
+
+        return CostManagementQueryCSPResult(
+            **dict(name=object_id, properties=properties,)
+        )

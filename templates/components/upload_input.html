@@ -5,7 +5,7 @@
   inline-template
   {% if not field.errors %}
     v-bind:filename='{{ field.filename.data | tojson }}'
-    v-bind:object-name='{{ field.object_name.data | tojson }}'
+    v-bind:initial-object-name='{{ field.object_name.data | tojson }}'
   {% else %}
     v-bind:initial-errors='true'
   {% endif %}
@@ -46,7 +46,7 @@
           v-bind:value="attachment"
           type="file">
           <input type="hidden" name="{{ field.filename.name }}" id="{{ field.filename.name }}" ref="attachmentFilename">
-          <input type="hidden" name="{{ field.object_name.name }}" id="{{ field.object_name.name }}" ref="attachmentObjectName">
+          <input type="hidden" name="{{ field.object_name.name }}" id="{{ field.object_name.name }}" ref="attachmentObjectName" v-bind:value='objectName'>
       </div>
       <template v-if="uploadError">
         <span class="usa-input__message">{{ "forms.task_order.upload_error" | translate }}</span>

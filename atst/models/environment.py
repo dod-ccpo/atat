@@ -1,11 +1,9 @@
 from sqlalchemy import Column, ForeignKey, String, UniqueConstraint
 from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.postgresql import JSONB
-from enum import Enum
 
-from atst.models.base import Base
 import atst.models.mixins as mixins
 import atst.models.types as types
+from atst.models.base import Base
 
 
 class Environment(
@@ -30,7 +28,6 @@ class Environment(
     creator = relationship("User")
 
     cloud_id = Column(String)
-    root_user_info = Column(JSONB(none_as_null=True))
 
     roles = relationship(
         "EnvironmentRole",
@@ -43,10 +40,6 @@ class Environment(
             "name", "application_id", name="environments_name_application_id_key"
         ),
     )
-
-    class ProvisioningStatus(Enum):
-        PENDING = "pending"
-        COMPLETED = "completed"
 
     @property
     def users(self):
@@ -69,15 +62,8 @@ class Environment(
         return self.application.portfolio_id
 
     @property
-    def provisioning_status(self) -> ProvisioningStatus:
-        if self.cloud_id is None or self.root_user_info is None:
-            return self.ProvisioningStatus.PENDING
-        else:
-            return self.ProvisioningStatus.COMPLETED
-
-    @property
     def is_pending(self):
-        return self.provisioning_status == self.ProvisioningStatus.PENDING
+        return self.cloud_id is None
 
     def __repr__(self):
         return "<Environment(name='{}', num_users='{}', application='{}', portfolio='{}', id='{}')>".format(
@@ -91,11 +77,3 @@ class Environment(
     @property
     def history(self):
         return self.get_changes()
-
-    @property
-    def csp_credentials(self):
-        return (
-            self.root_user_info.get("credentials")
-            if self.root_user_info is not None
-            else None
-        )

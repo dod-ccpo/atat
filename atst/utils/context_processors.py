@@ -19,6 +19,9 @@ from atst.models import (
 def get_resources_from_context(view_args):
     query = None
 
+    if view_args is None:
+        view_args = {}
+
     if "portfolio_token" in view_args:
         query = (
             db.session.query(Portfolio)

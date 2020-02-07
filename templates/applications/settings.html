@@ -22,7 +22,7 @@
     <base-form inline-template>
       <form method="POST" action="{{ url_for('applications.update', application_id=application.id) }}" class="col col--half">
         {{ application_form.csrf_token }}
-        {{ TextInput(application_form.name, validation="name", optional=False) }}
+        {{ TextInput(application_form.name, validation="applicationName", optional=False) }}
         {{ TextInput(application_form.description, validation="defaultTextAreaField", paragraph=True, optional=True, showOptional=False) }}
         <div class="action-group action-group--tight">
           {{ SaveButton(text='common.save_changes'|translate) }}

@@ -118,3 +118,17 @@ class BaselineProvisionException(GeneralCSPException):
         return "Could not complete baseline provisioning for environment ({}): {}".format(
             self.env_identifier, self.reason
         )
+
+
+class SecretException(GeneralCSPException):
+    """A problem occurred with setting or getting secrets"""
+
+    def __init__(self, tenant_id, reason):
+        self.tenant_id = tenant_id
+        self.reason = reason
+
+    @property
+    def message(self):
+        return "Could not get or set secret for ({}): {}".format(
+            self.tenant_id, self.reason
+        )

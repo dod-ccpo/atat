@@ -33,11 +33,6 @@ MESSAGES = {
         "message": "flash.application_invite.resent.message",
         "category": "success",
     },
-    "application_invite_revoked": {
-        "title": "flash.application_invite.revoked.title",
-        "message": "flash.application_invite.revoked.message",
-        "category": "success",
-    },
     "application_member_removed": {
         "title": "flash.application_member.removed.title",
         "message": "flash.application_member.removed.message",
@@ -102,6 +97,11 @@ MESSAGES = {
         "title": "flash.task_order.insufficient_funds.title",
         "message": None,
         "category": "warning",
+    },
+    "invite_revoked": {
+        "title": "flash.invite_revoked.title",
+        "message": "flash.invite_revoked.message",
+        "category": "success",
     },
     "logged_out": {
         "title": "flash.logged_out.title",

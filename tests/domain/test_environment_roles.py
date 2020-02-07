@@ -93,27 +93,25 @@ def test_disable_completed(application_role, environment):
 
 def test_disable_checks_env_provisioning_status(session):
     environment = EnvironmentFactory.create()
-    assert environment.is_pending
+    assert not environment.cloud_id
     env_role1 = EnvironmentRoleFactory.create(environment=environment)
     env_role1 = EnvironmentRoles.disable(env_role1.id)
     assert env_role1.disabled
 
     environment.cloud_id = "cloud-id"
-    environment.root_user_info = {"credentials": "credentials"}
     session.add(environment)
     session.commit()
     session.refresh(environment)
 
-    assert not environment.is_pending
+    assert environment.cloud_id
     env_role2 = EnvironmentRoleFactory.create(environment=environment)
     env_role2 = EnvironmentRoles.disable(env_role2.id)
     assert env_role2.disabled
 
 
 def test_disable_checks_env_role_provisioning_status():
-    environment = EnvironmentFactory.create(
-        cloud_id="cloud-id", root_user_info={"credentials": "credentials"}
-    )
+    environment = EnvironmentFactory.create(cloud_id="cloud-id")
+    environment.application.portfolio.csp_data = {"tenant_id": uuid4().hex}
     env_role1 = EnvironmentRoleFactory.create(environment=environment)
     assert not env_role1.csp_user_id
     env_role1 = EnvironmentRoles.disable(env_role1.id)

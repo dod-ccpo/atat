@@ -43,10 +43,12 @@ class AzureFileService(FileService):
 
         from azure.storage.common import CloudStorageAccount
         from azure.storage.blob import BlobSasPermissions
+        from azure.storage.blob.models import BlobPermissions
         from azure.storage.blob.blockblobservice import BlockBlobService
 
         self.CloudStorageAccount = CloudStorageAccount
         self.BlobSasPermissions = BlobSasPermissions
+        self.BlobPermissions = BlobPermissions
         self.BlockBlobService = BlockBlobService
 
     def get_token(self):
@@ -72,20 +74,22 @@ class AzureFileService(FileService):
         return ({"token": sas_token}, object_name)
 
     def generate_download_link(self, object_name, filename):
-        account = self.CloudStorageAccount(
+        block_blob_service = self.BlockBlobService(
             account_name=self.account_name, account_key=self.storage_key
         )
-        bbs = account.create_block_blob_service()
-        sas_token = bbs.generate_blob_shared_access_signature(
-            self.container_name,
-            object_name,
-            permission=self.BlobSasPermissions(read=True),
+        sas_token = block_blob_service.generate_blob_shared_access_signature(
+            container_name=self.container_name,
+            blob_name=object_name,
+            permission=self.BlobPermissions(read=True),
             expiry=datetime.utcnow() + self.timeout,
             content_disposition=f"attachment; filename={filename}",
             protocol="https",
         )
-        return bbs.make_blob_url(
-            self.container_name, object_name, protocol="https", sas_token=sas_token
+        return block_blob_service.make_blob_url(
+            container_name=self.container_name,
+            blob_name=object_name,
+            protocol="https",
+            sas_token=sas_token,
         )
 
     def download_task_order(self, object_name):

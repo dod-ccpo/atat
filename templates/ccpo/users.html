@@ -6,78 +6,80 @@
 {% from "components/modal.html" import Modal %}
 
 {% block content %}
-  <div class='col'>
-    <div class="h2">
-      {{ "ccpo.users_title" | translate }}
-    </div>
+  <div class="ccpo-panel-container">
+    <div class='col'>
+      <div class="h2">
+        {{ "ccpo.users_title" | translate }}
+      </div>
 
-    {% include "fragments/flash.html" %}
+      {% include "fragments/flash.html" %}
 
-    <table>
-      <thead>
-        <tr>
-          <th>{{ "common.name" | translate }}</th>
-          <th>{{ "common.email" | translate }}</th>
-          <th>{{ "common.dod_id" | translate }}</th>
-          {% if user_can(permissions.DELETE_CCPO_USER) %}
-            <th></th>
-          {% endif %}
-        </tr>
-      </thead>
-      <tbody>
-        {% for user, form in users_info %}
-          {% set modal_id = "disable_ccpo_user_{}".format(user.dod_id) %}
-          {% set disable_button_class = 'button-danger-outline' %}
-          {% if user == g.current_user %}
-            {% set disable_button_class = "usa-button-disabled" %}
-          {% endif %}
-
+      <table>
+        <thead>
           <tr>
-            <td>{{ user.full_name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.dod_id }}</td>
+            <th>{{ "common.name" | translate }}</th>
+            <th>{{ "common.email" | translate }}</th>
+            <th>{{ "common.dod_id" | translate }}</th>
             {% if user_can(permissions.DELETE_CCPO_USER) %}
-              <td>
-                <a v-on:click="openModal('{{ modal_id }}')" class='usa-button {{ disable_button_class }}'>
-                  {{ "common.disable" | translate }}
-                </a>
-              </td>
+              <th></th>
             {% endif %}
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {% for user, form in users_info %}
+            {% set modal_id = "disable_ccpo_user_{}".format(user.dod_id) %}
+            {% set disable_button_class = 'button-danger-outline' %}
+            {% if user == g.current_user %}
+              {% set disable_button_class = "usa-button-disabled" %}
+            {% endif %}
+
+            <tr>
+              <td>{{ user.full_name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.dod_id }}</td>
+              {% if user_can(permissions.DELETE_CCPO_USER) %}
+                <td>
+                  <a v-on:click="openModal('{{ modal_id }}')" class='usa-button {{ disable_button_class }}'>
+                    {{ "common.disable" | translate }}
+                  </a>
+                </td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if user_can(permissions.CREATE_CCPO_USER) %}
+      <a class="icon-link" href="{{ url_for('ccpo.add_new_user')}}">
+        {{ "ccpo.add_user" | translate }} {{ Icon("plus") }}
+      </a>
+    {% endif %}
+
+    {% if user_can(permissions.DELETE_CCPO_USER) %}
+      {% for user, form in users_info %}
+        {% set modal_id = "disable_ccpo_user_{}".format(user.dod_id) %}
+        {% call Modal(name=modal_id) %}
+          <h1>Disable CCPO User</h1>
+          <hr>
+          {{
+            Alert(
+              title=("components.modal.destructive_title" | translate),
+              message=("ccpo.disable_user.alert_message" | translate({"user_name": user.full_name})),
+              level="warning"
+            )
+          }}
+          {{
+            DeleteConfirmation(
+              modal_id=modal_id,
+              delete_text='Remove Access',
+              delete_action=(url_for('ccpo.remove_access', user_id=user.id)),
+              form=form,
+              confirmation_text='remove'
+            )
+          }}
+        {% endcall %}
+      {% endfor %}
+    {% endif %}
   </div>
-
-  {% if user_can(permissions.CREATE_CCPO_USER) %}
-    <a class="icon-link" href="{{ url_for('ccpo.add_new_user')}}">
-      {{ "ccpo.add_user" | translate }} {{ Icon("plus") }}
-    </a>
-  {% endif %}
-
-  {% if user_can(permissions.DELETE_CCPO_USER) %}
-    {% for user, form in users_info %}
-      {% set modal_id = "disable_ccpo_user_{}".format(user.dod_id) %}
-      {% call Modal(name=modal_id) %}
-        <h1>Disable CCPO User</h1>
-        <hr>
-        {{
-          Alert(
-            title=("components.modal.destructive_title" | translate),
-            message=("ccpo.disable_user.alert_message" | translate({"user_name": user.full_name})),
-            level="warning"
-          )
-        }}
-        {{
-          DeleteConfirmation(
-            modal_id=modal_id,
-            delete_text='Remove Access',
-            delete_action=(url_for('ccpo.remove_access', user_id=user.id)),
-            form=form,
-            confirmation_text='remove'
-          )
-        }}
-      {% endcall %}
-    {% endfor %}
-  {% endif %}
 {% endblock %}

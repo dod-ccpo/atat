@@ -12,7 +12,7 @@
     flex-direction: row;
     align-items: stretch;
     justify-content: space-between;
-    max-width: 1190px;
+    max-width: $max-page-width;
 
     a {
       color: $color-white;

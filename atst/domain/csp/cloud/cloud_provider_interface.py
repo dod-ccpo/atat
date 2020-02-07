@@ -11,7 +11,7 @@ class CloudProviderInterface:
     def root_creds(self) -> Dict:
         raise NotImplementedError()
 
-    def create_environment(self, auth_credentials: Dict, user, environment) -> str:
+    def create_environment(self, payload):
         """Create a new environment in the CSP.
 
         Arguments:
@@ -28,33 +28,6 @@ class CloudProviderInterface:
             ConnectionException: Issue with the CSP API connection
             UnknownServerException: Unknown issue on the CSP side
             EnvironmentExistsException: Environment already exists and has been created
-        """
-        raise NotImplementedError()
-
-    def create_atat_admin_user(
-        self, auth_credentials: Dict, csp_environment_id: str
-    ) -> Dict:
-        """Creates a new, programmatic user in the CSP. Grants this user full permissions to administer
-        the CSP.
-
-        Arguments:
-            auth_credentials -- Object containing CSP account credentials
-            csp_environment_id -- ID of the CSP Environment the admin user should be created in
-
-        Returns:
-            object: Object representing new remote admin user, including credentials
-            Something like:
-            {
-                "user_id": string,
-                "credentials": dict, # structure TBD based on csp
-            }
-
-        Raises:
-            AuthenticationException: Problem with the credentials
-            AuthorizationException: Credentials not authorized for current action(s)
-            ConnectionException: Issue with the CSP API connection
-            UnknownServerException: Unknown issue on the CSP side
-            UserProvisioningException: Problem creating the root user
         """
         raise NotImplementedError()
 

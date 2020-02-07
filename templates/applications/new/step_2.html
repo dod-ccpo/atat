@@ -21,7 +21,7 @@
   </p>
   <hr>
   <application-environments inline-template v-bind:initial-data='{{ form.data|tojson }}'>
-    <form method="POST" action="{{ url_for('applications.update_new_application_step_2', portfolio_id=portfolio.id, application_id=application.id) }}" v-on:submit="handleSubmit">
+    <form method="POST" action="{{ url_for('applications.update_new_application_step_2', portfolio_id=portfolio.id, application_id=application.id) }}" v-on:submit="handleSubmit" class="form">
       <div class="subheading">{{ 'portfolios.applications.environments_heading' | translate }}</div>
       <div class="panel">
         <div class="panel__content">
@@ -58,20 +58,24 @@
                 {{ Icon("plus") }}
               </button>
             </div>
+          </div>
         </div>
       </div>
-    </div>
-      <span class="action-group-footer">
-        {% block next_button %}
-          {{ SaveButton(text=('portfolios.applications.new.step_2_button_text' | translate)) }}
-        {% endblock %}
-        <a class="usa-button usa-button-secondary" href="{{ url_for('applications.view_new_application_step_1', application_id=application.id) }}">
-          Previous
-        </a>
-        <a href="{{ url_for('applications.portfolio_applications', portfolio_id=portfolio.id) }}">
-          Cancel
-        </a>
-      </span>
+      <div
+        class="action-group-footer"
+        v-bind:class="{'action-group-footer--expand-offset': this.$root.sidenavExpanded, 'action-group-footer--collapse-offset': !this.$root.sidenavExpanded}">
+        <div class="action-group-footer--container">
+          {% block next_button %}
+            {{ SaveButton(text=('portfolios.applications.new.step_2_button_text' | translate)) }}
+          {% endblock %}
+          <a class="usa-button usa-button-secondary" href="{{ url_for('applications.view_new_application_step_1', application_id=application.id) }}">
+            Previous
+          </a>
+          <a href="{{ url_for('applications.portfolio_applications', portfolio_id=portfolio.id) }}">
+            Cancel
+          </a>
+        </div>
+      </div>
     </form>
   </application-environments>
 

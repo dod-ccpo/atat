@@ -1,5 +1,13 @@
 from enum import Enum
-from sqlalchemy import Column, Date, Enum as SQLAEnum, ForeignKey, Numeric, String
+from sqlalchemy import (
+    Column,
+    Date,
+    DateTime,
+    Enum as SQLAEnum,
+    ForeignKey,
+    Numeric,
+    String,
+)
 from sqlalchemy.orm import relationship
 from datetime import date
 
@@ -29,6 +37,7 @@ class CLIN(Base, mixins.TimestampsMixin):
     total_amount = Column(Numeric(scale=2), nullable=False)
     obligated_amount = Column(Numeric(scale=2), nullable=False)
     jedi_clin_type = Column(SQLAEnum(JEDICLINType, native_enum=False), nullable=False)
+    last_sent_at = Column(DateTime)
 
     #
     # NOTE: For now obligated CLINS are CLIN 1 + CLIN 3

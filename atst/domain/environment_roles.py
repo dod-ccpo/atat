@@ -106,9 +106,11 @@ class EnvironmentRoles(object):
     def disable(cls, environment_role_id):
         environment_role = EnvironmentRoles.get_by_id(environment_role_id)
 
-        if environment_role.csp_user_id and not environment_role.environment.is_pending:
-            credentials = environment_role.environment.csp_credentials
-            app.csp.cloud.disable_user(credentials, environment_role.csp_user_id)
+        if environment_role.csp_user_id and not environment_role.environment.cloud_id:
+            tenant_id = environment_role.environment.application.portfolio.csp_data.get(
+                "tenant_id"
+            )
+            app.csp.cloud.disable_user(tenant_id, environment_role.csp_user_id)
 
         environment_role.status = EnvironmentRole.Status.DISABLED
         db.session.add(environment_role)

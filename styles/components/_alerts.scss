@@ -11,6 +11,7 @@
 
 .usa-alert {
   padding-bottom: 2.4rem;
+  max-width: $max-panel-width;
 }
 
 @mixin alert {
@@ -93,41 +94,6 @@
 
       &:first-child {
         margin-left: -$gap;
-      }
-    }
-  }
-}
-
-.alert {
-  @include alert;
-  @include alert-level("info");
-
-  &.alert--success {
-    @include alert-level("success");
-
-    .alert__actions {
-      .icon-link {
-        @include icon-link-color($color-green, $color-white);
-      }
-    }
-  }
-
-  &.alert--warning {
-    @include alert-level("warning");
-
-    .alert__actions {
-      .icon-link {
-        @include icon-link-color($color-gold-dark, $color-white);
-      }
-    }
-  }
-
-  &.alert--error {
-    @include alert-level("error");
-
-    .alert__actions {
-      .icon-link {
-        @include icon-link-color($color-red, $color-white);
       }
     }
   }

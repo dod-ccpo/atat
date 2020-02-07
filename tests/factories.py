@@ -322,6 +322,7 @@ class TaskOrderFactory(Base):
     number = factory.LazyFunction(random_task_order_number)
     signed_at = None
     _pdf = factory.SubFactory(AttachmentFactory)
+    pdf_last_sent_at = None
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
@@ -347,6 +348,7 @@ class CLINFactory(Base):
     jedi_clin_type = factory.LazyFunction(
         lambda *args: random.choice(list(clin.JEDICLINType))
     )
+    last_sent_at = None
 
 
 class NotificationRecipientFactory(Base):

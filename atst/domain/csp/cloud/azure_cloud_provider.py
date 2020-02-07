@@ -6,12 +6,12 @@ from uuid import uuid4
 from atst.utils import sha256_hex
 
 from .cloud_provider_interface import CloudProviderInterface
-from .exceptions import AuthenticationException, UserProvisioningException
+from .exceptions import (
+    AuthenticationException,
+    SecretException,
+    UserProvisioningException,
+)
 from .models import (
-    SubscriptionCreationCSPPayload,
-    SubscriptionCreationCSPResult,
-    SubscriptionVerificationCSPPayload,
-    SuscriptionVerificationCSPResult,
     AdminRoleDefinitionCSPPayload,
     AdminRoleDefinitionCSPResult,
     ApplicationCSPPayload,
@@ -24,14 +24,21 @@ from .models import (
     BillingProfileTenantAccessCSPResult,
     BillingProfileVerificationCSPPayload,
     BillingProfileVerificationCSPResult,
+    CostManagementQueryCSPResult,
+    EnvironmentCSPPayload,
+    EnvironmentCSPResult,
     KeyVaultCredentials,
-    ManagementGroupCSPResponse,
+    PrincipalAdminRoleCSPPayload,
+    PrincipalAdminRoleCSPResult,
     ProductPurchaseCSPPayload,
     ProductPurchaseCSPResult,
     ProductPurchaseVerificationCSPPayload,
     ProductPurchaseVerificationCSPResult,
-    PrincipalAdminRoleCSPPayload,
-    PrincipalAdminRoleCSPResult,
+    ReportingCSPPayload,
+    SubscriptionCreationCSPPayload,
+    SubscriptionCreationCSPResult,
+    SubscriptionVerificationCSPPayload,
+    SuscriptionVerificationCSPResult,
     TaskOrderBillingCreationCSPPayload,
     TaskOrderBillingCreationCSPResult,
     TaskOrderBillingVerificationCSPPayload,
@@ -52,7 +59,6 @@ from .models import (
     UserCSPResult,
 )
 from .policy import AzurePolicyManager
-
 
 # This needs to be a fully pathed role definition identifier, not just a UUID
 # TODO: Extract these from sdk msrestazure.azure_cloud import AZURE_PUBLIC_CLOUD
@@ -116,10 +122,14 @@ class AzureCloudProvider(CloudProviderInterface):
         )
         try:
             return secret_client.set_secret(secret_key, secret_value)
-        except self.exceptions.HttpResponseError:
+        except self.sdk.exceptions.HttpResponseError as exc:
             app.logger.error(
                 f"Could not SET secret in Azure keyvault for key {secret_key}.",
                 exc_info=1,
+            )
+            raise SecretException(
+                f"Could not SET secret in Azure keyvault for key {secret_key}.",
+                exc.message,
             )
 
     def get_secret(self, secret_key):
@@ -129,67 +139,35 @@ class AzureCloudProvider(CloudProviderInterface):
         )
         try:
             return secret_client.get_secret(secret_key).value
-        except self.exceptions.HttpResponseError:
+        except self.sdk.exceptions.HttpResponseError:
             app.logger.error(
                 f"Could not GET secret in Azure keyvault for key {secret_key}.",
                 exc_info=1,
             )
+            raise SecretException(
+                f"Could not GET secret in Azure keyvault for key {secret_key}.",
+                exc.message,
+            )
 
-    def create_environment(self, auth_credentials: Dict, user, environment):
-        # since this operation would only occur within a tenant, should we source the tenant
-        # via lookup from environment once we've created the portfolio csp data schema
-        # something like this:
-        # environment_tenant = environment.application.portfolio.csp_data.get('tenant_id', None)
-        # though we'd probably source the whole credentials for these calls from the portfolio csp
-        # data, as it would have to be where we store the creds for the at-at user within the portfolio tenant
-        # credentials = self._get_credential_obj(environment.application.portfolio.csp_data.get_creds())
-        credentials = self._get_credential_obj(self._root_creds)
-        display_name = f"{environment.application.name}_{environment.name}_{environment.id}"  # proposed format
-        management_group_id = "?"  # management group id chained from environment
-        parent_id = "?"  # from environment.application
-
-        management_group = self._create_management_group(
-            credentials, management_group_id, display_name, parent_id,
+    def create_environment(self, payload: EnvironmentCSPPayload):
+        creds = self._source_creds(payload.tenant_id)
+        credentials = self._get_credential_obj(
+            {
+                "client_id": creds.tenant_sp_client_id,
+                "secret_key": creds.tenant_sp_key,
+                "tenant_id": creds.tenant_id,
+            },
+            resource=self.sdk.cloud.endpoints.resource_manager,
         )
 
-        return ManagementGroupCSPResponse(**management_group)
-
-    def create_atat_admin_user(
-        self, auth_credentials: Dict, csp_environment_id: str
-    ) -> Dict:
-        root_creds = self._root_creds
-        credentials = self._get_credential_obj(root_creds)
-
-        sub_client = self.sdk.subscription.SubscriptionClient(credentials)
-        subscription = sub_client.subscriptions.get(csp_environment_id)
-
-        managment_principal = self._get_management_service_principal()
-
-        auth_client = self.sdk.authorization.AuthorizationManagementClient(
+        response = self._create_management_group(
             credentials,
-            # TODO: Determine which subscription this needs to point at
-            # Once we're in a multi-sub environment
-            subscription.id,
+            payload.management_group_name,
+            payload.display_name,
+            payload.parent_id,
         )
 
-        # Create role assignment for
-        role_assignment_id = str(uuid4())
-        role_assignment_create_params = auth_client.role_assignments.models.RoleAssignmentCreateParameters(
-            role_definition_id=REMOTE_ROOT_ROLE_DEF_ID,
-            principal_id=managment_principal.id,
-        )
-
-        auth_client.role_assignments.create(
-            scope=f"/subscriptions/{subscription.id}/",
-            role_assignment_name=role_assignment_id,
-            parameters=role_assignment_create_params,
-        )
-
-        return {
-            "csp_user_id": managment_principal.object_id,
-            "credentials": managment_principal.password_credentials,
-            "role_name": role_assignment_id,
-        }
+        return EnvironmentCSPResult(**response)
 
     def create_application(self, payload: ApplicationCSPPayload):
         creds = self._source_creds(payload.tenant_id)
@@ -798,17 +776,6 @@ class AzureCloudProvider(CloudProviderInterface):
 
         return self._ok()
 
-    def create_billing_alerts(self, TBD):
-        # TODO: Add azure-mgmt-consumption for Budget and Notification entities/operations
-        # TODO: Determine how to auth against that API using the SDK, doesn't seeem possible at the moment
-        # TODO: billing alerts are registered as Notifications on Budget objects, which have start/end dates
-        # TODO: determine what the keys in the Notifications dict are supposed to be
-        # we may need to rotate budget objects when new TOs/CLINs are reported?
-
-        # we likely only want the budget ID, can be updated or replaced?
-        response = {"id": "id"}
-        return self._ok({"budget_id": response["id"]})
-
     def _get_management_service_principal(self):
         # we really should be using graph.microsoft.com, but i'm getting
         # "expired token" errors for that
@@ -1070,3 +1037,41 @@ class AzureCloudProvider(CloudProviderInterface):
         hashed = sha256_hex(tenant_id)
         raw_creds = self.get_secret(hashed)
         return KeyVaultCredentials(**json.loads(raw_creds))
+
+    def get_reporting_data(self, payload: ReportingCSPPayload):
+        """
+        Queries the Cost Management API for an invoice section's raw reporting data
+
+        We query at the invoiceSection scope. The full scope path is passed in
+        with the payload at the `invoice_section_id` key.
+        """
+        creds = self._source_tenant_creds(payload.tenant_id)
+        token = self._get_sp_token(
+            payload.tenant_id, creds.tenant_sp_client_id, creds.tenant_sp_key
+        )
+
+        if not token:
+            raise AuthenticationException("Could not retrieve tenant access token")
+
+        headers = {"Authorization": f"Bearer {token}"}
+
+        request_body = {
+            "type": "Usage",
+            "timeframe": "Custom",
+            "timePeriod": {"from": payload.from_date, "to": payload.to_date,},
+            "dataset": {
+                "granularity": "Daily",
+                "aggregation": {"totalCost": {"name": "PreTaxCost", "function": "Sum"}},
+                "grouping": [{"type": "Dimension", "name": "InvoiceId"}],
+            },
+        }
+        cost_mgmt_url = (
+            f"/providers/Microsoft.CostManagement/query?api-version=2019-11-01"
+        )
+        result = self.sdk.requests.post(
+            f"{self.sdk.cloud.endpoints.resource_manager}{payload.invoice_section_id}{cost_mgmt_url}",
+            json=request_body,
+            headers=headers,
+        )
+        if result.ok:
+            return CostManagementQueryCSPResult(**result.json())

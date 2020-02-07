@@ -37,8 +37,14 @@ def accept_invitation(portfolio_token):
 )
 @user_can(Permissions.EDIT_PORTFOLIO_USERS, message="revoke invitation")
 def revoke_invitation(portfolio_id, portfolio_token):
-    PortfolioInvitations.revoke(portfolio_token)
+    invite = PortfolioInvitations.revoke(portfolio_token)
 
+    flash(
+        "invite_revoked",
+        resource="Portfolio",
+        user_name=invite.user_name,
+        resource_name=g.portfolio.name,
+    )
     return redirect(
         url_for(
             "portfolios.admin",
