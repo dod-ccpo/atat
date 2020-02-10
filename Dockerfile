@@ -101,5 +101,7 @@ RUN mkdir /var/run/uwsgi && \
       chown -R atst:atat /var/run/uwsgi && \
       chown -R atst:atat "${APP_DIR}"
 
+RUN update-ca-certificates
+
 # Run as the unprivileged APP user
 USER atst
