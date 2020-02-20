@@ -311,6 +311,41 @@ class AzureCloudProvider(CloudProviderInterface):
             management_group_id=management_group_id,
         )
 
+    def disable_user(self, tenant_id, cloud_id):
+        sp_token = self._get_tenant_principal_token(tenant_id)
+        if sp_token is None:
+            raise AuthenticationException("Could not resolve token in disable user")
+        headers = {
+            "Authorization": f"Bearer {sp_token}",
+        }
+
+        try:
+            result = self.sdk.requests.delete(
+                f"{self.sdk.cloud.endpoints.resource_manager}providers/Microsoft.Authorization/roleAssignments/{cloud_id}?api-version=2015-07-01",
+                headers=headers,
+                timeout=30,
+            )
+            result.raise_for_status()
+            return result.json()
+
+        except self.sdk.requests.exceptions.ConnectionError:
+            app.logger.error(
+                f"Could not disable user. Connection Error", exc_info=1,
+            )
+            raise ConnectionException("connection error azure disable user")
+        except self.sdk.requests.exceptions.Timeout:
+            app.logger.error(
+                f"Could not disable user. Request timed out.", exc_info=1,
+            )
+            raise ConnectionException("timout error azure disable user")
+        except self.sdk.requests.exceptions.HTTPError as exc:
+            app.logger.error(
+                result.status_code, "azure application error disable user", exc_info=1,
+            )
+            raise UnknownServerException(
+                result.status_code, f"azure application error disable user. {str(exc)}",
+            )
+
     def create_tenant(self, payload: TenantCSPPayload):
         sp_token = self._get_root_provisioning_token()
         if sp_token is None:

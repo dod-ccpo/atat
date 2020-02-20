@@ -206,6 +206,48 @@ def test_create_policy_definition_succeeds(mock_azure: AzureCloudProvider):
     )
 
 
+def test_disable_user(mock_azure: AzureCloudProvider):
+    mock_result = Mock()
+    mock_result.json.return_value = {
+        "properties": {
+            "roleDefinitionId": "/subscriptions/subId/providers/Microsoft.Authorization/roleDefinitions/roledefinitionId",
+            "principalId": "Pid",
+            "scope": "/subscriptions/subId/resourcegroups/rgname",
+        },
+        "id": "/subscriptions/subId/resourcegroups/rgname/providers/Microsoft.Authorization/roleAssignments/roleassignmentId",
+        "type": "Microsoft.Authorization/roleAssignments",
+        "name": "roleassignmentId",
+    }
+
+    mock_result.status_code = 200
+    mock_http_error_resp = mock_requests_response(
+        status=500,
+        raise_for_status=mock_azure.sdk.requests.exceptions.HTTPError(
+            "500 Server Error"
+        ),
+    )
+    mock_azure.sdk.requests.delete.side_effect = [
+        mock_azure.sdk.requests.exceptions.ConnectionError,
+        mock_azure.sdk.requests.exceptions.Timeout,
+        mock_http_error_resp,
+        mock_result,
+    ]
+    mock_azure = mock_get_secret(mock_azure)
+
+    tenant_id = "60ff9d34-82bf-4f21-b565-308ef0533435"
+    cloud_id = "roleassignmentId"
+
+    with pytest.raises(ConnectionException):
+        mock_azure.disable_user(tenant_id, cloud_id)
+    with pytest.raises(ConnectionException):
+        mock_azure.disable_user(tenant_id, cloud_id)
+    with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
+        mock_azure.disable_user(tenant_id, cloud_id)
+
+    result = mock_azure.disable_user(tenant_id, cloud_id)
+    assert result.get("name") == cloud_id
+
+
 def test_create_tenant(mock_azure: AzureCloudProvider):
     mock_result = Mock()
     mock_result.json.return_value = {
