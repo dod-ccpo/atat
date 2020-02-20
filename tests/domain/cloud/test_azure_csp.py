@@ -207,6 +207,11 @@ def test_create_policy_definition_succeeds(mock_azure: AzureCloudProvider):
 
 
 def test_disable_user(mock_azure: AzureCloudProvider):
+
+    assignment_guid = str(uuid4())
+    management_group_id = str(uuid4())
+    assignment_id =  f"/providers/Microsoft.Management/managementGroups/{management_group_id}/providers/Microsoft.Authorization/roleAssignments/{assignment_guid}"
+
     mock_result = Mock()
     mock_result.json.return_value = {
         "properties": {
@@ -214,9 +219,9 @@ def test_disable_user(mock_azure: AzureCloudProvider):
             "principalId": "Pid",
             "scope": "/subscriptions/subId/resourcegroups/rgname",
         },
-        "id": "/subscriptions/subId/resourcegroups/rgname/providers/Microsoft.Authorization/roleAssignments/roleassignmentId",
+        "id": assignment_id,
         "type": "Microsoft.Authorization/roleAssignments",
-        "name": "roleassignmentId",
+        "name": assignment_guid,
     }
 
     mock_result.status_code = 200
@@ -235,17 +240,15 @@ def test_disable_user(mock_azure: AzureCloudProvider):
     mock_azure = mock_get_secret(mock_azure)
 
     tenant_id = "60ff9d34-82bf-4f21-b565-308ef0533435"
-    cloud_id = "roleassignmentId"
-
     with pytest.raises(ConnectionException):
-        mock_azure.disable_user(tenant_id, cloud_id)
+        mock_azure.disable_user(tenant_id, assignment_guid)
     with pytest.raises(ConnectionException):
-        mock_azure.disable_user(tenant_id, cloud_id)
+        mock_azure.disable_user(tenant_id, assignment_guid)
     with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
-        mock_azure.disable_user(tenant_id, cloud_id)
+        mock_azure.disable_user(tenant_id, assignment_guid)
 
-    result = mock_azure.disable_user(tenant_id, cloud_id)
-    assert result.get("name") == cloud_id
+    result = mock_azure.disable_user(tenant_id, assignment_guid)
+    assert result.get("name") == assignment_guid
 
 
 def test_create_tenant(mock_azure: AzureCloudProvider):
