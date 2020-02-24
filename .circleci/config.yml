@@ -7,8 +7,8 @@ commands:
           name: Save the docker images to a cache
           command: |
             mkdir -p docker-cache
-            docker save -o docker-cache/atat.tar atat:latest
-            docker save -o docker-cache/builder.tar atat:builder
+            docker save -o docker-cache/atst.tar atst:latest
+            docker save -o docker-cache/builder.tar atst:builder
       - save_cache:
           key: docker-cache-{{ .Branch }}-{{ .Revision }}
           paths:
@@ -21,26 +21,26 @@ commands:
       - run:
           name: Restore Docker image from cache
           command: |
-            docker load < docker-cache/atat.tar
+            docker load < docker-cache/atst.tar
             docker load < docker-cache/builder.tar
   setup_datastores:
     parameters:
       pgdatabase:
         type: string
-        default: atat_test
+        default: atst_test
       container_env:
         type: string
         default: -e PGHOST=postgres -e REDIS_HOST=redis:6379
     steps:
       - run:
           name: Set up temporary docker network
-          command: docker network create atat
+          command: docker network create atst
       - run:
           name: Start redis
-          command: docker run -d --network atat --link redis:redis -p 6379:6379 --name redis circleci/redis:4-alpine3.8
+          command: docker run -d --network atst --link redis:redis -p 6379:6379 --name redis circleci/redis:4-alpine3.8
       - run:
           name: Start postgres
-          command: docker run -d --network atat --link postgres:postgres -p 5432:5432 --name postgres circleci/postgres:10-alpine-ram
+          command: docker run -d --network atst --link postgres:postgres -p 5432:5432 --name postgres circleci/postgres:10-alpine-ram
       - run:
           name: Wait for containers
           command: sleep 3
@@ -49,10 +49,10 @@ commands:
           command: "docker exec postgres createdb -U postgres << parameters.pgdatabase >>"
       - run:
           name: Apply migrations
-          command: docker run --network atat -e PGDATABASE=<< parameters.pgdatabase >> << parameters.container_env >> atat:builder .venv/bin/python .venv/bin/alembic upgrade head
+          command: docker run --network atst -e PGDATABASE=<< parameters.pgdatabase >> << parameters.container_env >> atst:builder .venv/bin/python .venv/bin/alembic upgrade head
       - run:
           name: Apply the default permission sets
-          command: docker run --network atat -e PGDATABASE=<< parameters.pgdatabase >> << parameters.container_env >> atat:builder .venv/bin/python script/seed_roles.py
+          command: docker run --network atst -e PGDATABASE=<< parameters.pgdatabase >> << parameters.container_env >> atst:builder .venv/bin/python script/seed_roles.py
 
   docker-build:
     parameters:
@@ -66,18 +66,18 @@ commands:
       - run:
           name: Build image
           command: |
-            docker build . --build-arg CSP=azure --build-arg CDN_URL=<< parameters.cdn_url >> -f ./Dockerfile -t atat:builder --target builder
-            docker build . --build-arg CSP=azure --build-arg CDN_URL=<< parameters.cdn_url >> -f ./Dockerfile -t atat:latest
+            docker build . --build-arg CSP=azure --build-arg CDN_URL=<< parameters.cdn_url >> -f ./Dockerfile -t atst:builder --target builder
+            docker build . --build-arg CSP=azure --build-arg CDN_URL=<< parameters.cdn_url >> -f ./Dockerfile -t atst:latest
       - cache_docker_image
 
   deploy:
     parameters:
       namespace:
         type: string
-        default: atat
+        default: atst
       tag:
         type: string
-        default: ${AZURE_SERVER_NAME}/atat:latest
+        default: ${AZURE_SERVER_NAME}/atst:latest
     steps:
       - checkout
       - setup_remote_docker:
@@ -121,7 +121,7 @@ commands:
       - run:
           name: Tag images
           command: |
-            docker tag atat:latest << parameters.tag >>
+            docker tag atst:latest << parameters.tag >>
       - run:
           name: Push image
           command: |
@@ -152,8 +152,8 @@ jobs:
       - run:
           name: Build image
           command: |
-            docker build . --build-arg CSP=azure -f ./Dockerfile -t atat:builder --target builder
-            docker build . --build-arg CSP=azure -f ./Dockerfile -t atat:latest
+            docker build . --build-arg CSP=azure -f ./Dockerfile -t atst:builder --target builder
+            docker build . --build-arg CSP=azure -f ./Dockerfile -t atst:latest
       - cache_docker_image
 
   test:
@@ -167,15 +167,15 @@ jobs:
           version: 18.06.0-ce
       - restore_docker_image
       - setup_datastores:
-          pgdatabase: atat_test
+          pgdatabase: atst_test
       - run:
           name: Run CI tests
           command: |
             docker run \
               -e PGHOST=postgres \
               -e REDIS_HOST=redis:6379 \
-              --network atat \
-              atat:builder \
+              --network atst \
+              atst:builder \
               /bin/sh -c "pipenv install --dev && /bin/sh script/cibuild"
 
   integration-tests:
@@ -189,7 +189,7 @@ jobs:
           version: 18.06.0-ce
       - restore_docker_image
       - setup_datastores:
-          pgdatabase: atat
+          pgdatabase: atst
       - run:
           name: Start application container
           command: |
@@ -198,9 +198,9 @@ jobs:
             -e PGHOST=postgres \
             -e REDIS_HOST=redis:6379 \
             -p 8000:8000 \
-            --network atat \
-            --name test-atat \
-            atat:builder \
+            --network atst \
+            --name test-atst \
+            atst:builder \
             /bin/sh -c "
               echo CLOUD_PROVIDER=mock > .env &&\
               yarn build &&\
@@ -215,7 +215,7 @@ jobs:
           name: Wait for ATAT container to be available
           command: |
             docker pull curlimages/curl:latest
-            docker run --network atat \
+            docker run --network atst \
               curlimages/curl:latest \
               curl --connect-timeout 3 \
               --max-time 5 \
@@ -223,7 +223,7 @@ jobs:
               --retry-connrefused \
               --retry-delay 1 \
               --retry-max-time 120 \
-              test-atat:8000
+              test-atst:8000
       - run:
           name: Execute Ghost Inspector test suite
           command: |
@@ -233,8 +233,8 @@ jobs:
               -e GI_API_KEY=$GI_API_KEY \
               -e GI_SUITE=$GI_SUITE \
               -e GI_PARAMS_JSON='{}' \
-              -e APP_PORT="test-atat:8000" \
-              --network atat \
+              -e APP_PORT="test-atst:8000" \
+              --network atst \
               ghostinspector/test-runner-standalone:latest
 
   test-crl-parser:
@@ -248,40 +248,40 @@ jobs:
           version: 18.06.0-ce
       - restore_docker_image
       - setup_datastores:
-          pgdatabase: atat_test
+          pgdatabase: atst_test
       - run:
           name: Sync CRLs and run CRL test
           command: |
             docker run \
               -e PGHOST=postgres \
               -e REDIS_HOST=redis:6379 \
-              --network atat \
-              atat:builder \
+              --network atst \
+              atst:builder \
               /bin/sh -c "pipenv install --dev && /bin/sh script/sync-crls && pipenv run pytest --no-cov tests/check_crl_parse.py"
 
   deploy-staging:
     docker:
       - image: docker:18.06.0-ce-git
         environment:
-          AZURE_REGISTRY: pwatat
-          RESOURCE_GROUP: atat
-          CLUSTER_NAME: atat-cluster
+          AZURE_REGISTRY: pwatst
+          RESOURCE_GROUP: atst
+          CLUSTER_NAME: atst-cluster
     steps:
       - deploy:
           namespace: staging
-          tag: ${AZURE_SERVER_NAME}/atat:staging-${CIRCLE_SHA1}
+          tag: ${AZURE_SERVER_NAME}/atst:staging-${CIRCLE_SHA1}
 
   deploy-master:
     docker:
       - image: docker:18.06.0-ce-git
         environment:
-          AZURE_REGISTRY: pwatat
-          RESOURCE_GROUP: atat
-          CLUSTER_NAME: atat-cluster
+          AZURE_REGISTRY: pwatst
+          RESOURCE_GROUP: atst
+          CLUSTER_NAME: atst-cluster
     steps:
       - deploy:
-          namespace: atat
-          tag: ${AZURE_SERVER_NAME}/atat:master-${CIRCLE_SHA1}
+          namespace: atst
+          tag: ${AZURE_SERVER_NAME}/atst:master-${CIRCLE_SHA1}
 
 workflows:
   version: 2

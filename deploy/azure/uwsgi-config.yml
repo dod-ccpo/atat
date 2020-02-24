@@ -13,20 +13,20 @@ data:
     plugins-dir = /usr/lib/uwsgi
     plugin = python3
     plugin = logfile
-    virtualenv = /opt/atat/atst/.venv
+    virtualenv = /opt/atat/atat/.venv
     chmod-socket = 666
-    chown-socket = atst:atat
+    chown-socket = atat:atat
 
     ; logger config
 
     ; application logs: log without modifying
     logger = secondlogger stdio
-    log-route = secondlogger atst
+    log-route = secondlogger atat
     log-encoder = format:secondlogger ${msg}
 
     ; default uWSGI messages (start, stop, etc.)
     logger = default stdio
-    log-route = default ^((?!atst).)*$
+    log-route = default ^((?!atat).)*$
     log-encoder = json:default {"timestamp":"${strftime:%%FT%%T}","source":"uwsgi","severity":"DEBUG","message":"${msg}"}
     log-encoder = nl
 

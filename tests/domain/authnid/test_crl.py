@@ -7,13 +7,13 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.serialization import Encoding
 from OpenSSL import crypto
 
-from atst.domain.authnid.crl import (
+from atat.domain.authnid.crl import (
     CRLCache,
     CRLRevocationException,
     CRLInvalidException,
     NoOpCRLCache,
 )
-from atst.domain.authnid.crl.util import (
+from atat.domain.authnid.crl.util import (
     load_crl_locations_cache,
     serialize_crl_locations_cache,
     CRLParseError,

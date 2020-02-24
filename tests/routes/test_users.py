@@ -1,6 +1,6 @@
 from flask import url_for
 
-from atst.domain.users import Users
+from atat.domain.users import Users
 
 from tests.factories import UserFactory
 

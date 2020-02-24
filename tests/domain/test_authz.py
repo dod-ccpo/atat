@@ -7,12 +7,12 @@ from tests.factories import (
     PortfolioFactory,
     PortfolioRoleFactory,
 )
-from atst.domain.authz import Authorization, user_can_access
-from atst.domain.authz.decorator import user_can_access_decorator
-from atst.domain.permission_sets import PermissionSets
-from atst.domain.exceptions import UnauthorizedError
-from atst.models.permissions import Permissions
-from atst.domain.portfolio_roles import PortfolioRoles
+from atat.domain.authz import Authorization, user_can_access
+from atat.domain.authz.decorator import user_can_access_decorator
+from atat.domain.permission_sets import PermissionSets
+from atat.domain.exceptions import UnauthorizedError
+from atat.models.permissions import Permissions
+from atat.domain.portfolio_roles import PortfolioRoles
 
 from tests.utils import FakeLogger
 
@@ -222,7 +222,7 @@ def test_user_can_access_decorator_logs_access(
     set_current_user(user)
 
     monkeypatch.setattr(
-        "atst.domain.authz.decorator.check_access", lambda *a, **k: True
+        "atat.domain.authz.decorator.check_access", lambda *a, **k: True
     )
     num_msgs = len(mock_logger.messages)
     _do_something()
@@ -233,7 +233,7 @@ def test_user_can_access_decorator_logs_access(
     def _unauthorized(*a, **k):
         raise UnauthorizedError(user, "do something")
 
-    monkeypatch.setattr("atst.domain.authz.decorator.check_access", _unauthorized)
+    monkeypatch.setattr("atat.domain.authz.decorator.check_access", _unauthorized)
     num_msgs = len(mock_logger.messages)
     with pytest.raises(UnauthorizedError):
         _do_something()

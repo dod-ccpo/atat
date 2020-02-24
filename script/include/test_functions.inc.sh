@@ -8,7 +8,7 @@ run_python_lint() {
 }
 
 run_python_typecheck() {
-  run_command "mypy --ignore-missing-imports --follow-imports=skip atst/domain/csp/cloud/__init__.py"
+  run_command "mypy --ignore-missing-imports --follow-imports=skip atat/domain/csp/cloud/__init__.py"
   return $?
 }
 

@@ -2,9 +2,9 @@ from unittest.mock import Mock
 
 import pytest
 
-from atst.domain.permission_sets import PermissionSets
-from atst.models import Permissions
-from atst.utils.context_processors import (
+from atat.domain.permission_sets import PermissionSets
+from atat.models import Permissions
+from atat.utils.context_processors import (
     get_resources_from_context,
     user_can_view,
     portfolio as portfolio_context,
@@ -37,7 +37,7 @@ def test_get_resources_from_context():
 @pytest.fixture
 def set_g(monkeypatch):
     _g = Mock()
-    monkeypatch.setattr("atst.utils.context_processors.g", _g)
+    monkeypatch.setattr("atat.utils.context_processors.g", _g)
 
     def _set_g(attr, val):
         setattr(_g, attr, val)

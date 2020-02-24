@@ -1,5 +1,5 @@
-from atst.models import CLIN
-from atst.models.clin import JEDICLINType
+from atat.models import CLIN
+from atat.models.clin import JEDICLINType
 
 from tests.factories import *
 

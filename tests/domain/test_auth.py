@@ -1,6 +1,6 @@
 from flask import make_response, session
 
-from atst.domain.auth import logout
+from atat.domain.auth import logout
 
 
 def _write_session(app):
@@ -19,7 +19,7 @@ def test_logout_destroys_session(app):
 
 def test_logout_logs_dod_id_for_current_user(monkeypatch, mock_logger):
     dod_id = "3434343434"
-    monkeypatch.setattr("atst.domain.auth._current_dod_id", lambda: dod_id)
+    monkeypatch.setattr("atat.domain.auth._current_dod_id", lambda: dod_id)
     logout()
     assert dod_id in mock_logger.messages[-1]
 

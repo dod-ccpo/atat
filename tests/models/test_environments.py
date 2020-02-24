@@ -1,9 +1,9 @@
 import pytest
 
-from atst.models import AuditEvent
-from atst.models.environment_role import CSPRole
-from atst.domain.applications import Applications
-from atst.domain.environment_roles import EnvironmentRoles
+from atat.models import AuditEvent
+from atat.models.environment_role import CSPRole
+from atat.domain.applications import Applications
+from atat.domain.environment_roles import EnvironmentRoles
 
 from tests.factories import *
 

@@ -8,10 +8,10 @@ sys.path.append(parent_dir)
 import sqlalchemy
 import yaml
 
-from atst.app import make_config, make_app
-from atst.database import db
-from atst.domain.users import Users
-from atst.models import User
+from atat.app import make_config, make_app
+from atat.database import db
+from atat.domain.users import Users
+from atat.models import User
 from reset_database import reset_database
 
 

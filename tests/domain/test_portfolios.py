@@ -1,21 +1,21 @@
 import pytest
 from uuid import uuid4
 
-from atst.domain.exceptions import NotFoundError, UnauthorizedError
-from atst.domain.portfolios import (
+from atat.domain.exceptions import NotFoundError, UnauthorizedError
+from atat.domain.portfolios import (
     Portfolios,
     PortfolioError,
     PortfolioDeletionApplicationsExistError,
     PortfolioStateMachines,
 )
-from atst.domain.portfolio_roles import PortfolioRoles
-from atst.domain.applications import Applications
-from atst.domain.application_roles import ApplicationRoles
-from atst.domain.environments import Environments
-from atst.domain.permission_sets import PermissionSets, PORTFOLIO_PERMISSION_SETS
-from atst.models.application_role import Status as ApplicationRoleStatus
-from atst.models.portfolio_role import Status as PortfolioRoleStatus
-from atst.models import FSMStates
+from atat.domain.portfolio_roles import PortfolioRoles
+from atat.domain.applications import Applications
+from atat.domain.application_roles import ApplicationRoles
+from atat.domain.environments import Environments
+from atat.domain.permission_sets import PermissionSets, PORTFOLIO_PERMISSION_SETS
+from atat.models.application_role import Status as ApplicationRoleStatus
+from atat.models.portfolio_role import Status as PortfolioRoleStatus
+from atat.models import FSMStates
 
 from tests.factories import (
     ApplicationFactory,

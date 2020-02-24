@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: atst-worker-envvars
+  name: atat-worker-envvars
 data:
   AZURE_ACCOUNT_NAME: jeditasksatat
   CELERY_DEFAULT_QUEUE: celery-staging
@@ -17,7 +17,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: atst-envvars
+  name: atat-envvars
 data:
   ASSETS_URL: ""
   AZURE_ACCOUNT_NAME: jeditasksatat

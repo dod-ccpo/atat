@@ -1,7 +1,7 @@
 import pytest
 from flask import url_for
 
-from atst.app import make_config, make_app
+from atat.app import make_config, make_app
 
 from tests.factories import UserFactory
 

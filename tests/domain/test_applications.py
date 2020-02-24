@@ -2,12 +2,12 @@ import pendulum
 import pytest
 from uuid import uuid4
 
-from atst.models import CSPRole, ApplicationRoleStatus
-from atst.domain.application_roles import ApplicationRoles
-from atst.domain.applications import Applications
-from atst.domain.environment_roles import EnvironmentRoles
-from atst.domain.exceptions import AlreadyExistsError, NotFoundError
-from atst.domain.permission_sets import PermissionSets
+from atat.models import CSPRole, ApplicationRoleStatus
+from atat.domain.application_roles import ApplicationRoles
+from atat.domain.applications import Applications
+from atat.domain.environment_roles import EnvironmentRoles
+from atat.domain.exceptions import AlreadyExistsError, NotFoundError
+from atat.domain.permission_sets import PermissionSets
 
 from tests.factories import (
     ApplicationFactory,

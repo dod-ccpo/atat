@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: atst
+  name: atat
 spec:
   template:
     spec:
@@ -20,7 +20,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: atst-worker
+  name: atat-worker
 spec:
   template:
     spec:
@@ -34,7 +34,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: atst-beat
+  name: atat-beat
 spec:
   template:
     spec:

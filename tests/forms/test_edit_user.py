@@ -1,7 +1,7 @@
 import pytest
 from werkzeug.datastructures import ImmutableMultiDict
 
-from atst.forms.edit_user import EditUserForm
+from atat.forms.edit_user import EditUserForm
 
 from tests.factories import UserFactory
 

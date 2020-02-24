@@ -10,28 +10,28 @@ from uuid import uuid4
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(parent_dir)
 
-from atst.app import make_config, make_app
-from atst.database import db
+from atat.app import make_config, make_app
+from atat.database import db
 
-from atst.models.application import Application
-from atst.models.clin import JEDICLINType
-from atst.models.environment_role import CSPRole
+from atat.models.application import Application
+from atat.models.clin import JEDICLINType
+from atat.models.environment_role import CSPRole
 
-from atst.domain.application_roles import ApplicationRoles
-from atst.domain.applications import Applications
-from atst.domain.csp.reports import MockReportingProvider
-from atst.domain.environments import Environments
-from atst.domain.environment_roles import EnvironmentRoles
-from atst.domain.exceptions import AlreadyExistsError, NotFoundError
-from atst.domain.invitations import ApplicationInvitations
-from atst.domain.permission_sets import PermissionSets, APPLICATION_PERMISSION_SETS
-from atst.domain.portfolio_roles import PortfolioRoles
-from atst.domain.portfolios import Portfolios
-from atst.domain.users import Users
+from atat.domain.application_roles import ApplicationRoles
+from atat.domain.applications import Applications
+from atat.domain.csp.reports import MockReportingProvider
+from atat.domain.environments import Environments
+from atat.domain.environment_roles import EnvironmentRoles
+from atat.domain.exceptions import AlreadyExistsError, NotFoundError
+from atat.domain.invitations import ApplicationInvitations
+from atat.domain.permission_sets import PermissionSets, APPLICATION_PERMISSION_SETS
+from atat.domain.portfolio_roles import PortfolioRoles
+from atat.domain.portfolios import Portfolios
+from atat.domain.users import Users
 
-from atst.routes.dev import _DEV_USERS as DEV_USERS
+from atat.routes.dev import _DEV_USERS as DEV_USERS
 
-from atst.utils import pick
+from atat.utils import pick
 
 from tests.factories import (
     random_defense_component,

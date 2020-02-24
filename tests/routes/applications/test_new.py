@@ -7,8 +7,8 @@ from tests.factories import (
     ApplicationRoleFactory,
 )
 from unittest.mock import Mock
-from atst.forms.data import ENV_ROLE_NO_ACCESS as NO_ACCESS
-from atst.models.application_invitation import ApplicationInvitation
+from atat.forms.data import ENV_ROLE_NO_ACCESS as NO_ACCESS
+from atat.models.application_invitation import ApplicationInvitation
 
 
 def test_get_name_and_description_form(client, user_session):
@@ -134,7 +134,7 @@ def test_get_members(client, session, user_session):
 
 def test_post_new_member(monkeypatch, client, user_session, session):
     job_mock = Mock()
-    monkeypatch.setattr("atst.jobs.send_mail.delay", job_mock)
+    monkeypatch.setattr("atat.jobs.send_mail.delay", job_mock)
     user = UserFactory.create()
     application = ApplicationFactory.create(
         environments=[{"name": "Naboo"}, {"name": "Endor"}]

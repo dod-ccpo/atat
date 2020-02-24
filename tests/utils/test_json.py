@@ -1,5 +1,5 @@
 import json
-from atst.utils.json import CustomJSONEncoder
+from atat.utils.json import CustomJSONEncoder
 
 from tests.factories import AttachmentFactory
 

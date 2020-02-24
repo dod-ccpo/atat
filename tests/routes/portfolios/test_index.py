@@ -9,9 +9,9 @@ from tests.factories import (
     TaskOrderFactory,
     UserFactory,
 )
-from atst.utils.localization import translate
-from atst.domain.portfolios import Portfolios, PortfolioDeletionApplicationsExistError
-from atst.domain.portfolios.query import PortfoliosQuery
+from atat.utils.localization import translate
+from atat.domain.portfolios import Portfolios, PortfolioDeletionApplicationsExistError
+from atat.domain.portfolios.query import PortfoliosQuery
 
 
 def test_new_portfolio(client, user_session):

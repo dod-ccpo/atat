@@ -1,7 +1,7 @@
 import pytest
 
-from atst.filters import dollars, renderAuditEvent, usPhone
-from atst.models import AuditEvent
+from atat.filters import dollars, renderAuditEvent, usPhone
+from atat.models import AuditEvent
 
 
 @pytest.mark.parametrize(

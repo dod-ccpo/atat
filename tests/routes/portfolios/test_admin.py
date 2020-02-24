@@ -2,12 +2,12 @@ import pytest
 from flask import url_for
 from unittest.mock import MagicMock
 
-from atst.domain.permission_sets import PermissionSets
-from atst.domain.portfolio_roles import PortfolioRoles
-from atst.domain.portfolios import Portfolios
-from atst.models.permissions import Permissions
-from atst.models.portfolio_role import Status as PortfolioRoleStatus
-from atst.utils.localization import translate
+from atat.domain.permission_sets import PermissionSets
+from atat.domain.portfolio_roles import PortfolioRoles
+from atat.domain.portfolios import Portfolios
+from atat.models.permissions import Permissions
+from atat.models.portfolio_role import Status as PortfolioRoleStatus
+from atat.utils.localization import translate
 
 from tests.factories import PortfolioFactory, PortfolioRoleFactory, UserFactory
 

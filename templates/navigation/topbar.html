@@ -2,7 +2,7 @@
 
 <header class="topbar">
   <nav class="topbar__navigation">
-    <a href="{{ url_for('atst.home') }}" class="topbar__link topbar__link--home">
+    <a href="{{ url_for('atat.home') }}" class="topbar__link topbar__link--home">
       {{ Icon('shield', classes='topbar__link-icon') }}
       <span class="topbar__link-label">
         {{ "navigation.topbar.jedi_cloud_link_text" | translate }}
@@ -19,12 +19,12 @@
           <span class="topbar__link-label">Support</span>
         </a>
 
-        <a href="{{ url_for('atst.logout') }}" class="topbar__link" title='{{ "navigation.topbar.logout_link_title" | translate }}'>
+        <a href="{{ url_for('atat.logout') }}" class="topbar__link" title='{{ "navigation.topbar.logout_link_title" | translate }}'>
           <span class="topbar__link-label">Logout</span>
           {{ Icon('logout', classes='topbar__link-icon') }}
         </a>
       {% else %}
-        <a href="{{ url_for('atst.home') }}" class="topbar__link" title='Log in'>
+        <a href="{{ url_for('atat.home') }}" class="topbar__link" title='Log in'>
           <span class="topbar__link-label">{{ "base_public.login" | translate }}</span>
           {{ Icon('avatar', classes='topbar__link-icon') }}
         </a>

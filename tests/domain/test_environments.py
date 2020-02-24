@@ -1,10 +1,10 @@
 import pytest
 from uuid import uuid4
 
-from atst.domain.environments import Environments
-from atst.domain.environment_roles import EnvironmentRoles
-from atst.domain.exceptions import AlreadyExistsError, DisabledError, NotFoundError
-from atst.models.environment_role import CSPRole, EnvironmentRole
+from atat.domain.environments import Environments
+from atat.domain.environment_roles import EnvironmentRoles
+from atat.domain.exceptions import AlreadyExistsError, DisabledError, NotFoundError
+from atat.models.environment_role import CSPRole, EnvironmentRole
 
 from tests.factories import (
     ApplicationFactory,

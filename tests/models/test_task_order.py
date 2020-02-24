@@ -4,9 +4,9 @@ import pendulum
 from unittest.mock import patch, PropertyMock
 import pendulum
 
-from atst.models import *
-from atst.models.clin import JEDICLINType
-from atst.models.task_order import TaskOrder, Status
+from atat.models import *
+from atat.models.clin import JEDICLINType
+from atat.models.task_order import TaskOrder, Status
 
 from tests.factories import CLINFactory, TaskOrderFactory
 from tests.mocks import PDF_FILENAME
@@ -72,8 +72,8 @@ def test_clin_sorting():
 
 
 class TestTaskOrderStatus:
-    @patch("atst.models.TaskOrder.is_completed", new_callable=PropertyMock)
-    @patch("atst.models.TaskOrder.is_signed", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.is_completed", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.is_signed", new_callable=PropertyMock)
     def test_draft_status(self, is_signed, is_completed):
         # Given that I have a TO that is neither completed nor signed
         to = TaskOrderFactory.create()
@@ -82,10 +82,10 @@ class TestTaskOrderStatus:
 
         assert to.status == Status.DRAFT
 
-    @patch("atst.models.TaskOrder.end_date", new_callable=PropertyMock)
-    @patch("atst.models.TaskOrder.start_date", new_callable=PropertyMock)
-    @patch("atst.models.TaskOrder.is_completed", new_callable=PropertyMock)
-    @patch("atst.models.TaskOrder.is_signed", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.end_date", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.start_date", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.is_completed", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.is_signed", new_callable=PropertyMock)
     def test_active_status(self, is_signed, is_completed, start_date, end_date):
         today = pendulum.today(tz="UTC").date()
 
@@ -110,10 +110,10 @@ class TestTaskOrderStatus:
 
         assert to_2.status == Status.ACTIVE
 
-    @patch("atst.models.TaskOrder.end_date", new_callable=PropertyMock)
-    @patch("atst.models.TaskOrder.start_date", new_callable=PropertyMock)
-    @patch("atst.models.TaskOrder.is_completed", new_callable=PropertyMock)
-    @patch("atst.models.TaskOrder.is_signed", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.end_date", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.start_date", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.is_completed", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.is_signed", new_callable=PropertyMock)
     def test_upcoming_status(self, is_signed, is_completed, start_date, end_date):
         # Given that I have a signed TO and today is before its start_date
         to = TaskOrderFactory.create()
@@ -125,10 +125,10 @@ class TestTaskOrderStatus:
         # Its status should be upcoming
         assert to.status == Status.UPCOMING
 
-    @patch("atst.models.TaskOrder.start_date", new_callable=PropertyMock)
-    @patch("atst.models.TaskOrder.end_date", new_callable=PropertyMock)
-    @patch("atst.models.TaskOrder.is_completed", new_callable=PropertyMock)
-    @patch("atst.models.TaskOrder.is_signed", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.start_date", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.end_date", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.is_completed", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.is_signed", new_callable=PropertyMock)
     def test_expired_status(self, is_signed, is_completed, end_date, start_date):
         # Given that I have a signed TO and today is after its expiration date
         to = TaskOrderFactory.create()
@@ -140,8 +140,8 @@ class TestTaskOrderStatus:
         # Its status should be expired
         assert to.status == Status.EXPIRED
 
-    @patch("atst.models.TaskOrder.is_completed", new_callable=PropertyMock)
-    @patch("atst.models.TaskOrder.is_signed", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.is_completed", new_callable=PropertyMock)
+    @patch("atat.models.TaskOrder.is_signed", new_callable=PropertyMock)
     def test_unsigned_status(self, is_signed, is_completed):
         # Given that I have a TO that is completed but not signed
         to = TaskOrder(signed_at=pendulum.now().subtract(days=1))

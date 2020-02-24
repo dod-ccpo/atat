@@ -7,11 +7,11 @@ import pendulum
 from flask import session, url_for
 from cryptography.hazmat.primitives.serialization import Encoding
 
-from atst.domain.users import Users
-from atst.domain.exceptions import NotFoundError
-from atst.domain.authnid.crl import CRLInvalidException
-from atst.domain.auth import UNPROTECTED_ROUTES
-from atst.domain.authnid.crl import CRLCache
+from atat.domain.users import Users
+from atat.domain.exceptions import NotFoundError
+from atat.domain.authnid.crl import CRLInvalidException
+from atat.domain.auth import UNPROTECTED_ROUTES
+from atat.domain.authnid.crl import CRLCache
 
 from .factories import UserFactory
 from .mocks import DOD_SDN_INFO, DOD_SDN, FIXTURE_EMAIL_ADDRESS
@@ -27,7 +27,7 @@ def _fetch_user_info(c, t):
 
 def _login(client, verify="SUCCESS", sdn=DOD_SDN, cert="", **url_query_args):
     return client.get(
-        url_for("atst.login_redirect", **url_query_args),
+        url_for("atat.login_redirect", **url_query_args),
         environ_base={
             "HTTP_X_SSL_CLIENT_VERIFY": verify,
             "HTTP_X_SSL_CLIENT_S_DN": sdn,
@@ -38,10 +38,10 @@ def _login(client, verify="SUCCESS", sdn=DOD_SDN, cert="", **url_query_args):
 
 def test_successful_login_redirect(client, monkeypatch, mock_logger):
     monkeypatch.setattr(
-        "atst.domain.authnid.AuthenticationContext.authenticate", lambda *args: True
+        "atat.domain.authnid.AuthenticationContext.authenticate", lambda *args: True
     )
     monkeypatch.setattr(
-        "atst.domain.authnid.AuthenticationContext.get_user",
+        "atat.domain.authnid.AuthenticationContext.get_user",
         lambda *args: UserFactory.create(),
     )
 
@@ -56,7 +56,7 @@ def test_successful_login_redirect(client, monkeypatch, mock_logger):
 
 
 def test_unsuccessful_login_redirect(client, monkeypatch, mock_logger):
-    resp = client.get(url_for("atst.login_redirect"))
+    resp = client.get(url_for("atat.login_redirect"))
 
     assert resp.status_code == 401
     assert "user_id" not in session
@@ -97,12 +97,12 @@ def test_protected_routes_redirect_to_login(client, app):
 def test_unprotected_routes_set_user_if_logged_in(client, app, user_session):
     user = UserFactory.create()
 
-    resp = client.get(url_for("atst.about"))
+    resp = client.get(url_for("atat.about"))
     assert resp.status_code == 200
     assert user.full_name not in resp.data.decode()
 
     user_session(user)
-    resp = client.get(url_for("atst.about"))
+    resp = client.get(url_for("atat.about"))
     assert resp.status_code == 200
     assert user.full_name in resp.data.decode()
 
@@ -163,7 +163,7 @@ def test_crl_validation_on_login(
 
 def test_creates_new_user_on_login(monkeypatch, client, ca_key):
     monkeypatch.setattr(
-        "atst.domain.authnid.AuthenticationContext.authenticate", lambda *args: True
+        "atat.domain.authnid.AuthenticationContext.authenticate", lambda *args: True
     )
     cert_file = open("tests/fixtures/{}.crt".format(FIXTURE_EMAIL_ADDRESS)).read()
 
@@ -200,22 +200,22 @@ def test_creates_new_user_without_email_on_login(
 def test_logout(app, client, monkeypatch, mock_logger):
     user = UserFactory.create()
     monkeypatch.setattr(
-        "atst.domain.authnid.AuthenticationContext.authenticate", lambda s: True
+        "atat.domain.authnid.AuthenticationContext.authenticate", lambda s: True
     )
     monkeypatch.setattr(
-        "atst.domain.authnid.AuthenticationContext.get_user", lambda s: user,
+        "atat.domain.authnid.AuthenticationContext.get_user", lambda s: user,
     )
     # create a real session
     resp = _login(client)
     resp_success = client.get(url_for("users.user"))
     # verify session is valid
     assert resp_success.status_code == 200
-    client.get(url_for("atst.logout"))
+    client.get(url_for("atat.logout"))
     resp_failure = client.get(url_for("users.user"))
     # verify that logging out has cleared the session
     assert resp_failure.status_code == 302
     destination = urlparse(resp_failure.headers["Location"]).path
-    assert destination == url_for("atst.root")
+    assert destination == url_for("atat.root")
     # verify that logout is noted in the logs
     logout_msg = mock_logger.messages[-1]
     assert user.dod_id in logout_msg
@@ -224,24 +224,24 @@ def test_logout(app, client, monkeypatch, mock_logger):
 
 def test_logging_out_creates_a_flash_message(app, client, monkeypatch):
     monkeypatch.setattr(
-        "atst.domain.authnid.AuthenticationContext.authenticate", lambda s: True
+        "atat.domain.authnid.AuthenticationContext.authenticate", lambda s: True
     )
     monkeypatch.setattr(
-        "atst.domain.authnid.AuthenticationContext.get_user",
+        "atat.domain.authnid.AuthenticationContext.get_user",
         lambda s: UserFactory.create(),
     )
     _login(client)
-    logout_response = client.get(url_for("atst.logout"), follow_redirects=True)
+    logout_response = client.get(url_for("atat.logout"), follow_redirects=True)
 
     assert "Logged out" in logout_response.data.decode()
 
 
 def test_redirected_on_login(client, monkeypatch):
     monkeypatch.setattr(
-        "atst.domain.authnid.AuthenticationContext.authenticate", lambda *args: True
+        "atat.domain.authnid.AuthenticationContext.authenticate", lambda *args: True
     )
     monkeypatch.setattr(
-        "atst.domain.authnid.AuthenticationContext.get_user",
+        "atat.domain.authnid.AuthenticationContext.get_user",
         lambda *args: UserFactory.create(),
     )
     target_route = url_for("users.user")
@@ -254,7 +254,7 @@ def test_error_on_invalid_crl(client, monkeypatch):
         raise CRLInvalidException()
 
     monkeypatch.setattr(
-        "atst.domain.authnid.AuthenticationContext.authenticate", _raise_crl_error
+        "atat.domain.authnid.AuthenticationContext.authenticate", _raise_crl_error
     )
     response = _login(client)
     assert response.status_code == 401
@@ -265,10 +265,10 @@ def test_last_login_set_when_user_logs_in(client, monkeypatch):
     last_login = pendulum.now(tz="utc")
     user = UserFactory.create(last_login=last_login)
     monkeypatch.setattr(
-        "atst.domain.authnid.AuthenticationContext.authenticate", lambda *args: True
+        "atat.domain.authnid.AuthenticationContext.authenticate", lambda *args: True
     )
     monkeypatch.setattr(
-        "atst.domain.authnid.AuthenticationContext.get_user", lambda *args: user
+        "atat.domain.authnid.AuthenticationContext.get_user", lambda *args: user
     )
     _login(client)
     assert session["last_login"]

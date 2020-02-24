@@ -9,8 +9,8 @@ import sqlalchemy
 from alembic import config as alembic_config
 
 from seed_roles import seed_roles
-from atst.database import db
-from atst.app import make_config, make_app
+from atat.database import db
+from atat.app import make_config, make_app
 
 
 def reset_database():

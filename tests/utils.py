@@ -7,7 +7,7 @@ from cryptography.hazmat.backends import default_backend
 from flask import template_rendered
 import pendulum
 
-from atst.utils.notification_sender import NotificationSender
+from atat.utils.notification_sender import NotificationSender
 
 import tests.factories as factories
 

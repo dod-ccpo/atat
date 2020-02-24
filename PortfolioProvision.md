@@ -7,7 +7,7 @@ Azure Stages:
     admin subscription
     etc.
 
-`atst.models.mixins.state_machines` module contains:
+`atat.models.mixins.state_machines` module contains:
 
     python Enum classes that define the stages for a CSP
 
@@ -16,7 +16,7 @@ Azure Stages:
             BILLING_PROFILE = "billing profile"
             ADMIN_SUBSCRIPTION = "admin subscription"
 
-there are two types of python dataclass subclasses defined in `atst.models.portoflio_state_machine` module.
+there are two types of python dataclass subclasses defined in `atat.models.portoflio_state_machine` module.
 
 one holds the data that is submitted to the CSP
 
@@ -34,7 +34,7 @@ the other holds the results of the call to the CSP
         user_object_id: str
         etc.
 
-A Finite State Machine `atst.models.portoflio_state_machine.PortfolioStateMachine` is created for each provisioning process and tied to an instance of Portfolio class.
+A Finite State Machine `atat.models.portoflio_state_machine.PortfolioStateMachine` is created for each provisioning process and tied to an instance of Portfolio class.
 
 Aach time the FSM is created/accessed it will generate a list of States and Transitions between the states.
 

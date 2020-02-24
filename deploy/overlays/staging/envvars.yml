@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: atst-worker-envvars
+  name: atat-worker-envvars
 data:
   CELERY_DEFAULT_QUEUE: celery-staging
   SERVER_NAME: staging.atat.code.mil
@@ -11,7 +11,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: atst-envvars
+  name: atat-envvars
 data:
   ASSETS_URL: https://atat-cdn-staging.azureedge.net/
   CDN_ORIGIN: https://staging.atat.code.mil

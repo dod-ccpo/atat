@@ -3,9 +3,9 @@ from unittest.mock import Mock
 
 from flask import url_for
 
-from atst.domain.portfolios import Portfolios
-from atst.models import InvitationStatus, PortfolioRoleStatus
-from atst.domain.permission_sets import PermissionSets
+from atat.domain.portfolios import Portfolios
+from atat.models import InvitationStatus, PortfolioRoleStatus
+from atat.domain.permission_sets import PermissionSets
 
 from tests.factories import *
 
@@ -45,7 +45,7 @@ def test_new_member_accepts_valid_invite(monkeypatch, client, user_session):
     invite = PortfolioInvitationFactory.create(role=role, dod_id=user_info["dod_id"])
 
     monkeypatch.setattr(
-        "atst.domain.auth.should_redirect_to_user_profile", lambda *args: False
+        "atat.domain.auth.should_redirect_to_user_profile", lambda *args: False
     )
     user_session(UserFactory.create(dod_id=user_info["dod_id"]))
     response = client.get(
@@ -188,7 +188,7 @@ def test_user_can_only_resend_invites_in_their_portfolio(
     monkeypatch, client, user_session
 ):
     job_mock = Mock()
-    monkeypatch.setattr("atst.jobs.send_mail.delay", job_mock)
+    monkeypatch.setattr("atat.jobs.send_mail.delay", job_mock)
     portfolio = PortfolioFactory.create()
     other_portfolio = PortfolioFactory.create()
     user = UserFactory.create()
@@ -216,7 +216,7 @@ def test_user_can_only_resend_invites_in_their_portfolio(
 
 def test_resend_invitation_sends_email(monkeypatch, client, user_session):
     job_mock = Mock()
-    monkeypatch.setattr("atst.jobs.send_mail.delay", job_mock)
+    monkeypatch.setattr("atat.jobs.send_mail.delay", job_mock)
     user = UserFactory.create()
     portfolio = PortfolioFactory.create()
     portfolio_role = PortfolioRoleFactory.create(
@@ -264,7 +264,7 @@ def test_user_with_permission_has_add_member_link(client, user_session):
 
 def test_invite_member(monkeypatch, client, user_session, session):
     job_mock = Mock()
-    monkeypatch.setattr("atst.jobs.send_mail.delay", job_mock)
+    monkeypatch.setattr("atat.jobs.send_mail.delay", job_mock)
     user_data = UserFactory.dictionary()
     portfolio = PortfolioFactory.create()
     user_session(portfolio.owner)

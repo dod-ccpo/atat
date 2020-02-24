@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: atst-main
+  name: atat-main
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
     service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "cloudzero-jedidev-public"
@@ -19,7 +19,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: atst-auth
+  name: atat-auth
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
     service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "cloudzero-jedidev-public"

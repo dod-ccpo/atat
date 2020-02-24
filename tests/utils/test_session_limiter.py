@@ -3,9 +3,9 @@ from redis import Redis
 from unittest.mock import Mock
 from uuid import uuid4
 
-from atst.utils.session_limiter import SessionLimiter
+from atat.utils.session_limiter import SessionLimiter
 from tests.factories import UserFactory
-from atst.models.user import User
+from atat.models.user import User
 
 
 @pytest.fixture

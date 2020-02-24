@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import Mock
 
-from atst.domain.csp.cloud import AzureCloudProvider
+from atat.domain.csp.cloud import AzureCloudProvider
 
 AZURE_CONFIG = {
     "AZURE_CALC_CLIENT_ID": "MOCK",

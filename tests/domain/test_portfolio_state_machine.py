@@ -17,16 +17,16 @@ from tests.factories import (
     UserFactory,
 )
 
-from atst.models import FSMStates, PortfolioStateMachine, TaskOrder
-from atst.models.mixins.state_machines import (
+from atat.models import FSMStates, PortfolioStateMachine, TaskOrder
+from atat.models.mixins.state_machines import (
     AzureStages,
     StageStates,
     _build_csp_states,
     _build_transitions,
     compose_state,
 )
-from atst.models.portfolio import Portfolio
-from atst.models.portfolio_state_machine import (
+from atat.models.portfolio import Portfolio
+from atat.models.portfolio_state_machine import (
     StateMachineMisconfiguredError,
     _stage_state_to_stage_name,
     _stage_to_classname,
@@ -277,7 +277,7 @@ def test_state_machine_initialization(state_machine):
 
 
 @pytest.mark.state_machine
-@patch("atst.domain.csp.cloud.MockCloudProvider")
+@patch("atat.domain.csp.cloud.MockCloudProvider")
 def test_fsm_transition_start(
     mock_cloud_provider, state_machine: PortfolioStateMachine
 ):

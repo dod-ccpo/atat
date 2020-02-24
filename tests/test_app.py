@@ -3,7 +3,7 @@ import os
 from configparser import ConfigParser
 import pytest
 
-from atst.app import (
+from atat.app import (
     make_crl_validator,
     apply_config_from_directory,
     apply_config_from_environment,

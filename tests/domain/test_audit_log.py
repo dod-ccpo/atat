@@ -1,12 +1,12 @@
 import pytest
 
-from atst.domain.applications import Applications
-from atst.domain.audit_log import AuditLog
-from atst.domain.exceptions import UnauthorizedError
-from atst.domain.permission_sets import PermissionSets
-from atst.domain.portfolios import Portfolios
-from atst.domain.users import Users
-from atst.models.portfolio_role import Status as PortfolioRoleStatus
+from atat.domain.applications import Applications
+from atat.domain.audit_log import AuditLog
+from atat.domain.exceptions import UnauthorizedError
+from atat.domain.permission_sets import PermissionSets
+from atat.domain.portfolios import Portfolios
+from atat.domain.users import Users
+from atat.models.portfolio_role import Status as PortfolioRoleStatus
 from tests.factories import (
     ApplicationFactory,
     ApplicationInvitationFactory,

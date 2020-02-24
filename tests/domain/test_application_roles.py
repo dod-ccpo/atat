@@ -1,10 +1,10 @@
 import pytest
 
-from atst.domain.application_roles import ApplicationRoles
-from atst.domain.environment_roles import EnvironmentRoles
-from atst.domain.exceptions import NotFoundError
-from atst.domain.permission_sets import PermissionSets
-from atst.models import ApplicationRoleStatus
+from atat.domain.application_roles import ApplicationRoles
+from atat.domain.environment_roles import EnvironmentRoles
+from atat.domain.exceptions import NotFoundError
+from atat.domain.permission_sets import PermissionSets
+from atat.models import ApplicationRoleStatus
 
 from tests.factories import *
 

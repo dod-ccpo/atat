@@ -9,26 +9,26 @@ from tests.mock_azure import mock_azure
 from tests.utils import captured_templates
 from werkzeug.datastructures import ImmutableMultiDict
 
-from atst.database import db
-from atst.domain.application_roles import ApplicationRoles
-from atst.domain.applications import Applications
-from atst.domain.common import Paginator
-from atst.domain.csp.cloud.azure_cloud_provider import AzureCloudProvider
-from atst.domain.csp.cloud.exceptions import GeneralCSPException
-from atst.domain.csp.cloud.models import (
+from atat.database import db
+from atat.domain.application_roles import ApplicationRoles
+from atat.domain.applications import Applications
+from atat.domain.common import Paginator
+from atat.domain.csp.cloud.azure_cloud_provider import AzureCloudProvider
+from atat.domain.csp.cloud.exceptions import GeneralCSPException
+from atat.domain.csp.cloud.models import (
     SubscriptionCreationCSPResult,
     SubscriptionCreationCSPPayload,
 )
-from atst.domain.environment_roles import EnvironmentRoles
-from atst.domain.invitations import ApplicationInvitations
-from atst.domain.permission_sets import PermissionSets
-from atst.forms.application import EditEnvironmentForm
-from atst.forms.application_member import UpdateMemberForm
-from atst.forms.data import ENV_ROLE_NO_ACCESS as NO_ACCESS
-from atst.models.application_role import Status as ApplicationRoleStatus
-from atst.models.environment_role import CSPRole, EnvironmentRole
-from atst.models.permissions import Permissions
-from atst.routes.applications.settings import (
+from atat.domain.environment_roles import EnvironmentRoles
+from atat.domain.invitations import ApplicationInvitations
+from atat.domain.permission_sets import PermissionSets
+from atat.forms.application import EditEnvironmentForm
+from atat.forms.application_member import UpdateMemberForm
+from atat.forms.data import ENV_ROLE_NO_ACCESS as NO_ACCESS
+from atat.models.application_role import Status as ApplicationRoleStatus
+from atat.models.environment_role import CSPRole, EnvironmentRole
+from atat.models.permissions import Permissions
+from atat.routes.applications.settings import (
     build_subscription_payload,
     filter_env_roles_data,
     filter_env_roles_form_data,
@@ -390,7 +390,7 @@ def test_delete_environment(client, user_session):
 
 def test_create_member(monkeypatch, client, user_session, session):
     job_mock = Mock()
-    monkeypatch.setattr("atst.jobs.send_mail.delay", job_mock)
+    monkeypatch.setattr("atat.jobs.send_mail.delay", job_mock)
     user = UserFactory.create()
     application = ApplicationFactory.create(
         environments=[{"name": "Naboo"}, {"name": "Endor"}]
@@ -667,8 +667,8 @@ def test_filter_env_roles_data():
 @pytest.fixture
 def set_g(monkeypatch):
     _g = Mock()
-    monkeypatch.setattr("atst.app.g", _g)
-    monkeypatch.setattr("atst.routes.applications.settings.g", _g)
+    monkeypatch.setattr("atat.app.g", _g)
+    monkeypatch.setattr("atat.routes.applications.settings.g", _g)
 
     def _set_g(attr, val):
         setattr(_g, attr, val)
@@ -684,7 +684,7 @@ def test_handle_create_member(monkeypatch, set_g, session):
     (env, env_1) = application.environments
 
     job_mock = Mock()
-    monkeypatch.setattr("atst.jobs.send_mail.delay", job_mock)
+    monkeypatch.setattr("atat.jobs.send_mail.delay", job_mock)
     set_g("current_user", application.portfolio.owner)
     set_g("portfolio", application.portfolio)
     set_g("application", application)
@@ -756,7 +756,7 @@ def test_handle_update_member_with_error(set_g, monkeypatch, mock_logger):
         raise GeneralCSPException(exception)
 
     monkeypatch.setattr(
-        "atst.domain.environments.Environments.update_env_role", _raise_csp_exception
+        "atat.domain.environments.Environments.update_env_role", _raise_csp_exception
     )
 
     user = UserFactory.create()
@@ -829,7 +829,7 @@ def test_create_subscription_failure(client, user_session, monkeypatch):
         raise GeneralCSPException("An error occurred.")
 
     monkeypatch.setattr(
-        "atst.domain.csp.cloud.MockCloudProvider.create_subscription",
+        "atat.domain.csp.cloud.MockCloudProvider.create_subscription",
         _raise_csp_exception,
     )
 

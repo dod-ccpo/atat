@@ -2,9 +2,9 @@ from flask import url_for, get_flashed_messages
 
 from tests.factories import *
 
-from atst.domain.applications import Applications
-from atst.domain.portfolios import Portfolios
-from atst.models.portfolio_role import Status as PortfolioRoleStatus
+from atat.domain.applications import Applications
+from atat.domain.portfolios import Portfolios
+from atat.models.portfolio_role import Status as PortfolioRoleStatus
 
 from tests.utils import captured_templates
 

@@ -1,4 +1,4 @@
-from atst.domain.csp.reports import prepare_azure_reporting_data
+from atat.domain.csp.reports import prepare_azure_reporting_data
 from tests.factories import PortfolioFactory
 from decimal import Decimal
 import pendulum

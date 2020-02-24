@@ -1,9 +1,9 @@
 import pytest
 from uuid import uuid4
 
-from atst.domain.users import Users
-from atst.domain.exceptions import NotFoundError, AlreadyExistsError, UnauthorizedError
-from atst.utils import pick
+from atat.domain.users import Users
+from atat.domain.exceptions import NotFoundError, AlreadyExistsError, UnauthorizedError
+from atat.utils import pick
 
 from tests.factories import UserFactory
 

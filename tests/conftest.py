@@ -7,8 +7,8 @@ from werkzeug.datastructures import FileStorage
 from collections import OrderedDict
 from unittest.mock import Mock
 
-from atst.app import make_app, make_config
-from atst.database import db as _db
+from atat.app import make_app, make_config
+from atat.database import db as _db
 import tests.factories as factories
 from tests.mocks import PDF_FILENAME, PDF_FILENAME2
 from tests.utils import FakeLogger, FakeNotificationSender
@@ -145,7 +145,7 @@ def dummy_field():
 def user_session(monkeypatch, session):
     def set_user_session(user=None):
         monkeypatch.setattr(
-            "atst.domain.auth.get_current_user",
+            "atat.domain.auth.get_current_user",
             lambda *args: user or factories.UserFactory.create(),
         )
 

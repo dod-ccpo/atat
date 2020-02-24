@@ -1,7 +1,7 @@
 {
-  "name": "atst",
+  "name": "atat",
   "version": "1.0.0",
-  "description": "ATST Stateless Services",
+  "description": "ATAT Stateless Services",
   "main": "index.js",
   "scripts": {
     "watch": "parcel watch js/index.js -d static/assets --public-url /static/assets -o index.js --no-autoinstall",

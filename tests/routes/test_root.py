@@ -1,5 +1,5 @@
 from tests.factories import UserFactory, PortfolioFactory
-from atst.routes import match_url_pattern
+from atat.routes import match_url_pattern
 
 
 def test_root_redirects_if_user_is_logged_in(client, user_session):

@@ -2,9 +2,9 @@ import pytest
 from sqlalchemy.exc import InternalError
 import pendulum
 
-from atst.database import db
-from atst.domain.users import Users
-from atst.models.user import User
+from atat.database import db
+from atat.domain.users import Users
+from atat.models.user import User
 
 from tests.factories import UserFactory, ApplicationFactory, ApplicationRoleFactory
 

@@ -1,8 +1,8 @@
-from atst.domain.permission_sets import PermissionSets
-from atst.domain.portfolio_roles import PortfolioRoles
-from atst.domain.users import Users
-from atst.models.permissions import Permissions
-from atst.models.portfolio_role import Status as PortfolioRoleStatus
+from atat.domain.permission_sets import PermissionSets
+from atat.domain.portfolio_roles import PortfolioRoles
+from atat.domain.users import Users
+from atat.models.permissions import Permissions
+from atat.models.portfolio_role import Status as PortfolioRoleStatus
 
 from tests.factories import (
     PortfolioFactory,

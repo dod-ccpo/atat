@@ -9,7 +9,7 @@ source "$(dirname "${0}")"/../script/include/global_header.inc.sh
 export FLASK_ENV=ci
 
 # Define all relevant python files and directories for this app
-PYTHON_FILES="./app.py ./atst/** ./config"
+PYTHON_FILES="./app.py ./atat/** ./config"
 
 # Enable Python testing
 RUN_PYTHON_TESTS="true"

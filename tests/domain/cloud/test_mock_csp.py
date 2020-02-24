@@ -1,7 +1,7 @@
 import pytest
 
-from atst.domain.csp import MockCloudProvider
-from atst.domain.csp.cloud.models import (
+from atat.domain.csp import MockCloudProvider
+from atat.domain.csp.cloud.models import (
     EnvironmentCSPPayload,
     EnvironmentCSPResult,
     TenantCSPPayload,

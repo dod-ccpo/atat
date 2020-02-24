@@ -1,13 +1,13 @@
 import pytest
 
-from atst.domain.authnid import AuthenticationContext
-from atst.domain.authnid.crl import (
+from atat.domain.authnid import AuthenticationContext
+from atat.domain.authnid.crl import (
     CRLCache,
     CRLRevocationException,
     CRLInvalidException,
 )
-from atst.domain.exceptions import UnauthenticatedError, NotFoundError
-from atst.domain.users import Users
+from atat.domain.exceptions import UnauthenticatedError, NotFoundError
+from atat.domain.users import Users
 
 from tests.mocks import DOD_SDN_INFO, DOD_SDN, FIXTURE_EMAIL_ADDRESS
 from tests.factories import UserFactory

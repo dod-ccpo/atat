@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import logging
 
-from atst.app import celery, make_app, make_config
+from atat.app import celery, make_app, make_config
 from celery.signals import after_setup_task_logger
 
-from atst.utils.logging import JsonFormatter
+from atat.utils.logging import JsonFormatter
 
 config = make_config()
 app = make_app(config)

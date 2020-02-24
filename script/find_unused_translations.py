@@ -8,7 +8,7 @@ from subprocess import check_output
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(parent_dir)
 
-from atst.utils.localization import all_keys
+from atat.utils.localization import all_keys
 
 for key in all_keys():
     try:

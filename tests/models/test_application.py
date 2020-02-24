@@ -1,8 +1,8 @@
 import pytest
 
-from atst.domain.application_roles import ApplicationRoles
-from atst.models import ApplicationRoleStatus
-from atst.models import AuditEvent
+from atat.domain.application_roles import ApplicationRoles
+from atat.models import ApplicationRoleStatus
+from atat.models import AuditEvent
 
 from tests.factories import (
     ApplicationFactory,

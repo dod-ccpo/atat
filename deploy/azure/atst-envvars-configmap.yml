@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: atst-envvars
+  name: atat-envvars
   namespace: atat
 data:
   ASSETS_URL: https://atat-cdn.azureedge.net/
@@ -22,12 +22,12 @@ data:
   MAIL_SERVER: smtp.mailgun.org
   MAIL_TLS: "true"
   OVERRIDE_CONFIG_DIRECTORY: /config
-  PGAPPNAME: atst
+  PGAPPNAME: atat
   PGDATABASE: staging
   PGHOST: atat-db.postgres.database.azure.com
   PGPORT: "5432"
   PGSSLMODE: verify-full
-  PGSSLROOTCERT: /opt/atat/atst/ssl/pgsslrootcert.crt
+  PGSSLROOTCERT: /opt/atat/atat/ssl/pgsslrootcert.crt
   PGUSER: atat_master@atat-db
   REDIS_HOST: atat.redis.cache.windows.net:6380
   REDIS_TLS: "true"
@@ -35,4 +35,4 @@ data:
   SESSION_COOKIE_SECURE: "true"
   STATIC_URL: https://atat-cdn.azureedge.net/static/
   TZ: UTC
-  UWSGI_CONFIG_FULLPATH: /opt/atat/atst/uwsgi.ini
+  UWSGI_CONFIG_FULLPATH: /opt/atat/atat/uwsgi.ini

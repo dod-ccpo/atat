@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from atst.domain.authnid.crl.util import crl_local_path, CRL_LIST
+from atat.domain.authnid.crl.util import crl_local_path, CRL_LIST
 
 from tests.utils import parse_for_issuer_and_next_update
 

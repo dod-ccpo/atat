@@ -5,21 +5,21 @@ import random
 
 from flask import url_for, Response
 
-import atst
-from atst.app import make_app, make_config
-from atst.domain.auth import UNPROTECTED_ROUTES as _NO_LOGIN_REQUIRED
-from atst.domain.permission_sets import PermissionSets
-from atst.models import CSPRole, PortfolioRoleStatus, ApplicationRoleStatus
+import atat
+from atat.app import make_app, make_config
+from atat.domain.auth import UNPROTECTED_ROUTES as _NO_LOGIN_REQUIRED
+from atat.domain.permission_sets import PermissionSets
+from atat.models import CSPRole, PortfolioRoleStatus, ApplicationRoleStatus
 
 from tests.factories import *
 
 
-from atst.app import make_config, make_app
+from atat.app import make_config, make_app
 
 _NO_ACCESS_CHECK_REQUIRED = _NO_LOGIN_REQUIRED + [
     "applications.accept_invitation",  # available to all users; access control is built into invitation logic
-    "atst.catch_all",  # available to all users
-    "atst.home",  # available to all users
+    "atat.catch_all",  # available to all users
+    "atat.home",  # available to all users
     "dev.messages",  # dev tool
     "dev.test_email",  # dev tool
     "portfolios.accept_invitation",  # available to all users; access control is built into invitation logic
@@ -62,23 +62,23 @@ def test_all_protected_routes_have_access_control(
     decorator.
     """
     # monkeypatch any object lookups that might happen in the access decorator
-    monkeypatch.setattr("atst.domain.portfolios.Portfolios.for_user", lambda *a: [])
-    monkeypatch.setattr("atst.domain.portfolios.Portfolios.get", lambda *a: None)
-    monkeypatch.setattr("atst.domain.task_orders.TaskOrders.get", lambda *a: Mock())
-    monkeypatch.setattr("atst.domain.applications.Applications.get", lambda *a: Mock())
+    monkeypatch.setattr("atat.domain.portfolios.Portfolios.for_user", lambda *a: [])
+    monkeypatch.setattr("atat.domain.portfolios.Portfolios.get", lambda *a: None)
+    monkeypatch.setattr("atat.domain.task_orders.TaskOrders.get", lambda *a: Mock())
+    monkeypatch.setattr("atat.domain.applications.Applications.get", lambda *a: Mock())
     monkeypatch.setattr(
-        "atst.domain.invitations.PortfolioInvitations._get", lambda *a: Mock()
+        "atat.domain.invitations.PortfolioInvitations._get", lambda *a: Mock()
     )
-    monkeypatch.setattr("atst.app.assign_resources", lambda *a: None)
+    monkeypatch.setattr("atat.app.assign_resources", lambda *a: None)
 
     # monkeypatch the error handler
     monkeypatch.setattr(
-        "atst.routes.errors.handle_error", lambda *a, **k: ("error", 500)
+        "atat.routes.errors.handle_error", lambda *a, **k: ("error", 500)
     )
 
     # patch the internal function the access decorator uses so that
     # we can check that it was called
-    mocker.patch("atst.domain.authz.decorator.check_access")
+    mocker.patch("atat.domain.authz.decorator.check_access")
 
     user = UserFactory.create()
     user_session(user)
@@ -87,7 +87,7 @@ def test_all_protected_routes_have_access_control(
     getattr(client, method)(route)
 
     assert (
-        atst.domain.authz.decorator.check_access.call_count == 1
+        atat.domain.authz.decorator.check_access.call_count == 1
     ), "no access control for {}".format(rule.endpoint)
 
 
@@ -135,7 +135,7 @@ def post_url_assert_status(no_debug_client, user_session):
 
 # ccpo.activity_history
 @pytest.mark.audit_log
-def test_atst_activity_history_access(get_url_assert_status):
+def test_atat_activity_history_access(get_url_assert_status):
     ccpo = user_with(PermissionSets.VIEW_AUDIT_LOG)
     rando = user_with()
 
@@ -608,7 +608,7 @@ def test_applications_resend_invite(post_url_assert_status):
 # task_orders.download_task_order_pdf
 def test_task_orders_download_task_order_pdf_access(get_url_assert_status, monkeypatch):
     monkeypatch.setattr(
-        "atst.routes.task_orders.downloads.send_file", lambda a: Response("")
+        "atat.routes.task_orders.downloads.send_file", lambda a: Response("")
     )
     ccpo = user_with(PermissionSets.VIEW_PORTFOLIO_FUNDING)
     owner = user_with()

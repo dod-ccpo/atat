@@ -1,7 +1,7 @@
 import pytest
-from atst.domain.permission_sets import PermissionSets
-from atst.domain.exceptions import NotFoundError
-from atst.utils import first_or_none
+from atat.domain.permission_sets import PermissionSets
+from atat.domain.exceptions import NotFoundError
+from atat.utils import first_or_none
 
 
 def test_get_all():

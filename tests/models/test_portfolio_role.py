@@ -1,15 +1,15 @@
 import pytest
 import pendulum
 
-from atst.domain.environments import Environments
-from atst.domain.portfolios import Portfolios
-from atst.domain.portfolio_roles import PortfolioRoles
-from atst.domain.applications import Applications
-from atst.domain.permission_sets import PermissionSets
-from atst.models import AuditEvent, InvitationStatus, PortfolioRoleStatus, CSPRole
+from atat.domain.environments import Environments
+from atat.domain.portfolios import Portfolios
+from atat.domain.portfolio_roles import PortfolioRoles
+from atat.domain.applications import Applications
+from atat.domain.permission_sets import PermissionSets
+from atat.models import AuditEvent, InvitationStatus, PortfolioRoleStatus, CSPRole
 
 from tests.factories import *
-from atst.domain.portfolio_roles import PortfolioRoles
+from atat.domain.portfolio_roles import PortfolioRoles
 
 
 @pytest.mark.audit_log

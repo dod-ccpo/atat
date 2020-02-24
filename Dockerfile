@@ -50,7 +50,7 @@ FROM python:3.7.3-alpine3.9
 ### Very low chance of changing
 ###############################
 # Overridable default config
-ARG APP_DIR=/opt/atat/atst
+ARG APP_DIR=/opt/atat/atat
 
 # Environment variables
 ENV APP_DIR "${APP_DIR}"
@@ -64,7 +64,7 @@ WORKDIR ${APP_DIR}
 
 # Add group
 RUN addgroup -g 8000 -S "atat" && \
-  adduser -u 8010 -D -S -G "atat" "atst"
+  adduser -u 8010 -D -S -G "atat" "atat"
 
 # Install basic Alpine packages
 RUN apk update && \
@@ -80,7 +80,7 @@ COPY --from=builder /install/.venv/ ./.venv/
 COPY --from=builder /install/alembic/ ./alembic/
 COPY --from=builder /install/alembic.ini .
 COPY --from=builder /install/app.py .
-COPY --from=builder /install/atst/ ./atst/
+COPY --from=builder /install/atat/ ./atat/
 COPY --from=builder /install/celery_worker.py ./celery_worker.py
 COPY --from=builder /install/config/ ./config/
 COPY --from=builder /install/templates/ ./templates/
@@ -98,10 +98,10 @@ ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["uwsgi", "--ini", "uwsgi.ini"]
 
 RUN mkdir /var/run/uwsgi && \
-      chown -R atst:atat /var/run/uwsgi && \
-      chown -R atst:atat "${APP_DIR}"
+      chown -R atat:atat /var/run/uwsgi && \
+      chown -R atat:atat "${APP_DIR}"
 
 RUN update-ca-certificates
 
 # Run as the unprivileged APP user
-USER atst
+USER atat

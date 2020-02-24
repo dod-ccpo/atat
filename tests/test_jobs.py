@@ -5,12 +5,12 @@ from unittest.mock import Mock, MagicMock
 from smtplib import SMTPException
 from azure.core.exceptions import AzureError
 
-from atst.domain.csp.cloud import MockCloudProvider
-from atst.domain.csp.cloud.models import BillingInstructionCSPPayload, UserRoleCSPResult
-from atst.domain.portfolios import Portfolios
-from atst.models import ApplicationRoleStatus, Portfolio, FSMStates
+from atat.domain.csp.cloud import MockCloudProvider
+from atat.domain.csp.cloud.models import BillingInstructionCSPPayload, UserRoleCSPResult
+from atat.domain.portfolios import Portfolios
+from atat.models import ApplicationRoleStatus, Portfolio, FSMStates
 
-from atst.jobs import (
+from atat.jobs import (
     RecordFailure,
     dispatch_create_environment,
     dispatch_create_application,
@@ -38,8 +38,8 @@ from tests.factories import (
     TaskOrderFactory,
     UserFactory,
 )
-from atst.models import CSPRole, EnvironmentRole, ApplicationRoleStatus, JobFailure
-from atst.utils.localization import translate
+from atat.models import CSPRole, EnvironmentRole, ApplicationRoleStatus, JobFailure
+from atat.utils.localization import translate
 
 
 @pytest.fixture(autouse=True, scope="function")
@@ -191,7 +191,7 @@ class TestCreateUserJob:
 
     def test_create_user_sends_email(self, monkeypatch, csp, app_role_1, app_role_2):
         mock = Mock()
-        monkeypatch.setattr("atst.jobs.send_mail", mock)
+        monkeypatch.setattr("atat.jobs.send_mail", mock)
 
         do_create_user(csp, [app_role_1.id, app_role_2.id])
         assert mock.call_count == 1
@@ -219,7 +219,7 @@ def test_dispatch_create_environment(session, monkeypatch):
     session.commit()
 
     mock = Mock()
-    monkeypatch.setattr("atst.jobs.create_environment", mock)
+    monkeypatch.setattr("atat.jobs.create_environment", mock)
 
     # When dispatch_create_environment is called
     dispatch_create_environment.run()
@@ -234,7 +234,7 @@ def test_dispatch_create_application(monkeypatch):
     app = ApplicationFactory.create(portfolio=portfolio)
 
     mock = Mock()
-    monkeypatch.setattr("atst.jobs.create_application", mock)
+    monkeypatch.setattr("atat.jobs.create_application", mock)
 
     # When dispatch_create_application is called
     dispatch_create_application.run()
@@ -257,7 +257,7 @@ def test_dispatch_create_user(monkeypatch):
     )
 
     mock = Mock()
-    monkeypatch.setattr("atst.jobs.create_user", mock)
+    monkeypatch.setattr("atat.jobs.create_user", mock)
 
     # When dispatch_create_user is called
     dispatch_create_user.run()
@@ -314,7 +314,7 @@ def test_dispatch_provision_portfolio(csp, monkeypatch):
     )
     sm = PortfolioStateMachineFactory.create(portfolio=portfolio)
     mock = Mock()
-    monkeypatch.setattr("atst.jobs.provision_portfolio", mock)
+    monkeypatch.setattr("atat.jobs.provision_portfolio", mock)
     dispatch_provision_portfolio.run()
     mock.delay.assert_called_once_with(portfolio_id=portfolio.id)
 
@@ -329,7 +329,7 @@ class TestDoProvisionPortfolio:
         self, monkeypatch, csp, portfolio: Portfolio
     ):
         mock = Mock()
-        monkeypatch.setattr("atst.jobs.send_PPOC_email", mock)
+        monkeypatch.setattr("atat.jobs.send_PPOC_email", mock)
 
         csp._authorize.return_value = None
         csp._maybe_raise.return_value = None
@@ -346,7 +346,7 @@ class TestDoProvisionPortfolio:
 
 def test_send_ppoc_email(monkeypatch, app):
     mock = Mock()
-    monkeypatch.setattr("atst.jobs.send_mail", mock)
+    monkeypatch.setattr("atat.jobs.send_mail", mock)
 
     ppoc_email = "example@example.com"
     user_id = "user_id"
@@ -377,7 +377,7 @@ def test_provision_portfolio_create_tenant(
 ):
     sm = PortfolioStateMachineFactory.create(portfolio=portfolio)
     # mock = Mock()
-    # monkeypatch.setattr("atst.jobs.provision_portfolio", mock)
+    # monkeypatch.setattr("atat.jobs.provision_portfolio", mock)
     # dispatch_provision_portfolio.run()
     # mock.delay.assert_called_once_with(portfolio_id=portfolio.id)
 
@@ -392,7 +392,7 @@ def test_dispatch_create_environment_role(monkeypatch):
     env_role = EnvironmentRoleFactory.create(application_role=app_role)
 
     mock = Mock()
-    monkeypatch.setattr("atst.jobs.create_environment_role", mock)
+    monkeypatch.setattr("atat.jobs.create_environment_role", mock)
 
     dispatch_create_environment_role.run()
 
@@ -425,7 +425,7 @@ class TestCreateEnvironmentRole:
 
     def test_sends_email(self, monkeypatch, env_role, csp):
         send_mail = Mock()
-        monkeypatch.setattr("atst.jobs.send_mail", send_mail)
+        monkeypatch.setattr("atat.jobs.send_mail", send_mail)
         do_create_environment_role(csp, environment_role_id=env_role.id)
         assert send_mail.call_count == 1
 
@@ -434,7 +434,7 @@ class TestSendTaskOrderFiles:
     @pytest.fixture(scope="function")
     def send_mail(self, monkeypatch):
         mock = Mock()
-        monkeypatch.setattr("atst.jobs.send_mail", mock)
+        monkeypatch.setattr("atat.jobs.send_mail", mock)
         return mock
 
     @pytest.fixture(scope="function")
@@ -443,7 +443,7 @@ class TestSendTaskOrderFiles:
             return {"name": object_name}
 
         monkeypatch.setattr(
-            "atst.domain.csp.files.MockFileService.download_task_order",
+            "atat.domain.csp.files.MockFileService.download_task_order",
             _download_task_order,
         )
 
@@ -484,7 +484,7 @@ class TestSendTaskOrderFiles:
         def _raise_smtp_exception(**kwargs):
             raise SMTPException
 
-        monkeypatch.setattr("atst.jobs.send_mail", _raise_smtp_exception)
+        monkeypatch.setattr("atat.jobs.send_mail", _raise_smtp_exception)
         task_order = TaskOrderFactory.create(create_clins=[{"number": "0001"}])
         send_task_order_files.run()
 
@@ -496,7 +496,7 @@ class TestSendTaskOrderFiles:
             raise AzureError("something went wrong")
 
         monkeypatch.setattr(
-            "atst.domain.csp.files.MockFileService.download_task_order",
+            "atat.domain.csp.files.MockFileService.download_task_order",
             _download_task_order,
         )
         task_order = TaskOrderFactory.create(create_clins=[{"number": "0002"}])
@@ -536,7 +536,7 @@ class TestCreateBillingInstructions:
             raise AzureError("something went wrong")
 
         monkeypatch.setattr(
-            "atst.domain.csp.cloud.MockCloudProvider.create_billing_instruction",
+            "atat.domain.csp.cloud.MockCloudProvider.create_billing_instruction",
             _create_billing_instruction,
         )
 

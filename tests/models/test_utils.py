@@ -1,7 +1,7 @@
 from threading import Thread
 
-from atst.domain.exceptions import ClaimFailedException
-from atst.models.utils import claim_for_update, claim_many_for_update
+from atat.domain.exceptions import ClaimFailedException
+from atat.models.utils import claim_for_update, claim_many_for_update
 
 from tests.factories import EnvironmentFactory
 

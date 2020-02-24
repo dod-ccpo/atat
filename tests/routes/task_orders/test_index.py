@@ -1,12 +1,12 @@
 from flask import url_for
 import pytest
 
-from atst.domain.permission_sets import PermissionSets
-from atst.domain.task_orders import TaskOrders
-from atst.models import *
-from atst.models.portfolio_role import Status as PortfolioStatus
-from atst.models.task_order import Status as TaskOrderStatus
-from atst.utils.localization import translate
+from atat.domain.permission_sets import PermissionSets
+from atat.domain.task_orders import TaskOrders
+from atat.models import *
+from atat.models.portfolio_role import Status as PortfolioStatus
+from atat.models.task_order import Status as TaskOrderStatus
+from atat.utils.localization import translate
 
 from tests.factories import *
 from tests.utils import captured_templates

@@ -6,13 +6,13 @@ import factory
 from uuid import uuid4
 import pendulum
 
-from atst.forms import data
-from atst.models import *
-from atst.models.mixins.state_machines import FSMStates
+from atat.forms import data
+from atat.models import *
+from atat.models.mixins.state_machines import FSMStates
 
-from atst.domain.invitations import PortfolioInvitations
-from atst.domain.permission_sets import PermissionSets
-from atst.domain.portfolio_roles import PortfolioRoles
+from atat.domain.invitations import PortfolioInvitations
+from atat.domain.permission_sets import PermissionSets
+from atat.domain.portfolio_roles import PortfolioRoles
 
 
 def random_choice(choices):

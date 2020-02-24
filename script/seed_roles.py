@@ -7,10 +7,10 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(parent_dir)
 
 from sqlalchemy.orm.exc import NoResultFound
-from atst.app import make_config, make_app
-from atst.database import db
-from atst.models import PermissionSet
-from atst.domain.permission_sets import (
+from atat.app import make_config, make_app
+from atat.database import db
+from atat.models import PermissionSet
+from atat.domain.permission_sets import (
     ATAT_PERMISSION_SETS,
     PORTFOLIO_PERMISSION_SETS,
     APPLICATION_PERMISSION_SETS,

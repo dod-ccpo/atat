@@ -1,7 +1,7 @@
 from wtforms.validators import ValidationError, StopValidation
 import pytest
 
-from atst.forms.validators import *
+from atat.forms.validators import *
 
 
 class TestNumber:

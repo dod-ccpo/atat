@@ -12,7 +12,7 @@ spec:
       template:
         metadata:
           labels:
-            app: atst
+            app: atat
             role: reset-db
             aadpodidbinding: atat-kv-id-binding
         spec:
@@ -24,12 +24,12 @@ spec:
               "/bin/sh", "-c"
             ]
             args: [
-              "/opt/atat/atst/.venv/bin/python",
-              "/opt/atat/atst/script/reset_database.py"
+              "/opt/atat/atat/.venv/bin/python",
+              "/opt/atat/atat/script/reset_database.py"
             ]
             envFrom:
             - configMapRef:
-                name: atst-worker-envvars
+                name: atat-worker-envvars
             volumeMounts:
               - name: flask-secret
                 mountPath: "/config"

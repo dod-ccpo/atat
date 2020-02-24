@@ -2,7 +2,7 @@ import random
 import re
 import string
 
-from atst.utils import sha256_hex
+from atat.utils import sha256_hex
 
 
 def test_sha256_hex():

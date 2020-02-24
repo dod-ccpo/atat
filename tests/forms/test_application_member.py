@@ -1,7 +1,7 @@
 import uuid
 
-from atst.forms.data import ENV_ROLES
-from atst.forms.application_member import *
+from atat.forms.data import ENV_ROLES
+from atat.forms.application_member import *
 
 
 def test_environment_form():

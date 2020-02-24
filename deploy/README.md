@@ -120,7 +120,7 @@ Apply the updated ConfigMap using the kubectl commands discussed in the "Applyin
 Once the updated ConfigMap is applied, you can roll the deployment with some version of:
 
 ```
-kubectl -n atat rollout restart deployment atst
+kubectl -n atat rollout restart deployment atat
 ```
 
 This will start new pods for the web service, and the new ACME challenge will be available from the NGINX web server. You can verify this by clicking the link certbot provides and verifying that you get the ACME challenge content you expect.
@@ -153,12 +153,12 @@ az keyvault secret set --vault-name <VAULT NAME> --name <NAME OF PARAM> --value 
 
 Secrets, keys, and certificates are managed from Azure Key Vault. These items are mounted into the containers at runtime using the FlexVol implementation described below.
 
-The following are mounted into the NGINX container in the atst pod:
+The following are mounted into the NGINX container in the atat pod:
 
 - The TLS certs for the site
 - The DH parameter for TLS connections
 
-These are mounted into every instance of the Flask application container (the atst container, the celery worker, etc.):
+These are mounted into every instance of the Flask application container (the atat container, the celery worker, etc.):
 
 - The Azure storage key used to access blob storage (AZURE_STORAGE_KEY)
 - The password for the SMTP server used to send mail (MAIL_PASSWORD)
@@ -224,7 +224,7 @@ There are 3 steps to using the FlexVol to access secrets from KeyVault
     ```
     metadata:
       labels:
-        app: atst
+        app: atat
         role: web
         aadpodidbinding: atat-kv-id-binding
     ```
@@ -253,7 +253,7 @@ There are 3 steps to using the FlexVol to access secrets from KeyVault
 
 4. Once applied, the directory specified in the `mountPath` argument will contain the files you specified in the flexVolume. In our case, you would be able to do this:
     ```
-    $ kubectl exec -it CONTAINER_NAME -c atst ls /usr/secrets
+    $ kubectl exec -it CONTAINER_NAME -c atat ls /usr/secrets
     mycert.crt
     mykey.txt
     mysecret.pem

@@ -2,7 +2,7 @@ import pytest
 from wtforms.fields import RadioField, FieldList, StringField
 from werkzeug.datastructures import ImmutableMultiDict
 
-from atst.forms.forms import BaseForm, remove_empty_string
+from atat.forms.forms import BaseForm, remove_empty_string
 
 
 class FormWithChoices(BaseForm):

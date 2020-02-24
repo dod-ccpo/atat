@@ -1,7 +1,7 @@
 import pytest
 
-from atst.domain.environment_roles import EnvironmentRoles
-from atst.models import EnvironmentRole, ApplicationRoleStatus
+from atat.domain.environment_roles import EnvironmentRoles
+from atat.models import EnvironmentRole, ApplicationRoleStatus
 
 from tests.factories import *
 

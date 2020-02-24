@@ -7,7 +7,7 @@ sys.path.append(parent_dir)
 
 import sqlalchemy
 
-from atst.app import make_config
+from atat.app import make_config
 
 
 def _root_connection(config, root_db):

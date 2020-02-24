@@ -2,16 +2,16 @@ import pytest
 import re
 import pendulum
 
-from atst.domain.audit_log import AuditLog
-from atst.domain.invitations import (
+from atat.domain.audit_log import AuditLog
+from atat.domain.invitations import (
     ExpiredError,
     InvitationError,
     NotFoundError,
     PortfolioInvitations,
     WrongUserError,
 )
-from atst.models import InvitationStatus
-from atst.models.portfolio_role import Status as PortfolioRoleStatus
+from atat.models import InvitationStatus
+from atat.models.portfolio_role import Status as PortfolioRoleStatus
 
 from tests.factories import (
     PortfolioFactory,

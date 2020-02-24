@@ -1,6 +1,6 @@
 import pendulum
 
-from atst.models import InvitationStatus, PortfolioRoleStatus
+from atat.models import InvitationStatus, PortfolioRoleStatus
 
 from tests.factories import (
     PortfolioInvitationFactory,

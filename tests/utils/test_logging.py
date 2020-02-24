@@ -6,7 +6,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from atst.utils.logging import JsonFormatter, RequestContextFilter
+from atat.utils.logging import JsonFormatter, RequestContextFilter
 
 from tests.factories import UserFactory
 
@@ -71,8 +71,8 @@ def test_request_context_filter(logger, log_stream_content, request_ctx, monkeyp
     user.id = user_uuid
     user.dod_id = "5678901234"
 
-    monkeypatch.setattr("atst.utils.logging.g", Mock(current_user=user))
-    monkeypatch.setattr("atst.utils.logging.session", {"user_id": user_uuid})
+    monkeypatch.setattr("atat.utils.logging.g", Mock(current_user=user))
+    monkeypatch.setattr("atat.utils.logging.session", {"user_id": user_uuid})
     request_ctx.request.environ["HTTP_X_REQUEST_ID"] = request_uuid
     logger.info("this user is doing something")
     log = json.loads(log_stream_content())

@@ -1,7 +1,7 @@
 from flask import url_for
 
-from atst.domain.users import Users
-from atst.utils.localization import translate
+from atat.domain.users import Users
+from atat.utils.localization import translate
 
 from tests.factories import UserFactory
 

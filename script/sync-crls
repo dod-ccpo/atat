@@ -5,7 +5,7 @@ set -e
 cd "$(dirname "$0")/.."
 
 mkdir -p crl-tmp crls
-./.venv/bin/python ./atst/domain/authnid/crl/util.py crl-tmp crls
+./.venv/bin/python ./atat/domain/authnid/crl/util.py crl-tmp crls
 if [ "$(ls -A crl-tmp)" ]; then
   cp -r crl-tmp/* crls/
 fi

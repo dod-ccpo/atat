@@ -1,4 +1,4 @@
-from atst.utils.flash import formatted_flash as flash
+from atat.utils.flash import formatted_flash as flash
 from flask import get_flashed_messages
 
 

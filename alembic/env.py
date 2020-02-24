@@ -28,13 +28,13 @@ from unipath import Path
 parent_dir = Path(__file__).parent.parent
 sys.path.append(parent_dir)
 
-from atst.app import make_config
+from atat.app import make_config
 
 app_config = make_config()
 config.set_main_option("sqlalchemy.url", app_config["DATABASE_URI"])
 
-from atst.database import db
-from atst.models import *
+from atat.database import db
+from atat.models import *
 
 target_metadata = Base.metadata
 

@@ -1,10 +1,10 @@
 import pytest
-from atst.utils.mailer import (
+from atat.utils.mailer import (
     Mailer,
     MailConnection,
     RedisConnection,
 )
-from atst.utils.localization import translate
+from atat.utils.localization import translate
 from email.mime.base import MIMEBase
 
 

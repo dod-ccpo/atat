@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import Mock
 
 from tests.factories import NotificationRecipientFactory
-from atst.utils.notification_sender import NotificationSender
+from atat.utils.notification_sender import NotificationSender
 
 
 @pytest.fixture
@@ -12,7 +12,7 @@ def notification_sender():
 
 def test_can_send_notification(monkeypatch, notification_sender):
     job_mock = Mock()
-    monkeypatch.setattr("atst.jobs.send_notification_mail.delay", job_mock)
+    monkeypatch.setattr("atat.jobs.send_notification_mail.delay", job_mock)
     recipient_email = "test@example.com"
     email_body = "This is a test"
 
