@@ -311,7 +311,7 @@ class AzureCloudProvider(CloudProviderInterface):
             management_group_id=management_group_id,
         )
 
-    def disable_user(self, tenant_id, cloud_id):
+    def disable_user(self, tenant_id, role_assignment_cloud_id):
         sp_token = self._get_tenant_principal_token(tenant_id)
         if sp_token is None:
             raise AuthenticationException("Could not resolve token in disable user")
@@ -321,7 +321,7 @@ class AzureCloudProvider(CloudProviderInterface):
 
         try:
             result = self.sdk.requests.delete(
-                f"{self.sdk.cloud.endpoints.resource_manager}/{cloud_id}?api-version=2015-07-01",
+                f"{self.sdk.cloud.endpoints.resource_manager}/{role_assignment_cloud_id}?api-version=2015-07-01",
                 headers=headers,
                 timeout=30,
             )

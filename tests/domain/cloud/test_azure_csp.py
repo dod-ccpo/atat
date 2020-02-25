@@ -210,7 +210,7 @@ def test_disable_user(mock_azure: AzureCloudProvider):
 
     assignment_guid = str(uuid4())
     management_group_id = str(uuid4())
-    assignment_id =  f"/providers/Microsoft.Management/managementGroups/{management_group_id}/providers/Microsoft.Authorization/roleAssignments/{assignment_guid}"
+    assignment_id = f"/providers/Microsoft.Management/managementGroups/{management_group_id}/providers/Microsoft.Authorization/roleAssignments/{assignment_guid}"
 
     mock_result = Mock()
     mock_result.json.return_value = {
