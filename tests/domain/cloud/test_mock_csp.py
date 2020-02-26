@@ -79,4 +79,6 @@ def test_create_or_update_user(mock_csp: MockCloudProvider):
 
 
 def test_disable_user(mock_csp: MockCloudProvider):
-    assert mock_csp.disable_user(CREDENTIALS, "csp_user_id")
+    assert mock_csp.disable_user(
+            CREDENTIALS, "tenant_id", "role_assignment_cloud_id"
+    )
