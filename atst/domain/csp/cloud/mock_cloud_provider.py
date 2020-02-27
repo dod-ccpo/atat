@@ -417,8 +417,8 @@ class MockCloudProvider(CloudProviderInterface):
         self._maybe_raise(self.UNAUTHORIZED_RATE, self.AUTHORIZATION_EXCEPTION)
         return self._id()
 
-    def disable_user(self, auth_credentials, tenant_id, role_assignment_cloud_id):
-        self._authorize(auth_credentials)
+    def disable_user(self, tenant_id, role_assignment_cloud_id):
+        # self._authorize(auth_credentials)
         self._maybe_raise(self.NETWORK_FAILURE_PCT, self.NETWORK_EXCEPTION)
         self._maybe_raise(self.SERVER_FAILURE_PCT, self.SERVER_EXCEPTION)
 
