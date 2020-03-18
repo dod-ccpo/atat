@@ -42,7 +42,10 @@
     "vue-template-compiler": "2.5.15"
   },
   "resolutions": {
-    "parcel-bundler/**/lodash": "^4.17.13"
+    "parcel-bundler/**/lodash": "^4.17.13",
+    "minimist": ">=1.2.2",
+    "acorn": ">=5.7.4 <6.0.0 || >=6.4.1 <7.0.0 || >=7.1.1",
+    "uswds/**/acorn":"^6.4.1"
   },
   "browserslist": [
     "last 3 version",
