@@ -1,5 +1,11 @@
+import collections.abc
+import json
 import pendulum
 import pytest
+import re
+from copy import deepcopy
+from typing import Dict, List
+from unittest.mock import Mock
 from uuid import uuid4
 
 from atat.domain.csp import HybridCSP
@@ -27,6 +33,140 @@ from tests.factories import (
     TaskOrderFactory,
     UserFactory,
 )
+from uuid import uuid4
+from vcr import VCR
+
+
+def path_with_exceptions(r1, r2):
+    """VCR request matcher that makes a special exceptions for the api calls
+    that use random UUIDs in their paths. In this case, we give these paths
+    a "pass" by saying they *do* match even if the UUID portions do not.
+
+    ## Params
+
+    r1 - incoming request
+    r2 - existing (cached) request
+    """
+
+    login_url = "login.microsoftonline.com"
+    if r1.host == login_url and r2.host == login_url:
+        return True
+
+    matcher = r"\/\/providers\/Microsoft\.Management\/managementGroups\/.*\/providers\/Microsoft\.Authorization\/roleAssignments/"
+    if re.match(matcher, r1.path) and re.match(matcher, r2.path):
+        return True
+
+    matcher = r"\/providers\/Microsoft\.Management\/managementGroups\/.*"
+    if re.match(matcher, r1.path) and re.match(matcher, r2.path):
+        return True
+
+    matcher = r"\/secrets\/.*"
+    if re.match(matcher, r1.path) and re.match(matcher, r2.path):
+        return True
+
+    # If the request pair doesn't fall under any of the above mentioned
+    # exceptions, then revert to the default path behaviour specified here:
+    #
+    # https://github.com/kevin1024/vcrpy/blob/master/vcr/matchers.py#L31`
+    assert r1.path == r2.path, "{} != {}".format(r1.path, r2.path)
+
+
+default_matchers = ["method", "scheme", "host", "port", "query"]
+
+REDACTION_STRING = "*****"
+
+
+def redact(target: Dict, replace: List, redaction: str = REDACTION_STRING) -> Dict:
+    """Recursivly traverse a dictionary, replacing any `replace` keys found in 
+    `target` with values specified by `replace`.
+    
+    ## Example
+
+    ```python
+    target = {"A": {"B": "secret", "C": "secret"}}
+    replace = ["B", "C"]
+    redact(target, replace)  # {"A": {"B": `redaction`, "C": `redaction`}}
+    ```
+    """
+
+    t = deepcopy(target)
+    for k, v in target.items():
+        if k in replace:
+            t[k] = redaction
+        elif isinstance(v, collections.abc.Mapping):
+            t[k] = redact(v, replace)
+    return t
+
+
+def before_record_request(request):
+    if "vault.azure.net" in request.host:
+        if re.match(r"/secrets/.*", request.path):
+            request.uri = re.sub(
+                r".*\.vault.azure.net", "https://my-vault.vault.azure.net", request.uri,
+            )
+            request.uri = re.sub(
+                r"\/secret.*$", f"/secret/{REDACTION_STRING}", request.uri
+            )
+            request.body = REDACTION_STRING
+    if "https://login.microsoftonline.com" in request.uri:
+        request.body = REDACTION_STRING
+    if "https://graph.microsoft.com/v1.0/users" in request.uri:
+        request.body = REDACTION_STRING
+    return request
+
+
+def before_record_response(response):
+    try:
+        string = response["body"]["string"]
+        string = redact(json.loads(string), ["access_token"])
+
+        if string.get("id"):
+            if re.match(r".*/secrets/.*", string["id"]):
+                string["id"] = re.sub(
+                    r".*\.vault.azure.net",
+                    "https://my-vault.vault.azure.net",
+                    string["id"],
+                )
+                string["id"] = re.sub(
+                    r"\/secret.*$", f"/secret/{REDACTION_STRING}", string["id"]
+                )
+
+        if isinstance(string.get("value"), str):
+            value = redact(
+                json.loads(string["value"]),
+                [
+                    "root_sp_client_id",
+                    "root_sp_key",
+                    "root_tenant_id",
+                    "tenant_id",
+                    "tenant_admin_username",
+                    "tenant_admin_password",
+                    "tenant_sp_client_id",
+                    "tenant_sp_key",
+                ],
+            )
+
+            string["value"] = json.dumps(value)
+
+        response["body"]["string"] = json.dumps(string).encode()
+    except UnicodeDecodeError:
+        pass
+    except json.JSONDecodeError:
+        pass
+    return response
+
+
+hybrid_vcr = VCR(
+    path_transformer=VCR.ensure_suffix(".yaml"),
+    filter_headers=["Authorization"],
+    filter_query_parameters=["client_id", "client_secret", ""],
+    before_record_request=before_record_request,
+    before_record_response=before_record_response,
+)
+
+hybrid_vcr.register_matcher("path_with_exceptions", path_with_exceptions)
+hybrid_vcr.match_on = default_matchers + ["path_with_exceptions"]
+hybrid_vcr.cassette_library_dir = "tests/fixtures/cassettes"
 
 
 @pytest.fixture(scope="function")
@@ -56,22 +196,20 @@ def portfolio(csp, app):
 
 @pytest.fixture(scope="function")
 def csp(app):
-    csp = HybridCSP(app, simulate_failures=False).cloud
-    csp.mock_tenant_id = str(uuid4())
-
-    csp.azure.create_tenant_creds(
-        csp.mock_tenant_id,
-        KeyVaultCredentials(
-            root_tenant_id=csp.azure.root_tenant_id,
-            root_sp_client_id=csp.azure.client_id,
-            root_sp_key=csp.azure.secret_key,
-            tenant_id=csp.hybrid_tenant_id,
-            tenant_sp_client_id=app.config["AZURE_HYBRID_CLIENT_ID"],
-            tenant_sp_key=app.config["AZURE_HYBRID_SECRET_KEY"],
-        ),
+    app.config["AZURE_CLIENT_ID"] = app.config["AZURE_CLIENT_ID"] or str(uuid4())
+    app.config["AZURE_SECRET_KEY"] = app.config["AZURE_SECRET_KEY"] or str(uuid4())
+    app.config["AZURE_TENANT_ID"] = app.config["AZURE_TENANT_ID"] or str(uuid4())
+    app.config["AZURE_VAULT_URL"] = (
+        app.config["AZURE_VAULT_URL"] or "https://my-vault.vault.azure.net/"
+    )
+    app.config["AZURE_ROOT_MGMT_GROUP_ID"] = app.config[
+        "AZURE_ROOT_MGMT_GROUP_ID"
+    ] or str(uuid4())
+    app.config["AZURE_USER_OBJECT_ID"] = app.config["AZURE_USER_OBJECT_ID"] or str(
+        uuid4()
     )
 
-    return csp
+    return HybridCSP(app, simulate_failures=False).cloud
 
 
 @pytest.fixture(scope="function")
@@ -79,8 +217,8 @@ def state_machine(app, csp, portfolio):
     return PortfolioStateMachineFactory.create(portfolio=portfolio, cloud=csp)
 
 
-@pytest.mark.hybrid
-def test_hybrid_provision_portfolio(state_machine: PortfolioStateMachine):
+@hybrid_vcr.use_cassette()
+def test_hybrid_provision_portfolio(pytestconfig, state_machine: PortfolioStateMachine):
     csp_data = {}
     config = {"billing_account_name": "billing_account_name"}
 
@@ -100,8 +238,27 @@ def test_hybrid_provision_portfolio(state_machine: PortfolioStateMachine):
         csp_data = state_machine.portfolio.csp_data
 
 
-@pytest.mark.hybrid
-def test_hybrid_create_application_job(csp, portfolio, session):
+@hybrid_vcr.use_cassette()
+def test_hybrid_create_application_job(session, csp):
+    csp.azure.create_tenant_creds(
+        csp.azure.tenant_id,
+        KeyVaultCredentials(
+            root_tenant_id=csp.azure.tenant_id,
+            root_sp_client_id=csp.azure.client_id,
+            root_sp_key=csp.azure.secret_key,
+            tenant_id=csp.azure.tenant_id,
+            tenant_sp_key=csp.azure.secret_key,
+            tenant_sp_client_id=csp.azure.client_id,
+        ),
+    )
+
+    portfolio = PortfolioFactory.create(
+        csp_data={
+            "tenant_id": csp.azure.tenant_id,
+            "root_management_group_id": csp.azure.config["AZURE_ROOT_MGMT_GROUP_ID"],
+        }
+    )
+
     application = ApplicationFactory.create(portfolio=portfolio, cloud_id=None)
 
     do_create_application(csp, application.id)
@@ -110,8 +267,8 @@ def test_hybrid_create_application_job(csp, portfolio, session):
     assert application.cloud_id
 
 
-@pytest.mark.hybrid
-def test_hybrid_create_environment_job(csp):
+@hybrid_vcr.use_cassette()
+def test_hybrid_create_environment_job(session, csp):
     environment = EnvironmentFactory.create()
 
     payload = EnvironmentCSPPayload(
@@ -225,6 +382,11 @@ class TestHybridUserManagement:
             cloud_id=None,
         )
 
+    @pytest.fixture
+    def csp(self, app):
+        return HybridCSP(app).cloud
+
+    @hybrid_vcr.use_cassette()
     def test_hybrid_create_user_job(self, session, csp, app_role_1, portfolio):
         assert not app_role_1.cloud_id
 
@@ -234,6 +396,17 @@ class TestHybridUserManagement:
 
         assert app_role_1.cloud_id
 
+    @hybrid_vcr.use_cassette()
+    def test_hybrid_create_user_sends_email(
+        self, monkeypatch, csp, app_role_1, app_role_2
+    ):
+        mock = Mock()
+        monkeypatch.setattr("atat.jobs.send_mail", mock)
+
+        do_create_user(csp, [app_role_1.id, app_role_2.id])
+        assert mock.call_count == 1
+
+    @hybrid_vcr.use_cassette()
     def test_hybrid_user_has_tenant(self, session, csp, app_role_1, app_1, user):
         cloud_id = "123456"
         ApplicationRoleFactory.create(
@@ -249,6 +422,7 @@ class TestHybridUserManagement:
 
         assert app_role_1.cloud_id == cloud_id
 
+    @hybrid_vcr.use_cassette()
     def test_hybrid_disable_user(self, session, csp, portfolio, app, app_role_1):
         session.begin_nested()
         do_create_user(csp, [app_role_1.id])
@@ -267,7 +441,8 @@ class TestHybridUserManagement:
         )
         assert disable_user_result["id"] == create_user_role_result.id
 
-    def test_hybrid_do_create_environment_role_job(self, session, csp, app):
+    @hybrid_vcr.use_cassette()
+    def test_hybrid_do_create_environment_role_job(self, session, csp, portfolio, app):
         environment_role = EnvironmentRoleFactory.create()
         environment_role.environment.cloud_id = csp.hybrid_tenant_id
         environment_role.application_role.cloud_id = app.config["AZURE_USER_OBJECT_ID"]

@@ -217,13 +217,6 @@ To run only the Python unit tests:
     poetry run python -m pytest
 **Integration tests with the Hybrid Interface**
 
-Integration tests that use the hybrid cloud provider are skipped by default and should be run on their own, as some of the required hybrid configuration values may cause certain non-hybrid tests to fail. As a result, it's recommended that you do not `EXPORT` these hybrid config values into your shell environment, but instead load them only for that command with something like the following:
-
-```
-env $(cat .env.hybrid | xargs) poetry run pytest --no-cov --hybrid tests/domain/cloud/test_hybrid_csp.py
-```
-The config values required by the hybrid tests are outlined in the [Hybrid Configuration](#hybrid-configuration) section. Note that the `--hybrid` parameter is also required for hybrid tests to run.
-
 This project also runs Javascript tests using jest. To run the Javascript tests:
 
     yarn test
@@ -425,3 +418,11 @@ fi
 ```
 
 Also note that if the line number of a previously whitelisted secret changes, the whitelist file, `.secrets.baseline`, will be updated and needs to be committed.
+
+### VCR 
+
+We use VCR to cache most HTTP interactions performed by the hybrid tests as "cassette" (yaml) files. 
+When the tests are run with the cassettes present, instead of issuing real requests, the VCR library instead serves the cached response.
+This allows us to have "real" integration tests running in CI/CD which does not generate Azure resources.
+
+https://vcrpy.readthedocs.io/en/latest/

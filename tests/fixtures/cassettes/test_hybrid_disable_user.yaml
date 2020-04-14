@@ -1,0 +1,858 @@
+interactions:
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '186'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - azsdk-python-identity/1.3.1 Python/3.7.3 (Darwin-19.4.0-x86_64-i386-64bit)
+    method: POST
+    uri: https://login.microsoftonline.com/b5ab0e1e-09f8-4258-afb7-fb17654bc5b3/oauth2/v2.0/token
+  response:
+    body:
+      string: '{"token_type": "Bearer", "expires_in": 3599, "ext_expires_in": 3599,
+        "access_token": "*****"}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Content-Length:
+      - '1313'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:13 GMT
+      Expires:
+      - '-1'
+      P3P:
+      - CP="DSP CUR OTPi IND OTRi ONL FIN"
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - fpc=AkV6IwFaCLFEmnZCBDCwLJ1J34YQAQAAAIXYM9YOAAAA; expires=Sat, 23-May-2020
+        18:42:14 GMT; path=/; secure; HttpOnly; SameSite=None
+      - x-ms-gateway-slice=estsfd; path=/; SameSite=None; secure; HttpOnly
+      - stsservicecookie=estsfd; path=/; SameSite=None; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      x-ms-ests-server:
+      - 2.1.10433.14 - WUS2 ProdSlices
+      x-ms-request-id:
+      - 40894536-8ce5-4650-859d-d12c657c0000
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '442'
+      Content-Type:
+      - application/json; charset=utf-8
+      User-Agent:
+      - azsdk-python-keyvault-secrets/4.1.0 Python/3.7.3 (Darwin-19.4.0-x86_64-i386-64bit)
+      x-ms-client-request-id:
+      - 25f29aee-8592-11ea-8f64-acde48001122
+    method: PUT
+    uri: https://my-vault.vault.azure.net/secret/*****
+  response:
+    body:
+      string: '{"value": "{\"root_sp_client_id\": \"*****\", \"root_sp_key\": \"*****\",
+        \"root_tenant_id\": \"*****\", \"tenant_id\": \"*****\", \"tenant_admin_username\":
+        \"*****\", \"tenant_admin_password\": \"*****\", \"tenant_sp_client_id\":
+        \"*****\", \"tenant_sp_key\": \"*****\"}", "id": "https://my-vault.vault.azure.net/secret/*****",
+        "attributes": {"enabled": true, "created": 1587667334, "updated": 1587667334,
+        "recoveryLevel": "Recoverable+Purgeable"}}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '714'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:13 GMT
+      Expires:
+      - '-1'
+      Pragma:
+      - no-cache
+      Server:
+      - Microsoft-IIS/10.0
+      Strict-Transport-Security:
+      - max-age=31536000;includeSubDomains
+      X-AspNet-Version:
+      - 4.0.30319
+      X-Content-Type-Options:
+      - nosniff
+      X-Powered-By:
+      - ASP.NET
+      x-ms-keyvault-network-info:
+      - addr=72.13.132.150;act_addr_fam=InterNetwork;
+      x-ms-keyvault-region:
+      - eastus
+      x-ms-keyvault-service-version:
+      - 1.1.0.898
+      x-ms-request-id:
+      - 0ae27209-d6ec-4767-adb7-c080366cc692
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '186'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - azsdk-python-identity/1.3.1 Python/3.7.3 (Darwin-19.4.0-x86_64-i386-64bit)
+    method: POST
+    uri: https://login.microsoftonline.com/b5ab0e1e-09f8-4258-afb7-fb17654bc5b3/oauth2/v2.0/token
+  response:
+    body:
+      string: '{"token_type": "Bearer", "expires_in": 3599, "ext_expires_in": 3599,
+        "access_token": "*****"}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Content-Length:
+      - '1313'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:14 GMT
+      Expires:
+      - '-1'
+      P3P:
+      - CP="DSP CUR OTPi IND OTRi ONL FIN"
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - fpc=Ak_Ak3SJOnlOg25255enBGJJ34YQAQAAAIbYM9YOAAAA; expires=Sat, 23-May-2020
+        18:42:14 GMT; path=/; secure; HttpOnly; SameSite=None
+      - x-ms-gateway-slice=estsfd; path=/; SameSite=None; secure; HttpOnly
+      - stsservicecookie=estsfd; path=/; SameSite=None; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      x-ms-ests-server:
+      - 2.1.10433.13 - SCUS ProdSlices
+      x-ms-request-id:
+      - 5bd9489f-8ed5-434a-a0e8-6e1ba2ef1400
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - azsdk-python-keyvault-secrets/4.1.0 Python/3.7.3 (Darwin-19.4.0-x86_64-i386-64bit)
+      x-ms-client-request-id:
+      - 265847d6-8592-11ea-8f64-acde48001122
+    method: GET
+    uri: https://my-vault.vault.azure.net/secret/*****
+  response:
+    body:
+      string: '{"value": "{\"root_sp_client_id\": \"*****\", \"root_sp_key\": \"*****\",
+        \"root_tenant_id\": \"*****\", \"tenant_id\": \"*****\", \"tenant_admin_username\":
+        \"*****\", \"tenant_admin_password\": \"*****\", \"tenant_sp_client_id\":
+        \"*****\", \"tenant_sp_key\": \"*****\"}", "id": "https://my-vault.vault.azure.net/secret/*****",
+        "attributes": {"enabled": true, "created": 1587667334, "updated": 1587667334,
+        "recoveryLevel": "Recoverable+Purgeable"}}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '714'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:14 GMT
+      Expires:
+      - '-1'
+      Pragma:
+      - no-cache
+      Server:
+      - Microsoft-IIS/10.0
+      Strict-Transport-Security:
+      - max-age=31536000;includeSubDomains
+      X-AspNet-Version:
+      - 4.0.30319
+      X-Content-Type-Options:
+      - nosniff
+      X-Powered-By:
+      - ASP.NET
+      x-ms-keyvault-network-info:
+      - addr=72.13.132.150;act_addr_fam=InterNetwork;
+      x-ms-keyvault-region:
+      - eastus
+      x-ms-keyvault-service-version:
+      - 1.1.0.898
+      x-ms-request-id:
+      - 736de6fe-ad96-433a-9855-1d4461089032
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Charset:
+      - utf-8
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '182'
+      User-Agent:
+      - python-requests/2.23.0
+      client-request-id:
+      - 132a3a28-681f-441b-b2cc-df70ad7225b6
+      content-type:
+      - application/x-www-form-urlencoded
+      return-client-request-id:
+      - 'true'
+      x-client-CPU:
+      - x64
+      x-client-OS:
+      - darwin
+      x-client-SKU:
+      - Python
+      x-client-Ver:
+      - 1.2.2
+    method: POST
+    uri: https://login.microsoftonline.com/b5ab0e1e-09f8-4258-afb7-fb17654bc5b3/oauth2/token
+  response:
+    body:
+      string: '{"token_type": "Bearer", "expires_in": "3599", "ext_expires_in": "3599",
+        "expires_on": "1587670935", "not_before": "1587667035", "resource": "https://graph.microsoft.com",
+        "access_token": "*****"}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Content-Length:
+      - '1826'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:14 GMT
+      Expires:
+      - '-1'
+      P3P:
+      - CP="DSP CUR OTPi IND OTRi ONL FIN"
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - fpc=AlvGz6-YOuBCi_4FD2_ja_r3nB0lAQAAAIbYM9YOAAAA; expires=Sat, 23-May-2020
+        18:42:15 GMT; path=/; secure; HttpOnly; SameSite=None
+      - x-ms-gateway-slice=estsfd; path=/; SameSite=None; secure; HttpOnly
+      - stsservicecookie=estsfd; path=/; SameSite=None; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      client-request-id:
+      - 132a3a28-681f-441b-b2cc-df70ad7225b6
+      x-ms-clitelem:
+      - 1,0,0,,
+      x-ms-ests-server:
+      - 2.1.10433.13 - NCUS ProdSlices
+      x-ms-request-id:
+      - 6089b3f9-76ca-49ae-9827-9924da981700
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '378'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.23.0
+    method: POST
+    uri: https://graph.microsoft.com/v1.0/users
+  response:
+    body:
+      string: '{"@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users/$entity",
+        "id": "9250a0ad-947f-43c2-9fd6-726da2d7ae64", "businessPhones": [], "displayName":
+        "test-user-936ab3f5-97bf-43b1-8d23-974ae582594a Solo", "givenName": null,
+        "jobTitle": null, "mail": null, "mobilePhone": null, "officeLocation": null,
+        "preferredLanguage": null, "surname": null, "userPrincipalName": "test.user.936ab3f5.97bf.43b1.8d23.974ae582594a.solo@dancorriganpromptworks.onmicrosoft.com"}'
+    headers:
+      Cache-Control:
+      - private
+      Content-Length:
+      - '448'
+      Content-Type:
+      - application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:15 GMT
+      Location:
+      - https://graph.microsoft.com/v2/b5ab0e1e-09f8-4258-afb7-fb17654bc5b3/directoryObjects/9250a0ad-947f-43c2-9fd6-726da2d7ae64/Microsoft.DirectoryServices.User
+      OData-Version:
+      - '4.0'
+      Strict-Transport-Security:
+      - max-age=31536000
+      client-request-id:
+      - 30daf27a-e490-4932-90b8-a45b1880dfe3
+      request-id:
+      - 30daf27a-e490-4932-90b8-a45b1880dfe3
+      x-ms-ags-diagnostic:
+      - '{"ServerInfo":{"DataCenter":"North Central US","Slice":"SliceC","Ring":"3","ScaleUnit":"001","RoleInstance":"AGSFE_IN_47"}}'
+    status:
+      code: 201
+      message: Created
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '35'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.23.0
+    method: PATCH
+    uri: https://graph.microsoft.com/v1.0/users/9250a0ad-947f-43c2-9fd6-726da2d7ae64
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - text/plain
+      Date:
+      - Thu, 23 Apr 2020 18:42:15 GMT
+      Strict-Transport-Security:
+      - max-age=31536000
+      client-request-id:
+      - be789695-fae1-4a76-8386-701a65b0a3dd
+      request-id:
+      - be789695-fae1-4a76-8386-701a65b0a3dd
+      x-ms-ags-diagnostic:
+      - '{"ServerInfo":{"DataCenter":"North Central US","Slice":"SliceC","Ring":"3","ScaleUnit":"001","RoleInstance":"AGSFE_IN_31"}}'
+    status:
+      code: 204
+      message: No Content
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '186'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - azsdk-python-identity/1.3.1 Python/3.7.3 (Darwin-19.4.0-x86_64-i386-64bit)
+    method: POST
+    uri: https://login.microsoftonline.com/b5ab0e1e-09f8-4258-afb7-fb17654bc5b3/oauth2/v2.0/token
+  response:
+    body:
+      string: '{"token_type": "Bearer", "expires_in": 3599, "ext_expires_in": 3599,
+        "access_token": "*****"}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Content-Length:
+      - '1313'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:16 GMT
+      Expires:
+      - '-1'
+      P3P:
+      - CP="DSP CUR OTPi IND OTRi ONL FIN"
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - fpc=Akz8FB6xXCNInPFjuK0HDV9J34YQAQAAAIjYM9YOAAAA; expires=Sat, 23-May-2020
+        18:42:16 GMT; path=/; secure; HttpOnly; SameSite=None
+      - x-ms-gateway-slice=estsfd; path=/; SameSite=None; secure; HttpOnly
+      - stsservicecookie=estsfd; path=/; SameSite=None; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      x-ms-ests-server:
+      - 2.1.10433.14 - WUS2 ProdSlices
+      x-ms-request-id:
+      - 42a63e2b-28a2-4c67-b33c-511c660c0000
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - azsdk-python-keyvault-secrets/4.1.0 Python/3.7.3 (Darwin-19.4.0-x86_64-i386-64bit)
+      x-ms-client-request-id:
+      - 27853b32-8592-11ea-8f64-acde48001122
+    method: GET
+    uri: https://my-vault.vault.azure.net/secret/*****
+  response:
+    body:
+      string: '{"value": "{\"root_sp_client_id\": \"*****\", \"root_sp_key\": \"*****\",
+        \"root_tenant_id\": \"*****\", \"tenant_id\": \"*****\", \"tenant_admin_username\":
+        \"*****\", \"tenant_admin_password\": \"*****\", \"tenant_sp_client_id\":
+        \"*****\", \"tenant_sp_key\": \"*****\"}", "id": "https://my-vault.vault.azure.net/secret/*****",
+        "attributes": {"enabled": true, "created": 1587667334, "updated": 1587667334,
+        "recoveryLevel": "Recoverable+Purgeable"}}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '714'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:16 GMT
+      Expires:
+      - '-1'
+      Pragma:
+      - no-cache
+      Server:
+      - Microsoft-IIS/10.0
+      Strict-Transport-Security:
+      - max-age=31536000;includeSubDomains
+      X-AspNet-Version:
+      - 4.0.30319
+      X-Content-Type-Options:
+      - nosniff
+      X-Powered-By:
+      - ASP.NET
+      x-ms-keyvault-network-info:
+      - addr=72.13.132.150;act_addr_fam=InterNetwork;
+      x-ms-keyvault-region:
+      - eastus
+      x-ms-keyvault-service-version:
+      - 1.1.0.898
+      x-ms-request-id:
+      - d1f8e680-8cb5-49e7-8cbf-d446830b70af
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Charset:
+      - utf-8
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '186'
+      User-Agent:
+      - python-requests/2.23.0
+      client-request-id:
+      - f0dff04a-d140-4859-a916-8f1c51540fb1
+      content-type:
+      - application/x-www-form-urlencoded
+      return-client-request-id:
+      - 'true'
+      x-client-CPU:
+      - x64
+      x-client-OS:
+      - darwin
+      x-client-SKU:
+      - Python
+      x-client-Ver:
+      - 1.2.2
+    method: POST
+    uri: https://login.microsoftonline.com/b5ab0e1e-09f8-4258-afb7-fb17654bc5b3/oauth2/token
+  response:
+    body:
+      string: '{"token_type": "Bearer", "expires_in": "3599", "ext_expires_in": "3599",
+        "expires_on": "1587670937", "not_before": "1587667037", "resource": "https://management.azure.com/",
+        "access_token": "*****"}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Content-Length:
+      - '1420'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:16 GMT
+      Expires:
+      - '-1'
+      P3P:
+      - CP="DSP CUR OTPi IND OTRi ONL FIN"
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - fpc=Ar9pBYBvw1dOp7mYMQ6sql3ZVRABAQAAAIjYM9YOAAAA; expires=Sat, 23-May-2020
+        18:42:17 GMT; path=/; secure; HttpOnly; SameSite=None
+      - x-ms-gateway-slice=estsfd; path=/; SameSite=None; secure; HttpOnly
+      - stsservicecookie=estsfd; path=/; SameSite=None; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      client-request-id:
+      - f0dff04a-d140-4859-a916-8f1c51540fb1
+      x-ms-clitelem:
+      - 1,0,0,,
+      x-ms-ests-server:
+      - 2.1.10433.13 - NCUS ProdSlices
+      x-ms-request-id:
+      - 7189b4a1-01e8-4c5a-af69-1c2555b51700
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"properties": {"roleDefinitionId": "/providers/Microsoft.Management/managementGroups/ad531567-4f81-4bd6-a2b2-2bb69e30ff88/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+      "principalId": "9250a0ad-947f-43c2-9fd6-726da2d7ae64"}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '267'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.23.0
+    method: PUT
+    uri: https://management.azure.com//providers/Microsoft.Management/managementGroups/ad531567-4f81-4bd6-a2b2-2bb69e30ff88/providers/Microsoft.Authorization/roleAssignments/e0711ff2-3bf6-491e-8608-178e95b639b0?api-version=2015-07-01
+  response:
+    body:
+      string: '{"properties": {"roleDefinitionId": "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+        "principalId": "9250a0ad-947f-43c2-9fd6-726da2d7ae64", "scope": "/providers/Microsoft.Management/managementGroups/ad531567-4f81-4bd6-a2b2-2bb69e30ff88",
+        "createdOn": "2020-04-23T18:42:17.6545296Z", "updatedOn": "2020-04-23T18:42:17.6545296Z",
+        "createdBy": null, "updatedBy": "3760c548-2def-4a2b-96cd-75afb2102ead"}, "id":
+        "/providers/Microsoft.Management/managementGroups/ad531567-4f81-4bd6-a2b2-2bb69e30ff88/providers/Microsoft.Authorization/roleAssignments/e0711ff2-3bf6-491e-8608-178e95b639b0",
+        "type": "Microsoft.Authorization/roleAssignments", "name": "e0711ff2-3bf6-491e-8608-178e95b639b0"}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '703'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:17 GMT
+      Expires:
+      - '-1'
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - x-ms-gateway-slice=Production; path=/; SameSite=None; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      x-ms-correlation-request-id:
+      - e7bd55c0-48c2-4d5c-a924-6c1dc67a97ad
+      x-ms-ratelimit-remaining-tenant-writes:
+      - '1199'
+      x-ms-request-id:
+      - 041fc02a-511c-4cef-a9d6-e91c6f93d310
+      x-ms-routing-request-id:
+      - CENTRALUS:20200423T184217Z:e7bd55c0-48c2-4d5c-a924-6c1dc67a97ad
+    status:
+      code: 201
+      message: Created
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '186'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - azsdk-python-identity/1.3.1 Python/3.7.3 (Darwin-19.4.0-x86_64-i386-64bit)
+    method: POST
+    uri: https://login.microsoftonline.com/b5ab0e1e-09f8-4258-afb7-fb17654bc5b3/oauth2/v2.0/token
+  response:
+    body:
+      string: '{"token_type": "Bearer", "expires_in": 3599, "ext_expires_in": 3599,
+        "access_token": "*****"}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Content-Length:
+      - '1313'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:18 GMT
+      Expires:
+      - '-1'
+      P3P:
+      - CP="DSP CUR OTPi IND OTRi ONL FIN"
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - fpc=ApILKwWU9EhOowafHCdsHLdJ34YQAQAAAInYM9YOAAAA; expires=Sat, 23-May-2020
+        18:42:18 GMT; path=/; secure; HttpOnly; SameSite=None
+      - x-ms-gateway-slice=estsfd; path=/; SameSite=None; secure; HttpOnly
+      - stsservicecookie=estsfd; path=/; SameSite=None; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      x-ms-ests-server:
+      - 2.1.10433.13 - SCUS ProdSlices
+      x-ms-request-id:
+      - 80661c83-9a38-45e1-9d2f-ae3dea721600
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - azsdk-python-keyvault-secrets/4.1.0 Python/3.7.3 (Darwin-19.4.0-x86_64-i386-64bit)
+      x-ms-client-request-id:
+      - 2892c6c0-8592-11ea-8f64-acde48001122
+    method: GET
+    uri: https://my-vault.vault.azure.net/secret/*****
+  response:
+    body:
+      string: '{"value": "{\"root_sp_client_id\": \"*****\", \"root_sp_key\": \"*****\",
+        \"root_tenant_id\": \"*****\", \"tenant_id\": \"*****\", \"tenant_admin_username\":
+        \"*****\", \"tenant_admin_password\": \"*****\", \"tenant_sp_client_id\":
+        \"*****\", \"tenant_sp_key\": \"*****\"}", "id": "https://my-vault.vault.azure.net/secret/*****",
+        "attributes": {"enabled": true, "created": 1587667334, "updated": 1587667334,
+        "recoveryLevel": "Recoverable+Purgeable"}}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '714'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:18 GMT
+      Expires:
+      - '-1'
+      Pragma:
+      - no-cache
+      Server:
+      - Microsoft-IIS/10.0
+      Strict-Transport-Security:
+      - max-age=31536000;includeSubDomains
+      X-AspNet-Version:
+      - 4.0.30319
+      X-Content-Type-Options:
+      - nosniff
+      X-Powered-By:
+      - ASP.NET
+      x-ms-keyvault-network-info:
+      - addr=72.13.132.150;act_addr_fam=InterNetwork;
+      x-ms-keyvault-region:
+      - eastus
+      x-ms-keyvault-service-version:
+      - 1.1.0.898
+      x-ms-request-id:
+      - febc5b19-37c6-4e8e-a814-31b6f1285dbc
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '*****'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Charset:
+      - utf-8
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '186'
+      User-Agent:
+      - python-requests/2.23.0
+      client-request-id:
+      - 29ede287-917a-4324-9840-1671074d081f
+      content-type:
+      - application/x-www-form-urlencoded
+      return-client-request-id:
+      - 'true'
+      x-client-CPU:
+      - x64
+      x-client-OS:
+      - darwin
+      x-client-SKU:
+      - Python
+      x-client-Ver:
+      - 1.2.2
+    method: POST
+    uri: https://login.microsoftonline.com/b5ab0e1e-09f8-4258-afb7-fb17654bc5b3/oauth2/token
+  response:
+    body:
+      string: '{"token_type": "Bearer", "expires_in": "3599", "ext_expires_in": "3599",
+        "expires_on": "1587670939", "not_before": "1587667039", "resource": "https://management.azure.com/",
+        "access_token": "*****"}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Content-Length:
+      - '1420'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:18 GMT
+      Expires:
+      - '-1'
+      P3P:
+      - CP="DSP CUR OTPi IND OTRi ONL FIN"
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - fpc=AvefRVUiIMVPlIjozMmx0J_ZVRABAQAAAIvYM9YOAAAA; expires=Sat, 23-May-2020
+        18:42:19 GMT; path=/; secure; HttpOnly; SameSite=None
+      - x-ms-gateway-slice=estsfd; path=/; SameSite=None; secure; HttpOnly
+      - stsservicecookie=estsfd; path=/; SameSite=None; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      client-request-id:
+      - 29ede287-917a-4324-9840-1671074d081f
+      x-ms-clitelem:
+      - 1,0,0,,
+      x-ms-ests-server:
+      - 2.1.10433.13 - EUS ProdSlices
+      x-ms-request-id:
+      - bb4dbb27-78c1-4e54-825b-c7aef88e1700
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - python-requests/2.23.0
+    method: DELETE
+    uri: https://management.azure.com//providers/Microsoft.Management/managementGroups/ad531567-4f81-4bd6-a2b2-2bb69e30ff88/providers/Microsoft.Authorization/roleAssignments/e0711ff2-3bf6-491e-8608-178e95b639b0?api-version=2015-07-01
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
+        VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/In7xR6u6
+        WuV1W+TNR49+8Ud1VeZP8/NiWbRFtTybffToo7vU4rKY5XVz94tiWldNdd6Oj9ftvKqLH2Rodjd8
+        q7l7kN/Lzj+9/2A7Ozg/397fvzfdzh7cn27vnecH0/3JdPLpvfsfjajrYjktVlnJ/Tzcu7+T7WSz
+        7Yf7D+ile9O97Yfns0+3H+x9Osv2Zg+y/NN9eqmZEr7UPIrWF9kyu8gX+bK9u7C/fl5X61VzN5vd
+        v7d7/9MH2/vnB7vb+xMCne1N9rb3JpNPH+b3ds7PDw4I/rTOszaffbmkPvZ29na2d/a39+692T14
+        tL/3aPfB+MGn+/t79x78FDVdr2a3bapQn1xT03sPPt2Z3t8/2N6b5TRQQmL74afT2faD+9n5ZG93
+        Zy/PZvSKQr/9K79k9FEBQv6sUCYKtM8Fx01TXCwBu7mb7zzY3T0/39u+Nzn/dHv/4W6+ffDpzsH2
+        7oOD/OF94oGHkx0aZ3vN83lLqPTCMlvghVuB/yX/D5IZzBjhAgAA
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 Apr 2020 18:42:19 GMT
+      Expires:
+      - '-1'
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - x-ms-gateway-slice=Production; path=/; SameSite=None; secure; HttpOnly
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      x-ms-correlation-request-id:
+      - e1c8bd72-2f82-4ed6-8bc3-daa978d0e2d7
+      x-ms-ratelimit-remaining-tenant-deletes:
+      - '14999'
+      x-ms-request-id:
+      - 14507e54-29c8-49a9-b497-662668c1168b
+      x-ms-routing-request-id:
+      - CENTRALUS:20200423T184220Z:e1c8bd72-2f82-4ed6-8bc3-daa978d0e2d7
+    status:
+      code: 200
+      message: OK
+version: 1

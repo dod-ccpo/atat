@@ -57,6 +57,7 @@ beautifulsoup4 = "*"
 mypy = "*"
 rope = "*"
 black = "^19.10b0"
+vcrpy = "*"
 
 
 [tool.black]
