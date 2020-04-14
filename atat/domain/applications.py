@@ -60,6 +60,9 @@ class Applications(BaseDomainClass):
             Environments.create_many(
                 g.current_user, application, new_data["environment_names"]
             )
+            Environments.delete_removed_environments(
+                application, new_data["environment_names"]
+            )
 
         db.session.add(application)
         commit_or_raise_already_exists_error(message="application")

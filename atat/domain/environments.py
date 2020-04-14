@@ -13,26 +13,36 @@ from atat.models import (
 )
 from atat.domain.environment_roles import EnvironmentRoles
 from atat.utils import commit_or_raise_already_exists_error
+from atat.domain.exceptions import AlreadyExistsError
 
 from .exceptions import NotFoundError, DisabledError
 
 
 class Environments(object):
     @classmethod
-    def create(cls, user, application, name):
-        environment = Environment(application=application, name=name, creator=user)
-        db.session.add(environment)
-        commit_or_raise_already_exists_error(message="environment")
+    def create(cls, creator, application, name):
+        kwargs = {"creator": creator, "application": application, "name": name}
+
+        try:
+            environment = Environment(**kwargs)
+            db.session.add(environment)
+            commit_or_raise_already_exists_error(message="environment")
+        except (AlreadyExistsError):
+            environment = db.session.query(Environment).filter_by(**kwargs).one()
+            environment.deleted = False
+
         return environment
 
     @classmethod
-    def create_many(cls, user, application, names):
+    def create_many(cls, creator, application, names):
         environments = []
+        existing_env_names = [
+            existing_envs.name for existing_envs in application.environments
+        ]
+
         for name in names:
-            if name not in [
-                existing_envs.name for existing_envs in application.environments
-            ]:
-                environment = Environments.create(user, application, name)
+            if name not in existing_env_names:
+                environment = Environments.create(creator, application, name)
                 environments.append(environment)
 
         db.session.add_all(environments)
@@ -101,6 +111,12 @@ class Environments(object):
         # TODO: How do we work around environment deletion being a largely manual process in the CSPs
 
         return environment
+
+    @classmethod
+    def delete_removed_environments(cls, application, names):
+        for env in application.environments:
+            if env.name not in names:
+                cls.delete(env)
 
     @classmethod
     def base_provision_query(cls, now):
