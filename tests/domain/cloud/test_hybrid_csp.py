@@ -33,8 +33,15 @@ from tests.factories import (
     TaskOrderFactory,
     UserFactory,
 )
-from uuid import uuid4
 from vcr import VCR
+
+
+REDACTION_STRING = "*****"
+UUID_RE = (
+    r"[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}"
+)
+HASH_RE = r"[0-9a-fA-F]{32}"
+ROLE_ASSIGNMENT_RE = r"\/providers\/Microsoft\.Management\/managementGroups\/.*\/providers\/Microsoft\.Authorization\/roleAssignments/"
 
 
 def path_with_exceptions(r1, r2):
@@ -52,7 +59,7 @@ def path_with_exceptions(r1, r2):
     if r1.host == login_url and r2.host == login_url:
         return True
 
-    matcher = r"\/\/providers\/Microsoft\.Management\/managementGroups\/.*\/providers\/Microsoft\.Authorization\/roleAssignments/"
+    matcher = ROLE_ASSIGNMENT_RE
     if re.match(matcher, r1.path) and re.match(matcher, r2.path):
         return True
 
@@ -72,8 +79,6 @@ def path_with_exceptions(r1, r2):
 
 
 default_matchers = ["method", "scheme", "host", "port", "query"]
-
-REDACTION_STRING = "*****"
 
 
 def redact(target: Dict, replace: List, redaction: str = REDACTION_STRING) -> Dict:
@@ -112,12 +117,26 @@ def before_record_request(request):
         request.body = REDACTION_STRING
     if "https://graph.microsoft.com/v1.0/users" in request.uri:
         request.body = REDACTION_STRING
+    request.uri = re.sub(UUID_RE, REDACTION_STRING, request.uri)
+    request.uri = re.sub(HASH_RE, REDACTION_STRING, request.uri)
+
+    if isinstance(request.body, bytes):
+        body = request.body.decode()
+        body = re.sub(UUID_RE, REDACTION_STRING, body)
+        body = re.sub(HASH_RE, REDACTION_STRING, body)
+        request.body = body.encode()
     return request
 
 
 def before_record_response(response):
     try:
+        if response["headers"].get("WWW-Authenticate"):
+            response["headers"]["WWW-Authenticate"] = "*****"
         string = response["body"]["string"]
+        if isinstance(string, bytes):
+            string = string.decode()
+        string = re.sub(HASH_RE, REDACTION_STRING, string)
+        string = re.sub(UUID_RE, REDACTION_STRING, string)
         string = redact(json.loads(string), ["access_token"])
 
         if string.get("id"):
@@ -439,7 +458,9 @@ class TestHybridUserManagement:
         disable_user_result = csp.azure.disable_user(
             csp.mock_tenant_id, create_user_role_result.id
         )
-        assert disable_user_result["id"] == create_user_role_result.id
+
+        assert re.match(ROLE_ASSIGNMENT_RE, disable_user_result["id"])
+        assert re.match(ROLE_ASSIGNMENT_RE, create_user_role_result.id)
 
     @hybrid_vcr.use_cassette()
     def test_hybrid_do_create_environment_role_job(self, session, csp, portfolio, app):
