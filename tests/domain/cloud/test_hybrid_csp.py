@@ -132,6 +132,8 @@ def before_record_response(response):
     try:
         if response["headers"].get("WWW-Authenticate"):
             response["headers"]["WWW-Authenticate"] = "*****"
+        if response["headers"].get("Location"):
+            response["headers"]["Location"] = "*****"
         string = response["body"]["string"]
         if isinstance(string, bytes):
             string = string.decode()
@@ -301,7 +303,7 @@ def test_hybrid_create_environment_job(session, csp):
     assert result.id
 
 
-@pytest.mark.hybrid
+@hybrid_vcr.use_cassette()
 def test_get_reporting_data(csp):
     from_date = pendulum.now().subtract(years=1).add(days=1).format("YYYY-MM-DD")
     to_date = pendulum.now().format("YYYY-MM-DD")
@@ -321,6 +323,17 @@ def test_get_reporting_data(csp):
 @pytest.mark.xfail(reason="This test cannot complete due to permission issues.")
 def test_create_subscription(csp):
     environment = EnvironmentFactory.create()
+
+
+class TestHybridUserManagement:
+    @pytest.fixture
+    def portfolio(self, app, csp):
+        return PortfolioFactory.create(
+            csp_data={
+                "tenant_id": csp.azure.tenant_id,
+                "domain_name": f"dancorriganpromptworks",
+            }
+        )
 
     payload = SubscriptionCreationCSPPayload(
         display_name=environment.name,
