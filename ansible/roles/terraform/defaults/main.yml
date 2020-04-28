@@ -1,0 +1,8 @@
+
+---
+
+terraform_dir: "{{ tf_dir }}"
+terraform_deploy_version: "{{ deploy_tag }}"
+keyvault_list_service_principle_client_id: "{{ vault_client_id }}"
+keyvault_list_service_principle_secret:    "{{ vault_secret }}"
+keyvault_list_service_principle_tenant:  "{{ vault_tenant }}"

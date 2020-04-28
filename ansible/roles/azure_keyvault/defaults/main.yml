@@ -1,0 +1,7 @@
+---
+
+terraform_dir: "{{ target_terraform_config }}"
+terraform_deploy_version: "{{ version_tag }}"
+keyvault_list_service_principle_client_id: "{{ kvault_read_client_id}}"
+keyvault_list_service_principle_secret:    "{{ kvault_read_secret }}"
+keyvault_list_service_principle_tenant:  "{{ keyvault_read_tenant }}"

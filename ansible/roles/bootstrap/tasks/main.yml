@@ -1,0 +1,8 @@
+
+
+- name: provision keyvaults
+  terraform:
+    project_path: "{{tf_pw_bootstrap_proj_path}}"
+    state: "planned"
+    plan_file: "plan.tfplan"
+  register: tf_run

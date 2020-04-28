@@ -1,0 +1,61 @@
+# deploy
+---
+
+# ops_keyvault_* use service principle that has read and list rights to target vault
+
+
+- name: get secrets
+  vars:
+    url:  "{{ vault_url }}"
+    ops_keyvault_client_id: "{{ vault_client_id }}"
+    ops_keyvault_secret:    "{{ vault_secret }}"
+    ops_keyvault_tenant:  "{{ vault_tenant }}"
+    secretname: "tf-{{ deploy_tag | regex_replace('\\.','-') }}"
+  set_fact:
+    secrets_env: "{{ secrets_env|default({})   | combine( { deploy_tag:  (lookup('azure_keyvault_secret',secretname, vault_url=url, client_id=vault_client_id, secret=vault_secret, tenant_id=vault_tenant) | regex_replace('\"','') | regex_replace(\"'\",'\"') | regex_replace('\\[\\{','{') | regex_replace('\\}\\]','}') ) } ) }}"
+
+
+
+
+
+- name: print stuff
+  debug:
+    msg: "{{ secrets_env }}"
+
+
+- name: unpack tfvars
+  set_fact:
+    tfvars: "{{ secrets_env  | from_yaml }}"
+
+- name: sdhow tf_vars
+  debug:
+    msg: "{{tfvars[deploy_tag]}}"
+
+
+- name: make k/v
+  set_fact:
+    kv_tf: "{{ kv_tf|default({}) | combine({ item.name : (item.value | regex_replace(\"'\",'\"'))  })   }}"
+  with_items: "{{tfvars[deploy_tag]}}"
+
+
+- name: tf plan
+  terraform:
+    project_path: "{{tf_dir}}"
+    state: "planned"
+    plan_file: "plan.tfplan"
+    variables: "{{ kv_tf }}"
+  register: tf_run
+
+
+- debug:
+   msg: "{{tf_run}}"
+
+
+- name: tf apply
+  terraform:
+    project_path: "{{tf_dir}}"
+    state: "{{ desired_state }}"
+    plan_file: "plan.tfplan"
+    variables: "{{ kv_tf }}"
+  register: tf_run
+  when: desired_state is defined

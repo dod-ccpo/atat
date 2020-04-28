@@ -1,0 +1,6 @@
+
+
+# move this later
+- hosts: localhost
+  roles:
+    - azure_keyvault

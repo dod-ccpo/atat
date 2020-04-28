@@ -1,0 +1,8 @@
+
+
+- import_playbook: ops.yml
+  when: ops is defined
+- import_playbook: bootstrap_pw_dev.yml
+  when: bootstrap_terraform is defined
+- import_playbook: pw-dev.yml
+  when: provision_pwdev is defined

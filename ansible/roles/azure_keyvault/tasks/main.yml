@@ -1,0 +1,14 @@
+---
+- name: bootstrap keyvault with terraform vars
+  import_tasks: bootstrap_terraform_secrets.yml
+  when: bootstrap_terraform is defined
+
+
+- name: secrets to json file
+  import_tasks: secrets_to_json_file.yml
+  when: secrets_to_file is defined
+
+
+- name: wipe secrets
+  import_tasks: wipe_secrets.yml
+  when: wipe_secrets is defined
