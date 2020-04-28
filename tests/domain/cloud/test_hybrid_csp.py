@@ -239,9 +239,11 @@ def state_machine(app, csp, portfolio):
 
 
 @hybrid_vcr.use_cassette()
-def test_hybrid_provision_portfolio(pytestconfig, state_machine: PortfolioStateMachine):
+def test_hybrid_provision_portfolio(
+    pytestconfig, app, state_machine: PortfolioStateMachine
+):
     csp_data = {}
-    config = {"billing_account_name": "billing_account_name"}
+    config = {"billing_account_name": app.config["AZURE_BILLING_ACCOUNT_NAME"]}
 
     while state_machine.state != PortfolioStates.COMPLETED:
         collected_data = dict(

@@ -28,7 +28,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Apr 2020 19:57:46 GMT
+      - Tue, 28 Apr 2020 19:17:33 GMT
       Expires:
       - '-1'
       P3P:
@@ -36,8 +36,8 @@ interactions:
       Pragma:
       - no-cache
       Set-Cookie:
-      - fpc=Ar9UGhZfNk5Fp2zLRD9LFmVJ34YQAQAAALs7NdYOAAAA; expires=Sun, 24-May-2020
-        19:57:47 GMT; path=/; secure; HttpOnly; SameSite=None
+      - fpc=AhTik5It0qpFqgcSdCwdyzdJ34YQAQAAAE14OtYOAAAA; expires=Thu, 28-May-2020
+        19:17:34 GMT; path=/; secure; HttpOnly; SameSite=None
       - x-ms-gateway-slice=estsfd; path=/; SameSite=None; secure; HttpOnly
       - stsservicecookie=estsfd; path=/; SameSite=None; secure; HttpOnly
       Strict-Transport-Security:
@@ -45,9 +45,9 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       x-ms-ests-server:
-      - 2.1.10433.14 - WUS2 ProdSlices
+      - 2.1.10433.14 - EUS ProdSlices
       x-ms-request-id:
-      - 8e77b773-75a5-40fc-9706-571a21d70d00
+      - 927d8acf-854d-4d68-a6b0-a442e09f7f00
     status:
       code: 200
       message: OK
@@ -67,7 +67,7 @@ interactions:
       User-Agent:
       - azsdk-python-keyvault-secrets/4.1.0 Python/3.7.3 (Darwin-19.4.0-x86_64-i386-64bit)
       x-ms-client-request-id:
-      - de8a55aa-8665-11ea-83d2-acde48001122
+      - e9c1dad4-8984-11ea-b591-acde48001122
     method: PUT
     uri: https://my-vault.vault.azure.net/secret/*****
   response:
@@ -76,7 +76,7 @@ interactions:
         \"root_tenant_id\": \"*****\", \"tenant_id\": \"*****\", \"tenant_admin_username\":
         \"*****\", \"tenant_admin_password\": \"*****\", \"tenant_sp_client_id\":
         \"*****\", \"tenant_sp_key\": \"*****\"}", "id": "https://my-vault.vault.azure.net/secret/*****",
-        "attributes": {"enabled": true, "created": 1587758268, "updated": 1587758268,
+        "attributes": {"enabled": true, "created": 1588101454, "updated": 1588101454,
         "recoveryLevel": "Recoverable+Purgeable"}}'
     headers:
       Cache-Control:
@@ -86,7 +86,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Apr 2020 19:57:47 GMT
+      - Tue, 28 Apr 2020 19:17:34 GMT
       Expires:
       - '-1'
       Pragma:
@@ -108,7 +108,7 @@ interactions:
       x-ms-keyvault-service-version:
       - 1.1.0.898
       x-ms-request-id:
-      - 3840756c-61bd-46e1-b2ca-07b0d947bb7a
+      - a98daadb-6742-41af-99e7-0bd2449211b2
     status:
       code: 200
       message: OK
@@ -141,7 +141,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Apr 2020 19:57:48 GMT
+      - Tue, 28 Apr 2020 19:17:34 GMT
       Expires:
       - '-1'
       P3P:
@@ -149,8 +149,8 @@ interactions:
       Pragma:
       - no-cache
       Set-Cookie:
-      - fpc=AtWform-fLxMtEv93cwOtktJ34YQAQAAALs7NdYOAAAA; expires=Sun, 24-May-2020
-        19:57:48 GMT; path=/; secure; HttpOnly; SameSite=None
+      - fpc=Ara4F9l3VpZKk7_Z0Qp-2k5J34YQAQAAAE54OtYOAAAA; expires=Thu, 28-May-2020
+        19:17:34 GMT; path=/; secure; HttpOnly; SameSite=None
       - x-ms-gateway-slice=estsfd; path=/; SameSite=None; secure; HttpOnly
       - stsservicecookie=estsfd; path=/; SameSite=None; secure; HttpOnly
       Strict-Transport-Security:
@@ -158,9 +158,9 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       x-ms-ests-server:
-      - 2.1.10433.14 - WUS2 ProdSlices
+      - 2.1.10433.14 - NCUS ProdSlices
       x-ms-request-id:
-      - e77d5dec-7443-41d6-b78c-eaaad9800e00
+      - 0f9e8439-1d93-476a-90e6-2b2cab3f8000
     status:
       code: 200
       message: OK
@@ -176,7 +176,7 @@ interactions:
       User-Agent:
       - azsdk-python-keyvault-secrets/4.1.0 Python/3.7.3 (Darwin-19.4.0-x86_64-i386-64bit)
       x-ms-client-request-id:
-      - df210464-8665-11ea-83d2-acde48001122
+      - ea24dd50-8984-11ea-b591-acde48001122
     method: GET
     uri: https://my-vault.vault.azure.net/secret/*****
   response:
@@ -185,7 +185,7 @@ interactions:
         \"root_tenant_id\": \"*****\", \"tenant_id\": \"*****\", \"tenant_admin_username\":
         \"*****\", \"tenant_admin_password\": \"*****\", \"tenant_sp_client_id\":
         \"*****\", \"tenant_sp_key\": \"*****\"}", "id": "https://my-vault.vault.azure.net/secret/*****",
-        "attributes": {"enabled": true, "created": 1587758268, "updated": 1587758268,
+        "attributes": {"enabled": true, "created": 1588101454, "updated": 1588101454,
         "recoveryLevel": "Recoverable+Purgeable"}}'
     headers:
       Cache-Control:
@@ -195,7 +195,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Apr 2020 19:57:48 GMT
+      - Tue, 28 Apr 2020 19:17:34 GMT
       Expires:
       - '-1'
       Pragma:
@@ -217,7 +217,7 @@ interactions:
       x-ms-keyvault-service-version:
       - 1.1.0.898
       x-ms-request-id:
-      - e15675b1-c142-443a-a168-f74708f614a3
+      - 5fa6440a-b95e-4542-a9d9-dee2360f00a3
     status:
       code: 200
       message: OK
@@ -237,7 +237,7 @@ interactions:
       User-Agent:
       - python-requests/2.23.0
       client-request-id:
-      - 27aad7e9-c94e-4c06-bbac-6763666b8c94
+      - dae175a2-8da1-4c5c-968d-dbdf76a13a89
       content-type:
       - application/x-www-form-urlencoded
       return-client-request-id:
@@ -255,7 +255,7 @@ interactions:
   response:
     body:
       string: '{"token_type": "Bearer", "expires_in": "3599", "ext_expires_in": "3599",
-        "expires_on": "1587761869", "not_before": "1587757969", "resource": "https://management.azure.com/",
+        "expires_on": "1588105055", "not_before": "1588101155", "resource": "https://management.azure.com/",
         "access_token": "*****"}'
     headers:
       Cache-Control:
@@ -265,7 +265,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Apr 2020 19:57:48 GMT
+      - Tue, 28 Apr 2020 19:17:35 GMT
       Expires:
       - '-1'
       P3P:
@@ -273,8 +273,8 @@ interactions:
       Pragma:
       - no-cache
       Set-Cookie:
-      - fpc=AgrZhe43nAxOmIG5DOwM_szZVRABAQAAALw7NdYOAAAA; expires=Sun, 24-May-2020
-        19:57:49 GMT; path=/; secure; HttpOnly; SameSite=None
+      - fpc=ApASraJOu6BJlUaZ-Cfaz1bZVRABAQAAAE54OtYOAAAA; expires=Thu, 28-May-2020
+        19:17:35 GMT; path=/; secure; HttpOnly; SameSite=None
       - x-ms-gateway-slice=estsfd; path=/; SameSite=None; secure; HttpOnly
       - stsservicecookie=estsfd; path=/; SameSite=None; secure; HttpOnly
       Strict-Transport-Security:
@@ -282,13 +282,13 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       client-request-id:
-      - 27aad7e9-c94e-4c06-bbac-6763666b8c94
+      - dae175a2-8da1-4c5c-968d-dbdf76a13a89
       x-ms-clitelem:
       - 1,0,0,,
       x-ms-ests-server:
       - 2.1.10433.14 - WUS2 ProdSlices
       x-ms-request-id:
-      - 8e77b773-75a5-40fc-9706-571a45d70d00
+      - f63df759-b713-4a51-a72f-64eedf407300
     status:
       code: 200
       message: OK
@@ -314,7 +314,7 @@ interactions:
       accept-language:
       - en-US
       x-ms-client-request-id:
-      - dfb974ba-8665-11ea-83d2-acde48001122
+      - eac2a59e-8984-11ea-b591-acde48001122
     method: PUT
     uri: https://management.azure.com/providers/Microsoft.Management/managementGroups/*****?api-version=2018-03-01-preview
   response:
@@ -330,11 +330,10 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Apr 2020 19:57:49 GMT
+      - Tue, 28 Apr 2020 19:17:36 GMT
       Expires:
       - '-1'
-      Location:
-      - https://management.azure.com/providers/Microsoft.Management/operationResults/create/managementGroups/df161caf-09e0-46aa-bb84-26535433c46d?api-version=2018-03-01-preview
+      Location: '*****'
       Pragma:
       - no-cache
       Retry-After:
@@ -344,19 +343,19 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       client-request-id:
-      - 04eb11c3-f14b-4fc4-8374-d79ccc8fa6a2
+      - 8ae451b8-a864-49e1-8be5-a30d0135e73a
       request-id:
-      - 04eb11c3-f14b-4fc4-8374-d79ccc8fa6a2
+      - 8ae451b8-a864-49e1-8be5-a30d0135e73a
       x-ba-restapi:
       - 1.0.3.1566
       x-ms-correlation-request-id:
-      - 04eb11c3-f14b-4fc4-8374-d79ccc8fa6a2
+      - 8ae451b8-a864-49e1-8be5-a30d0135e73a
       x-ms-ratelimit-remaining-tenant-writes:
       - '1199'
       x-ms-request-id:
-      - centralus:04eb11c3-f14b-4fc4-8374-d79ccc8fa6a2
+      - centralus:8ae451b8-a864-49e1-8be5-a30d0135e73a
       x-ms-routing-request-id:
-      - CENTRALUS:20200424T195750Z:04eb11c3-f14b-4fc4-8374-d79ccc8fa6a2
+      - CENTRALUS:20200428T191736Z:8ae451b8-a864-49e1-8be5-a30d0135e73a
     status:
       code: 202
       message: Accepted
@@ -373,7 +372,7 @@ interactions:
       - python/3.7.3 (Darwin-19.4.0-x86_64-i386-64bit) msrest/0.6.13 msrest_azure/0.6.3
         azure-mgmt-managementgroups/0.2.0 Azure-SDK-For-Python
       x-ms-client-request-id:
-      - dfb974ba-8665-11ea-83d2-acde48001122
+      - eac2a59e-8984-11ea-b591-acde48001122
     method: GET
     uri: https://management.azure.com/providers/Microsoft.Management/operationResults/create/managementGroups/*****?api-version=2018-03-01-preview
   response:
@@ -389,11 +388,10 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Apr 2020 19:58:00 GMT
+      - Tue, 28 Apr 2020 19:17:46 GMT
       Expires:
       - '-1'
-      Location:
-      - https://management.azure.com/providers/Microsoft.Management/operationResults/create/managementGroups/df161caf-09e0-46aa-bb84-26535433c46d?api-version=2018-03-01-preview
+      Location: '*****'
       Pragma:
       - no-cache
       Retry-After:
@@ -403,19 +401,19 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       client-request-id:
-      - bfb6c8fa-6101-4da2-8d25-f290815dfedc
+      - dc09ae4e-096f-40fb-b15b-9d905537f03b
       request-id:
-      - bfb6c8fa-6101-4da2-8d25-f290815dfedc
+      - dc09ae4e-096f-40fb-b15b-9d905537f03b
       x-ba-restapi:
       - 1.0.3.1566
       x-ms-correlation-request-id:
-      - bfb6c8fa-6101-4da2-8d25-f290815dfedc
+      - dc09ae4e-096f-40fb-b15b-9d905537f03b
       x-ms-ratelimit-remaining-tenant-reads:
       - '11999'
       x-ms-request-id:
-      - centralus:bfb6c8fa-6101-4da2-8d25-f290815dfedc
+      - centralus:dc09ae4e-096f-40fb-b15b-9d905537f03b
       x-ms-routing-request-id:
-      - CENTRALUS:20200424T195800Z:bfb6c8fa-6101-4da2-8d25-f290815dfedc
+      - CENTRALUS:20200428T191747Z:dc09ae4e-096f-40fb-b15b-9d905537f03b
     status:
       code: 202
       message: Accepted
@@ -432,7 +430,7 @@ interactions:
       - python/3.7.3 (Darwin-19.4.0-x86_64-i386-64bit) msrest/0.6.13 msrest_azure/0.6.3
         azure-mgmt-managementgroups/0.2.0 Azure-SDK-For-Python
       x-ms-client-request-id:
-      - dfb974ba-8665-11ea-83d2-acde48001122
+      - eac2a59e-8984-11ea-b591-acde48001122
     method: GET
     uri: https://management.azure.com/providers/Microsoft.Management/operationResults/create/managementGroups/*****?api-version=2018-03-01-preview
   response:
@@ -440,12 +438,12 @@ interactions:
       string: !!binary |
         H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
         VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/In7xR8Xs
-        o0cf3V3V1WUxy+vm7hfFtK6a6rwdf5Ets4t8kS/buwv76+d1tV41d2fnu5/uTrPz7Z2H+c72/qdZ
-        tj2ZHOxv7316/979/Xv3pvufzj4afdRer/KvAZ7eXGYLvHnLfpo2a9cNtX+9nk7zfJbjQ+p0lddt
-        kdMXv/ijNl9my/YMo53czyY7+W5OQM8Ptvf37h9sZ+eTB9vnk90Hn97fn0zvT+7R+7OiWZXZ9QvB
-        5NvXk7qYpY8epcerVVlMs7aolim+THfROG+zouSeLmmc9N1Hj3ZHH61Xs6zNZ28KhrG3s7ezvUPY
-        77/Zffjo/oNH93fHe/sHB3t7P0UgtO2Ta2p578GnO9P7+wfbe7P8fHs/25tsP/x0Ott+cJ8w3dvd
-        2cszHmJWE9HQ6debxltSQifjlq1Dur1huqevqqpNudePfskv+SW/5P8BfSXlWngCAAA=
+        o0cf3V3V1WUxy+vm7hfFtK6a6rwdf5Ets4t8kS/buwv76+d1tV41d2fTLLu/n+1s3z94sL+9v5dN
+        tg+ms+n2w92De5ODh/nk3u70o9FH7fUq/xrg6c1ltsCbt+ynabN23VD71+vpNM9n+Yw+pE5Xed0W
+        OX3xiz9q82W2bM8w2sn9bLKT7+bbOw/PDwjo/YPt7HzyYPt8svvg0/v7k+n9yT16f1Y0qzK7fiGY
+        fPt6Uhez9NGj9Hi1Kotp1hbVMsWX6S4a521WlNzTJY2Tvvvo0e7oo/VqlrX57E3BMPZ29na2d/a3
+        9w7e7D58tPvg0b2H4x3q/+H+/Z8iGNr4yTU1vffg053p/f2D7b1Zfr69n+1Nth9+Op1tP7hPqO7t
+        7uzlGY8xq4lq6PXrzeMtSaGzccvWIeHeMOHTV1XVptzrR7/kl/ySX/L/AEfa2Yl5AgAA
     headers:
       Cache-Control:
       - no-cache
@@ -454,7 +452,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Apr 2020 19:58:11 GMT
+      - Tue, 28 Apr 2020 19:17:57 GMT
       Expires:
       - '-1'
       Pragma:
@@ -468,19 +466,19 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       client-request-id:
-      - adceb80e-adda-4294-bda2-f7629b9a9ac4
+      - 0b7821de-0c30-43af-a1fd-ce99989e5664
       request-id:
-      - adceb80e-adda-4294-bda2-f7629b9a9ac4
+      - 0b7821de-0c30-43af-a1fd-ce99989e5664
       x-ba-restapi:
       - 1.0.3.1566
       x-ms-correlation-request-id:
-      - adceb80e-adda-4294-bda2-f7629b9a9ac4
+      - 0b7821de-0c30-43af-a1fd-ce99989e5664
       x-ms-ratelimit-remaining-tenant-reads:
       - '11999'
       x-ms-request-id:
-      - centralus:adceb80e-adda-4294-bda2-f7629b9a9ac4
+      - centralus:0b7821de-0c30-43af-a1fd-ce99989e5664
       x-ms-routing-request-id:
-      - CENTRALUS:20200424T195811Z:adceb80e-adda-4294-bda2-f7629b9a9ac4
+      - CENTRALUS:20200428T191757Z:0b7821de-0c30-43af-a1fd-ce99989e5664
     status:
       code: 200
       message: OK
