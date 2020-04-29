@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: atst-worker-envvars
 data:
-  AZURE_ACCOUNT_NAME: jeditasksatat
+  AZURE_ACCOUNT_NAME: pwdevtasks
   CELERY_DEFAULT_QUEUE: celery-staging
   FLASK_ENV: staging
   PGDATABASE: cloudzero_pwdev_atat
