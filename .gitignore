@@ -79,6 +79,11 @@ js/test_templates
 # terraform
 *.tfstate
 *.backup
+**/*.tfvars
+
+# ansible
+**/*.sh
+
 
 # vscode config files
 .vscode/

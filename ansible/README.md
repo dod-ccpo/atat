@@ -13,7 +13,7 @@ Even though ATAT is completely containerized, its not immune to the benefits of 
 ## Requirements
 
 * Python 3.7
-* pip
+* pip or poetry
 * ansible
 
 ## Usage Example
@@ -74,7 +74,7 @@ If I want to refresh the local variables.tf file, there's another task that will
 
 In out case, secrets achieve vault and csp agnostic versions by storing all terraform config under the key `deploy_tag`, this way we can tie terraform releases to their respective secrets and have repeatable deployments.
 
-There are lots more possibilities and i will be adding here in the future. 
+There are lots more possibilities and i will be adding here in the future.
 
 ## Links
 
@@ -82,4 +82,3 @@ There are lots more possibilities and i will be adding here in the future.
 ## Future Considerations
 
 Is ATAT able to leverage tenant creation via TF and ansible over API calls to the API directly?
-
