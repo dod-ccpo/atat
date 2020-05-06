@@ -7,6 +7,7 @@ module "keyvault" {
   tenant_id        = var.tenant_id
   principal_id     = "f9bcbe58-8b73-4957-aee2-133dc3e58063"
   admin_principals = var.admin_users
+  app_principals = {}
   policy           = "Deny"
   subnet_ids       = [module.vpc.subnet_list["aks"].id]
   whitelist        = var.admin_user_whitelist
@@ -22,7 +23,8 @@ module "tenant_keyvault" {
   environment      = var.environment
   tenant_id        = var.tenant_id
   principal_id     = ""
-  admin_principals = var.admin_users
+  admin_principals = {}
+  app_principals   = {"${module.registered_app.name}":"${module.registered_app.service_principle_id}"}
   policy           = "Deny"
   subnet_ids       = [module.vpc.subnet_list["aks"].id]
   whitelist        = var.admin_user_whitelist

@@ -30,7 +30,12 @@ variable "principal_id" {
 
 variable "admin_principals" {
   type        = map
-  description = "A list of user principals who need access to manage the keyvault"
+  description = "A map of user principals who need access to manage the keyvault"
+}
+
+variable "app_principals" {
+  type = map
+  description = "map of apps that can access this keyvault"
 }
 
 variable "subnet_ids" {

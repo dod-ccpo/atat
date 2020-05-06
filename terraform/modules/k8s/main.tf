@@ -1,3 +1,5 @@
+
+
 resource "azurerm_resource_group" "k8s" {
   name     = "${var.name}-${var.environment}-vpc"
   location = var.region

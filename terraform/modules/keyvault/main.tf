@@ -44,6 +44,7 @@ resource "azurerm_key_vault_access_policy" "keyvault_k8s_policy" {
 
 # Admin Access
 resource "azurerm_key_vault_access_policy" "keyvault_admin_policy" {
+
   for_each     = var.admin_principals
   key_vault_id = azurerm_key_vault.keyvault.id
 
@@ -77,6 +78,47 @@ resource "azurerm_key_vault_access_policy" "keyvault_admin_policy" {
     "update",
   ]
 }
+
+# App Access
+
+resource "azurerm_key_vault_access_policy" "app_policy" {
+
+  for_each     = var.app_principals
+  key_vault_id = azurerm_key_vault.keyvault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = each.value
+  application_id = each.value
+
+  key_permissions = [
+    "get",
+    "list",
+    "create",
+    "update",
+    "delete",
+  ]
+
+  secret_permissions = [
+    "get",
+    "list",
+    "set",
+  ]
+
+  # backup create delete deleteissuers get getissuers import list listissuers managecontacts manageissuers purge recover restore setissuers update
+  certificate_permissions = [
+    "get",
+    "list",
+    "create",
+    "import",
+    "listissuers",
+    "manageissuers",
+    "deleteissuers",
+    "backup",
+    "update",
+  ]
+}
+
+
 
 resource "azurerm_monitor_diagnostic_setting" "keyvault_diagnostic" {
   name                       = "${var.name}-${var.environment}-keyvault-diag"

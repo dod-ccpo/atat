@@ -12,3 +12,11 @@ output "oauth2_permissions"  {
 
   value = azuread_application.app.oauth2_permissions
 }
+
+output "service_principle_id" {
+ value = azuread_service_principal.app_sp.application_id
+}
+
+output "name" {
+  value = var.name
+}
