@@ -14,7 +14,7 @@ module "vpc" {
   region            = var.region
   virtual_network   = var.virtual_network
   networks          = var.networks
-  route_tables      = merge(var.route_tables,{""}
+  route_tables      = merge(var.route_tables,{"aks" = }
   owner             = var.owner
   name              = var.name
   dns_servers       = var.dns_servers
