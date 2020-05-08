@@ -215,10 +215,14 @@ To run lint, static analysis, and Python unit tests:
 To run only the Python unit tests:
 
     poetry run python -m pytest
+**Integration tests with the Hybrid Interface**
 
-Integration tests that use the hybrid cloud provider are skipped by default. To run these tests, add a `--hybrid` flag when running pytest:
+Integration tests that use the hybrid cloud provider are skipped by default and should be run on their own, as some of the required hybrid configuration values may cause certain non-hybrid tests to fail. As a result, it's recommended that you do not `EXPORT` these hybrid config values into your shell environment, but instead load them only for that command with something like the following:
 
-    poetry run python -m pytest --hybrid
+```
+env $(cat .env.hybrid | xargs) poetry run pytest --no-cov --hybrid tests/domain/cloud/test_hybrid_csp.py
+```
+The config values required by the hybrid tests are outlined in the [Hybrid Configuration](#hybrid-configuration) section. Note that the `--hybrid` parameter is also required for hybrid tests to run. 
 
 This project also runs Javascript tests using jest. To run the Javascript tests:
 
