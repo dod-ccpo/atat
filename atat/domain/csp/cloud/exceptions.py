@@ -121,20 +121,6 @@ class BaselineProvisionException(GeneralCSPException):
         )
 
 
-class SecretException(GeneralCSPException):
-    """A problem occurred with setting or getting secrets"""
-
-    def __init__(self, tenant_id, reason):
-        self.tenant_id = tenant_id
-        self.reason = reason
-
-    @property
-    def message(self):
-        return "Could not get or set secret for ({}): {}".format(
-            self.tenant_id, self.reason
-        )
-
-
 class DomainNameException(GeneralCSPException):
     """A problem occured when generating the domain name for a tenant"""
 

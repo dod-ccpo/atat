@@ -14,7 +14,6 @@ python = "3.7.3"
 adal = "*"
 alembic = "*"
 azure-identity = "*"
-azure-keyvault = "*"
 azure-mgmt-managementgroups = "*"
 azure-storage = "*"
 azure-storage-blob = "*"
@@ -40,6 +39,7 @@ transitions = "*"
 Unipath = "*"
 webassets = "*"
 werkzeug = "*"
+email-validator = '*'
 
 [tool.poetry.dev-dependencies]
 bandit = "*"
