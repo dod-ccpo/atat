@@ -12,3 +12,7 @@ output "oauth2_permissions"  {
 
   value = azuread_application.app.oauth2_permissions
 }
+
+output "name" {
+  value = var.name
+}
