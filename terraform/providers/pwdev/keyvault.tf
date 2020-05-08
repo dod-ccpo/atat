@@ -22,7 +22,7 @@ module "tenant_keyvault" {
   environment      = var.environment
   tenant_id        = var.tenant_id
   principal_id     = ""
-  admin_principals = var.admin_users
+  admin_principals = {}
   policy           = "Deny"
   subnet_ids       = [module.vpc.subnet_list["aks"].id]
   whitelist        = var.admin_user_whitelist
