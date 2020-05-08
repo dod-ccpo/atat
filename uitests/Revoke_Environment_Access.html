@@ -625,6 +625,7 @@ Imported from: AT-AT CI - New Portfolio
 <td></td>
 <td></td>
 </tr>
+<!--Click the revoke button for the first Environment (Development)-->
 <tr>
 <td>waitForElementPresent</td>
 <td>css=.environment_roles.environment-roles-new > fieldset.usa-input__choices.revoke-button:nth-of-type(1) > .form-row > .form-col.form-col--third > label.usa-button.button-danger-outline</td>
@@ -655,6 +656,7 @@ Imported from: AT-AT CI - New Portfolio
 <td></td>
 <td></td>
 </tr>
+<!--Check undo functionality-->
 <tr>
 <td>waitForElementPresent</td>
 <td>css=label.link</td>
@@ -670,14 +672,15 @@ Imported from: AT-AT CI - New Portfolio
 <td></td>
 <td></td>
 </tr>
+<!--Click the revoke button for the second Environment (Production). This checks that the correct Environment is actually revoked (AT-5243)-->
 <tr>
 <td>waitForElementPresent</td>
-<td>css=.environment_roles.environment-roles-new > fieldset.usa-input__choices.revoke-button:nth-of-type(1) > .form-row > .form-col.form-col--third > label.usa-button.button-danger-outline</td>
+<td>css=.environment_roles.environment-roles-new > fieldset.usa-input__choices.revoke-button:nth-of-type(2) > .form-row > .form-col.form-col--third > label.usa-button.button-danger-outline</td>
 <td></td>
 </tr>
 <tr>
 <td>click</td>
-<td>css=.environment_roles.environment-roles-new > fieldset.usa-input__choices.revoke-button:nth-of-type(1) > .form-row > .form-col.form-col--third > label.usa-button.button-danger-outline</td>
+<td>css=.environment_roles.environment-roles-new > fieldset.usa-input__choices.revoke-button:nth-of-type(2) > .form-row > .form-col.form-col--third > label.usa-button.button-danger-outline</td>
 <td></td>
 </tr>
 <tr>
@@ -685,6 +688,7 @@ Imported from: AT-AT CI - New Portfolio
 <td></td>
 <td></td>
 </tr>
+<!--Submit the form with the change-->
 <tr>
 <td>waitForElementPresent</td>
 <td>css=.action-group > input[type="submit"].usa-button.action-group__action</td>
@@ -700,14 +704,15 @@ Imported from: AT-AT CI - New Portfolio
 <td></td>
 <td></td>
 </tr>
+<!--Check that the correct Environment (Production) has been revoked (AT-5243)-->
 <tr>
 <td>waitForElementPresent</td>
-<td>css=table.atat-table > tbody > tr:nth-of-type(1) > td.toggle-menu__container > .row:nth-of-type(1) > .env-role__role</td>
+<td>css=table.atat-table > tbody > tr:nth-of-type(1) > td.toggle-menu__container > .row:nth-of-type(2) > .env-role__role</td>
 <td></td>
 </tr>
 <tr>
 <td>assertText</td>
-<td>css=table.atat-table > tbody > tr:nth-of-type(1) > td.toggle-menu__container > .row:nth-of-type(1) > .env-role__role</td>
+<td>css=table.atat-table > tbody > tr:nth-of-type(1) > td.toggle-menu__container > .row:nth-of-type(2) > .env-role__role</td>
 <td>*None*</td>
 </tr>
 </tbody>

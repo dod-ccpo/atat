@@ -28,6 +28,7 @@
           <div class="form-col form-col--third">
             {{ sub_form.disabled(id=id, checked=True, **{"v-model": "isChecked"}) }}
             {{ sub_form.disabled.label(for=id, class="usa-button button-danger-outline") | safe }}
+            <input type="hidden" name={{sub_form.disabled.name}} value="">
           </div>
         </div>
         <div v-else>

@@ -10,6 +10,7 @@ from atat.domain.csp.cloud.models import (
     KeyVaultCredentials,
     UserRoleCSPPayload,
     CostManagementQueryCSPPayload,
+    InitialMgmtGroupVerificationCSPPayload,
 )
 from atat.jobs import do_create_application, do_create_environment_role, do_create_user
 from atat.models import PortfolioStates, PortfolioStateMachine
@@ -310,3 +311,15 @@ class TestHybridUserManagement:
         except UserProvisioningException as e:
             if "RoleAssignmentExists" not in str(e):
                 raise e
+
+
+@pytest.mark.hybrid
+def test_create_initial_mgmt_group_verification(csp):
+    payload = InitialMgmtGroupVerificationCSPPayload(
+        tenant_id=csp.azure.tenant_id, management_group_name=csp.azure.tenant_id
+    )
+    response = csp.azure.create_initial_mgmt_group_verification(payload)
+    assert (
+        response.id
+        == f"/providers/Microsoft.Management/managementGroups/{csp.azure.tenant_id}"
+    )

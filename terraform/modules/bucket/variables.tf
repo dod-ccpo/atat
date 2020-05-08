@@ -53,3 +53,9 @@ variable "account_kind" {
   default     = "Storage"
 
 }
+
+variable "bucket_cors_properties" {
+  type        = list(map(string))
+  description = "supports cors rules"
+  default     = []
+}

@@ -2,6 +2,7 @@
 
 Terraform is a cloud agnostic, declarative, repeatable, source controllable way to manage infra.
 
+
 ## Requirements
 
 * terraform v0.12+

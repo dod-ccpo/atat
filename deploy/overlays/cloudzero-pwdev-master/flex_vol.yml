@@ -13,9 +13,9 @@ spec:
         - name: flask-secret
           flexVolume:
             options:
-              keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY;AZURE-TENANT-ID;AZURE-CLIENT-ID;AZURE-USER-OBJECT-ID;AZURE-POWERSHELL-CLIENT-ID;AZURE-TENANT-ADMIN-PASSWORD;AZURE-SECRET-KEY"
-              keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY;AZURE_TENANT_ID;AZURE_CLIENT_ID;AZURE_USER_OBJECT_ID;AZURE_POWERSHELL_CLIENT_ID;AZURE_TENANT_ADMIN_PASSWORD;AZURE_SECRET_KEY"
-              keyvaultobjecttypes: "secret;secret;secret;secret;key;secret;secret;secret;secret;secret;secret"
+              keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY;AZURE-TENANT-ID;AZURE-CLIENT-ID;AZURE-USER-OBJECT-ID;AZURE-TENANT-ADMIN-PASSWORD;AZURE-SECRET-KEY"
+              keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY;AZURE_TENANT_ID;AZURE_CLIENT_ID;AZURE_USER_OBJECT_ID;AZURE_TENANT_ADMIN_PASSWORD;AZURE_SECRET_KEY"
+              keyvaultobjecttypes: "secret;secret;secret;secret;key;secret;secret;secret;secret;secret"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -28,9 +28,9 @@ spec:
         - name: flask-secret
           flexVolume:
             options:
-              keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY;AZURE-TENANT-ID;AZURE-CLIENT-ID;AZURE-USER-OBJECT-ID;AZURE-POWERSHELL-CLIENT-ID;AZURE-TENANT-ADMIN-PASSWORD;AZURE-SECRET-KEY"
-              keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY;AZURE_TENANT_ID;AZURE_CLIENT_ID;AZURE_USER_OBJECT_ID;AZURE_POWERSHELL_CLIENT_ID;AZURE_TENANT_ADMIN_PASSWORD;AZURE_SECRET_KEY"
-              keyvaultobjecttypes: "secret;secret;secret;secret;key;secret;secret;secret;secret;secret;secret"
+              keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY;AZURE-TENANT-ID;AZURE-CLIENT-ID;AZURE-USER-OBJECT-ID;AZURE-TENANT-ADMIN-PASSWORD;AZURE-SECRET-KEY"
+              keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY;AZURE_TENANT_ID;AZURE_CLIENT_ID;AZURE_USER_OBJECT_ID;AZURE_TENANT_ADMIN_PASSWORD;AZURE_SECRET_KEY"
+              keyvaultobjecttypes: "secret;secret;secret;secret;key;secret;secret;secret;secret;secret"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -43,9 +43,9 @@ spec:
         - name: flask-secret
           flexVolume:
             options:
-              keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY;AZURE-TENANT-ID;AZURE-CLIENT-ID;AZURE-USER-OBJECT-ID;AZURE-POWERSHELL-CLIENT-ID;AZURE-TENANT-ADMIN-PASSWORD;AZURE-SECRET-KEY"
-              keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY;AZURE_TENANT_ID;AZURE_CLIENT_ID;AZURE_USER_OBJECT_ID;AZURE_POWERSHELL_CLIENT_ID;AZURE_TENANT_ADMIN_PASSWORD;AZURE_SECRET_KEY"
-              keyvaultobjecttypes: "secret;secret;secret;secret;key;secret;secret;secret;secret;secret;secret"
+              keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY;AZURE-TENANT-ID;AZURE-CLIENT-ID;AZURE-USER-OBJECT-ID;AZURE-TENANT-ADMIN-PASSWORD;AZURE-SECRET-KEY"
+              keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY;AZURE_TENANT_ID;AZURE_CLIENT_ID;AZURE_USER_OBJECT_ID;AZURE_TENANT_ADMIN_PASSWORD;AZURE_SECRET_KEY"
+              keyvaultobjecttypes: "secret;secret;secret;secret;key;secret;secret;secret;secret;secret"
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -60,6 +60,6 @@ spec:
             - name: flask-secret
               flexVolume:
                 options:
-                  keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY;AZURE-TENANT-ID;AZURE-CLIENT-ID;AZURE-USER-OBJECT-ID;AZURE-POWERSHELL-CLIENT-ID;AZURE-TENANT-ADMIN-PASSWORD;AZURE-SECRET-KEY"
-                  keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY;AZURE_TENANT_ID;AZURE_CLIENT_ID;AZURE_USER_OBJECT_ID;AZURE_POWERSHELL_CLIENT_ID;AZURE_TENANT_ADMIN_PASSWORD;AZURE_SECRET_KEY"
-                  keyvaultobjecttypes: "secret;secret;secret;secret;key;secret;secret;secret;secret;secret;secret"
+                  keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY;AZURE-TENANT-ID;AZURE-CLIENT-ID;AZURE-USER-OBJECT-ID;AZURE-TENANT-ADMIN-PASSWORD;AZURE-SECRET-KEY"
+                  keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY;AZURE_TENANT_ID;AZURE_CLIENT_ID;AZURE_USER_OBJECT_ID;AZURE_TENANT_ADMIN_PASSWORD;AZURE_SECRET_KEY"
+                  keyvaultobjecttypes: "secret;secret;secret;secret;key;secret;secret;secret;secret;secret"

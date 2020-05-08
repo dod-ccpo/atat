@@ -13,18 +13,3 @@ module "keyvault" {
   workspace_id     = module.logs.workspace_id
 }
 
-
-module "tenant_keyvault" {
-  source           = "../../modules/keyvault"
-  name             = "tenants"
-  region           = var.region
-  owner            = var.owner
-  environment      = var.environment
-  tenant_id        = var.tenant_id
-  principal_id     = ""
-  admin_principals = var.admin_users
-  policy           = "Deny"
-  subnet_ids       = [module.vpc.subnet_list["aks"].id]
-  whitelist        = var.admin_user_whitelist
-  workspace_id     = module.logs.workspace_id
-}

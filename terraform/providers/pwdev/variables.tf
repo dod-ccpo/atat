@@ -56,3 +56,10 @@ variable "storage_admin_whitelist" {
 variable "vpn_client_cidr" {
   type = list
 }
+
+variable "bucket_cors_properties" {
+
+  type        = list(map(string))
+  description = "supports cors"
+  default     = []
+}

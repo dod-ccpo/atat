@@ -1,0 +1,50 @@
+@startuml USEAST Development Network
+
+title USEAST Development Network
+
+cloud Internet
+
+cloud Azure {
+    [Azure Storage] as storage
+    [Azure CDN] as cdn
+    cdn --> storage : "HTTPS/443"
+    note as cdn_note
+      CDN and Azure storage are
+      managed by Azure and configured 
+      for geographic failover
+    end note
+}
+frame "USEAST Virtual Network" as vnet {
+    frame "Public Route Table" as public_rt{
+        frame "Public Subnet" as public_subnet {
+            [ALB]
+            [Internet] --> ALB
+            note as public_useast
+             10.1.1.0/24
+            end note
+        }
+    }
+    frame "Private Route Table" as private_rt{
+        frame "Private Subnet" as private_subnet {
+            [AKS]
+            [Redis]
+            [Postgres]
+            [AzurePrivateStorage]
+            AKS --> Redis : "TLS:6379"
+            AKS --> Postgres : "TLS:5432"
+            AKS --> AzurePrivateStorage : "HTTPS/443"
+            [ALB] --> AKS : "HTTPS:443"
+            note as private_useast
+             10.1.2.0/24
+            end note
+        }
+    }
+}
+
+frame "US West Backup Region" as backupregion {
+    component "Backup Postgres" as pgbackup 
+    [Postgres] --> pgbackup : "Private Peering / TLS:5432"
+}
+
+note right of [ALB] : Azure Load Balancer restricted to AKS only
+@enduml

@@ -8,13 +8,13 @@ import pytest
 from adal.adal_error import AdalError
 from tests.factories import ApplicationFactory, EnvironmentFactory
 from tests.mock_azure import mock_azure, MOCK_ACCESS_TOKEN  # pylint: disable=W0611
+from tests.mock_azure import AZURE_CONFIG, MockAzureSDK
 
 from atat.domain.csp.cloud import AzureCloudProvider
 from atat.domain.csp.cloud.exceptions import (
     AuthenticationException,
     ConnectionException,
     DomainNameException,
-    SecretException,
     UnknownServerException,
     UserProvisioningException,
 )
@@ -110,14 +110,14 @@ def mock_http_error_response(mock_azure):
     return response
 
 
+@pytest.fixture(scope="function")
+def unmocked_cloud_provider():
+    azure_cloud_provider = AzureCloudProvider(AZURE_CONFIG)
+    return azure_cloud_provider
+
+
 def mock_management_group_create(mock_azure, spec_dict):
     mock_azure.sdk.managementgroups.ManagementGroupsAPI.return_value.management_groups.create_or_update.return_value.result.return_value = (
-        spec_dict
-    )
-
-
-def mock_management_group_get(mock_azure, spec_dict):
-    mock_azure.sdk.managementgroups.ManagementGroupsAPI.return_value.management_groups.get.return_value.as_dict.return_value = (
         spec_dict
     )
 
@@ -162,21 +162,34 @@ def test_create_initial_mgmt_group_succeeds(mock_azure: AzureCloudProvider):
     assert result.root_management_group_name == "Test Name"
 
 
-def test_create_initial_mgmt_group_verification_succeed(mock_azure: AzureCloudProvider):
-    application = ApplicationFactory.create()
-    mock_management_group_get(mock_azure, {"id": "Test Id"})
+def test_create_initial_mgmt_group_verification(
+    mock_azure: AzureCloudProvider, mock_http_error_response
+):
+    mock_id = "management/group/path/TestName"
 
-    management_group_name = str(uuid4())
+    mock_azure.sdk.requests.get.side_effect = [
+        mock_azure.sdk.requests.exceptions.ConnectionError,
+        mock_azure.sdk.requests.exceptions.Timeout,
+        mock_http_error_response,
+        mock_requests_response(json_data={"id": mock_id}),
+    ]
 
     payload = InitialMgmtGroupVerificationCSPPayload(
-        tenant_id="1234", management_group_name=management_group_name
+        tenant_id="1234", management_group_name="TestName"
     )
+
+    with pytest.raises(ConnectionException):
+        mock_azure.create_initial_mgmt_group_verification(payload)
+    with pytest.raises(ConnectionException):
+        mock_azure.create_initial_mgmt_group_verification(payload)
+    with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
+        mock_azure.create_initial_mgmt_group_verification(payload)
+
     result: InitialMgmtGroupVerificationCSPResult = mock_azure.create_initial_mgmt_group_verification(
         payload
     )
 
-    assert result.id == "Test Id"
-    # assert result.name == management_group_name
+    assert result.id == mock_id
 
 
 def test_disable_user(mock_azure: AzureCloudProvider, mock_http_error_response):
@@ -1058,37 +1071,110 @@ def test_get_reporting_data_malformed_payload(mock_azure: AzureCloudProvider):
             )
 
 
-def test_get_secret(mock_azure: AzureCloudProvider):
-    mock_azure.sdk.secrets.SecretClient.return_value.get_secret.return_value.value = (
-        "my secret"
+def test_get_keyvault_token(mock_http_error_response, unmocked_cloud_provider):
+    cloud_provider = unmocked_cloud_provider
+    mock_result = mock_requests_response(
+        status=200,
+        json_data={
+            "token_type": "Bearer",
+            "expires_in": "3599",
+            "ext_expires_in": "3599",
+            "expires_on": "1588197654",
+            "not_before": "1588193754",
+            "resource": f"https://{cloud_provider.sdk.cloud.suffixes.keyvault_dns[1:]}",
+            "access_token": "TOKEN",
+        },
     )
 
-    assert mock_azure.get_secret("secret key") == "my secret"
-
-
-def test_get_secret_secret_exception(mock_azure: AzureCloudProvider):
-    mock_azure.sdk.secrets.SecretClient.return_value.get_secret.side_effect = [
-        mock_azure.sdk.azure_exceptions.HttpResponseError,
+    cloud_provider.sdk.requests.get = Mock()
+    cloud_provider.sdk.requests.get.side_effect = [
+        cloud_provider.sdk.requests.exceptions.ConnectionError,
+        cloud_provider.sdk.requests.exceptions.Timeout,
+        mock_http_error_response,
+        mock_result,
     ]
+    with pytest.raises(ConnectionException):
+        cloud_provider._get_keyvault_token()
+    with pytest.raises(ConnectionException):
+        cloud_provider._get_keyvault_token()
+    with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
+        cloud_provider._get_keyvault_token()
 
-    with pytest.raises(SecretException):
-        mock_azure.get_secret("secret key") == "my secret"
+    result = cloud_provider._get_keyvault_token()
+    assert result == "TOKEN"
 
 
-def test_set_secret(mock_azure: AzureCloudProvider):
-    mock_azure.sdk.secrets.SecretClient.return_value.set_secret.return_value = (
-        "my secret"
+def test_get_secret(unmocked_cloud_provider, mock_http_error_response):
+    cloud_provider = unmocked_cloud_provider
+    mock_result = mock_requests_response(
+        status=200,
+        json_data={
+            "value": "mytestvalue",
+            "id": "https://hybridcz-pwdev-keyvault.vault.azure.net/secrets/testsecret/abc123",
+            "attributes": {
+                "enabled": True,
+                "created": 1588096321,
+                "updated": 1588096321,
+                "recoveryLevel": "Recoverable+Purgeable",
+            },
+        },
     )
-    assert mock_azure.set_secret("secret key", "secret_value") == "my secret"
 
-
-def test_set_secret_secret_exception(mock_azure: AzureCloudProvider):
-    mock_azure.sdk.secrets.SecretClient.return_value.set_secret.side_effect = [
-        mock_azure.sdk.azure_exceptions.HttpResponseError,
+    cloud_provider._get_keyvault_token = Mock(return_value="TOKEN")
+    cloud_provider.sdk.requests.get = Mock()
+    cloud_provider.sdk.requests.get.side_effect = [
+        cloud_provider.sdk.requests.exceptions.ConnectionError,
+        cloud_provider.sdk.requests.exceptions.Timeout,
+        mock_http_error_response,
+        mock_result,
     ]
+    with pytest.raises(ConnectionException):
+        cloud_provider.get_secret("secret key")
+    with pytest.raises(ConnectionException):
+        cloud_provider.get_secret("secret key")
+    with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
+        cloud_provider.get_secret("secret key")
 
-    with pytest.raises(SecretException):
-        mock_azure.set_secret("secret key", "secret_value")
+    result = cloud_provider.get_secret("secret key")
+    assert result == "mytestvalue"
+
+
+def test_set_secret(unmocked_cloud_provider, mock_http_error_response):
+    cloud_provider = unmocked_cloud_provider
+    response_id = (
+        f"{cloud_provider.config.get('AZURE_VAULT_URL')}secrets/testsecret/abc123"
+    )
+    mock_result = mock_requests_response(
+        status=200,
+        json_data={
+            "value": "mytestvalue",
+            "id": response_id,
+            "attributes": {
+                "enabled": True,
+                "created": 1588096321,
+                "updated": 1588096321,
+                "recoveryLevel": "Recoverable+Purgeable",
+            },
+        },
+    )
+
+    cloud_provider._get_keyvault_token = Mock(return_value="TOKEN")
+    cloud_provider.sdk.requests.put = Mock()
+    cloud_provider.sdk.requests.put.side_effect = [
+        cloud_provider.sdk.requests.exceptions.ConnectionError,
+        cloud_provider.sdk.requests.exceptions.Timeout,
+        mock_http_error_response,
+        mock_result,
+    ]
+    with pytest.raises(ConnectionException):
+        cloud_provider.set_secret("secret key", "mytestvalue")
+    with pytest.raises(ConnectionException):
+        cloud_provider.set_secret("secret key", "mytestvalue")
+    with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
+        cloud_provider.set_secret("secret key", "mytestvalue")
+
+    result = cloud_provider.set_secret("secret key", "mytestvalue")
+    assert result["id"] == response_id
 
 
 def test_create_active_directory_user(
@@ -1276,9 +1362,7 @@ def test_update_tenant_creds(mock_azure: AzureCloudProvider, monkeypatch):
         "tenant_sp_key": "1234",
     }
     monkeypatch.setattr(
-        AzureCloudProvider,
-        "get_secret",
-        Mock(return_value=json.dumps(existing_secrets)),
+        mock_azure, "get_secret", Mock(return_value=json.dumps(existing_secrets)),
     )
 
     mock_new_secrets = KeyVaultCredentials(**new_secrets)

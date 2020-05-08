@@ -215,10 +215,14 @@ To run lint, static analysis, and Python unit tests:
 To run only the Python unit tests:
 
     poetry run python -m pytest
+**Integration tests with the Hybrid Interface**
 
-Integration tests that use the hybrid cloud provider are skipped by default. To run these tests, add a `--hybrid` flag when running pytest:
+Integration tests that use the hybrid cloud provider are skipped by default and should be run on their own, as some of the required hybrid configuration values may cause certain non-hybrid tests to fail. As a result, it's recommended that you do not `EXPORT` these hybrid config values into your shell environment, but instead load them only for that command with something like the following:
 
-    poetry run python -m pytest --hybrid
+```
+env $(cat .env.hybrid | xargs) poetry run pytest --no-cov --hybrid tests/domain/cloud/test_hybrid_csp.py
+```
+The config values required by the hybrid tests are outlined in the [Hybrid Configuration](#hybrid-configuration) section. Note that the `--hybrid` parameter is also required for hybrid tests to run. 
 
 This project also runs Javascript tests using jest. To run the Javascript tests:
 
@@ -233,6 +237,22 @@ To generate coverage reports for the Javascript tests:
     yarn test:coverage
 
 ## Configuration
+
+### Setting Configuration
+
+All config settings must be declared in "config/base.ini", even if they are null. Configuration is set in the following order:
+
+1. Settings from "config/base.ini" are read in and applied.
+2. If FLASK_ENV is set as an environment variable and there is an INI file with a matching name, that INI file is read in and applied. For instance, if FLASK_ENV is set to "prod" and a "prod.ini" file exists, those values will be applied and will override any values set by the base.ini.
+3. MSFT supports an [OSS Kubernetes plugin](https://github.com/Azure/kubernetes-keyvault-flexvol) for mounting objects from Azure Key Vault into containers. We use this feature to store application secrets in a Key Vault instance and set them in the container at runtime (see "deploy/README.md" for more details). This is done by mounting the secrets into a known directory and specifying it with an environment variable, OVERRIDE_CONFIG_DIRECTORY. If OVERRIDE_CONFIG_DIRECTORY is set, ATAT will do the following:
+  1. Find the specified directory. For example, "/config"
+  1. Search for files in that directory with names matching known settings. For example, a file called "AZURE_ACCOUNT_NAME".
+  1. Read in the contents of those files and set the content as the value for that setting. These will override any values previously set. For example, if the file "AZURE_ACCOUNT_NAME" has the content "my-azure-account-name", that content will be set as the value for the AZURE_ACCOUNT_NAME setting.
+4. Finally, ATAT will check for the presence of environment variables matching all known config values. If a matching environment variable exists, its value will override whatever value was previously set.
+
+### Config Guide
+
+#### General Config
 
 - `ASSETS_URL`: URL to host which serves static assets (such as a CDN).
 - `AZURE_ACCOUNT_NAME`: The name for the Azure blob storage account
@@ -290,7 +310,8 @@ To generate coverage reports for the Javascript tests:
 - `USE_AUDIT_LOG`: Boolean value describing if ATAT should write to the audit log table in the database. Set to "false" by default for performance reasons.
 - `WTF_CSRF_ENABLED`: Boolean value specifying if WTForms should protect against CSRF. Should be set to "true" unless running automated tests.
 
-## Hybrid Configuration
+#### Hybrid Configuration
+
 Configuration variables that are needed solely to run Hybrid tests are in the `[hybrid]` section of the base configuration file.
 - `AZURE_ADMIN_ROLE_ASSIGNMENT_ID`: The fully pathed role assignment ID that associates a user with admin privileges to the root tenant of the Hybrid Cloud
 - `AZURE_BILLING_PROFILE_ID`: ID of the billing profile used for Cost Management queries with the Hybrid interface.

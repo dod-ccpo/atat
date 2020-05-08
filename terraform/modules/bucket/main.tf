@@ -12,6 +12,27 @@ resource "azurerm_storage_account" "bucket" {
   account_replication_type = "LRS"
 
 
+  blob_properties {
+
+    dynamic "cors_rule" {
+
+      for_each = var.bucket_cors_properties
+      content {
+
+        allowed_origins    = split(",", cors_rule.value["allowed_origins"])
+        allowed_methods    = split(",", cors_rule.value["allowed_methods"])
+        allowed_headers    = try(split(",", cors_rule.value["allowed_headers"]), ["*"])
+        exposed_headers    = try(split(",", cors_rule.value["exposed_headers"]), ["*"])
+        max_age_in_seconds = try(cors_rule.value["max_age_in_seconds"], 200)
+
+      }
+
+
+
+
+    }
+  }
+
 }
 
 resource "azurerm_storage_account_network_rules" "acls" {
