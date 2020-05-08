@@ -45,8 +45,10 @@ resource "azurerm_route_table" "route_table" {
   resource_group_name = azurerm_resource_group.vpc.name
 }
 
+
+
 resource "azurerm_subnet_route_table_association" "route_table" {
-  for_each       = var.networks
+  for_each       = var.route_tables
   subnet_id      = azurerm_subnet.subnet[each.key].id
   route_table_id = azurerm_route_table.route_table[each.key].id
 }

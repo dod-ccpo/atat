@@ -1,11 +1,6 @@
 
 
 
-data "azurerm_route_table" "aks_route_table" {
-  name                = var.name
-  resource_group_name = module.k8s.k8s_resource_group_id
-}
-
 
 
 module "vpc" {
@@ -14,7 +9,7 @@ module "vpc" {
   region            = var.region
   virtual_network   = var.virtual_network
   networks          = var.networks
-  route_tables      = merge(var.route_tables,{"aks" = }
+  route_tables      = var.route_tables
   owner             = var.owner
   name              = var.name
   dns_servers       = var.dns_servers

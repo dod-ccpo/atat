@@ -31,3 +31,30 @@ module "k8s" {
   workspace_id        = module.logs.workspace_id
   vnet_id             = module.vpc.id
 }
+
+
+data "azurerm_route_table" "auto_gen_k8s" {
+
+  name= "aks-agentpool-54410534-routetable"
+  resource_group_name = module.k8s.k8s_resource_group_id
+}
+
+output "k8s_rt" { value = data.azurerm_route_table.auto_gen_k8s.id}
+output "aks_sub_id" { value =  module.vpc.subnet_list["aks"].id }
+
+resource "azurerm_subnet_route_table_association" "k8s_aks_route_table" {
+
+  subnet_id      = module.vpc.subnet_list["aks"].id
+  route_table_id = data.azurerm_route_table.auto_gen_k8s.id
+
+}
+
+#"aks"   = "aks,to_vnet,10.1.0.0/16,VnetLocal"
+
+resource "azurerm_route" "custom_routes" {
+  name                = "${var.name}-${var.environment}-to_vnet"
+  resource_group_name = module.k8s.k8s_resource_group_id
+  route_table_name    = "aks-agentpool-54410534-routetable"
+  address_prefix = "10.1.0.0/16"
+  next_hop_type  = "VnetLocal"
+}

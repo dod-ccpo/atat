@@ -9,8 +9,5 @@ module "registered_app" {
   source = "../../modules/azure_ad"
   name   = "tenant-keyvault"
 
-  owners = var.executor_id
 
-
-  #secret: WWagVm]v=@FsSd41I2KABoMYwmLt4jQ/
 }
