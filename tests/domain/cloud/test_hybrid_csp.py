@@ -315,19 +315,6 @@ class TestHybridUserManagement:
 
 
 @pytest.mark.hybrid
-def test_create_initial_mgmt_group_verification(csp):
-    payload = InitialMgmtGroupVerificationCSPPayload(
-        tenant_id=csp.azure.root_tenant_id,
-        management_group_name=csp.azure.root_tenant_id,
-    )
-    response = csp.azure.create_initial_mgmt_group_verification(payload)
-    assert (
-        response.id
-        == f"/providers/Microsoft.Management/managementGroups/{csp.azure.root_tenant_id}"
-    )
-
-
-@pytest.mark.hybrid
 def test_create_user(csp):
     payload = UserCSPPayload(
         tenant_id=csp.azure.root_tenant_id,

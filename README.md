@@ -314,6 +314,7 @@ All config settings must be declared in "config/base.ini", even if they are null
 
 Configuration variables that are needed solely to run Hybrid tests are in the `[hybrid]` section of the base configuration file.
 - `AZURE_ADMIN_ROLE_ASSIGNMENT_ID`: The fully pathed role assignment ID that associates a user with admin privileges to the root tenant of the Hybrid Cloud
+- `AZURE_HYBRID_TENANT_ID`: ID of the tenant used to store resources provisioned during Hybrid tests
 - `AZURE_BILLING_PROFILE_ID`: ID of the billing profile used for Cost Management queries with the Hybrid interface.
 - `AZURE_INVOICE_SECTION_ID`: ID of the invoice section used for Cost Management queries with the Hybrid interface.
 - `AZURE_ROOT_MGMT_GROUP_ID`: The fully pathed root management group ID for the Hybrid Cloud.

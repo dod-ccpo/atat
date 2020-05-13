@@ -1,11 +1,12 @@
 import contextlib
+from operator import itemgetter
+from typing import Dict, Union
+from uuid import uuid4
+
 from atat.domain.csp.cloud.azure_cloud_provider import AzureCloudProvider
 from atat.domain.csp.cloud.exceptions import UnknownServerException
 from atat.domain.csp.cloud.mock_cloud_provider import MockCloudProvider
 from atat.domain.csp.cloud.models import *
-from typing import Dict, Union
-from uuid import uuid4
-from operator import itemgetter
 
 
 @contextlib.contextmanager
@@ -22,10 +23,11 @@ HYBRID_PREFIX = "Hybrid ::"
 
 
 class HybridCloudProvider(object):
-    def __init__(self, azure: AzureCloudProvider, mock: MockCloudProvider):
+    def __init__(self, azure: AzureCloudProvider, mock: MockCloudProvider, config):
         self.azure = azure
         self.mock = mock
-        self.tenant_id = None
+        self.mock_tenant_id = None
+        self.hybrid_tenant_id = config["AZURE_HYBRID_TENANT_ID"]
 
     def create_tenant(self, payload: TenantCSPPayload) -> TenantCSPResult:
         """In this step, we store a tenant ID with a username and password
@@ -42,12 +44,12 @@ class HybridCloudProvider(object):
         tenant_admin_password = self.azure.config["AZURE_TENANT_ADMIN_PASSWORD"]
         user_object_id = self.azure.config["AZURE_USER_OBJECT_ID"]
 
-        self.tenant_id = str(uuid4())
+        self.mock_tenant_id = str(uuid4())
 
         # This is our mocked result of what would have been the API call to
         # create a tenant.
         result_dict = {
-            "tenant_id": self.tenant_id,
+            "tenant_id": self.mock_tenant_id,
             "user_id": "HybridCSPIntegrationTestUser",
             "user_object_id": user_object_id,
             "tenant_admin_username": tenant_admin_username,
@@ -57,18 +59,18 @@ class HybridCloudProvider(object):
         # Here we use the tenant id as a KeyVault key to store the primary
         # point of contact credentials.
         self.azure.create_tenant_creds(
-            self.tenant_id,
+            self.mock_tenant_id,
             KeyVaultCredentials(
                 root_tenant_id=self.azure.root_tenant_id,
                 root_sp_client_id=self.azure.client_id,
                 root_sp_key=self.azure.secret_key,
-                tenant_id=self.azure.root_tenant_id,
+                tenant_id=self.hybrid_tenant_id,
                 tenant_admin_username=tenant_admin_username,
                 tenant_admin_password=tenant_admin_password,
             ),
         )
 
-        return TenantCSPResult(domain_name="dancorriganpromptworks", **result_dict)
+        return TenantCSPResult(domain_name="atathybrid", **result_dict)
 
     def create_billing_profile_creation(
         self, payload: BillingProfileCreationCSPPayload
@@ -140,10 +142,10 @@ class HybridCloudProvider(object):
         original_update_tenant_creds = self.azure.update_tenant_creds
 
         def mocked_update_tenant_creds(tenant_id, creds):
-            """Necessary to ensure the root tenant id credentials are saved in
+            """Necessary to ensure the hybrid tenant id credentials are saved in
             KeyVault at the end of this stage.
             """
-            creds.tenant_id = self.azure.root_tenant_id
+            creds.tenant_id = self.hybrid_tenant_id
             original_update_tenant_creds(tenant_id, creds)
 
         with monkeypatched(self.azure, "_get_tenant_admin_token", lambda *_a: token):
@@ -165,14 +167,14 @@ class HybridCloudProvider(object):
     def create_initial_mgmt_group(
         self, payload: InitialMgmtGroupCSPPayload
     ) -> InitialMgmtGroupCSPResult:
-        payload.tenant_id = self.azure.root_tenant_id
+        payload.tenant_id = self.hybrid_tenant_id
         payload.display_name = f"{HYBRID_PREFIX} {payload.display_name}"
         return self.azure.create_initial_mgmt_group(payload)
 
     def create_initial_mgmt_group_verification(
         self, payload: InitialMgmtGroupVerificationCSPPayload
     ) -> InitialMgmtGroupVerificationCSPResult:
-        payload.tenant_id = self.azure.root_tenant_id
+        payload.tenant_id = self.hybrid_tenant_id
         return self.azure.create_initial_mgmt_group_verification(payload)
 
     def create_tenant_admin_ownership(
@@ -184,7 +186,8 @@ class HybridCloudProvider(object):
         """
 
         token = self.azure._get_elevated_management_token(payload.tenant_id)
-        payload.tenant_id = self.azure.root_tenant_id
+        payload.tenant_id = self.hybrid_tenant_id
+
         with monkeypatched(
             self.azure, "_get_elevated_management_token", lambda _: token
         ):
@@ -205,7 +208,7 @@ class HybridCloudProvider(object):
         """
 
         token = self.azure._get_elevated_management_token(payload.tenant_id)
-        payload.tenant_id = self.azure.root_tenant_id
+        payload.tenant_id = self.hybrid_tenant_id
         with monkeypatched(
             self.azure, "_get_elevated_management_token", lambda _: token
         ):
@@ -217,7 +220,7 @@ class HybridCloudProvider(object):
         token = self.azure._get_tenant_principal_token(
             payload.tenant_id, resource=self.azure.graph_resource
         )
-        payload.tenant_id = self.azure.root_tenant_id
+        payload.tenant_id = self.hybrid_tenant_id
         with monkeypatched(
             self.azure, "_get_tenant_principal_token", lambda *a, **kw: token
         ):

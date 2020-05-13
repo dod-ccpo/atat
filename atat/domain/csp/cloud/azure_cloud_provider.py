@@ -242,6 +242,7 @@ class AzureCloudProvider(CloudProviderInterface):
 
         return ApplicationCSPResult(**response)
 
+    @log_and_raise_exceptions
     def create_initial_mgmt_group(self, payload: InitialMgmtGroupCSPPayload):
         """Creates the initial management group in the Portfolio tenant.
         
@@ -275,9 +276,10 @@ class AzureCloudProvider(CloudProviderInterface):
 
         https://docs.microsoft.com/en-us/azure/governance/management-groups/overview
         """
-        sp_token = self._get_tenant_principal_token(payload.tenant_id)
+
+        mgmt_token = self._get_elevated_management_token(payload.tenant_id)
         headers = {
-            "Authorization": f"Bearer {sp_token}",
+            "Authorization": f"Bearer {mgmt_token}",
         }
         response = self.sdk.requests.get(
             f"{self.sdk.cloud.endpoints.resource_manager}providers/Microsoft.Management/managementGroups/{payload.management_group_name}?api-version=2020-02-01",
@@ -941,6 +943,7 @@ class AzureCloudProvider(CloudProviderInterface):
         )
         result.raise_for_status()
         result_json = result.json()
+
         self.update_tenant_creds(
             payload.tenant_id,
             KeyVaultCredentials(
@@ -972,18 +975,20 @@ class AzureCloudProvider(CloudProviderInterface):
 
         result = response.json()
         roleList = result.get("value")
-
-        DEFAULT_ADMIN_RD_ID = "794bb258-3e31-42ff-9ee4-731a72f62851"
-        admin_role_def_id = next(
-            (
-                role.get("id")
-                for role in roleList
-                if role.get("displayName") == "Company Administrator"
-            ),
-            DEFAULT_ADMIN_RD_ID,
-        )
-
-        return AdminRoleDefinitionCSPResult(admin_role_def_id=admin_role_def_id)
+        try:
+            admin_role_def_id = next(
+                (
+                    role.get("id")
+                    for role in roleList
+                    if role.get("displayName") == "Company Administrator"
+                )
+            )
+            return AdminRoleDefinitionCSPResult(admin_role_def_id=admin_role_def_id)
+        except StopIteration:
+            raise ResourceProvisioningError(
+                "Azure role definition",
+                "Could not locate Azure Global Admin / Company Admin role",
+            )
 
     @log_and_raise_exceptions
     def create_principal_admin_role(self, payload: PrincipalAdminRoleCSPPayload):
@@ -1012,6 +1017,49 @@ class AzureCloudProvider(CloudProviderInterface):
         result.raise_for_status()
         return PrincipalAdminRoleCSPResult(**result.json())
 
+    @log_and_raise_exceptions
+    def _get_billing_admin_role_template_id(self, graph_token):
+        auth_header = {
+            "Authorization": f"Bearer {graph_token}",
+        }
+        url = f"{self.graph_resource}/v1.0/directoryRoleTemplates"
+        response = self.sdk.requests.get(url, headers=auth_header)
+        response.raise_for_status()
+        try:
+            role_template = next(
+                (
+                    role_template
+                    for role_template in response.json()["value"]
+                    if role_template["displayName"] == "Billing Administrator"
+                ),
+            )
+            return role_template["id"]
+        except StopIteration:
+            raise UserProvisioningException(
+                "Could not find Billing Administrator role template ID."
+            )
+
+    @log_and_raise_exceptions
+    def _activate_billing_admin_role(self, graph_token, role_template_id):
+        auth_header = {
+            "Authorization": f"Bearer {graph_token}",
+        }
+        request_body = {"roleTemplateId": role_template_id}
+        url = f"{self.graph_resource}/v1.0/directoryRoles"
+        response = self.sdk.requests.post(url, headers=auth_header, json=request_body)
+        response.raise_for_status()
+        return response.json()["id"]
+
+    def _activate_and_return_billing_admin_role_id(self, graph_token):
+        billing_admin_role_template_id = self._get_billing_admin_role_template_id(
+            graph_token
+        )
+        billing_admin_role_id = self._activate_billing_admin_role(
+            graph_token, billing_admin_role_template_id
+        )
+        return billing_admin_role_id
+
+    @log_and_raise_exceptions
     def create_billing_owner(self, payload: BillingOwnerCSPPayload):
         """Create a billing account owner, which is a billing role that can
         manage everything for a billing account.
@@ -1022,13 +1070,19 @@ class AzureCloudProvider(CloudProviderInterface):
         graph_token = self._get_tenant_principal_token(
             payload.tenant_id, resource=self.graph_resource
         )
-
         # Step 1: Create an AAD identity for the user
         user_result = self._create_active_directory_user(graph_token, payload)
         # Step 2: Set the recovery email
         self._update_active_directory_user_email(graph_token, user_result.id, payload)
-        # Step 3: Find the Billing Administrator role ID
+        # Step 3: Try and retrieve the billing admin role id. If it isn't found,
+        # activate the Billing Admin role and return the id
+        # TODO: Find out if we need to check for the Billing Admin role first
+        # for provisioning. Will the Billing Admin role be applied by defaut?
         billing_admin_role_id = self._get_billing_owner_role(graph_token)
+        if billing_admin_role_id is None:
+            billing_admin_role_id = self._activate_and_return_billing_admin_role_id(
+                graph_token
+            )
         # Step 4: Assign the Billing Administrator role to the new user
         self._assign_billing_owner_role(
             graph_token, billing_admin_role_id, user_result.id
@@ -1052,11 +1106,7 @@ class AzureCloudProvider(CloudProviderInterface):
 
         result = self.sdk.requests.post(url, headers=auth_header, json=request_body)
         result.raise_for_status()
-
-        if result.ok:
-            return True
-        else:
-            raise UserProvisioningException("Could not assign billing admin role")
+        return True
 
     @log_and_raise_exceptions
     def _get_billing_owner_role(self, graph_token):
@@ -1067,16 +1117,10 @@ class AzureCloudProvider(CloudProviderInterface):
         url = f"{self.graph_resource}/v1.0/directoryRoles"
         result = self.sdk.requests.get(url, headers=auth_header)
         result.raise_for_status()
-
-        if result.ok:
-            result = result.json()
-            for role in result["value"]:
-                if role["displayName"] == "Billing Administrator":
-                    return role["id"]
-        else:
-            raise UserProvisioningException(
-                "Could not find Billing Administrator role ID; role may not be enabled."
-            )
+        result = result.json()
+        for role in result["value"]:
+            if role["displayName"] == "Billing Administrator":
+                return role["id"]
 
     def create_user(self, payload: UserCSPPayload) -> UserCSPResult:
         """Create a user in an Azure Active Directory instance.
@@ -1306,7 +1350,6 @@ class AzureCloudProvider(CloudProviderInterface):
         mgmt_token = self._get_tenant_admin_token(
             tenant_id, self.sdk.cloud.endpoints.resource_manager
         )
-
         auth_header = {
             "Authorization": f"Bearer {mgmt_token}",
         }

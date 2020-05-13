@@ -33,7 +33,7 @@ class HybridCSP:
             with_failure=simulate_failures,
             with_authorization=simulate_failures,
         )
-        self.cloud = HybridCloudProvider(azure, mock)
+        self.cloud = HybridCloudProvider(azure, mock, app.config)
         self.files = AzureFileService(app.config)
         self.reports = MockReportingProvider()
 
