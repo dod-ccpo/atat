@@ -13,7 +13,7 @@ cd $TF_DIR && terraform show $TF_DIR/plan.tfplan
 
 
 
-terraform show $TF_DIR/plan.tfplan
+
 
 
 
