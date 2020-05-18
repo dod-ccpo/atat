@@ -261,4 +261,3 @@ def downgrade():
         ),
         existing_nullable=False,
     )
-

@@ -20,9 +20,7 @@ LICENSE
 
 # Skip envrc
 .envrc
-
-# Skip terraform
-terraform
+.env*
 
 # exclude build artifacts and docker directories
 .venv

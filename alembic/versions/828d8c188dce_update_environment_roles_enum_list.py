@@ -9,8 +9,8 @@ from alembic import op
 import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
-revision = '828d8c188dce' # pragma: allowlist secret
-down_revision = '5d7198d34b91' # pragma: allowlist secret
+revision = "828d8c188dce"  # pragma: allowlist secret
+down_revision = "5d7198d34b91"  # pragma: allowlist secret
 branch_labels = None
 depends_on = None
 
@@ -29,11 +29,7 @@ def upgrade():
         "environment_roles",
         "role",
         type_=sa.Enum(
-            "ADMIN",
-            "BILLING_READ",
-            "CONTRIBUTOR",
-            name="role",
-            native_enum=False,
+            "ADMIN", "BILLING_READ", "CONTRIBUTOR", name="role", native_enum=False,
         ),
         existing_type=sa.VARCHAR(),
         nullable=True,
@@ -48,11 +44,7 @@ def downgrade():
         "status",
         type_=sa.VARCHAR(),
         existing_type=sa.Enum(
-            "ADMIN",
-            "BILLING_READ",
-            "CONTRIBUTOR",
-            name="status",
-            native_enum=False,
+            "ADMIN", "BILLING_READ", "CONTRIBUTOR", name="status", native_enum=False,
         ),
     )
     # ### end Alembic commands ###

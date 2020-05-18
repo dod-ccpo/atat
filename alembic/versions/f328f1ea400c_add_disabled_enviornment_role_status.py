@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f328f1ea400c' # pragma: allowlist secret
-down_revision = 'e05d1f2682af' # pragma: allowlist secret
+revision = "f328f1ea400c"  # pragma: allowlist secret
+down_revision = "e05d1f2682af"  # pragma: allowlist secret
 branch_labels = None
 depends_on = None
 
@@ -29,11 +29,7 @@ def upgrade():
         "environment_roles",
         "status",
         type_=sa.Enum(
-            "PENDING",
-            "COMPLETED",
-            "DISABLED",
-            name="status",
-            native_enum=False,
+            "PENDING", "COMPLETED", "DISABLED", name="status", native_enum=False,
         ),
         existing_type=sa.Enum(
             "PENDING", "COMPLETED", "PENDING_DELETE", name="status", native_enum=False
@@ -56,10 +52,6 @@ def downgrade():
             "PENDING", "COMPLETED", "PENDING_DELETE", name="status", native_enum=False
         ),
         existing_type=sa.Enum(
-            "PENDING",
-            "COMPLETED",
-            "DISABLED",
-            name="status",
-            native_enum=False,
+            "PENDING", "COMPLETED", "DISABLED", name="status", native_enum=False,
         ),
     )

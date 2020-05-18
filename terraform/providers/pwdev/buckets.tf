@@ -1,15 +1,15 @@
 # Task order bucket is required to be accessible publicly by the users.
 # which is why the policy here is "Allow"
 module "task_order_bucket" {
-  source       = "../../modules/bucket"
-  service_name = "pwdevtasks"
-  owner        = var.owner
-  name         = var.name
-  environment  = var.environment
-  region       = var.region
-  policy       = "Allow"
-  subnet_ids   = [module.vpc.subnet_list["aks"].id]
-  whitelist    = var.storage_admin_whitelist
+  source                 = "../../modules/bucket"
+  service_name           = "pwdevtasks"
+  owner                  = var.owner
+  name                   = var.name
+  environment            = var.environment
+  region                 = var.region
+  policy                 = "Allow"
+  subnet_ids             = [module.vpc.subnet_list["aks"].id]
+  whitelist              = var.storage_admin_whitelist
   bucket_cors_properties = var.bucket_cors_properties
 }
 
