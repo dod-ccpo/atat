@@ -16,4 +16,5 @@
 
 - name: get secrets
   import_tasks: get_secrets.yml
-  when: get_secrets is defined
+  when: get_secrets is defined 
+

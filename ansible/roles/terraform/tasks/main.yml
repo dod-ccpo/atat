@@ -12,23 +12,27 @@
 
 
 
+- name: sdhow tf_vars
+  debug:
+    msg: "{{ kv_tf | to_nice_json }}"
+
 
 - name: tf plan
   terraform:
     project_path: "{{tf_dir}}"
     state: "planned"
     plan_file: "plan.tfplan"
-    variables: "{{  kv_tf  }}"
+    variables: "{{ kv_tf }}"
   register: tf_run
 
 
 - debug:
-   msg: "{{tf_run.command}}"
+   msg: "{{ tf_run }}"
 
 
 - name: tf apply
   terraform:
-    project_path: "{{tf_dir}}"
+    project_path: "{{ tf_dir }}"
     state: "{{ desired_state }}"
     plan_file: "plan.tfplan"
     variables: "{{ kv_tf }}"
