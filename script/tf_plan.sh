@@ -13,7 +13,6 @@ fi
 cd $TF_DIR && terraform init
 cd ../../../ansible
 poetry run ansible-playbook ../ansible/site.yml --extra-vars "provision_pwdev=true deploy_tag=$DEPLOY_TAG tf_dir='$TF_DIR' vault_url='$VAULT_URL' vault_secret='$VAULT_SECRET' vault_client_id='$VAULT_CLIENT_ID' vault_tenant='$VAULT_TENANT' vault_subscription_id='$SUBSCRIPTION_ID'"
-
 cd $TF_DIR
 terraform show $TF_DIR/plan.tfplan
 
