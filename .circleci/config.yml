@@ -148,6 +148,8 @@ jobs:
       - image: docker:18.06.0-ce-git
       - image: circleci/postgres:10-alpine-ram
       - image: circleci/redis:4-alpine3.8
+    environment:
+      TF_VERSION: '0.12.24'
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
@@ -163,7 +165,10 @@ jobs:
               -e REDIS_HOST=redis:6379 \
               --network atat \
               atat:builder \
-              /bin/sh -c "poetry install --no-root && /bin/sh script/cibuild"
+              /bin/sh -c "poetry install --no-root &&
+                          wget https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip -O /install/tf.zip &&
+                          unzip /install/tf.zip -d /bin/ &&
+                          /bin/sh script/cibuild"
 
   integration-tests:
     docker:

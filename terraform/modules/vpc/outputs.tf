@@ -7,3 +7,7 @@ output "subnet_list" {
 output "id" {
   value = azurerm_virtual_network.vpc.id
 }
+
+output "vpc_name" {
+  value = "${var.name}-${var.environment}-vpc"
+}

@@ -1,13 +1,19 @@
 #!/bin/bash
 
-FILES_TO_FORMAT="atat/ tests/ app.py script/"
+FILES_TO_FORMAT="./"
 
 if [ "$1" == "check" ]; then
   poetry run black --check ${FILES_TO_FORMAT}
   yarn run prettier --list-different "js/**/*.js" --config ./prettier.config.json
   yarn run prettier --list-different "styles/**/*.scss"
+  if [ -x "$(command -v terraform)" ]; then
+    terraform fmt -recursive -check terraform/
+  fi
 else
   poetry run black ${FILES_TO_FORMAT}
   yarn run prettier --list-different --write "js/**/*.js" --config ./prettier.config.json
   yarn run prettier --list-different --write "styles/**/*.scss"
+  if [ -x "$(command -v terraform)" ]; then
+    terraform fmt -recursive terraform/
+  fi
 fi

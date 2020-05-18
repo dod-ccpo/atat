@@ -10,19 +10,7 @@
     get_secrets: true
     deploy_tag: deploy_tag
 
-- name: unpack tfvars
-  set_fact:
-    tfvars: "{{ secrets_env  | from_yaml }}"
 
-- name: sdhow tf_vars
-  debug:
-    msg: "{{tfvars[deploy_tag]}}"
-
-
-- name: make k/v
-  set_fact:
-    kv_tf: "{{ kv_tf|default({}) | combine({ item.name : (item.value | regex_replace(\"'\",'\"'))  })   }}"
-  with_items: "{{tfvars[deploy_tag]}}"
 
 
 - name: tf plan
@@ -30,12 +18,12 @@
     project_path: "{{tf_dir}}"
     state: "planned"
     plan_file: "plan.tfplan"
-    variables: "{{ kv_tf }}"
+    variables: "{{  kv_tf  }}"
   register: tf_run
 
 
 - debug:
-   msg: "{{tf_run}}"
+   msg: "{{tf_run.command}}"
 
 
 - name: tf apply

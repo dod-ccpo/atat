@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '137f4e27aa71' # pragma: allowlist secret
-down_revision = '18b29ab247fb' # pragma: allowlist secret
+revision = "137f4e27aa71"  # pragma: allowlist secret
+down_revision = "18b29ab247fb"  # pragma: allowlist secret
 branch_labels = None
 depends_on = None
 
@@ -159,7 +159,7 @@ def upgrade():
             "BILLING_OWNER_FAILED",
             name="fsmstates",
             native_enum=False,
-                ),
+        ),
         existing_nullable=False,
     )
     # ### end
@@ -309,7 +309,7 @@ def downgrade():
             "POLICIES_FAILED",
             name="fsmstates",
             native_enum=False,
-                ),
+        ),
         existing_nullable=False,
     )
     # ### end Alembic commands ###

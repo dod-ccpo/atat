@@ -33,6 +33,12 @@ variable "admin_principals" {
   description = "A list of user principals who need access to manage the keyvault"
 }
 
+variable "tenant_principals" {
+  type        = map
+  description = "A list of user principals who need access to tenant keyvault secrets"
+}
+
+
 variable "subnet_ids" {
   description = "List of subnet_ids that will have access to this service"
   type        = list
