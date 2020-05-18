@@ -12,6 +12,7 @@ poetry run ansible-playbook ../ansible/site.yml --extra-vars "provision_pwdev=tr
 cd $TF_DIR && terraform show $TF_DIR/plan.tfplan
 
 
+
 terraform show $TF_DIR/plan.tfplan
 
 
