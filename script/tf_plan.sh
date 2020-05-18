@@ -17,3 +17,8 @@ poetry run ansible-playbook ../ansible/site.yml --extra-vars "provision_pwdev=tr
 cd $TF_DIR && terraform show $TF_DIR/plan.tfplan
 
 
+poetry run ansible-playbook ../ansible/site.yml --extra-vars "provision_pwdev=true deploy_tag=$DEPLOY_TAG tf_dir='$TF_DIR' vault_url='https://ops-pwdev-keyvault.vault.azure.net/' vault_secret='$VAULT_SECRET' vault_client_id='$VAULT_CLIENT_ID' vault_tenant='$VAULT_TENANT' vault_subscription_id='$SUBSCRIPTION_ID'"
+
+terraform show $TF_DIR/plan.tfplan
+
+
