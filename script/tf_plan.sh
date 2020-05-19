@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-if [ -z $DEPLOY_TAG] || [ -z $TF_DIR] || [ -z $VAULT_SECRET ] || [ -z $VAULT_URL ] || [ -z $VAULT_CLIENT_ID ] ||  [ -z $VAULT_TENANT ] ||  [ -z $SUBSCRIPTION_ID ]
+if [ -z "$DEPLOY_TAG"] || [ -z "$TF_DIR" ] || [ -z "$VAULT_SECRET" ] || [ -z "$VAULT_URL" ] || [ -z "$VAULT_CLIENT_ID" ] ||  [ -z "$VAULT_TENANT" ] ||  [ -z "$SUBSCRIPTION_ID" ]
 then
 echo "Set DEPLOY_TAG, TF_DIR, VAULT_SECRET, VAULT_CLIENT_ID, VAULT_TENANT, SUBSCRIPTION_ID"
 exit 1;
