@@ -44,21 +44,6 @@ def mock_cloud_details():
     return AZURE_PUBLIC_CLOUD
 
 
-def mock_adal():
-    import adal
-    from adal.adal_error import AdalError
-
-    mock_adal = Mock(spec=adal)
-    mock_adal.AdalError = AdalError
-    mock_adal.AuthenticationContext.return_value.acquire_token_with_client_credentials.return_value = {
-        "accessToken": MOCK_ACCESS_TOKEN
-    }
-    mock_adal.AuthenticationContext.return_value.acquire_token_with_username_password.return_value = {
-        "accessToken": MOCK_ACCESS_TOKEN
-    }
-    return mock_adal
-
-
 def mock_requests():
     import requests
 
@@ -70,7 +55,6 @@ def mock_requests():
 class MockAzureSDK(object):
     def __init__(self):
         self.cloud = mock_cloud_details()
-        self.adal = mock_adal()
         self.requests = mock_requests()
 
 
@@ -94,6 +78,13 @@ def mock_azure(monkeypatch):
     )
     monkeypatch.setattr(azure_cloud_provider, "set_secret", Mock(return_value=None))
     monkeypatch.setattr(
-        azure_cloud_provider, "_get_keyvault_token", Mock(return_value="TOKEN")
+        azure_cloud_provider,
+        "_get_keyvault_token",
+        Mock(return_value=MOCK_ACCESS_TOKEN),
+    )
+    monkeypatch.setattr(
+        azure_cloud_provider,
+        "_get_service_principal_token",
+        Mock(return_value=MOCK_ACCESS_TOKEN),
     )
     return azure_cloud_provider

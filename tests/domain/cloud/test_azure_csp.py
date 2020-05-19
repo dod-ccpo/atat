@@ -5,7 +5,7 @@ from uuid import uuid4
 import pendulum
 import pydantic
 import pytest
-from adal.adal_error import AdalError
+from tests.factories import ApplicationFactory, EnvironmentFactory
 from tests.mock_azure import mock_azure, MOCK_ACCESS_TOKEN  # pylint: disable=W0611
 from tests.mock_azure import AZURE_CONFIG
 
@@ -692,6 +692,8 @@ def test_create_tenant_principal_app(
     mock_azure: AzureCloudProvider, mock_http_error_response
 ):
     mock_result = mock_requests_response(json_data={"appId": "appId", "id": "id"})
+    mock_azure._get_user_principal_token_for_scope = Mock()
+    mock_azure._get_user_principal_token_for_scope.return_value = MOCK_ACCESS_TOKEN
 
     mock_azure.sdk.requests.post.side_effect = [
         mock_azure.sdk.requests.exceptions.ConnectionError,
@@ -724,6 +726,8 @@ def test_create_tenant_principal(
     mock_azure: AzureCloudProvider, mock_http_error_response
 ):
     mock_result = mock_requests_response(json_data={"id": "principal_id"})
+    mock_azure._get_user_principal_token_for_scope = Mock()
+    mock_azure._get_user_principal_token_for_scope.return_value = MOCK_ACCESS_TOKEN
 
     mock_azure.sdk.requests.post.side_effect = [
         mock_azure.sdk.requests.exceptions.ConnectionError,
@@ -754,6 +758,8 @@ def test_create_tenant_principal_credential(
     mock_azure: AzureCloudProvider, mock_http_error_response
 ):
     mock_result = mock_requests_response(json_data={"secretText": "new secret key"})
+    mock_azure._get_user_principal_token_for_scope = Mock()
+    mock_azure._get_user_principal_token_for_scope.return_value = MOCK_ACCESS_TOKEN
 
     mock_azure.sdk.requests.post.side_effect = [
         mock_azure.sdk.requests.exceptions.ConnectionError,
@@ -795,6 +801,8 @@ def test_create_admin_role_definition(
             ]
         }
     )
+    mock_azure._get_user_principal_token_for_scope = Mock()
+    mock_azure._get_user_principal_token_for_scope.return_value = MOCK_ACCESS_TOKEN
 
     mock_azure.sdk.requests.get.side_effect = [
         mock_azure.sdk.requests.exceptions.ConnectionError,
@@ -889,6 +897,8 @@ def test_create_principal_admin_role(
 ):
 
     mock_result = mock_requests_response(json_data={"id": "id"})
+    mock_azure._get_user_principal_token_for_scope = Mock()
+    mock_azure._get_user_principal_token_for_scope.return_value = MOCK_ACCESS_TOKEN
 
     mock_azure.sdk.requests.post.side_effect = [
         mock_azure.sdk.requests.exceptions.ConnectionError,
@@ -1379,19 +1389,11 @@ def test_update_tenant_creds(mock_azure: AzureCloudProvider, monkeypatch):
     assert updated_secret == KeyVaultCredentials(**{**existing_secrets, **new_secrets})
 
 
-class TestGetCalculatorCreds:
-    def test_get_calculator_creds_succeeds(self, mock_azure: AzureCloudProvider):
-        assert mock_azure._get_calculator_creds() == MOCK_ACCESS_TOKEN
-
-    def test_get_calculator_creds_fails(self, mock_azure: AzureCloudProvider):
-        mock_azure.sdk.adal.AuthenticationContext.return_value.acquire_token_with_client_credentials.side_effect = AdalError(
-            "Adal Error"
-        )
-        with pytest.raises(AuthenticationException):
-            mock_azure._get_calculator_creds()
-
-
 def test_get_calculator_url(mock_azure: AzureCloudProvider):
+    mock_result = mock_requests_response(
+        status=200, json_data={"access_token": MOCK_ACCESS_TOKEN},
+    )
+    mock_azure.sdk.requests.get.return_value = mock_result
     assert (
         mock_azure.get_calculator_url()
         == f"{mock_azure.config.get('AZURE_CALC_URL')}?access_token={MOCK_ACCESS_TOKEN}"
@@ -1462,22 +1464,16 @@ def test_create_policies(mock_azure: AzureCloudProvider, monkeypatch):
     assert result.policy_assignment_id == final_assignment_id
 
 
-def test_get_service_principal_token_fails(mock_azure: AzureCloudProvider):
-    mock_azure.sdk.adal.AuthenticationContext.return_value.acquire_token_with_client_credentials.side_effect = AdalError(
-        "Adal Error"
+def test_get_service_principal_token_fails(unmocked_cloud_provider):
+    cloud_provider = unmocked_cloud_provider
+    mock_result = mock_requests_response(
+        status=401, json_data={"error": "invalid request"},
     )
-    with pytest.raises(AuthenticationException):
-        mock_azure._get_service_principal_token("resource", "client", "secret")
+    cloud_provider.sdk.requests.post = Mock()
+    cloud_provider.sdk.requests.post.side_effect = [mock_result]
 
-
-def test_get_user_principal_token_for_resource_fails(mock_azure: AzureCloudProvider):
-    mock_azure.sdk.adal.AuthenticationContext.return_value.acquire_token_with_username_password.side_effect = AdalError(
-        "Adal Error"
-    )
     with pytest.raises(AuthenticationException):
-        mock_azure._get_user_principal_token_for_resource(
-            "username", "password", "tenant_id", "my_resource"
-        )
+        cloud_provider._get_service_principal_token("resource", "client", "secret")
 
 
 class TestCreateManagementGroup:

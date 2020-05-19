@@ -4,7 +4,7 @@ description = "The ADAL for Python library makes it easy for python application 
 name = "adal"
 optional = false
 python-versions = "*"
-version = "1.2.2"
+version = "1.2.3"
 
 [package.dependencies]
 PyJWT = ">=1.0.0"
@@ -1455,13 +1455,13 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "1c436fcdc3ebc86e5b6df60b85e785b1b92101cab6d16456689dd7d0d52eb531"
+content-hash = "9a2e1a5ce59dc502c7a62f28abc796a5cadb0bc0e793605c8b8cca8c02f4a95c"
 python-versions = "3.7.3"
 
 [metadata.files]
 adal = [
-    {file = "adal-1.2.2-py2.py3-none-any.whl", hash = "sha256:fd17e5661f60634ddf96a569b95d34ccb8a98de60593d729c28bdcfe360eaad1"},
-    {file = "adal-1.2.2.tar.gz", hash = "sha256:5a7f1e037c6290c6d7609cab33a9e5e988c2fbec5c51d1c4c649ee3faff37eaf"},
+    {file = "adal-1.2.3-py2.py3-none-any.whl", hash = "sha256:a74ff45b88db18d3d3d0c50d0d2d6d411866648f457bef4be714ba0b8e30d515"},
+    {file = "adal-1.2.3.tar.gz", hash = "sha256:2ae7e02cea4552349fed6d8c9912da400f7e643fc30098defe0dcd01945e7c54"},
 ]
 alembic = [
     {file = "alembic-1.4.2.tar.gz", hash = "sha256:035ab00497217628bf5d0be82d664d8713ab13d37b630084da8e1f98facf4dbf"},

@@ -11,7 +11,6 @@ homepage = "https://github.com/dod-ccpo/atst"
 
 [tool.poetry.dependencies]
 python = "3.7.3"
-adal = "*"
 alembic = "*"
 azure-storage = "*"
 azure-storage-blob = "*"
