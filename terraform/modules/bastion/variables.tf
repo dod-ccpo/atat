@@ -12,3 +12,4 @@ variable "bastion_aks_sp_id" {}
 variable "environment" {}
 variable "owner" {}
 variable "name" {}
+variable "bastion_ssh_pub_key_path" {}
