@@ -5,6 +5,8 @@ variable "region" {}
 variable "backup_region" {}
 
 variable "bastion_resource_group" {}
+variable "bastion_aks_sp_secret" {}
+variable "bastion_aks_sp_id" {}
 variable "owner" {}
 
 variable "name" {}

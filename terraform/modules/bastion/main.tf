@@ -70,6 +70,121 @@ resource "azurerm_bastion_host" "aks_bastion" {
 
 # add aks cluster 1 node, 2vcpu 4 gb ram
 
+resource "azurerm_public_ip" "aks_bastion_lb_ip" {
+  name                = "cloudzero-pwdev-network-bastion-ip"
+  location            = var.region
+  resource_group_name = var.rg
+  allocation_method   = "Static"
+  sku                 = "Standard"
+
+  tags = {
+    Name        = "aks-bastion"
+    environment = "Bastion"
+  }
+}
+
+
+locals {
+  key_path = "config"
+  authorized_keys = fileset(local.key_path, "*.pub")
+}
+
+
+
+resource "azurerm_kubernetes_cluster" "k8s_bastion" {
+
+
+  name                 = "${var.name}-${var.environment}-bastion-k8s"
+  location             = var.region
+  resource_group_name  = var.rg
+  dns_prefix           = "atat-aks-bastion"
+  private_cluster_enabled = "true"
+
+
+
+  network_profile {
+
+  network_plugin = "azure"
+  dns_service_ip = "10.1.253.10"
+  docker_bridge_cidr = "172.17.0.1/16"
+  outbound_type = "loadBalancer"
+  service_cidr = "10.1.253.0/26"
+  load_balancer_sku = "Standard"
+
+  load_balancer_profile  {
+
+  #  managed_outbound_ip_count = 1
+    # need to add this to TF
+    outbound_ip_address_ids  = ["/subscriptions/95934d54-980d-47cc-9bce-3a96bf9a2d1b/resourceGroups/MC_cloudzero-pwdev-jump_bastion-aks_eastus/providers/Microsoft.Network/publicIPAddresses/050869a3-609e-4ad6-b4f4-142e9fb9ee5f"]
+
+
+  }
+  }
+
+
+
+
+  role_based_access_control {
+
+    enabled = true
+  }
+
+ addon_profile {
+
+  oms_agent {
+
+  enabled = true
+  log_analytics_workspace_id = "/subscriptions/95934d54-980d-47cc-9bce-3a96bf9a2d1b/resourcegroups/cloudzero-pwdev-log-workspace/providers/microsoft.operationalinsights/workspaces/cloudzero-pwdev-log-workspace"
+
+  }
+
+  }
+
+  service_principal {
+   client_id = var.bastion_aks_sp_id
+   client_secret = var.bastion_aks_sp_secret
+  }
+
+  linux_profile {
+
+  admin_username = "azureuser"
+  ssh_key {
+   key_data = file("${path.module}/config/id_promptworks.pub")
+  }
+
+  }
+
+
+
+
+  default_node_pool {
+    name                  = "default"
+    vm_size               = "Standard_B2s"
+    os_disk_size_gb       = 30
+    vnet_subnet_id        = azurerm_subnet.mgmt_subnet.id
+    enable_node_public_ip = true # Nodes need a public IP for external resources. FIXME: Switch to NAT Gateway if its available in our subscription
+    type ="AvailabilitySet"
+    enable_auto_scaling   = false
+    node_count = 1
+  }
+
+  lifecycle {
+    ignore_changes = [
+      default_node_pool.0.node_count
+    ]
+  }
+
+  tags = {
+    Name = "bastion-aks"
+    environment = var.environment
+    owner       = var.owner
+  }
+}
+
+
+
+
+
 
 # ansible:
 # add ssh key to cluster node
