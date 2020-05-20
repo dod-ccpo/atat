@@ -54,9 +54,11 @@ FROM python:3.7.3-alpine3.9
 ###############################
 # Overridable default config
 ARG APP_DIR=/opt/atat/atst
+ARG GIT_SHA
 
 # Environment variables
 ENV APP_DIR "${APP_DIR}"
+ENV GIT_SHA "${GIT_SHA}"
 
 # Create application directory
 RUN set -x ; \

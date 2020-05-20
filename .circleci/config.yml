@@ -33,11 +33,11 @@ commands:
         default: -e PGHOST=postgres -e REDIS_HOST=redis:6379
     steps:
       - run:
-         name: remove temp network if exists
-         command: if docker network ls | grep atat  ; then docker network rm atat; fi
+          name: remove temp network if exists
+          command: if docker network ls | grep atat  ; then docker network rm atat; fi
       - run:
           name: Set up temporary docker network
-          command:  docker network create atat
+          command: docker network create atat
       - run:
           name: Start redis
           command: docker run -d --network atat --link redis:redis -p 6379:6379 --name redis circleci/redis:4-alpine3.8
@@ -139,8 +139,8 @@ jobs:
       - run:
           name: Build image
           command: |
-            docker build . --build-arg AZURE_ACCOUNT_NAME=$AZURE_ACCOUNT_NAME --build-arg CSP=azure -f ./Dockerfile -t atat:builder --target builder
-            docker build . --build-arg AZURE_ACCOUNT_NAME=$AZURE_ACCOUNT_NAME --build-arg CSP=azure -f ./Dockerfile -t atat:latest
+            docker build . --build-arg GIT_SHA=${CIRCLE_SHA1} --build-arg AZURE_ACCOUNT_NAME=$AZURE_ACCOUNT_NAME --build-arg CSP=azure -f ./Dockerfile -t atat:builder --target builder
+            docker build . --build-arg GIT_SHA=${CIRCLE_SHA1} --build-arg AZURE_ACCOUNT_NAME=$AZURE_ACCOUNT_NAME --build-arg CSP=azure -f ./Dockerfile -t atat:latest
       - cache_docker_image
 
   test:
@@ -149,7 +149,7 @@ jobs:
       - image: circleci/postgres:10-alpine-ram
       - image: circleci/redis:4-alpine3.8
     environment:
-      TF_VERSION: '0.12.24'
+      TF_VERSION: "0.12.24"
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
