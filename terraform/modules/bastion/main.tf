@@ -149,7 +149,7 @@ resource "azurerm_kubernetes_cluster" "k8s_bastion" {
 
   admin_username = "azureuser"
   ssh_key {
-   key_data = file("${path.module}/config/id_promptworks.pub")
+   key_data = file("${var.bastion_ssh_pub_key_path}")
   }
 
   }
