@@ -1,5 +1,5 @@
 # Ghost Inspector Readme
-
+TEST
 The suite of Ghost Inspector tests that runs as part of the CI workflow
 can be found [here](https://app.ghostinspector.com/suites/5d9e3d303ab5d56633c11598). Its current status is https://api.ghostinspector.com/v1/suites/5d9e3d303ab5d56633c11598/status-badge
 
