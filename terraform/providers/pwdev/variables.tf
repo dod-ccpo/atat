@@ -4,7 +4,7 @@ variable "region" {}
 
 variable "backup_region" {}
 
-
+variable "bastion_resource_group" {}
 variable "owner" {}
 
 variable "name" {}
