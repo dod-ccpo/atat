@@ -6,10 +6,6 @@ spec:
   template:
     spec:
       volumes:
-        - name: nginx-secret
-          flexVolume:
-            options:
-              keyvaultobjectnames: "dhparam4096;mastercert;mastercert"
         - name: flask-secret
           flexVolume:
             options:

@@ -6,7 +6,7 @@ This folder contains Kubernetes deployment configuration for Azure. The followin
 
 Applying the K8s config relies on a combination of kustomize and envsubst. Kustomize comes packaged with kubectl v0.14 and higher. envsubst is part of the gettext package. It can be installed with `brew install gettext` for MacOS users.
 
-The production configuration (azure.atat.code.mil, currently) is reflected in the configuration found in the `deploy/azure` directory. Configuration for a staging environment relies on kustomize to overwrite the production config with values appropriate for that environment. You can find more information about using kustomize [here](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/). Kustomize does not manage templating, and certain values need to be templated. These include:
+The production configuration (master.atat.dev, currently) is reflected in the configuration found in the `deploy/azure` directory. Configuration for a staging environment relies on kustomize to overwrite the production config with values appropriate for that environment. You can find more information about using kustomize [here](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/). Kustomize does not manage templating, and certain values need to be templated. These include:
 
 - CONTAINER_IMAGE: The ATAT container image to use.
 - PORT_PREFIX: "8" for production, "9" for staging.
@@ -52,115 +52,7 @@ kubectl -n atat create secret generic nginx-htpasswd --from-file=./htpasswd
 ```
 
 ## SSL/TLS
-
-(NOTE: We should get cert-manager working for automatic updates of the certificates.)
-
-The NGINX instance in the ATAT pod handles SSL/TLS termination for both the main domain and authentication domain. The certificates are stored as a k8s TLS secret. Currently, certs are obtained from Let's Encrypt by running certbot in manual mode. This section will walk through the process of renewing the certs.
-
-For context, you should be familiar with [ACME HTTP-01 challenge](https://letsencrypt.org/docs/challenge-types/) method for proving ownership of a domain.
-
-To proceed, you will need to install [certbot](https://certbot.eff.org/docs/install.html). If you are on macOs and have `homebrew` installed, `brew install certbot`. These instructions assume a baseline familiarity with NGINX config, Kubernetes, and `kubectl`.
-
-As a broad overview, we will:
-
-- Ask certbot for certificates for the two domains
-- Get ACME challenge data from certbot
-- Make that data available to the NGINX container in the ATAT pod in our cluster
-
-Once this is done, certbot will be able to confirm that we own the domains and will issue certificates. Then we can make those certs available as TLS secrets in the cluster.
-
-These steps should work for updating an existing site. If you are setting up HTTPS for a new site, make sure DNS is assigned for your two domains.
-
-### Start certbot
-
-First start certbot in manual mode:
-
-```
-certbot --manual
-```
-
-If certbot tries to write to directories that require root privileges, you can instead run the following command:
-```
-certbot --config-dir ~/.certbot/config --work-dir ~/.certbot/workdir --logs-dir ~/.certbot/logs certonly --manual
-```
-You may be prompted to enter an email address, generally we've used the address of our tech lead in the past. If you asked to subscribe to any newsletters, decline.
-You may also be prompted to agree to a terms of services, which you should do.
-
-You will be prompted to enter the domain names you want a cert for. Enter **both** the main and auth domains as a comma separated list. For instance:
-
-```
-jedi.atat.code.mil,jedi-auth.atat.code.mil
-```
-
-You must agree to have your IP logged to proceed.
-
-### The ACME challenge files
-
-First you will be presented with an ACME challenge for each of the domains you have inputted. The main idea behind the ACME challenge is that cerbort will request that you update your domain(s) so that a file containing a specific string of text is served from a specific endpoint. Certbot will then attempt to load this new file from this new url to check that you have control over the domain.
-
-The ACME challenges are managed as a Kubernetes ConfigMap resource. An example ConfigMap can be found in `deploy/azure/acme-challenges.yml`. It contains a sample ACME challenge (where "foo" is the file name and "bar" is the secret data). Certbot will present you with a file name and path. Add these as a key and a value to the ConfigMap. As an example, certbot may present a message that looks like this:
-
-```
-Create a file containing just this data:
-
-ty--Ip1l5bAE1RWk3aL5EnI76OKL-iueFtkRLheugUw.nqBL619amlBbWsSSfB8zqcZowwEI-sFdok57VDkxTmk
-
-And make it available on your web server at this URL:
-
-http://auth-staging.atat.code.mil/.well-known/acme-challenge/ty--Ip1l5bAE1RWk3aL5EnI76OKL-iueFtkRLheugUw
-------------------------------------------------------------------------------------------
-Press Enter to Continue
-```
-
-You would then update the `deploy/azure/acme-challenges.yml` file to look like this:
-
-```
-data:
-  foo: |
-    bar
-  ty--Ip1l5bAE1RWk3aL5EnI76OKL-iueFtkRLheugUw: |
-    ty--Ip1l5bAE1RWk3aL5EnI76OKL-iueFtkRLheugUw.nqBL619amlBbWsSSfB8zqcZowwEI-sFdok57VDkxTmk
-```
-
-If you are updating multiple domains, certbot will present these messages one after another, for each domain. You can wait until you've gotten all the messages to update the yaml file if you wish.
-
-After you have updated the `acme-challenges.yml` file, you need to apply the updated ConfigMap using the kubectl commands discussed in the "Applying K8s Configuration" section above.
-
-In addition to the the environmental variables listed in the [Applying K8s configuration](#applying-k8s-configuration) section above, you'll also need to set the following additional variables before applying the updated ConfiMap:
-
-- VMSS_CLIENT_ID
-- KV_NAME
-
-Pay careful attention to ensure that the container image value is to to date. As a reminder, the container images can be listed with:
-
-`kubectl -n master get doployments -o wide`
-
-As always, first check the diff of the changes you're making. Only the changes to the config map file should be listed. The command below is specific to Bash shells.
-```
-source .env.cloudzero-pwdev-master && ./script/k8s_config deploy/overlays/cloudzero-pwdev-master/ | kubectl diff -f -
-```
-Then apply your changes with
-```
-source .env.cloudzero-pwdev-master && ./script/k8s_config deploy/overlays/cloudzero-pwdev-master/ | kubectl apply -f -
-```
-
-Once the updated ConfigMap is applied, you can roll the deployment with some version of:
-
-```
-kubectl -n master rollout restart deployment atst
-```
-
-This will start new pods for the web service, and the new ACME challenge will be available from the NGINX web server. You can verify this by loading the link certbot provides and verifying that you get the ACME challenge content you expect. If the files are loading correctly, proceed forward with certbot.
-
-You may need to repeat this process for the second domain. If the validation is successful, certbot will write new certificates to your host machine, typically in a directory such as `~/.certbot/config/live/azure.atat.code.mil/`
-
-You may need to combine the newly created `cert.pem` and `privkey.pem` files into one file. Here's how you might do that:
-
-```sh
-cd ~/.certbot/config/live/azure.atat.code.mil/
-cp cert.pem all.pem
-cat privkey.pem >> all.pem
-```
+TODO: New instructions on how to obtain certs to come in the form of a link to Confluence.
 
 ### Create the Key Vault certificate object
 

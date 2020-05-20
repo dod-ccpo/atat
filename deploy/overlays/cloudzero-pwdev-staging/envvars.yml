@@ -12,7 +12,7 @@ data:
   PGUSER: atat@cloudzero-pwdev-sql
   PGSSLMODE: require
   REDIS_HOST: cloudzero-pwdev-redis.redis.cache.windows.net:6380
-  SERVER_NAME: staging.atat.cloud.mil
+  SERVER_NAME: staging.atat.dev
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -22,8 +22,8 @@ data:
   ASSETS_URL: ""
   AZURE_ACCOUNT_NAME: pwdevtasks
   BLOB_STORAGE_URL: https://pwdevtasks.blob.core.windows.net/
-  CAC_URL: https://auth-staging.atat.code.mil/login-redirect
-  CDN_ORIGIN: https://staging.atat.cloud.mil
+  CAC_URL: https://auth-staging.atat.dev/login-redirect
+  CDN_ORIGIN: https://staging.atat.dev
   CELERY_DEFAULT_QUEUE: celery-staging
   FLASK_ENV: staging
   PGDATABASE: cloudzero_pwdev_atat
@@ -31,5 +31,5 @@ data:
   PGUSER: atat@cloudzero-pwdev-sql
   PGSSLMODE: require
   REDIS_HOST: cloudzero-pwdev-redis.redis.cache.windows.net:6380
-  SESSION_COOKIE_DOMAIN: atat.code.mil
-  STATIC_URL: "https://staging.atat.code.mil/static/"
+  SESSION_COOKIE_DOMAIN: atat.dev
+  STATIC_URL: "https://staging.atat.dev/static/"

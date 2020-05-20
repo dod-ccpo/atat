@@ -1,0 +1,18 @@
+version: 1
+update_configs:
+  - directory: .
+    package_manager: python
+    update_schedule: live
+    default_labels: [dependencies, python]
+    automerged_updates:
+      - match:
+          dependency_type: "all"
+          update_type: "semver:patch"
+  - directory: .
+    package_manager: javascript
+    update_schedule: live
+    default_labels: [dependencies, javascript]
+    automerged_updates:
+      - match:
+          dependency_type: "all"
+          update_type: "semver:patch"

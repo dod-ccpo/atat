@@ -7,12 +7,12 @@ metadata:
 data:
   AZURE_ACCOUNT_NAME: atat
   AZURE_TO_BUCKET_NAME: task-order-pdfs
-  CAC_URL: https://auth-staging.atat.code.mil/login-redirect
+  CAC_URL: https://auth-staging.atat.dev/login-redirect
   CELERY_DEFAULT_QUEUE: celery-master
   DEBUG: "0"
   DISABLE_CRL_CHECK: "true"
   MAIL_PORT: "587"
-  MAIL_SENDER: postmaster@atat.code.mil
+  MAIL_SENDER: postmaster@atat.dev
   MAIL_SERVER: smtp.mailgun.org
   MAIL_TLS: "true"
   OVERRIDE_CONFIG_DIRECTORY: /config
@@ -25,5 +25,5 @@ data:
   PGUSER: atat_master@atat-db
   REDIS_HOST: atat.redis.cache.windows.net:6380
   REDIS_TLS: "true"
-  SERVER_NAME: azure.atat.code.mil
+  SERVER_NAME: staging.atat.dev
   TZ: UTC

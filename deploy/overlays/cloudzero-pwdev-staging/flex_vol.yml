@@ -13,7 +13,7 @@ spec:
               usevmmanagedidentity: "true"
               vmmanagedidentityclientid: $VMSS_CLIENT_ID
               keyvaultname: "cz-pwdev-keyvault"
-              keyvaultobjectnames: "dhparam4096;stagingcert;stagingcert"
+              keyvaultobjectnames: "dhparam4096;atatdev;atatdev"
         - name: flask-secret
           flexVolume:
             options:

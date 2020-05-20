@@ -9,8 +9,8 @@ data:
   AZURE_ACCOUNT_NAME: atat
   AZURE_TO_BUCKET_NAME: task-order-pdfs
   BLOB_STORAGE_URL: https://atat.blob.core.windows.net/
-  CAC_URL: https://auth-staging.atat.code.mil/login-redirect
-  CDN_ORIGIN: https://azure.atat.code.mil
+  CAC_URL: https://auth-staging.atat.dev/login-redirect
+  CDN_ORIGIN: https://staging.atat.dev
   CELERY_DEFAULT_QUEUE: celery-master
   CSP: azure
   DEBUG: "0"
@@ -31,7 +31,7 @@ data:
   PGUSER: atat_master@atat-db
   REDIS_HOST: atat.redis.cache.windows.net:6380
   REDIS_TLS: "true"
-  SESSION_COOKIE_DOMAIN: atat.code.mil
+  SESSION_COOKIE_DOMAIN: atat.dev
   SESSION_COOKIE_SECURE: "true"
   STATIC_URL: https://atat-cdn.azureedge.net/static/
   TZ: UTC

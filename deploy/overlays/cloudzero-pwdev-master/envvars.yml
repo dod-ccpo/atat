@@ -8,11 +8,12 @@ data:
   AZURE_BILLING_ACCOUNT_NAME: foo
   AZURE_TENANT_ADMIN_USERNAME: atat.hybrid@dancorriganpromptworks.onmicrosoft.com
   AZURE_VAULT_URL: "https://hybridcz-pwdev-keyvault.vault.azure.net/"
+  CAC_URL: https://auth-master.atat.dev/login-redirect
   CELERY_DEFAULT_QUEUE: celery-master
   CSP: hybrid
   FLASK_ENV: master
   PGDATABASE: cloudzero_pwdev_atat_master
-  SERVER_NAME: azure.atat.cloud.mil
+  SERVER_NAME: master.atat.dev
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -23,10 +24,10 @@ data:
   AZURE_BILLING_ACCOUNT_NAME: foo
   AZURE_TENANT_ADMIN_USERNAME: atat.hybrid@dancorriganpromptworks.onmicrosoft.com
   AZURE_VAULT_URL: "https://hybridcz-pwdev-keyvault.vault.azure.net/"
-  CAC_URL: https://auth-azure.atat.code.mil/login-redirect
-  CDN_ORIGIN: https://azure.atat.cloud.mil
+  CAC_URL: https://auth-master.atat.dev/login-redirect
+  CDN_ORIGIN: https://master.atat.dev
   CELERY_DEFAULT_QUEUE: celery-master
   CSP: hybrid
   FLASK_ENV: master
   PGDATABASE: cloudzero_pwdev_atat_master
-  STATIC_URL: "https://azure.atat.code.mil/static/"
+  STATIC_URL: "https://master.atat.dev/static/"
