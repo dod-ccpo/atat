@@ -224,6 +224,9 @@ az acr login -n <cloud-zero-registry-name>
 docker push <nginx-image-tag>
 ```
 
+Now you should take the time to set your `NGINX_CONTAINER_IMAGE` environment
+variable to whatever you chose for your `nginx-image-tag` value.
+
 ## Deployment
 
 Preview the configuration changes with this command. Make sure the only change 
