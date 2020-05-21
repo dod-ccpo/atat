@@ -20,7 +20,7 @@
     "babel-polyfill": "^6.26.0",
     "date-fns": "^1.29.0",
     "ramda": "^0.25.0",
-    "stickybits": "^3.6.6",
+    "stickybits": "^3.7.7",
     "svg-innerhtml": "^1.1.0",
     "text-mask-addons": "^3.8.0",
     "uswds": "^1.6.9",
