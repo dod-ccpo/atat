@@ -52,7 +52,10 @@ kubectl -n atat create secret generic nginx-htpasswd --from-file=./htpasswd
 ```
 
 ## SSL/TLS
-TODO: New instructions on how to obtain certs to come in the form of a link to Confluence.
+
+### Renewing TLS certs
+
+For details on how to renew our TLS certificates for the `*.atat.dev` development sites, check [the project wiki](https://ccpo.atlassian.net/wiki/spaces/AT/pages/426934409/Renewing+TLS+Certificates+for+.atat.dev+sites)
 
 ### Create the Key Vault certificate object
 
