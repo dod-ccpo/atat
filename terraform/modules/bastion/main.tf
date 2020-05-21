@@ -10,7 +10,7 @@ resource "azurerm_subnet" "bastion_subnet" {
   name                 = "AzureBastionSubnet"
   resource_group_name  = var.bastion_subnet_rg
   virtual_network_name = var.bastion_subnet_vpc_name
-  address_prefix       = var.bastion_subnet_cidr
+  address_prefixes       = ["${var.bastion_subnet_cidr}"]
 
 
 }
@@ -25,7 +25,8 @@ resource "azurerm_subnet" "mgmt_subnet" {
   name                 = "management-subnet"
   resource_group_name  = var.mgmt_subnet_rg
   virtual_network_name = var.mgmt_subnet_vpc_name
-  address_prefix       = var.mgmt_subnet_cidr
+  address_prefixes       = ["${var.mgmt_subnet_cidr}"]
+  enforce_private_link_endpoint_network_policies = true
 
 
 }
@@ -93,21 +94,19 @@ resource "azurerm_kubernetes_cluster" "k8s_bastion" {
   network_profile {
 
     network_plugin     = "azure"
-    dns_service_ip     = "10.1.253.10"
+    dns_service_ip     = "10.254.253.10"
     docker_bridge_cidr = "172.17.0.1/16"
     outbound_type      = "loadBalancer"
-    service_cidr       = "10.1.253.0/26"
+    service_cidr       = "10.254.253.0/26"
     load_balancer_sku  = "Standard"
 
 
   }
 
 
-
-
-  role_based_access_control {
-
-    enabled = true
+  service_principal {
+    client_id     = var.bastion_aks_sp_id
+    client_secret = var.bastion_aks_sp_secret
   }
 
   addon_profile {
@@ -121,19 +120,7 @@ resource "azurerm_kubernetes_cluster" "k8s_bastion" {
 
   }
 
-  service_principal {
-    client_id     = var.bastion_aks_sp_id
-    client_secret = var.bastion_aks_sp_secret
-  }
 
-  linux_profile {
-
-    admin_username = "breakglass"
-    ssh_key {
-      key_data = file("${var.bastion_ssh_pub_key_path}")
-    }
-
-  }
 
 
 
