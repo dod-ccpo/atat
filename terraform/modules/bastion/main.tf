@@ -3,17 +3,6 @@
 # add AzureBastionSubnet
 
 
-resource "azurerm_subnet" "bastion_subnet" {
-
-
-
-  name                 = "AzureBastionSubnet"
-  resource_group_name  = var.bastion_subnet_rg
-  virtual_network_name = var.bastion_subnet_vpc_name
-  address_prefixes       = ["${var.bastion_subnet_cidr}"]
-
-
-}
 
 
 # add mgmgt subnet
@@ -22,7 +11,7 @@ resource "azurerm_subnet" "mgmt_subnet" {
 
 
 
-  name                 = "management-subnet"
+  name                 = "mgr-subnet"
   resource_group_name  = var.mgmt_subnet_rg
   virtual_network_name = var.mgmt_subnet_vpc_name
   address_prefixes       = ["${var.mgmt_subnet_cidr}"]
@@ -31,42 +20,13 @@ resource "azurerm_subnet" "mgmt_subnet" {
 
 }
 
-# add bastion public ip
 
-resource "azurerm_public_ip" "bastion_pub_ip" {
-  name                = "cloudzero-pwdev-network-bastion-ip"
-  location            = var.region
-  resource_group_name = var.rg
-  allocation_method   = "Static"
-  sku                 = "Standard"
-
-  tags = {
-    Name        = "aks-bastion"
-    environment = "Bastion"
-  }
-}
 
 
 
 # add azure AzureBastion
 
-resource "azurerm_bastion_host" "aks_bastion" {
-  name                = "azure-aks-bastion"
-  location            = var.region
-  resource_group_name = var.rg
 
-  ip_configuration {
-    name                 = "IpConf"
-    subnet_id            = azurerm_subnet.bastion_subnet.id
-    public_ip_address_id = azurerm_public_ip.bastion_pub_ip.id
-  }
-
-  tags = {
-
-    Name = "aks-bastion"
-
-  }
-}
 
 
 # add aks cluster 1 node, 2vcpu 4 gb ram
@@ -130,7 +90,7 @@ resource "azurerm_kubernetes_cluster" "k8s_bastion" {
     vm_size               = "Standard_B2s"
     os_disk_size_gb       = 30
     vnet_subnet_id        = azurerm_subnet.mgmt_subnet.id
-    enable_node_public_ip = false # Nodes need a public IP for external resources. FIXME: Switch to NAT Gateway if its available in our subscription
+    enable_node_public_ip = false
     type                  = "AvailabilitySet"
     enable_auto_scaling   = false
     node_count            = 1
@@ -148,6 +108,9 @@ resource "azurerm_kubernetes_cluster" "k8s_bastion" {
     owner       = var.owner
   }
 }
+
+
+
 
 
 
