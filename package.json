@@ -24,7 +24,7 @@
     "svg-innerhtml": "^1.1.0",
     "text-mask-addons": "^3.8.0",
     "uswds": "^1.6.9",
-    "v-tooltip": "^2.0.2",
+    "v-tooltip": "^2.0.3",
     "vue": "2.6.11",
     "vue-text-mask": "^6.1.2",
     "whatwg-fetch": "^3.0.0"
