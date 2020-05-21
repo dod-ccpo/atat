@@ -143,10 +143,10 @@ description = "Microsoft Azure Blob Storage Client Library for Python"
 name = "azure-storage-blob"
 optional = false
 python-versions = "*"
-version = "12.3.0"
+version = "12.3.1"
 
 [package.dependencies]
-azure-core = ">=1.2.2,<2.0.0"
+azure-core = ">=1.4.0,<2.0.0"
 cryptography = ">=2.1.4"
 msrest = ">=0.6.10"
 
@@ -409,7 +409,7 @@ description = "A robust email syntax and deliverability validation library for P
 name = "email-validator"
 optional = false
 python-versions = "*"
-version = "1.0.5"
+version = "1.1.1"
 
 [package.dependencies]
 dnspython = ">=1.15.0"
@@ -1006,7 +1006,7 @@ description = "python code static checker"
 name = "pylint"
 optional = false
 python-versions = ">=3.5.*"
-version = "2.5.0"
+version = "2.5.2"
 
 [package.dependencies]
 astroid = ">=2.4.0,<=2.5"
@@ -1517,8 +1517,8 @@ azure-storage = [
     {file = "azure_storage-0.36.0-py2.py3-none-any.whl", hash = "sha256:4c406422e3edd41920bb1f0c3930c34fee3eb0d55258ef7ec7308ccbb9385ad5"},
 ]
 azure-storage-blob = [
-    {file = "azure-storage-blob-12.3.0.zip", hash = "sha256:9a630250c3bc9c1cc30cbcd19d3c0ef432e2f064343aa8f7d635dd923c14623f"},
-    {file = "azure_storage_blob-12.3.0-py2.py3-none-any.whl", hash = "sha256:401a538b9b2a8a11890af93e6f835602cba70b8d96743a526653e090018f6fe7"},
+    {file = "azure-storage-blob-12.3.1.zip", hash = "sha256:02030d657914c221961f6e7ebafc6ec36761649c04396b368e0b102cbcdcf26c"},
+    {file = "azure_storage_blob-12.3.1-py2.py3-none-any.whl", hash = "sha256:e797cb23186e23791f30d424473245383d24d16451a66c6556ca7c7c96678541"},
 ]
 azure-storage-common = [
     {file = "azure-storage-common-2.1.0.tar.gz", hash = "sha256:ccedef5c67227bc4d6670ffd37cec18fb529a1b7c3a5e53e4096eb0cf23dc73f"},
@@ -1669,7 +1669,8 @@ dnspython = [
     {file = "dnspython-1.16.0.zip", hash = "sha256:36c5e8e38d4369a08b6780b7f27d790a292b2b08eea01607865bf0936c558e01"},
 ]
 email-validator = [
-    {file = "email_validator-1.0.5-py2.py3-none-any.whl", hash = "sha256:e3e6ede1765d7c1e580d2050d834b2689361f7da2d50ce74df6a5968fca7cb13"},
+    {file = "email_validator-1.1.1-py2.py3-none-any.whl", hash = "sha256:5f246ae8d81ce3000eade06595b7bb55a4cf350d559e890182a1466a21f25067"},
+    {file = "email_validator-1.1.1.tar.gz", hash = "sha256:63094045c3e802c3d3d575b18b004a531c36243ca8d1cec785ff6bfcb04185bb"},
 ]
 factory-boy = [
     {file = "factory_boy-2.12.0-py2.py3-none-any.whl", hash = "sha256:728df59b372c9588b83153facf26d3d28947fc750e8e3c95cefa9bed0e6394ee"},
@@ -1985,8 +1986,8 @@ pyjwt = [
     {file = "PyJWT-1.7.1.tar.gz", hash = "sha256:8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96"},
 ]
 pylint = [
-    {file = "pylint-2.5.0-py3-none-any.whl", hash = "sha256:bd556ba95a4cf55a1fc0004c00cf4560b1e70598a54a74c6904d933c8f3bd5a8"},
-    {file = "pylint-2.5.0.tar.gz", hash = "sha256:588e114e3f9a1630428c35b7dd1c82c1c93e1b0e78ee312ae4724c5e1a1e0245"},
+    {file = "pylint-2.5.2-py3-none-any.whl", hash = "sha256:dd506acce0427e9e08fb87274bcaa953d38b50a58207170dbf5b36cf3e16957b"},
+    {file = "pylint-2.5.2.tar.gz", hash = "sha256:b95e31850f3af163c2283ed40432f053acbc8fc6eba6a069cb518d9dbf71848c"},
 ]
 pyopenssl = [
     {file = "pyOpenSSL-19.1.0-py2.py3-none-any.whl", hash = "sha256:621880965a720b8ece2f1b2f54ea2071966ab00e2970ad2ce11d596102063504"},
