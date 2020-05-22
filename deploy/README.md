@@ -9,6 +9,7 @@ Applying the K8s config relies on a combination of kustomize and envsubst. Kusto
 The production configuration (master.atat.dev, currently) is reflected in the configuration found in the `deploy/azure` directory. Configuration for a staging environment relies on kustomize to overwrite the production config with values appropriate for that environment. You can find more information about using kustomize [here](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/). Kustomize does not manage templating, and certain values need to be templated. These include:
 
 - CONTAINER_IMAGE: The ATAT container image to use.
+- NGINX_CONTAINER_IMAGE: Container image to run the nginx server.
 - PORT_PREFIX: "8" for production, "9" for staging.
 - MAIN_DOMAIN: The host domain for the environment.
 - AUTH_DOMAIN: The host domain for the authentication endpoint for the environment.
@@ -52,7 +53,10 @@ kubectl -n atat create secret generic nginx-htpasswd --from-file=./htpasswd
 ```
 
 ## SSL/TLS
-TODO: New instructions on how to obtain certs to come in the form of a link to Confluence.
+
+### Renewing TLS certs
+
+For details on how to renew our TLS certificates for the `*.atat.dev` development sites, check [the project wiki](https://ccpo.atlassian.net/wiki/spaces/AT/pages/426934409/Renewing+TLS+Certificates+for+.atat.dev+sites)
 
 ### Create the Key Vault certificate object
 
@@ -187,6 +191,72 @@ There are 3 steps to using the FlexVol to access secrets from KeyVault
     mykey.txt
     mysecret.pem
     ```
+
+# NGINX Container
+
+We use a special Red Hat Linux container provided by the DOD Iron Bank repository.
+This image runs the NGINX server as a non-root user that is part of a group with an explicit GID.
+Both of these qualities are considered best practice for Docker images.
+
+> Iron Bank is the DoD repository of digitally signed, binary container images that have been hardened according to the Container Hardening Guide coming from Iron Bank. Containers accredited in Iron Bank have DoD-wide reciprocity across classifications.
+
+> Avoid installing or using sudo as it has unpredictable TTY and signal-forwarding behavior that can cause problems.
+
+> Users and groups in an image are assigned a non-deterministic UID/GID in that the “next” UID/GID is assigned regardless of image rebuilds. So, if it’s critical, you should assign an explicit UID/GID.
+
+https://software.af.mil/dsop/services/
+
+https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
+
+## Building
+
+The `- < Dockerfile` pattern omits the build context, which isn't necessary for
+the nginx server
+
+```
+docker build -t nginx:rhel-8.2 - < nginx.Dockerfile --build-arg IMAGE=<base-image-tag>
+```
+
+After verifying that your docker container is working (by accessing the server
+locally) you can tag and push the image to our repositoy. Your image tag should
+follow the example set here.
+
+```
+docker tag nginx:rhel-8.2 <nginx-image-tag>
+az acr login -n <cloud-zero-registry-name>
+docker push <nginx-image-tag>
+```
+
+Now you should take the time to set your `NGINX_CONTAINER_IMAGE` environment
+variable to whatever you chose for your `nginx-image-tag` value.
+
+## Deployment
+
+Preview the configuration changes with this command. Make sure the only change 
+is to the nginx image and the generation number. If more changes exist, then
+you need to rebase onto staging.
+
+```
+source .env.cloudzero-pwdev-staging && script/k8s_config deploy/overlays/cloudzero-pwdev-staging/ | kubectl -n staging diff -f -
+```
+
+After you've verfied your changes, you can apply!
+
+```
+source .env.cloudzero-pwdev-staging && script/k8s_config deploy/overlays/cloudzero-pwdev-staging/ | kubectl -n staging apply -f -
+```
+
+Preview the deployment status of your containers with the pods command.
+
+```
+kubectl -n staging get pods
+```
+
+And check that it's actually using your updated config.
+
+```
+kubectl -n staging describe pod <pod-id>
+```
 
 # Miscellaneous Notes
 

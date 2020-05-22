@@ -65,7 +65,7 @@ spec:
               memory: 400Mi
               cpu: 940m
         - name: nginx
-          image: nginx:alpine
+          image: $NGINX_CONTAINER_IMAGE
           securityContext:
             allowPrivilegeEscalation: false
           ports:

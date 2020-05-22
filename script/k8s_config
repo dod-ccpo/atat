@@ -8,6 +8,7 @@ set -e
 # Expected settings. Script will error if these are not provided.
 SETTINGS=(
   CONTAINER_IMAGE
+  NGINX_CONTAINER_IMAGE
   PORT_PREFIX
   MAIN_DOMAIN
   AUTH_DOMAIN

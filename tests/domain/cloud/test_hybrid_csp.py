@@ -11,7 +11,8 @@ from atat.domain.csp.cloud.models import (
     UserCSPPayload,
     UserRoleCSPPayload,
     CostManagementQueryCSPPayload,
-    InitialMgmtGroupVerificationCSPPayload,
+    SubscriptionCreationCSPPayload,
+    SubscriptionVerificationCSPPayload,
 )
 from atat.jobs import do_create_application, do_create_environment_role, do_create_user
 from atat.models import PortfolioStates, PortfolioStateMachine
@@ -50,7 +51,7 @@ def portfolio():
 
 @pytest.fixture(scope="function")
 def csp(app):
-    return HybridCSP(app, simulate_failures=True).cloud
+    return HybridCSP(app, simulate_failures=False).cloud
 
 
 @pytest.fixture(scope="function")
@@ -160,6 +161,66 @@ def test_get_reporting_data(csp):
 
     result = csp.get_reporting_data(payload)
     assert result.name
+
+
+@pytest.mark.skip(reason="This test cannot complete due to permission issues.")
+@pytest.mark.hybrid
+def test_create_subscription(csp):
+    environment = EnvironmentFactory.create()
+
+    csp.azure.create_tenant_creds(
+        csp.azure.tenant_id,
+        KeyVaultCredentials(
+            root_tenant_id=csp.azure.tenant_id,
+            root_sp_client_id=csp.azure.client_id,
+            root_sp_key=csp.azure.secret_key,
+            tenant_id=csp.azure.tenant_id,
+            tenant_sp_key=csp.azure.secret_key,
+            tenant_sp_client_id=csp.azure.client_id,
+        ),
+    )
+
+    payload = SubscriptionCreationCSPPayload(
+        display_name=environment.name,
+        tenant_id=csp.azure.tenant_id,
+        parent_group_id=csp.azure.config["AZURE_ROOT_MGMT_GROUP_ID"],
+        billing_account_name=csp.azure.config["AZURE_BILLING_ACCOUNT_NAME"],
+        billing_profile_name=csp.azure.config["AZURE_BILLING_PROFILE_ID"],
+        invoice_section_name=csp.azure.config["AZURE_INVOICE_SECTION_ID"],
+    )
+
+    csp.create_subscription_creation(payload)
+
+
+def test_create_subscription_mocked(csp):
+    # TODO: When we finally move over to azure, this mocked test should
+    # probably be removed in favor of the above "test_create_subscription"
+    # test.
+    payload = SubscriptionCreationCSPPayload(
+        tenant_id="tenant id",
+        displayName="display name",
+        parentGroupId="parent group id",
+        billingAccountName="billing account name",
+        billingProfileName="billing profile name",
+        invoiceSectionName="invoice section name",
+    )
+
+    sub = csp.create_subscription(payload)
+    sub_creation = csp.create_subscription_creation(payload)
+
+    assert (
+        sub.subscription_verify_url
+        == sub_creation.subscription_verify_url
+        == "https://zombo.com"
+    )
+    assert sub.subscription_retry_after == sub_creation.subscription_retry_after == 10
+
+
+def test_create_subscription_verification(csp):
+    payload = SubscriptionVerificationCSPPayload(
+        tenantId="tenant id", subscriptionVerifyUrl="subscription verify url"
+    )
+    assert csp.create_subscription_verification(payload).subscription_id
 
 
 @pytest.mark.hybrid
