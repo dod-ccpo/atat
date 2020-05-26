@@ -1353,9 +1353,12 @@ def test_create_billing_owner(mock_azure: AzureCloudProvider):
     # return value for PATCH doesn't matter much
     mock_azure.sdk.requests.patch.return_value = mock_requests_response()
     # return value for GET needs to be a JSON object with a list of role definitions
-    mock_azure.sdk.requests.get.return_value = mock_requests_response(
+
+    r1 = mock_requests_response(status=400)
+    r2 = mock_requests_response(
         json_data={"value": [{"displayName": "Billing Administrator", "id": "4567"}]}
     )
+    mock_azure.sdk.requests.get.side_effect = [r1, r2]
 
     payload = BillingOwnerCSPPayload(
         tenant_id=uuid4().hex,
@@ -1365,6 +1368,33 @@ def test_create_billing_owner(mock_azure: AzureCloudProvider):
 
     result = mock_azure.create_billing_owner(payload)
     assert result.billing_owner_id == final_result
+
+
+def test_create_billing_owner_uses_existing_resources(mock_azure: AzureCloudProvider):
+    # mock POST so that it returns a message for an already existing role assignment
+    mock_azure.sdk.requests.post.return_value = mock_requests_response(
+        json_data={"error": {"message": "A conflicting objectl"}}
+    )
+
+    # return value for PATCH doesn't matter much
+    mock_azure.sdk.requests.patch.return_value = mock_requests_response()
+
+    # return value for GET needs to be a JSON object with a list of role definitions
+    # Return a value for an existing user
+    r1 = mock_requests_response(json_data={"displayName": "foo", "id": "1234"})
+    r2 = mock_requests_response(
+        json_data={"value": [{"displayName": "Billing Administrator", "id": "4567"}]}
+    )
+    mock_azure.sdk.requests.get.side_effect = [r1, r2]
+
+    payload = BillingOwnerCSPPayload(
+        tenant_id=uuid4().hex,
+        domain_name="rebelalliance",
+        password_recovery_email_address="many@bothans.org",
+    )
+
+    result = mock_azure.create_billing_owner(payload)
+    assert result.billing_owner_id == "1234"
 
 
 def test_update_tenant_creds(mock_azure: AzureCloudProvider, monkeypatch):

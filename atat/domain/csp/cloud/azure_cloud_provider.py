@@ -2,7 +2,7 @@ import json
 import time
 from functools import wraps
 from secrets import token_hex, token_urlsafe
-from typing import Dict
+from typing import Dict, Optional
 from uuid import uuid4
 
 from flask import current_app as app
@@ -1041,6 +1041,16 @@ class AzureCloudProvider(CloudProviderInterface):
         return billing_admin_role_id
 
     @log_and_raise_exceptions
+    def _get_existing_billing_owner(
+        self, token: str, payload: BillingOwnerCSPPayload
+    ) -> Optional[UserCSPResult]:
+        header = {"Authorization": f"Bearer {token}"}
+        url = f"{self.graph_resource}/v1.0/users/{payload.user_principal_name}"
+        result = self.sdk.requests.get(url, headers=header)
+        if result.status_code == 200:
+            return UserCSPResult(**result.json())
+        return None
+
     def create_billing_owner(self, payload: BillingOwnerCSPPayload):
         """Create a billing account owner, which is a billing role that can
         manage everything for a billing account.
@@ -1051,8 +1061,12 @@ class AzureCloudProvider(CloudProviderInterface):
         graph_token = self._get_tenant_principal_token(
             payload.tenant_id, scope=self.graph_resource + "/.default"
         )
-        # Step 1: Create an AAD identity for the user
-        user_result = self._create_active_directory_user(graph_token, payload)
+
+        # Step 1: Retrieve or create an AAD identity for the user
+        user_result = self._get_existing_billing_owner(graph_token, payload)
+        if not user_result:
+            user_result = self._create_active_directory_user(graph_token, payload)
+
         # Step 2: Set the recovery email
         self._update_active_directory_user_email(graph_token, user_result.id, payload)
         # Step 3: Try and retrieve the billing admin role id. If it isn't found,
@@ -1086,6 +1100,11 @@ class AzureCloudProvider(CloudProviderInterface):
         url = f"{self.graph_resource}/beta/roleManagement/directory/roleAssignments"
 
         result = self.sdk.requests.post(url, headers=auth_header, json=request_body)
+
+        error = result.json().get("error")
+        if error and "A conflicting object" in error.get("message"):
+            return True
+
         result.raise_for_status()
         return True
 
