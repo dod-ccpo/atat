@@ -103,7 +103,7 @@ resource "azurerm_kubernetes_cluster" "k8s_bastion" {
     oms_agent {
 
       enabled                    = true
-      log_analytics_workspace_id = "/subscriptions/95934d54-980d-47cc-9bce-3a96bf9a2d1b/resourcegroups/cloudzero-pwdev-log-workspace/providers/microsoft.operationalinsights/workspaces/cloudzero-pwdev-log-workspace"
+      log_analytics_workspace_id = var.log_analytics_workspace_id
 
     }
 
