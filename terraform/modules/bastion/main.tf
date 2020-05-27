@@ -2,7 +2,18 @@
 
 # add AzureBastionSubnet
 
+resource "azurerm_subnet" "azure_bastion_subnet" {
 
+
+
+  name                 = "mgr-subnet"
+  resource_group_name  = var.bastion_subnet_rg
+  virtual_network_name = var.bastion_subnet_vpc_name
+  address_prefixes       = ["${var.bastion_subnet_cidr}"]
+  enforce_private_link_endpoint_network_policies = true
+
+
+}
 
 
 # add mgmgt subnet
@@ -26,7 +37,25 @@ resource "azurerm_subnet" "mgmt_subnet" {
 
 # add azure AzureBastion
 
+resource "azurerm_public_ip" "bastion_ip" {
+  name                = "bastion-ip"
+  location            = var.region
+  resource_group_name = var.rg
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
 
+resource "azurerm_bastion_host" "host" {
+  name                = "jit-bastion"
+  location            = var.region
+  resource_group_name = var.rg
+
+  ip_configuration {
+    name                 = "configuration"
+    subnet_id            = azurerm_subnet.azure_bastion_subnet.id
+    public_ip_address_id = azurerm_public_ip.bastion_ip.id
+  }
+}
 
 
 # add aks cluster 1 node, 2vcpu 4 gb ram
