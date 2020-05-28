@@ -6,7 +6,6 @@
 ## Inventory Notes
 
 
-<<<<<<< HEAD
 `tf_plan.sh`  
 
 ### Requires: 
