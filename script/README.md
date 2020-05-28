@@ -2,9 +2,11 @@
 
   Scripts to expedite workflows
 
+
 ## Inventory Notes
 
 
+<<<<<<< HEAD
 `tf_plan.sh`  
 
 ### Requires: 
@@ -27,4 +29,5 @@
 * Run the script
 * The result should not fail and you should be able to see the `plan.tfplan` output as a diff to what terraform would CRUD if applied.
 * Compare the `plan.tfplan` output to the intended changes from the PR comments
+
 
