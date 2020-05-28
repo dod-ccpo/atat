@@ -68,3 +68,5 @@ variable "bucket_cors_properties" {
   description = "supports cors"
   default     = []
 }
+
+variable "log_analytics_workspace_id" {}
