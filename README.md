@@ -312,11 +312,15 @@ All config settings must be declared in "config/base.ini", even if they are null
 
 #### Hybrid Configuration
 
+Values where "[Testing only]" is mentioned are only required for running the Hybrid test suite, **not** for using the Hybrid interface for a running instance of ATAT.
+
 Configuration variables that are needed solely to run Hybrid tests are in the `[hybrid]` section of the base configuration file.
 - `AZURE_ADMIN_ROLE_ASSIGNMENT_ID`: The fully pathed role assignment ID that associates a user with admin privileges to the root tenant of the Hybrid Cloud
 - `AZURE_BILLING_PROFILE_ID`: ID of the billing profile used for Cost Management queries with the Hybrid interface.
-- `AZURE_HYBRID_CLIENT_ID`: Client ID of a service principal in the hybrid tenant used in all tests except for portfolio provisioning
-- `AZURE_HYBRID_SECRET_KEY`: Secret key for the service principal associated with the `AZURE_HYBRID_CLIENT_ID`
+- `AZURE_HYBRID_CLIENT_ID`: [Testing only] Client ID of an app registration in the hybrid tenant used in all tests except for portfolio provisioning
+- `AZURE_HYBRID_SECRET_KEY`: [Testing only] Secret key for the app registration associated with the `AZURE_HYBRID_CLIENT_ID`
+- `AZURE_HYBRID_REPORTING_CLIENT_ID`: [Testing only] Client ID of an app registration with an "Invoice Section Reader" role for the invoice section defined by AZURE_INVOICE_SECTION_ID
+- `AZURE_HYBRID_REPORTING_SECRET`: [Testing only] Secret key for the app registration associated with the `AZURE_HYBRID_REPORTING_CLIENT_ID`
 - `AZURE_HYBRID_TENANT_DOMAIN`: The domain of the hybrid tenant
 - `AZURE_HYBRID_TENANT_ID`: ID of the tenant used to store resources provisioned during Hybrid tests
 - `AZURE_INVOICE_SECTION_ID`: ID of the invoice section used for Cost Management queries with the Hybrid interface.

@@ -90,7 +90,7 @@ DEFAULT_POLICY_SET_DEFINITION_NAME = "Default JEDI Policy Set"
 
 def log_and_raise_exceptions(func):
     """Wraps Azure cloud provider API calls to catch `requests` exceptions,
-    log them, and re-raise them as our CSP exceptions. 
+    log them, and re-raise them as our CSP exceptions.
 
     The cloud parameter below represents an AzureCloudProvider class instance,
     i.e. `self`, since this decorator is applied to class methods.
@@ -239,11 +239,11 @@ class AzureCloudProvider(CloudProviderInterface):
 
     def create_initial_mgmt_group(self, payload: InitialMgmtGroupCSPPayload):
         """Creates the initial management group in the Portfolio tenant.
-        
+
         Every tenant has a "Root Management Group" (RMG), but this RMG isn't
         provisioned by Azure until another management group is created. In this
-        step, we provision a management group solely to trigger the creation of 
-        the RMG. After this step, we create all other management groups for 
+        step, we provision a management group solely to trigger the creation of
+        the RMG. After this step, we create all other management groups for
         applications and environments under the RMG.
 
         A management group is a collection of subscriptions and management
@@ -310,22 +310,22 @@ class AzureCloudProvider(CloudProviderInterface):
 
     @log_and_raise_exceptions
     def _poll_management_group_creation_job(self, url: str, session) -> Dict:
-        """Polls the management group creation job until it is resolved and 
+        """Polls the management group creation job until it is resolved and
         returns the result.
-        
+
         https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/async-operations
 
         Args:
-            url: The url to check for job completion, provided by the 
-                Azure-AsyncOperation response header after creating the 
+            url: The url to check for job completion, provided by the
+                Azure-AsyncOperation response header after creating the
                 management group.
-            session: a requests session populated with a service principal 
+            session: a requests session populated with a service principal
                 bearer token.
         Returns:
             A dictionary of details of the created management group
 
         Raises:
-            ResourceProvisioningError: Something went wrong when trying to 
+            ResourceProvisioningError: Something went wrong when trying to
                 create the management group
             RequestException: Something went wrong when trying to make the request
         """
