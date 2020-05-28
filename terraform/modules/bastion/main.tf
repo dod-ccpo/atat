@@ -2,6 +2,7 @@
 
 # add AzureBastionSubnet
 
+<<<<<<< HEAD
 resource "azurerm_subnet" "azure_bastion_subnet" {
 
 
@@ -16,16 +17,28 @@ resource "azurerm_subnet" "azure_bastion_subnet" {
 }
 
 
+=======
+
+
+
+>>>>>>> 75dbd3d46b6fe3d8115c303f491b0a83e1265f5f
 # add mgmgt subnet
 
 resource "azurerm_subnet" "mgmt_subnet" {
 
 
 
+<<<<<<< HEAD
   name                                           = "mgr-subnet"
   resource_group_name                            = var.mgmt_subnet_rg
   virtual_network_name                           = var.mgmt_subnet_vpc_name
   address_prefixes                               = ["${var.mgmt_subnet_cidr}"]
+=======
+  name                 = "mgr-subnet"
+  resource_group_name  = var.mgmt_subnet_rg
+  virtual_network_name = var.mgmt_subnet_vpc_name
+  address_prefixes       = ["${var.mgmt_subnet_cidr}"]
+>>>>>>> 75dbd3d46b6fe3d8115c303f491b0a83e1265f5f
   enforce_private_link_endpoint_network_policies = true
 
 
@@ -37,6 +50,7 @@ resource "azurerm_subnet" "mgmt_subnet" {
 
 # add azure AzureBastion
 
+<<<<<<< HEAD
 resource "azurerm_public_ip" "bastion_ip" {
   name                = "bastion-ip"
   location            = var.region
@@ -56,6 +70,9 @@ resource "azurerm_bastion_host" "host" {
     public_ip_address_id = azurerm_public_ip.bastion_ip.id
   }
 }
+=======
+
+>>>>>>> 75dbd3d46b6fe3d8115c303f491b0a83e1265f5f
 
 
 # add aks cluster 1 node, 2vcpu 4 gb ram
@@ -77,7 +94,11 @@ resource "azurerm_kubernetes_cluster" "k8s_bastion" {
   resource_group_name     = var.rg
   dns_prefix              = "atat-aks-bastion"
   private_cluster_enabled = "true"
+<<<<<<< HEAD
   node_resource_group     = "${var.rg}-aks-node-rg"
+=======
+  node_resource_group = "${var.rg}-aks-node-rg"
+>>>>>>> 75dbd3d46b6fe3d8115c303f491b0a83e1265f5f
 
 
   network_profile {
@@ -103,7 +124,11 @@ resource "azurerm_kubernetes_cluster" "k8s_bastion" {
     oms_agent {
 
       enabled                    = true
+<<<<<<< HEAD
       log_analytics_workspace_id = var.log_analytics_workspace_id
+=======
+      log_analytics_workspace_id = "/subscriptions/95934d54-980d-47cc-9bce-3a96bf9a2d1b/resourcegroups/cloudzero-pwdev-log-workspace/providers/microsoft.operationalinsights/workspaces/cloudzero-pwdev-log-workspace"
+>>>>>>> 75dbd3d46b6fe3d8115c303f491b0a83e1265f5f
 
     }
 

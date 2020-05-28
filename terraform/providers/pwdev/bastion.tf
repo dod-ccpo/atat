@@ -17,8 +17,12 @@ module "bastion" {
   owner                   = var.owner
   name                    = var.name
 
+<<<<<<< HEAD
   bastion_ssh_pub_key_path   = var.bastion_ssh_pub_key_path
   log_analytics_workspace_id = var.log_analytics_workspace_id
+=======
+  bastion_ssh_pub_key_path = var.bastion_ssh_pub_key_path
+>>>>>>> 75dbd3d46b6fe3d8115c303f491b0a83e1265f5f
 
 
 }

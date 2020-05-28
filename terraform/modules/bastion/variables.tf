@@ -13,4 +13,7 @@ variable "environment" {}
 variable "owner" {}
 variable "name" {}
 variable "bastion_ssh_pub_key_path" {}
+<<<<<<< HEAD
 variable "log_analytics_workspace_id" {}
+=======
+>>>>>>> 75dbd3d46b6fe3d8115c303f491b0a83e1265f5f
