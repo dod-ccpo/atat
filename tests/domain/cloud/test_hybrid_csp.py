@@ -1,5 +1,6 @@
 import pendulum
 import pytest
+from time import sleep
 from uuid import uuid4
 
 from atat.domain.csp import HybridCSP
@@ -92,6 +93,11 @@ def test_hybrid_provision_portfolio(state_machine: PortfolioStateMachine):
         )
 
         state_machine.trigger_next_transition(csp_data=collected_data)
+        # TODO: The _get_service_principal_token method call within
+        # create_initial_mgmt_group fails periodically. There must be some kind
+        # of race condition on the Azure side we're not accounting for. This
+        # sleep is temporary and we should solve the race condition.
+        sleep(1)
         assert (
             "created" in state_machine.state.value
             or state_machine.state == PortfolioStates.COMPLETED
@@ -111,11 +117,11 @@ def test_hybrid_create_application_job(csp, portfolio, session):
 
 
 @pytest.mark.hybrid
-def test_hybrid_create_environment_job(csp):
+def test_hybrid_create_environment(csp):
     environment = EnvironmentFactory.create()
 
     payload = EnvironmentCSPPayload(
-        tenant_id=csp.hybrid_tenant_id,
+        tenant_id=csp.mock_tenant_id,
         display_name=environment.name,
         parent_id=csp.hybrid_tenant_id,
     )
@@ -126,7 +132,21 @@ def test_hybrid_create_environment_job(csp):
 
 
 @pytest.mark.hybrid
-def test_get_reporting_data(csp):
+def test_get_reporting_data(csp, app, monkeypatch):
+    """This test requires credentials for an app registration that has the
+    "Invoice Section Reader" role for the invoice section scope being queried.
+    """
+
+    def _override_source_tenant_creds(tenant_id):
+        return KeyVaultCredentials(
+            tenant_id=csp.azure.root_tenant_id,
+            tenant_sp_client_id=app.config["AZURE_HYBRID_REPORTING_CLIENT_ID"],
+            tenant_sp_key=app.config["AZURE_HYBRID_REPORTING_SECRET"],
+        )
+
+    monkeypatch.setattr(
+        csp.azure, "_source_tenant_creds", _override_source_tenant_creds
+    )
     from_date = pendulum.now().subtract(years=1).add(days=1).format("YYYY-MM-DD")
     to_date = pendulum.now().format("YYYY-MM-DD")
 
