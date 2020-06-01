@@ -61,15 +61,15 @@ variable "storage_backup_retention_days" {
 }
 
 variable "storage_geo_redundant_backup" {
-  type        = string
+  type        = bool
   description = "Geographic redundant backup (Enabled/Disabled)"
-  default     = "Disabled"
+  default     = false
 }
 
 variable "storage_auto_grow" {
-  type        = string
+  type        = bool
   description = "Auto Grow? (Enabled/Disabled)"
-  default     = "Enabled"
+  default     = true
 }
 
 variable "administrator_login" {
@@ -89,9 +89,9 @@ variable "postgres_version" {
 }
 
 variable "ssl_enforcement" {
-  type        = string
+  type        = bool
   description = "Enforce SSL (Enabled/Disable)"
-  default     = "Enabled"
+  default     = true
 }
 
 variable "workspace_id" {

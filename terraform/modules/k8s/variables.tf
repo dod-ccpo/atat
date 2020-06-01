@@ -78,8 +78,8 @@ variable "vnet_id" {
   type        = string
 }
 
-variable "private_link_enabled" {
+variable "private_cluster_enabled" {
   description = "Enable or disable PrivateLink"
-  default     = "false"
-  type        = string
+  default     = false
+  type        = bool
 }

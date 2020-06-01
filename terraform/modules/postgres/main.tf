@@ -10,17 +10,17 @@ resource "azurerm_postgresql_server" "sql" {
 
   sku_name = var.sku_name
 
-  storage_profile {
-    storage_mb            = var.storage_mb
-    backup_retention_days = var.storage_backup_retention_days
-    geo_redundant_backup  = var.storage_geo_redundant_backup
-    auto_grow             = var.storage_auto_grow
-  }
+
+  storage_mb                   = var.storage_mb
+  backup_retention_days        = var.storage_backup_retention_days
+  geo_redundant_backup_enabled = var.storage_geo_redundant_backup
+  auto_grow_enabled            = var.storage_auto_grow
+
 
   administrator_login          = var.administrator_login
   administrator_login_password = var.administrator_login_password
   version                      = var.postgres_version
-  ssl_enforcement              = var.ssl_enforcement
+  ssl_enforcement_enabled      = var.ssl_enforcement
 }
 
 resource "azurerm_postgresql_virtual_network_rule" "sql" {

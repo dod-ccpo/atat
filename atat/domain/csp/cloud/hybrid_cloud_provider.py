@@ -166,7 +166,6 @@ class HybridCloudProvider(object):
     def create_initial_mgmt_group(
         self, payload: InitialMgmtGroupCSPPayload
     ) -> InitialMgmtGroupCSPResult:
-        payload.tenant_id = self.hybrid_tenant_id
         payload.display_name = f"{HYBRID_PREFIX} {payload.display_name}"
         return self.azure.create_initial_mgmt_group(payload)
 

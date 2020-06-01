@@ -23,7 +23,7 @@ module "tenant_keyvault" {
   environment       = var.environment
   tenant_id         = var.tenant_id
   principal_id      = ""
-  tenant_principals = { "${module.tenant_keyvault_app.name}" = "${module.tenant_keyvault_app.application_id}" }
+  tenant_principals = { "${module.tenant_keyvault_app.name}" = "${module.tenant_keyvault_app.sp_object_id}" }
   admin_principals  = {}
   policy            = "Deny"
   subnet_ids        = [module.vpc.subnet_list["aks"].id]

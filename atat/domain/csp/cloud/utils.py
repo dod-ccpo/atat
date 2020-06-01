@@ -24,6 +24,7 @@ def get_user_principal_token_for_scope(username, password, tenant_id, scope):
     cloud = AZURE_PUBLIC_CLOUD
     url = f"{cloud.endpoints.active_directory}/{tenant_id}/oauth2/v2.0/token"
     payload = {
+        # TODO: client_id should be parameterized
         "client_id": os.environ["AZURE_POWERSHELL_CLIENT_ID"],
         "grant_type": "password",
         "username": username,
