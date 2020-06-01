@@ -116,26 +116,11 @@ six = ">=1.6"
 
 [[package]]
 category = "main"
-description = "Microsoft Azure Namespace Package [Internal]"
-name = "azure-nspkg"
-optional = false
-python-versions = "*"
-version = "3.0.2"
-
-[[package]]
-category = "main"
-description = "Microsoft Azure Storage Client Library for Python"
+description = "Microsoft Azure Storage SDK for Python"
 name = "azure-storage"
 optional = false
 python-versions = "*"
-version = "0.36.0"
-
-[package.dependencies]
-azure-common = ">=1.1.5"
-azure-nspkg = ">=2.0.0"
-cryptography = "*"
-python-dateutil = "*"
-requests = "*"
+version = "0.37.0"
 
 [[package]]
 category = "main"
@@ -1507,14 +1492,8 @@ azure-core = [
     {file = "azure-core-1.4.0.zip", hash = "sha256:8c05d67206fdd8bcdbfda9ec499fe49fad514275be93d713c459e300d675cc6d"},
     {file = "azure_core-1.4.0-py2.py3-none-any.whl", hash = "sha256:ae43a944dd13e9ff4b090075fdf49def039fc37887f9fea63395aa263468a063"},
 ]
-azure-nspkg = [
-    {file = "azure-nspkg-3.0.2.zip", hash = "sha256:e7d3cea6af63e667d87ba1ca4f8cd7cb4dfca678e4c55fc1cedb320760e39dd0"},
-    {file = "azure_nspkg-3.0.2-py2-none-any.whl", hash = "sha256:1d0bbb2157cf57b1bef6c8c8e5b41133957364456c43b0a43599890023cca0a8"},
-    {file = "azure_nspkg-3.0.2-py3-none-any.whl", hash = "sha256:31a060caca00ed1ebd369fc7fe01a56768c927e404ebc92268f4d9d636435e28"},
-]
 azure-storage = [
-    {file = "azure-storage-0.36.0.tar.gz", hash = "sha256:fb6212dcbed91b49d9637aa5e8888eafdfcd523b7e560c8044d2d838bbd3ca5f"},
-    {file = "azure_storage-0.36.0-py2.py3-none-any.whl", hash = "sha256:4c406422e3edd41920bb1f0c3930c34fee3eb0d55258ef7ec7308ccbb9385ad5"},
+    {file = "azure-storage-0.37.0.zip", hash = "sha256:8c7b0e3867385172013aa396bc8d661145c029ede6515a467f299e020584bcea"},
 ]
 azure-storage-blob = [
     {file = "azure-storage-blob-12.3.1.zip", hash = "sha256:02030d657914c221961f6e7ebafc6ec36761649c04396b368e0b102cbcdcf26c"},
