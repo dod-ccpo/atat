@@ -12,7 +12,7 @@ data:
   DEBUG: "0"
   DISABLE_CRL_CHECK: "true"
   MAIL_PORT: "587"
-  MAIL_SENDER: postmaster@atat.dev
+  MAIL_SENDER: postmaster@atat.code.mil
   MAIL_SERVER: smtp.mailgun.org
   MAIL_TLS: "true"
   OVERRIDE_CONFIG_DIRECTORY: /config
