@@ -4,6 +4,10 @@ variable "region" {}
 
 variable "backup_region" {}
 
+variable "bastion_resource_group" {}
+variable "bastion_aks_sp_secret" {}
+variable "bastion_aks_sp_id" {}
+variable "bastion_ssh_pub_key_path" {}
 
 variable "owner" {}
 
@@ -65,3 +69,5 @@ variable "bucket_cors_properties" {
   description = "supports cors"
   default     = []
 }
+
+variable "log_analytics_workspace_id" {}

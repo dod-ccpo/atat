@@ -14,12 +14,13 @@ class MailConnection(object):
 
 
 class SMTPConnection(MailConnection):
-    def __init__(self, server, port, username, password, use_tls=False):
+    def __init__(self, server, port, username, password, use_tls=False, debug_smtp=0):
         self.server = server
         self.port = port
         self.username = username
         self.password = password
         self.use_tls = use_tls
+        self.debug_smtp = debug_smtp
 
     @contextmanager
     def _connected_host(self):
@@ -31,6 +32,7 @@ class SMTPConnection(MailConnection):
         else:
             host = smtplib.SMTP_SSL(self.server, self.port)
 
+        host.set_debuglevel(self.debug_smtp)
         host.login(self.username, self.password)
 
         yield host

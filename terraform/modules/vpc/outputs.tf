@@ -9,5 +9,11 @@ output "id" {
 }
 
 output "vpc_name" {
+  value = "${var.name}-${var.environment}-network"
+}
+
+output "resource_group_name" {
+
   value = "${var.name}-${var.environment}-vpc"
+
 }

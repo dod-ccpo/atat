@@ -275,6 +275,7 @@ All config settings must be declared in "config/base.ini", even if they are null
 - `CRL_STORAGE_CONTAINER`: Path to a directory where the CRL cache will be stored.
 - `CSP`: String specifying the cloud service provider to use. Acceptable values: "azure", "mock", "mock-csp".
 - `DEBUG`: Boolean. A truthy value enables Flask's debug mode. https://flask.palletsprojects.com/en/1.1.x/config/#DEBUG
+- `DEBUG_SMTP`: [0,1,2]. Use to determine the debug logging level of the mailer SMTP connection. `0` is the default, meaning no extra logs are generated. `1` or `2` will enable debug logging. See [official docs](https://docs.python.org/3/library/smtplib.html#smtplib.SMTP.set_debuglevel) for more info.
 - `DISABLE_CRL_CHECK`: Boolean specifying if CRL check should be bypassed. Useful for instances of the application container that are not serving HTTP requests, such as Celery workers.
 - `ENVIRONMENT`: String specifying the current environment. Acceptable values: "dev", "prod".
 - `LIMIT_CONCURRENT_SESSIONS`: Boolean specifying if users should be allowed only one active session at a time.
