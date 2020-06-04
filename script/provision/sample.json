@@ -10,7 +10,7 @@
         "AZURE_SECRET_KEY": "UNUSED BUT REQUIRED",
         "AZURE_TENANT_ID": "UNUSED BUT REQUIRED",
         "AZURE_VAULT_URL": "UNUSED BUT REQUIRED",
-        "POWERSHELL_CLIENT_ID": "1950a258-227b-4e31-a9cf-717495945fc2",
+        "AZURE_POWERSHELL_CLIENT_ID": "1950a258-227b-4e31-a9cf-717495945fc2",
         "AZURE_OWNER_ROLE_DEF_ID": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
         "AZURE_GRAPH_RESOURCE": "https://graph.microsoft.com",
         "AZURE_AADP_QTY": 1
@@ -31,7 +31,8 @@
             "postal_code": "FILL ME IN"
         },
         "billing_account_name": "FILL ME IN",
-        "billing_profile_display_name": "ATAT Billing Profile",
+        "billing_profile_display_name": "ATAT Billing Profile Display Name",
+        "billing_profile_name": "ATAT Billing Profile Name",
         "initial_clin_amount": 1000.0,
         "initial_clin_start_date": "YYYY/MM/DD",
         "initial_clin_end_date": "YYYY/MM/DD",

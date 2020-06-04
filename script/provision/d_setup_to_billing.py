@@ -33,12 +33,7 @@ def setup_to_billing(csp, inputs):
         **{**inputs.get("initial_inputs"), **inputs.get("csp_data")}
     )
     result = csp.create_task_order_billing_creation(enable_to_billing)
-    if result.get("status") == "ok":
-        csp_response = result.get("body").dict()
-        return poll_billing(csp, inputs, csp_response)
-    else:
-        print("there was an error during the request:")
-        print(result.get("body"))
+    return dict(result)
 
 
 if __name__ == "__main__":

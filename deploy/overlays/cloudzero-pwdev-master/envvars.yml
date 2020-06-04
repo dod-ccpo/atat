@@ -4,13 +4,8 @@ kind: ConfigMap
 metadata:
   name: atst-worker-envvars
 data:
-  AZURE_ADMIN_ROLE_ASSIGNMENT_ID: foo
-  AZURE_BILLING_ACCOUNT_NAME: foo
-  AZURE_TENANT_ADMIN_USERNAME: atat.hybrid@atathybrid.onmicrosoft.com
-  AZURE_VAULT_URL: "https://hybridcz-pwdev-keyvault.vault.azure.net/"
   CAC_URL: https://auth-master.atat.dev/login-redirect
   CELERY_DEFAULT_QUEUE: celery-master
-  CSP: hybrid
   FLASK_ENV: master
   PGDATABASE: cloudzero_pwdev_atat_master
   SERVER_NAME: master.atat.dev
@@ -20,14 +15,9 @@ kind: ConfigMap
 metadata:
   name: atst-envvars
 data:
-  AZURE_ADMIN_ROLE_ASSIGNMENT_ID: foo
-  AZURE_BILLING_ACCOUNT_NAME: foo
-  AZURE_TENANT_ADMIN_USERNAME: atat.hybrid@atathybrid.onmicrosoft.com
-  AZURE_VAULT_URL: "https://hybridcz-pwdev-keyvault.vault.azure.net/"
   CAC_URL: https://auth-master.atat.dev/login-redirect
   CDN_ORIGIN: https://master.atat.dev
   CELERY_DEFAULT_QUEUE: celery-master
-  CSP: hybrid
   FLASK_ENV: master
   PGDATABASE: cloudzero_pwdev_atat_master
   STATIC_URL: "https://master.atat.dev/static/"

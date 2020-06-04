@@ -3,7 +3,7 @@ import pytest
 from time import sleep
 from uuid import uuid4
 
-from atat.domain.csp import HybridCSP
+from atat.domain.csp import CSP
 from atat.domain.csp.cloud.exceptions import UserProvisioningException
 from atat.domain.csp.cloud.models import (
     EnvironmentCSPPayload,
@@ -57,7 +57,7 @@ def portfolio(csp, app):
 
 @pytest.fixture(scope="function")
 def csp(app):
-    csp = HybridCSP(app, simulate_failures=False).cloud
+    csp = CSP("hybrid", app, simulate_failures=False).cloud
     csp.mock_tenant_id = str(uuid4())
 
     csp.azure.create_tenant_creds(

@@ -1,5 +1,0 @@
-namespace: cloudzero-dev
-bases:
-  - ../../shared/
-patchesStrategicMerge:
-  - migration.yaml

@@ -34,12 +34,7 @@ def purchase_aadp(csp, inputs):
     )
 
     result = csp.create_product_purchase(purchase_premium)
-    if result.get("status") == "ok":
-        csp_response = result.get("body").dict()
-        poll_purchase(csp, inputs, csp_response)
-    else:
-        print("there was an error during the request:")
-        print(result.get("body"))
+    return dict(result)
 
 
 if __name__ == "__main__":

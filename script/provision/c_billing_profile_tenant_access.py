@@ -13,11 +13,7 @@ def grant_access(csp, inputs):
         **{**inputs.get("initial_inputs"), **inputs.get("csp_data")}
     )
     result = csp.create_billing_profile_tenant_access(tenant_access)
-    if result.get("status") == "ok":
-        return result.get("body").dict()
-    else:
-        print("there was an error during the request:")
-        print(result.get("body"))
+    return dict(result)
 
 
 if __name__ == "__main__":

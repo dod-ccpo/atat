@@ -34,12 +34,7 @@ def setup_billing(csp, inputs):
     )
 
     result = csp.create_billing_profile_creation(create_billing_profile)
-    if result.get("status") == "ok":
-        csp_response = result.get("body").dict()
-        return poll_billing(csp, inputs, csp_response)
-    else:
-        print("there was an error during the request:")
-        print(result.get("body"))
+    return dict(result)
 
 
 if __name__ == "__main__":

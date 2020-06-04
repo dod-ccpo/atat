@@ -159,6 +159,7 @@ def map_config(config):
         "ENV": config["default"]["ENVIRONMENT"],
         "DEBUG": config["default"].getboolean("DEBUG"),
         "DEBUG_MAILER": config["default"].getboolean("DEBUG_MAILER"),
+        "DEBUG_SMTP": int(config["default"]["DEBUG_SMTP"]),
         "SQLALCHEMY_ECHO": config["default"].getboolean("SQLALCHEMY_ECHO"),
         "PORT": int(config["default"]["PORT"]),
         "SQLALCHEMY_DATABASE_URI": config["default"]["DATABASE_URI"],
@@ -349,6 +350,7 @@ def make_mailer(app):
             username=app.config.get("MAIL_SENDER"),
             password=app.config.get("MAIL_PASSWORD"),
             use_tls=app.config.get("MAIL_TLS"),
+            debug_smtp=app.config.get("DEBUG_SMTP"),
         )
     sender = app.config.get("MAIL_SENDER")
     app.mailer = mailer.Mailer(mailer_connection, sender)

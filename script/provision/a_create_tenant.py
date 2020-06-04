@@ -22,12 +22,13 @@ def create_tenant(csp, inputs):
 
     csp.update_tenant_creds = get_creds
     result = csp.create_tenant(create_tenant_payload)
-    if result.get("status") == "ok":
+
+    # Update inputs with credential information. This will be written to file inside handle().
+    # Note: The current implementation of Mock CSP doesn't call update_tenant_creds()
+    if creds:
         inputs.get("creds").update({k: v for k, v in creds.dict().items() if v})
-        return result.get("body").dict()
-    else:
-        print("there was an error during the request:")
-        print(result.get("body"))
+
+    return dict(result)
 
 
 if __name__ == "__main__":
