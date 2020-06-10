@@ -234,13 +234,6 @@ def render_email(template_path, context):
     return app.jinja_env.get_template(template_path).render(context)
 
 
-def do_work(fn, task, csp, **kwargs):
-    try:
-        fn(csp, **kwargs)
-    except GeneralCSPException as e:
-        raise task.retry(exc=e)
-
-
 def send_PPOC_email(portfolio_dict):
     ppoc_email = portfolio_dict.get("password_recovery_email_address")
     user_id = portfolio_dict.get("user_id")
@@ -283,34 +276,27 @@ def provision_portfolio(self: Task, portfolio_id=None):
     return portfolio_id
 
 
-@celery.task(bind=True, base=RecordFailure)
+@celery.task(bind=True, base=RecordFailure, autoretry_for=(GeneralCSPException,))
 def create_application(self: Task, application_id=None):
-    do_work(do_create_application, self, app.csp.cloud, application_id=application_id)
+    do_create_application(app.csp.cloud, application_id=application_id)
     return application_id
 
 
-@celery.task(bind=True, base=RecordFailure)
+@celery.task(bind=True, base=RecordFailure, autoretry_for=(GeneralCSPException,))
 def create_user(self: Task, application_role_ids=None):
-    do_work(
-        do_create_user, self, app.csp.cloud, application_role_ids=application_role_ids
-    )
+    do_create_user(app.csp.cloud, application_role_ids=application_role_ids)
     return application_role_ids
 
 
-@celery.task(bind=True, base=RecordFailure)
+@celery.task(bind=True, base=RecordFailure, autoretry_for=(GeneralCSPException,))
 def create_environment_role(self: Task, environment_role_id=None):
-    do_work(
-        do_create_environment_role,
-        self,
-        app.csp.cloud,
-        environment_role_id=environment_role_id,
-    )
+    do_create_environment_role(app.csp.cloud, environment_role_id=environment_role_id)
     return environment_role_id
 
 
-@celery.task(bind=True, base=RecordFailure)
+@celery.task(bind=True, base=RecordFailure, autoretry_for=(GeneralCSPException,))
 def create_environment(self: Task, environment_id=None):
-    do_work(do_create_environment, self, app.csp.cloud, environment_id=environment_id)
+    do_create_environment(app.csp.cloud, environment_id=environment_id)
     return environment_id
 
 
