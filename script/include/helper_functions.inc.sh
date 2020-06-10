@@ -1,8 +1,5 @@
 # helper_functions.inc.sh: General helper functions
 
-# source create_db_extension
-source ./script/create_db_extension.sh
-
 # Check pip to see if the given package is installed
 # (returns 0 if installed, 2 if not installed)
 check_system_pip_for () {
@@ -37,6 +34,22 @@ migrate_db() {
 
 seed_db() {
   run_command "python ./script/seed_roles.py"
+}
+
+create_db_extension() {
+  local database_name="${1}"
+  local extension_name="${2}"
+
+  if [ -z "${database_name}"  ]; then
+    local database_name="atat"
+  fi
+
+  if [ -z "${extension_name}"  ]; then
+    local extension_name="uuid-ossp"
+  fi
+
+	echo "Creating ${extension_name} in ${database_name}"
+  psql "${database_name}" -c "CREATE EXTENSION IF NOT EXISTS \"${extension_name}\""
 }
 
 reset_db() {
