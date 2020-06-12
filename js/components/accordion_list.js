@@ -8,9 +8,9 @@ export default {
   },
 
   methods: {
-    handleClick: function(e) {
+    handleClick: function (e) {
       e.preventDefault()
-      this.$children.forEach(el => el.collapse())
+      this.$children.forEach((el) => el.collapse())
     },
   },
 }

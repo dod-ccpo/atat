@@ -1,11 +1,11 @@
 export default {
-  data: function() {
+  data: function () {
     return {
       isVisible: this.defaultVisible,
     }
   },
 
-  render: function(createElement) {
+  render: function (createElement) {
     return createElement(this.$vnode.data.tag, [
       this.$scopedSlots.default({
         isVisible: this.isVisible,
@@ -15,7 +15,7 @@ export default {
   },
 
   methods: {
-    toggle: function(e) {
+    toggle: function (e) {
       e.preventDefault()
       e.stopPropagation()
       this.isVisible = !this.isVisible

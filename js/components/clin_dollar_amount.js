@@ -11,24 +11,24 @@ export default {
   },
 
   computed: {
-    rawValue: function() {
+    rawValue: function () {
       return this._rawValue(this.value)
     },
-    showFundingError: function() {
+    showFundingError: function () {
       return this.showError || !this.fundingValid
     },
-    showFundingValid: function() {
+    showFundingValid: function () {
       return this.showValid && this.fundingValid
     },
   },
   watch: {
-    fundingValid: function(oldVal, newVal) {
+    fundingValid: function (oldVal, newVal) {
       this._checkIfValid({ value: this.value, invalidate: true })
     },
   },
 
   methods: {
-    _validate: function(value) {
+    _validate: function (value) {
       const rawValue = this._rawValue(value)
       if (rawValue < 0 || rawValue > 1000000000 || !this.fundingValid) {
         return false

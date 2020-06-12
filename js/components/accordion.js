@@ -13,7 +13,7 @@ export default {
   },
 
   methods: {
-    collapse: function() {
+    collapse: function () {
       this.isVisible = false
     },
   },

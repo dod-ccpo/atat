@@ -12,7 +12,7 @@ export default {
   },
 
   computed: {
-    displayTime: function() {
+    displayTime: function () {
       return format(this.timestamp, this.format)
     },
   },

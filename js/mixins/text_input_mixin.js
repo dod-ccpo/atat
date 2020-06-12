@@ -29,7 +29,7 @@ export default {
     optional: Boolean,
   },
 
-  data: function() {
+  data: function () {
     return {
       showError: (this.initialErrors && this.initialErrors.length) || false,
       showValid: false,
@@ -46,16 +46,16 @@ export default {
   },
 
   computed: {
-    rawValue: function() {
+    rawValue: function () {
       return this._rawValue(this.value)
     },
 
-    valid: function() {
+    valid: function () {
       return this._isValid(this.value)
     },
   },
 
-  mounted: function() {
+  mounted: function () {
     if (this.value) {
       this._checkIfValid({
         value: this.value,
@@ -67,7 +67,7 @@ export default {
         const mask =
           typeof this.mask.mask !== 'function'
             ? this.mask
-            : mask.mask(this.value).filter(val => val !== '[]')
+            : mask.mask(this.value).filter((val) => val !== '[]')
 
         this.value = conformToMask(this.value, mask).conformedValue
       }
@@ -76,7 +76,7 @@ export default {
 
   methods: {
     // When user types a character
-    onInput: function(e) {
+    onInput: function (e) {
       // When we use the native textarea element, we receive an event object
       // When we use the masked-input component, we receive the value directly
       const value = typeof e === 'object' ? e.target.value : e
@@ -86,12 +86,12 @@ export default {
     },
 
     // When field is blurred (un-focused)
-    onChange: function(e) {
+    onChange: function (e) {
       // Only invalidate the field when it blurs
       this._checkIfValid({ value: e.target.value, invalidate: true })
     },
 
-    onBlur: function(e) {
+    onBlur: function (e) {
       if (!(this.optional && e.target.value === '')) {
         this._checkIfValid({ value: e.target.value.trim(), invalidate: true })
       } else if (this.modified && !this.optional) {
@@ -106,7 +106,7 @@ export default {
     },
 
     //
-    _checkIfValid: function({
+    _checkIfValid: function ({
       value,
       invalidate = false,
       showValidationIcon = true,
@@ -134,7 +134,7 @@ export default {
       })
     },
 
-    _rawValue: function(value) {
+    _rawValue: function (value) {
       return inputValidations[this.validation].unmask.reduce(
         (currentValue, character) => {
           return currentValue.split(character).join('')
@@ -143,11 +143,11 @@ export default {
       )
     },
 
-    _validate: function(value) {
+    _validate: function (value) {
       return inputValidations[this.validation].match.test(this._rawValue(value))
     },
 
-    _isValid: function(value) {
+    _isValid: function (value) {
       let valid = this._validate(value)
       if (!this.modified && this.initialErrors && this.initialErrors.length) {
         valid = false

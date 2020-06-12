@@ -32,7 +32,7 @@ export default {
     },
   },
 
-  data: function() {
+  data: function () {
     return {
       hasInitialData: !!this.filename,
       attachment: this.filename || null,
@@ -46,7 +46,7 @@ export default {
     }
   },
 
-  created: async function() {
+  created: async function () {
     if (this.hasInitialData) {
       this.downloadLink = await this.getDownloadLink(
         this.filename,
@@ -56,7 +56,7 @@ export default {
   },
 
   methods: {
-    addAttachment: async function(e) {
+    addAttachment: async function (e) {
       this.clearErrors()
 
       const file = e.target.files[0]
@@ -90,11 +90,11 @@ export default {
         this.uploadError = true
       }
     },
-    validateFileName: function(name) {
+    validateFileName: function (name) {
       const regex = inputValidations.restrictedFileName.match
       return regex.test(name)
     },
-    removeAttachment: function(e) {
+    removeAttachment: function (e) {
       e.preventDefault()
       this.attachment = null
       if (this.$refs.attachmentInput) {
@@ -106,38 +106,38 @@ export default {
 
       emitFieldChange(this)
     },
-    clearErrors: function() {
+    clearErrors: function () {
       this.uploadError = false
       this.sizeError = false
     },
-    getUploader: async function() {
+    getUploader: async function () {
       return fetch(`/task_orders/${this.portfolioId}/upload_token`, {
         credentials: 'include',
       })
-        .then(response => response.json())
+        .then((response) => response.json())
         .then(({ token, objectName }) => buildUploader(token, objectName))
     },
-    getDownloadLink: async function(filename, objectName) {
-      const { downloadLink } = await fetch(
-        `/task_orders/${
-          this.portfolioId
-        }/download_link?filename=${filename}&objectName=${objectName}`,
+    getDownloadLink: async function (filename, objectName) {
+      const {
+        downloadLink,
+      } = await fetch(
+        `/task_orders/${this.portfolioId}/download_link?filename=${filename}&objectName=${objectName}`,
         { credentials: 'include' }
-      ).then(r => r.json())
+      ).then((r) => r.json())
       return downloadLink
     },
   },
 
   computed: {
-    baseName: function() {
+    baseName: function () {
       if (this.attachment) {
         return this.attachment.split(/[\\/]/).pop()
       }
     },
-    hideInput: function() {
+    hideInput: function () {
       return this.hasInitialData && !this.changed
     },
-    showErrors: function() {
+    showErrors: function () {
       return (
         (!this.changed && this.initialErrors) ||
         this.uploadError ||
@@ -145,7 +145,7 @@ export default {
         this.filenameError
       )
     },
-    valid: function() {
+    valid: function () {
       return !!this.attachment
     },
   },

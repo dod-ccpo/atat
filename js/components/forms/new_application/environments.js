@@ -2,7 +2,7 @@ import FormMixin from '../../../mixins/form'
 import textinput from '../../text_input'
 import * as R from 'ramda'
 
-const createEnvironment = name => ({ name })
+const createEnvironment = (name) => ({ name })
 
 export default {
   name: 'application-environments',
@@ -20,7 +20,7 @@ export default {
     },
   },
 
-  data: function() {
+  data: function () {
     const { environment_names, name } = this.initialData
 
     const environments = (environment_names.length > 0
@@ -50,27 +50,27 @@ export default {
     }
   },
 
-  mounted: function() {
+  mounted: function () {
     this.validate()
   },
 
   methods: {
-    addEnvironment: function(_event) {
+    addEnvironment: function (_event) {
       this.changed = false
       this.environments.push(createEnvironment(''))
     },
 
-    removeEnvironment: function(index) {
+    removeEnvironment: function (index) {
       if (this.environments.length > 1) {
         this.environments.splice(index, 1)
       }
       this.validate()
     },
 
-    validate: function() {
+    validate: function () {
       // Only take first error message
       this.errors = R.pipe(
-        R.map(validation =>
+        R.map((validation) =>
           !validation.func() ? validation.message : undefined
         ),
         R.filter(Boolean),
@@ -79,31 +79,31 @@ export default {
       this.invalid = this.errors.length > 0
     },
 
-    hasEnvironments: function() {
+    hasEnvironments: function () {
       return (
         this.environments.length > 0 &&
-        this.environments.some(e => e.name !== '')
+        this.environments.some((e) => e.name !== '')
       )
     },
 
-    environmentsHaveNames: function() {
+    environmentsHaveNames: function () {
       if (this.environments.length > 1) {
         // only want to display this error if we have multiple envs and one or
         // more do not have names
         return this.environments.every(
-          e => !e.name.match(/^\s+$/) && e.name !== ''
+          (e) => !e.name.match(/^\s+$/) && e.name !== ''
         )
       } else {
         return true
       }
     },
 
-    envNamesAreUnique: function() {
-      const names = this.environments.map(e => e.name)
+    envNamesAreUnique: function () {
+      const names = this.environments.map((e) => e.name)
       return names.every((n, index) => names.indexOf(n) === index)
     },
 
-    onInput: function(e) {
+    onInput: function (e) {
       this.changed = true
       this.validate()
     },

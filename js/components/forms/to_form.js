@@ -25,7 +25,7 @@ export default {
     },
   },
 
-  data: function() {
+  data: function () {
     const clins = !this.initialClinCount ? 1 : 0
     const clinIndex = !this.initialClinCount ? 0 : this.initialClinCount - 1
 
@@ -35,17 +35,17 @@ export default {
     }
   },
 
-  mounted: function() {
+  mounted: function () {
     this.$on('remove-clin', this.handleRemoveClin)
   },
 
   methods: {
-    addClin: function(event) {
+    addClin: function (event) {
       ++this.clins
       ++this.clinIndex
     },
 
-    handleRemoveClin: function(event) {
+    handleRemoveClin: function (event) {
       --this.clinIndex
       for (var field in this.fields) {
         if (field.includes('-' + event.clinIndex + '-')) {

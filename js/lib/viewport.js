@@ -1,4 +1,4 @@
-export const isNotInVerticalViewport = el => {
+export const isNotInVerticalViewport = (el) => {
   const bounds = el.getBoundingClientRect()
 
   if (bounds.top < 0) {

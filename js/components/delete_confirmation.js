@@ -8,14 +8,14 @@ export default {
     },
   },
 
-  data: function() {
+  data: function () {
     return {
       deleteText: '',
     }
   },
 
   computed: {
-    valid: function() {
+    valid: function () {
       return this.deleteText.toLowerCase() === this.confirmationText
     },
   },

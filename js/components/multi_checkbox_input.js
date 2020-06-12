@@ -16,7 +16,7 @@ export default {
     optional: Boolean,
   },
 
-  data: function() {
+  data: function () {
     return {
       showError: this.initialErrors.length > 0,
       showValid: false,
@@ -26,7 +26,7 @@ export default {
   },
 
   methods: {
-    onInput: function(e) {
+    onInput: function (e) {
       emitFieldChange(this)
       this.showError = !this.valid
       this.showValid = !this.showError
@@ -35,7 +35,7 @@ export default {
   },
 
   computed: {
-    valid: function() {
+    valid: function () {
       return this.optional || this.selections.length > 0
     },
   },

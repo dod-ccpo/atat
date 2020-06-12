@@ -1,14 +1,14 @@
 export default {
   name: 'semi-collapsible-text',
 
-  data: function() {
+  data: function () {
     return {
       open: false,
     }
   },
 
   methods: {
-    toggle: function() {
+    toggle: function () {
       this.open = !this.open
     },
   },

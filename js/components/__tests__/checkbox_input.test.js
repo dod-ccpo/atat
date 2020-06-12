@@ -9,7 +9,7 @@ const WrapperComponent = makeTestWrapper({
     checkboxinput,
   },
   templatePath: 'checkbox_input_template.html',
-  data: function() {
+  data: function () {
     return { initialvalue: this.initialData }
   },
 })

@@ -69,14 +69,14 @@ const app = new Vue({
     ToggleMenu,
   },
 
-  data: function() {
+  data: function () {
     return {
       sidenavExpanded: this.defaultVisible,
     }
   },
 
-  mounted: function() {
-    this.$on('modalOpen', data => {
+  mounted: function () {
+    this.$on('modalOpen', (data) => {
       if (data['isOpen']) {
         document.body.className += ' modal-open'
         this.activeModal = data['name']
@@ -106,15 +106,15 @@ const app = new Vue({
       this.openModal(modal)
     }
 
-    ally.query.focusable().forEach(function(el) {
-      el.addEventListener('focus', function() {
+    ally.query.focusable().forEach(function (el) {
+      el.addEventListener('focus', function () {
         if (isNotInVerticalViewport(el)) {
           el.scrollIntoView({ block: 'center' })
         }
       })
     })
 
-    this.$on('sidenavToggle', data => {
+    this.$on('sidenavToggle', (data) => {
       this.sidenavExpanded = data
     })
   },
@@ -133,7 +133,7 @@ const app = new Vue({
   },
 
   methods: {
-    logout: function(e) {
+    logout: function (e) {
       // clear all cookies
       var cookies = document.cookie.split(';')
 

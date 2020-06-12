@@ -11,7 +11,7 @@ export default {
     },
   },
 
-  data: function() {
+  data: function () {
     return {
       changed: this.hasChanges,
       valid: false,
@@ -19,22 +19,22 @@ export default {
     }
   },
 
-  mounted: function() {
+  mounted: function () {
     this.$on('field-change', this.handleFieldChange)
     this.valid = this.validateFields()
   },
 
   methods: {
-    handleFieldChange: function(event) {
+    handleFieldChange: function (event) {
       this.valid = this.validateFields()
       this.changed = true
     },
 
-    validateFields: function() {
-      return this.$children.every(child => child.valid)
+    validateFields: function () {
+      return this.$children.every((child) => child.valid)
     },
 
-    handleSubmit: function(event) {
+    handleSubmit: function (event) {
       if (!this.valid) {
         event.preventDefault()
         this.submitted = true
@@ -43,7 +43,7 @@ export default {
   },
 
   computed: {
-    canSave: function() {
+    canSave: function () {
       if (this.changed && this.valid && !this.submitted) {
         return true
       } else if (this.enableSave && this.valid && !this.submitted) {

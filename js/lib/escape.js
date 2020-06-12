@@ -13,8 +13,8 @@ const htmlEscapes = {
 const htmlEscaper = /[&<>"'\/]/g
 
 // Escape a string for HTML interpolation.
-const escape = string => {
-  return ('' + string).replace(htmlEscaper, match => htmlEscapes[match])
+const escape = (string) => {
+  return ('' + string).replace(htmlEscaper, (match) => htmlEscapes[match])
 }
 
 export default escape

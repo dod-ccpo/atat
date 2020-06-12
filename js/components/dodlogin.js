@@ -1,14 +1,14 @@
 export default {
   name: 'dodlogin',
 
-  data: function() {
+  data: function () {
     return {
       visible: false,
     }
   },
 
   methods: {
-    displayNotice: function() {
+    displayNotice: function () {
       this.visible = true
     },
   },

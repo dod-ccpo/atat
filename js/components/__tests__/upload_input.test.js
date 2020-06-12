@@ -8,7 +8,7 @@ import { makeTestWrapper } from '../../test_utils/component_test_helpers'
 const UploadWrapper = makeTestWrapper({
   components: { uploadinput },
   templatePath: 'upload_input_template.html',
-  data: function() {
+  data: function () {
     const { filename, objectName } = this.initialData
     return { filename, objectName }
   },
@@ -17,7 +17,7 @@ const UploadWrapper = makeTestWrapper({
 const UploadErrorWrapper = makeTestWrapper({
   components: { uploadinput },
   templatePath: 'upload_input_error_template.html',
-  data: function() {
+  data: function () {
     return { filename: null, objectName: null }
   },
 })
@@ -62,7 +62,7 @@ describe('UploadInput Test', () => {
     expect(messageArea.html()).toContain('Test Error Message')
   })
 
-  it('should disable the file input when a file is uploaded', done => {
+  it('should disable the file input when a file is uploaded', (done) => {
     const wrapper = mount(UploadErrorWrapper, {
       propsData: {
         initialData: {},

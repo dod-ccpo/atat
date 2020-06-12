@@ -13,7 +13,7 @@ export default {
   },
 
   methods: {
-    toggle: function(e) {
+    toggle: function (e) {
       if (this.$el.contains(e.target)) {
         this.isVisible = !this.isVisible
       } else {
@@ -22,11 +22,11 @@ export default {
     },
   },
 
-  mounted: function() {
+  mounted: function () {
     document.addEventListener('click', this.toggle)
   },
 
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     document.removeEventListener('click', this.toggle)
   },
 }

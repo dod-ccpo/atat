@@ -9,7 +9,7 @@ const ToNumberWrapperComponent = makeTestWrapper({
     textinput,
   },
   templatePath: 'text_input_to_number.html',
-  data: function() {
+  data: function () {
     const { validation, initialValue } = this.initialData
     return { validation, initialValue }
   },

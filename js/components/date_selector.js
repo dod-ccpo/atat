@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { getDaysInMonth } from 'date-fns'
 import { emitFieldChange } from '../lib/emitters'
 
-let paddedNumber = function(number) {
+let paddedNumber = function (number) {
   if ((number + '').length === 1) {
     return `0${number}`
   } else {
@@ -28,7 +28,7 @@ export default {
     },
   },
 
-  data: function() {
+  data: function () {
     return {
       day: this.initialday,
       month: this.initialmonth,
@@ -64,7 +64,7 @@ export default {
   },
 
   computed: {
-    formattedDate: function() {
+    formattedDate: function () {
       let day = paddedNumber(this.day)
       let month = paddedNumber(this.month)
 
@@ -75,17 +75,17 @@ export default {
       return `${month}/${day}/${this.year}`
     },
 
-    isMonthValid: function() {
+    isMonthValid: function () {
       const month = parseInt(this.month)
       return month >= 1 && month <= 12
     },
 
-    isDayValid: function() {
+    isDayValid: function () {
       const day = parseInt(this.day)
       return day >= 1 && day <= this.daysMaxCalculation
     },
 
-    isYearValid: function() {
+    isYearValid: function () {
       let valid
       const minYear = this.mindate ? parseInt(this.mindate) : null
       const maxYear = this.maxdate ? parseInt(this.maxdate) : null
@@ -99,7 +99,7 @@ export default {
       return valid
     },
 
-    isWithinDateRange: function() {
+    isWithinDateRange: function () {
       if (
         this.minDateParsed !== null &&
         this.minDateParsed >= this.dateParsed
@@ -117,7 +117,7 @@ export default {
       return true
     },
 
-    isDateValid: function() {
+    isDateValid: function () {
       return (
         !!this.day &&
         !!this.month &&
@@ -129,11 +129,11 @@ export default {
       )
     },
 
-    isDateComplete: function() {
+    isDateComplete: function () {
       return !!this.day && !!this.month && !!this.year && this.year > 999
     },
 
-    daysMaxCalculation: function() {
+    daysMaxCalculation: function () {
       switch (parseInt(this.month)) {
         case 2: // February
           if (this.year) {
@@ -154,7 +154,7 @@ export default {
       }
     },
 
-    minError: function() {
+    minError: function () {
       if (this.isDateComplete) {
         return this.minDateParsed >= this.dateParsed
       }
@@ -162,7 +162,7 @@ export default {
       return false
     },
 
-    maxError: function() {
+    maxError: function () {
       if (this.isDateComplete) {
         return this.maxDateParsed <= this.dateParsed
       }
@@ -170,7 +170,7 @@ export default {
       return false
     },
 
-    outsideRange: function() {
+    outsideRange: function () {
       if (!!this.maxrange && !!this.minrange && this.isDateComplete) {
         return (
           this.dateParsed < this.minRangeParsed ||
@@ -179,37 +179,37 @@ export default {
       }
     },
 
-    maxDateParsed: function() {
+    maxDateParsed: function () {
       let _maxdate = this.maxdate ? Date.parse(this.maxdate) : null
       return _maxdate
     },
 
-    minDateParsed: function() {
+    minDateParsed: function () {
       let _mindate = this.mindate ? Date.parse(this.mindate) : null
       return _mindate
     },
 
-    maxRangeParsed: function() {
+    maxRangeParsed: function () {
       let _maxrange = this.maxrange ? Date.parse(this.maxrange) : null
       return _maxrange
     },
 
-    minRangeParsed: function() {
+    minRangeParsed: function () {
       let _minrange = this.minrange ? Date.parse(this.minrange) : null
       return _minrange
     },
 
-    dateParsed: function() {
+    dateParsed: function () {
       return Date.UTC(this.year, this.month - 1, this.day)
     },
 
-    valid: function() {
+    valid: function () {
       return this.isDateValid
     },
   },
 
   methods: {
-    onInput: function() {
+    onInput: function () {
       emitFieldChange(this, {
         value: this.formattedDate,
         name: this.name,
@@ -218,7 +218,7 @@ export default {
     },
   },
 
-  render: function(createElement) {
+  render: function (createElement) {
     return createElement('p', 'Please implement inline-template')
   },
 }

@@ -26,7 +26,7 @@ export default {
     clinIndex: Number,
   },
 
-  data: function() {
+  data: function () {
     let start = !!this.initialStartDate
       ? new Date(this.initialStartDate)
       : false
@@ -50,12 +50,12 @@ export default {
     }
   },
 
-  mounted: function() {
+  mounted: function () {
     this.$on('field-change', this.handleFieldChange)
   },
 
   methods: {
-    handleFieldChange: function(event) {
+    handleFieldChange: function (event) {
       if (event.name.includes(START_DATE) && event.valid) {
         let date = new Date(event.value)
         this.minEndDate = this.calcMinEndDate(date)
@@ -66,7 +66,7 @@ export default {
       emitFieldChange(this)
     },
 
-    calcMaxStartDate: function(date) {
+    calcMaxStartDate: function (date) {
       if (!!date && date < this.contractEnd) {
         return date
       } else {
@@ -74,7 +74,7 @@ export default {
       }
     },
 
-    calcMinEndDate: function(date) {
+    calcMinEndDate: function (date) {
       if (!!date && date > this.contractStart) {
         return date
       } else {
@@ -84,16 +84,16 @@ export default {
   },
 
   computed: {
-    maxStartProp: function() {
+    maxStartProp: function () {
       return format(this.maxStartDate, 'YYYY-MM-DD')
     },
 
-    minEndProp: function() {
+    minEndProp: function () {
       return format(this.minEndDate, 'YYYY-MM-DD')
     },
 
-    valid: function() {
-      return this.$children.every(child => child.valid)
+    valid: function () {
+      return this.$children.every((child) => child.valid)
     },
   },
 }

@@ -46,15 +46,9 @@ describe('TOForm Test', () => {
     expectSubmitIsDisabled()
     wrapper.findAll('input[name="date-day"]').setValue('01')
     expectSubmitIsDisabled()
-    wrapper
-      .findAll('input[name="date-year"]')
-      .at(0)
-      .setValue('2020')
+    wrapper.findAll('input[name="date-year"]').at(0).setValue('2020')
     expectSubmitIsDisabled()
-    wrapper
-      .findAll('input[name="date-year"]')
-      .at(1)
-      .setValue('2021')
+    wrapper.findAll('input[name="date-year"]').at(1).setValue('2021')
     expectSubmitIsDisabled()
     // need to trigger the change function on the hidden date inputs so that
     // the corresponding event fires to notify the parent form that it is valid

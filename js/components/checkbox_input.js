@@ -9,20 +9,20 @@ export default {
     optional: Boolean,
   },
 
-  data: function() {
+  data: function () {
     return {
       isChecked: this.initialChecked,
     }
   },
 
   methods: {
-    onInput: function() {
+    onInput: function () {
       emitFieldChange(this)
     },
   },
 
   computed: {
-    valid: function() {
+    valid: function () {
       return this.optional || this.isChecked
     },
   },

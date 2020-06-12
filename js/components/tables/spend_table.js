@@ -9,27 +9,27 @@ export default {
     applications: Array,
   },
 
-  data: function() {
+  data: function () {
     return {
       applicationsState: this.applications,
     }
   },
 
-  created: function() {
-    this.applicationsState.forEach(application => {
+  created: function () {
+    this.applicationsState.forEach((application) => {
       application.isVisible = false
     })
   },
 
   methods: {
-    toggle: function(e, applicationIndex) {
+    toggle: function (e, applicationIndex) {
       set(this.applicationsState, applicationIndex, {
         ...this.applicationsState[applicationIndex],
         isVisible: !this.applicationsState[applicationIndex].isVisible,
       })
     },
 
-    formatDollars: function(value) {
+    formatDollars: function (value) {
       return formatDollars(value, false)
     },
   },

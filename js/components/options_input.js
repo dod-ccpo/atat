@@ -17,7 +17,7 @@ export default {
     },
   },
 
-  data: function() {
+  data: function () {
     const showError = (this.initialErrors && this.initialErrors.length) || false
     return {
       showError: showError,
@@ -28,17 +28,17 @@ export default {
   },
 
   methods: {
-    onInput: function() {
+    onInput: function () {
       emitFieldChange(this)
     },
 
-    _isValid: function(value) {
+    _isValid: function (value) {
       return this.optional || value !== this.nullOption
     },
   },
 
   computed: {
-    valid: function() {
+    valid: function () {
       return this._isValid(this.value)
     },
   },

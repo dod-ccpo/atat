@@ -20,14 +20,14 @@ export default {
     toggler: this,
   },
 
-  data: function() {
+  data: function () {
     return {
       selectedSection: this.initialSelectedSection,
     }
   },
 
   methods: {
-    toggleSection: function(sectionName) {
+    toggleSection: function (sectionName) {
       if (this.selectedSection === sectionName) {
         this.selectedSection = null
       } else {

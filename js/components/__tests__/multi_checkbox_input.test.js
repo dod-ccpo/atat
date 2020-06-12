@@ -7,7 +7,7 @@ const WrapperComponent = makeTestWrapper({
     multicheckboxinput,
   },
   templatePath: 'multi_checkbox_input_template.html',
-  data: function() {
+  data: function () {
     const { initialvalue, optional } = this.initialData
     return { initialvalue, optional }
   },

@@ -22,39 +22,39 @@ export default {
     steps: Number,
   },
 
-  data: function() {
+  data: function () {
     return {
       step: 0,
     }
   },
 
-  mounted: function() {
+  mounted: function () {
     this.$root.$on('modalOpen', this.handleModalOpen)
   },
 
   methods: {
-    next: function() {
+    next: function () {
       this.submitted = true
       if (this.validateFields()) {
         this.step += 1
         this.submitted = false
       }
     },
-    previous: function() {
+    previous: function () {
       this.step -= 1
     },
-    goToStep: function(step) {
+    goToStep: function (step) {
       if (this.validateFields()) {
         this.step = step
       }
     },
-    handleModalOpen: function(_bool) {
+    handleModalOpen: function (_bool) {
       this.step = 0
     },
-    _onLastPage: function() {
+    _onLastPage: function () {
       return this.step === this.steps - 1
     },
-    handleSubmit: function(e) {
+    handleSubmit: function (e) {
       if (this._onLastPage) {
         this.submitted = true
       }

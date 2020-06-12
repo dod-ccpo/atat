@@ -7,12 +7,12 @@ export default {
 
   mixins: [ExpandSidenavMixin, ToggleMixin],
 
-  mounted: function() {
+  mounted: function () {
     this.$parent.$emit('sidenavToggle', this.isVisible)
   },
 
   methods: {
-    toggle: function(e) {
+    toggle: function (e) {
       e.preventDefault()
       this.isVisible = !this.isVisible
       document.cookie = sidenavCookieName + '=' + this.isVisible + '; path=/'

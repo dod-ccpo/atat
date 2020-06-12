@@ -34,7 +34,7 @@ export default {
     },
   },
 
-  data: function() {
+  data: function () {
     const fundingValidation =
       this.initialObligated && this.initialTotal
         ? this.initialObligated <= this.initialTotal
@@ -55,24 +55,24 @@ export default {
     }
   },
 
-  mounted: function() {
+  mounted: function () {
     this.$on('field-change', this.handleFieldChange)
     this.handleFieldChange()
     this.validateFunding()
   },
 
   methods: {
-    checkFundingValid: function() {
+    checkFundingValid: function () {
       return this.obligatedAmount <= this.totalAmount
     },
 
-    validateFunding: function() {
+    validateFunding: function () {
       if (this.totalAmount && this.obligatedAmount) {
         this.fundingValid = this.checkFundingValid()
       }
     },
 
-    handleFieldChange: function(event) {
+    handleFieldChange: function (event) {
       if (event && event.name.includes(TOTAL_AMOUNT)) {
         this.totalAmount = parseFloat(event.value)
         this.validateFunding()
@@ -85,7 +85,7 @@ export default {
       emitFieldChange(this)
     },
 
-    removeClin: function() {
+    removeClin: function () {
       this.showClin = false
       this.$parent.$emit('remove-clin', this, {
         clinIndex: this.clinIndex,
@@ -97,14 +97,14 @@ export default {
   },
 
   computed: {
-    clinTitle: function() {
+    clinTitle: function () {
       if (!!this.clinNumber) {
         return `CLIN ${this.clinNumber}`
       } else {
         return `New CLIN`
       }
     },
-    percentObligated: function() {
+    percentObligated: function () {
       const percentage = (this.obligatedAmount / this.totalAmount) * 100
       if (!!percentage) {
         if (percentage > 0 && percentage < 1) {
@@ -121,17 +121,17 @@ export default {
       }
     },
 
-    removeModalId: function() {
+    removeModalId: function () {
       return `remove-clin-${this.clinIndex}`
     },
 
-    valid: function() {
+    valid: function () {
       if (this.removed) {
         // the nested component is still mounted, so valid needs to be true or the
         // save button will never become active
         return true
       } else {
-        return this.$children.every(child => child.valid)
+        return this.$children.every((child) => child.valid)
       }
     },
   },

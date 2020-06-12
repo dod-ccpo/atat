@@ -8,7 +8,7 @@ import { makeTestWrapper } from '../../test_utils/component_test_helpers'
 const PopDateRangeWrapper = makeTestWrapper({
   components: { PopDateRange },
   templatePath: 'pop_date_range.html',
-  data: function() {
+  data: function () {
     return {
       initialMinStartDate: '2019-09-14',
       initialMaxEndDate: '2022-09-14',
