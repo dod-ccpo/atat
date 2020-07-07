@@ -15,6 +15,7 @@ from atat.domain.users import Users
 UNPROTECTED_ROUTES = [
     "atat.root",
     "dev.login_dev",
+    "dev.dev_login_saml",
     "dev.dev_new_user",
     "atat.login_redirect",
     "atat.logout",

@@ -37,6 +37,7 @@ Unipath = "*"
 webassets = "*"
 werkzeug = "*"
 email-validator = '*'
+python3-saml = "^1.9.0"
 
 [tool.poetry.dev-dependencies]
 bandit = "*"
