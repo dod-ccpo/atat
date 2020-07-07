@@ -8,6 +8,7 @@ from flask import (
     render_template,
     url_for,
     current_app as app,
+    session
 )
 from onelogin.saml2.auth import OneLogin_Saml2_Auth
 import pendulum
@@ -194,6 +195,8 @@ def dev_login_saml():
     saml_request_config = prepare_flask_request(request)
     saml_auth = init_saml_auth(saml_request_config)
 
+    print("DEV LOGIN REQUEST")
+    print(request.args)
     if 'acs' in request.args:
         # unpack response with pysaml lib
 
@@ -223,7 +226,10 @@ def dev_login_saml():
             if 'RelayState' in request.form and self_url != request.form['RelayState']:
                 return redirect(auth.redirect_to(request.form['RelayState']))
             return render_template('dev/saml.html')
-    else:
+        else:
+            print("Something went wrong SAML")
+            print(errors)
+    elif request.method == "GET":
         # login takes a return_to param that overrides relay state, useful for deep link?
         return redirect(saml_auth.login())
 

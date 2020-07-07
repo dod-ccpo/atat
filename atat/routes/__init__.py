@@ -28,8 +28,11 @@ from atat.utils.flash import formatted_flash as flash
 bp = Blueprint("atat", __name__)
 
 
-@bp.route("/")
+@bp.route("/", methods=['GET', 'POST'])
 def root():
+    if request.method == "POST" and "acs" in request.args:
+        print("We got a SAML POST response: {}".format(request.args.get('acs')))
+        return redirect(url_for("dev.dev_login_saml", **request.args), code=307)
     if g.current_user:
         return redirect(url_for(".home"))
 
