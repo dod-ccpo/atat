@@ -23,7 +23,7 @@ from atat.domain.authnid import AuthenticationContext
 from atat.domain.auth import logout as _logout
 from atat.domain.exceptions import UnauthenticatedError
 from atat.utils.flash import formatted_flash as flash
-
+from atat.saml_helpers import do_login_saml
 
 bp = Blueprint("atat", __name__)
 
@@ -32,7 +32,8 @@ bp = Blueprint("atat", __name__)
 def root():
     if request.method == "POST" and "acs" in request.args:
         print("We got a SAML POST response: {}".format(request.args.get('acs')))
-        return redirect(url_for("dev.dev_login_saml", **request.args), code=307)
+        # return redirect(url_for("dev.dev_login_saml", **request.args), code=307)
+        return do_login_saml()
     if g.current_user:
         return redirect(url_for(".home"))
 
