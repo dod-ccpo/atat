@@ -189,6 +189,6 @@ def test_email():
 def messages():
     return render_template("dev/emails.html", messages=app.mailer.messages)
 
-@bp.route("/dev-login-saml", methods=['GET', 'POST'])
-def dev_login_saml():
+@bp.route("/login-dev-saml", methods=['GET', 'POST'])
+def login_dev_saml():
     return do_login_saml()
