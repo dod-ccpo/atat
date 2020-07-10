@@ -382,7 +382,7 @@ description = "Tool for detecting secrets in the codebase"
 name = "detect-secrets"
 optional = false
 python-versions = "*"
-version = "0.13.1"
+version = "0.14.0"
 
 [package.dependencies]
 pyyaml = "*"
@@ -1719,8 +1719,8 @@ decorator = [
     {file = "decorator-4.4.2.tar.gz", hash = "sha256:e3a62f0520172440ca0dcc823749319382e377f37f140a0b99ef45fecb84bfe7"},
 ]
 detect-secrets = [
-    {file = "detect_secrets-0.13.1-py2.py3-none-any.whl", hash = "sha256:edafc0c77f560482f3c169517ebb11352744f7682ff09ad255a40623f530c0d5"},
-    {file = "detect_secrets-0.13.1.tar.gz", hash = "sha256:178e084cd38e78f8fe9a10eb0f429071fa6075b1c4ea40ef62e55ba3d6acc1ec"},
+    {file = "detect_secrets-0.14.0-py2.py3-none-any.whl", hash = "sha256:552291c8ef929eecf663bfbec755c83e69b9874be604a2b211ad03dae42fb9bb"},
+    {file = "detect_secrets-0.14.0.tar.gz", hash = "sha256:0fd9da915c2643cff2f7bf75a0e849374933179a1b84b5cec60a5609ec493385"},
 ]
 dnspython = [
     {file = "dnspython-1.16.0-py2.py3-none-any.whl", hash = "sha256:f69c21288a962f4da86e56c4905b49d11aba7938d3d740e80d9e366ee4f1632d"},
