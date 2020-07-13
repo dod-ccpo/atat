@@ -58,7 +58,11 @@ def do_login_saml():
             print(dir(errors[0]))
     elif request.method == "GET":
         # login takes a return_to param that overrides relay state, useful for deep link?
-        return redirect(saml_auth.login())
+        sso_built_url = saml_auth.login()
+        session['AuthNRequestID'] = saml_auth.get_last_request_id()
+        app.logger.warn('get session')
+        app.logger.warn(session)    
+        return redirect(sso_built_url)
 
 
 def init_saml_auth(req):
