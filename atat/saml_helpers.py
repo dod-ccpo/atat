@@ -25,12 +25,9 @@ def do_login_saml():
 
         # unpack response with pysaml lib
 
-        # Can be set before login redirect to ensure parity between outbound auth and inbound
         request_id = None
         if 'AuthNRequestID' in session:
             request_id = session['AuthNRequestID']
-
-        # request_id is optional, but we probably still need to store it outbound above
 
         saml_auth.process_response(request_id=request_id)
         errors = saml_auth.get_errors()
@@ -48,14 +45,16 @@ def do_login_saml():
 
             self_url = OneLogin_Saml2_Utils.get_self_url(saml_request_config)
 
-            # RelayState is set in the IdP config, but can be overidden by passing return_to when login is called
-            # if 'RelayState' in request.form and self_url != request.form['RelayState']:
-            #     return redirect(saml_auth.redirect_to(request.form['RelayState']))
+            #RelayState is set in the IdP config, but can be overidden by passing return_to when login is called
+            #if 'RelayState' in request.form and self_url != request.form['RelayState']:
+            #    app.logger.warn(request.form)
+            #    return redirect(saml_auth.redirect_to(request.form['RelayState']))
             return render_template('dev/saml.html')
         else:
-            print("Something went wrong SAML")
-            print(errors[0])
-            print(dir(errors[0]))
+            #TODO: this should return a 500 or something
+            app.logger.warn("Something went wrong SAML")
+            app.logger.warn(errors[0])
+            app.logger.warn(dir(errors[0]))
     elif request.method == "GET":
         # login takes a return_to param that overrides relay state, useful for deep link?
         sso_built_url = saml_auth.login()
