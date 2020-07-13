@@ -56,6 +56,7 @@ def make_app(config):
     app.json_encoder = CustomJSONEncoder
     make_redis(app, config)
     csrf = CSRFProtect()
+    csrf.exempt('atat.routes.dev.login_dev_saml')
 
     app.config.update(config)
     app.config.update({"SESSION_REDIS": app.redis})
