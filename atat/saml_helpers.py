@@ -1,18 +1,12 @@
-import random
 from urllib.parse import urlparse
-
 from flask import (
-    Blueprint,
     request,
     redirect,
-    render_template,
-    url_for,
     current_app as app,
     session
 )
 from onelogin.saml2.auth import OneLogin_Saml2_Auth
 from onelogin.saml2.utils import OneLogin_Saml2_Utils
-import pendulum
 
 
 def do_login_saml():
@@ -49,7 +43,7 @@ def do_login_saml():
             #if 'RelayState' in request.form and self_url != request.form['RelayState']:
             #    app.logger.warn(request.form)
             #    return redirect(saml_auth.redirect_to(request.form['RelayState']))
-            return render_template('dev/saml.html')
+            return redirect('/login-dev?username=amanda')
         else:
             #TODO: this should return a 500 or something
             app.logger.warn("Something went wrong SAML")
