@@ -21,7 +21,7 @@ def do_login_saml():
     saml_request_config = prepare_flask_request(request)
     saml_auth = init_saml_auth(saml_request_config)
 
-    if 'acs' in request.args:
+    if 'acs' in request.args and request.method == 'POST':
 
         # unpack response with pysaml lib
 
