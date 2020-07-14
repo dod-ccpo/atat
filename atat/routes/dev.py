@@ -8,7 +8,7 @@ from flask import (
     render_template,
     url_for,
     current_app as app,
-    session
+    session,
 )
 from onelogin.saml2.auth import OneLogin_Saml2_Auth
 import pendulum
@@ -189,6 +189,6 @@ def test_email():
 def messages():
     return render_template("dev/emails.html", messages=app.mailer.messages)
 
-@bp.route("/login-dev-saml", methods=['GET', 'POST'])
-def login_dev_saml():
+
+@bp.route("/login-dev-saml", methods=["GET", "POST"])
     return do_login_saml()
