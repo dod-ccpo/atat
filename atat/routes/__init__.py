@@ -61,8 +61,8 @@ def _make_authentication_context():
     )
 
 
-def redirect_after_login_url():
-    returl = request.args.get("next")
+def redirect_after_login_url(next_param=None):
+    returl = next_param or request.args.get("next")
     if match_url_pattern(returl):
         param_name = request.args.get(app.form_cache.PARAM_NAME)
         if param_name:
