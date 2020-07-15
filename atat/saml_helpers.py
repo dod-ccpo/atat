@@ -1,18 +1,15 @@
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 from flask import request, redirect, current_app as app, session
 from onelogin.saml2.auth import OneLogin_Saml2_Auth
 from onelogin.saml2.utils import OneLogin_Saml2_Utils
 
 
-def do_login_saml():
-    # How can we preserve a "next" parameter for deep links?
+def do_login_saml(login_method):
 
     saml_request_config = prepare_flask_request(request)
     saml_auth = init_saml_auth(saml_request_config)
 
     if "acs" in request.args and request.method == "POST":
-
-        # unpack response with pysaml lib
 
         request_id = None
         if "AuthNRequestID" in session:
@@ -32,24 +29,34 @@ def do_login_saml():
             session["samlNameIdSPNameQualifier"] = saml_auth.get_nameid_spnq()
             session["samlSessionIndex"] = saml_auth.get_session_index()
 
-            self_url = OneLogin_Saml2_Utils.get_self_url(saml_request_config)
+            return login_method()
 
-            #RelayState is set in the IdP config, but can be overidden by passing return_to when login is called
-            #if 'RelayState' in request.form and self_url != request.form['RelayState']:
-            #    app.logger.warn(request.form)
-            #    return redirect(saml_auth.redirect_to(request.form['RelayState']))
-            return redirect('/login-dev?username=amanda')
         else:
             # TODO: this should return a 500 or something
             app.logger.warn("Something went wrong SAML")
             app.logger.warn(errors[0])
             app.logger.warn(dir(errors[0]))
     elif request.method == "GET":
-        # login takes a return_to param that overrides relay state, useful for deep link?
+        if "qs_dict" in session:
+            del session["qs_dict"]
         sso_built_url = saml_auth.login()
         session["AuthNRequestID"] = saml_auth.get_last_request_id()
-        app.logger.warn("get session")
-        app.logger.warn(session)    
+        parsed_url = urlparse(request.url)
+        parsed_qs = parse_qs(parsed_url.query)
+        next_param = next(iter(parsed_qs.get("next") or []), None)
+        username_param = next(iter(parsed_qs.get("username") or []), None)
+        dod_id_param = next(iter(parsed_qs.get("dod_id") or []), None)
+        qs_dict = {}
+
+        if next_param:
+            qs_dict["next_param"] = next_param
+        if username_param:
+            qs_dict["username_param"] = username_param
+        if dod_id_param:
+            qs_dict["dod_id_param"] = dod_id_param
+        if qs_dict:
+            session["qs_dict"] = qs_dict
+
         return redirect(sso_built_url)
 
 
