@@ -124,12 +124,14 @@ class IncompleteInfoError(Exception):
 
 @bp.route("/login-dev")
 def login_dev():
-    dod_id = request.args.get("dod_id", None)
-
+    qs_dict = session.get("qs_dict", {})
+    dod_id = qs_dict.get("dod_id_param", None) or request.args.get("dod_id", None)
     if dod_id is not None:
         user = Users.get_by_dod_id(dod_id)
     else:
-        role = request.args.get("username", "amanda")
+        role = qs_dict.get("username_param", None) or request.args.get(
+            "username", "amanda"
+        )
         user_data = _DEV_USERS[role]
         user = Users.get_or_create_by_dod_id(
             user_data["dod_id"],
@@ -149,8 +151,11 @@ def login_dev():
             ),
         )
 
+    next_param = qs_dict.get("next_param", None)
+    if "qs_dict" in session:
+        del session["qs_dict"]
     current_user_setup(user)
-    return redirect(redirect_after_login_url())
+    return redirect(redirect_after_login_url(next_param))
 
 
 @bp.route("/dev-new-user")
@@ -191,4 +196,5 @@ def messages():
 
 
 @bp.route("/login-dev-saml", methods=["GET", "POST"])
-    return do_login_saml()
+def login_dev_saml(login_method=login_dev):
+    return do_login_saml(login_method=login_dev)
