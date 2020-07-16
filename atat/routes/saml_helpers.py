@@ -2,6 +2,7 @@ from urllib.parse import urlparse, parse_qs
 from flask import request, redirect, current_app as app, session
 from onelogin.saml2.auth import OneLogin_Saml2_Auth
 from onelogin.saml2.utils import OneLogin_Saml2_Utils
+from atat.domain.exceptions import UnauthenticatedError
 
 
 def do_login_saml(login_method):
@@ -32,10 +33,11 @@ def do_login_saml(login_method):
             return login_method()
 
         else:
-            # TODO: this should return a 500 or something
-            app.logger.warn("Something went wrong SAML")
-            app.logger.warn(errors[0])
-            app.logger.warn(dir(errors[0]))
+            app.logger.error(
+                f"SAML response from IdP contained the following errors: {', '.join(errors)}"
+            )
+            raise UnauthenticatedError("SAML Authentication Failed")
+
     elif request.method == "GET":
         if "qs_dict" in session:
             del session["qs_dict"]
