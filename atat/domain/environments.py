@@ -39,12 +39,15 @@ class Environments(object):
         return environments
 
     @classmethod
-    def update(cls, environment, name=None):
-        if name is not None:
-            environment.name = name
-            db.session.add(environment)
-            commit_or_raise_already_exists_error(message="environment")
-            return environment
+    def update(cls, environment, new_data):
+        if "name" in new_data:
+            environment.name = new_data["name"]
+        if "cloud_id" in new_data:
+            environment.cloud_id = new_data["cloud_id"]
+
+        db.session.add(environment)
+        commit_or_raise_already_exists_error(message="environment")
+        return environment
 
     @classmethod
     def get(cls, environment_id):

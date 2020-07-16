@@ -262,7 +262,7 @@ def handle_update_environment(form, application=None, environment=None):
         try:
             if environment:
                 environment = Environments.update(
-                    environment=environment, name=form.name.data
+                    environment=environment, new_data={"name": form.name.data}
                 )
                 flash("application_environments_updated")
             else:

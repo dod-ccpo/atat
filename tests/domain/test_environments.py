@@ -94,7 +94,7 @@ def test_delete_environment(session):
 def test_update_environment():
     environment = EnvironmentFactory.create()
     assert environment.name is not "name 2"
-    Environments.update(environment, name="name 2")
+    Environments.update(environment, new_data={"name": "name 2"})
     assert environment.name == "name 2"
 
 
@@ -111,12 +111,11 @@ def test_create_does_not_duplicate_names_within_application():
 def test_update_does_not_duplicate_names_within_application():
     application = ApplicationFactory.create()
     name = "Your Environment"
-    environment = EnvironmentFactory.create(application=application, name=name)
+    EnvironmentFactory.create(application=application, name=name)
     dupe_env = EnvironmentFactory.create(application=application)
-    user = application.portfolio.owner
 
     with pytest.raises(AlreadyExistsError):
-        Environments.update(dupe_env, name)
+        Environments.update(dupe_env, new_data={"name": name})
 
 
 class TestGetEnvironmentsPendingCreate(EnvQueryTest):
