@@ -69,8 +69,8 @@ class Environment(
         return "<Environment(name='{}', num_users='{}', application='{}', portfolio='{}', id='{}')>".format(
             self.name,
             self.num_users,
-            self.application.name,
-            self.portfolio.name,
+            getattr(self, "application.name", None),
+            getattr(self, "portfolio.name", None),
             self.id,
         )
 
