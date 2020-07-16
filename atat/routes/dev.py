@@ -20,7 +20,7 @@ from atat.domain.permission_sets import PermissionSets
 from atat.forms.data import SERVICE_BRANCHES
 from atat.jobs import send_mail
 from atat.utils import pick
-from atat.saml_helpers import do_login_saml
+from atat.routes.saml_helpers import do_login_saml
 
 
 bp = Blueprint("dev", __name__)
