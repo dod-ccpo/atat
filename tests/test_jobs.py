@@ -24,6 +24,7 @@ from atat.jobs import (
     RecordFailure,
     create_billing_instruction,
     create_environment,
+    do_create_subscription,
     dispatch_create_application,
     dispatch_create_environment,
     dispatch_create_environment_role,
@@ -34,6 +35,7 @@ from atat.jobs import (
     do_create_environment_role,
     do_create_user,
     do_provision_portfolio,
+    log_do_create_environment,
     make_initial_csp_data,
     provision_portfolio,
     send_PPOC_email,
@@ -119,6 +121,7 @@ def test_create_environment_job(session, csp):
     environment.portfolio.csp_data = {"tenant_id": "fake"}
     session.add(environment)
     session.commit()
+
     do_create_environment(csp, environment.id)
     session.refresh(environment)
 
@@ -637,3 +640,36 @@ class Test_make_initial_csp_data:
         data = make_initial_csp_data(portfolio)
         billing_account = app.config["AZURE_BILLING_ACCOUNT_NAME"]
         assert data.get("billing_account_name") == billing_account
+
+
+def test_log_do_create_environment(mock_logger):
+    log_do_create_environment("foo", "bar", "baz")
+    assert len(mock_logger.messages) == 3
+
+
+class Test_do_create_subscription:
+    @pytest.fixture
+    def environment(self):
+        env = EnvironmentFactory(
+            cloud_id=f"/providers/Microsoft.Management/managementGroups/an_id"
+        )
+        env.portfolio.csp_data = {
+            "billing_account_name": "xxxx-xxxx-xxx-xxx",
+            "billing_profile_name": "xxxxxxxxxxx:xxxxxxxxxxxxx_xxxxxx",
+            "tenant_id": "xxxxxxxxxxx-xxxxxxxxxx-xxxxxxx-xxxxx",
+            "billing_profile_properties": {
+                "invoice_sections": [{"invoice_section_name": "xxxx-xxxx-xxx-xxx"}]
+            },
+        }
+        return env
+
+    def test_do_create_subscription(self, app, csp, environment):
+        do_create_subscription(csp, environment.id)
+        csp.create_subscription.assert_called()
+
+    def test_do_create_subscription_fails(self, app, csp, environment, mock_logger):
+        csp.create_subscription.side_effect = [GeneralCSPException()]
+        with pytest.raises(GeneralCSPException):
+            do_create_subscription(csp, environment.id)
+            assert len(mock_logger.messages) == 1
+

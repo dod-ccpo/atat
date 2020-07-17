@@ -152,7 +152,17 @@ def do_create_user(csp: CloudProviderInterface, application_role_ids=None):
         )
 
 
+def log_do_create_environment(portfolio_id, parent_id, tenant_id):
+    app.logger.debug("environment.portfolio.id = %s", portfolio_id)
+    app.logger.debug("parent_id = %s", parent_id)
+    app.logger.debug("tenant_id = %s", tenant_id)
+
+
 def do_create_environment(csp: CloudProviderInterface, environment_id=None):
+    """Creates an environment and spawns a task to create a subscription 
+    for that environment in the CSP.
+    """
+
     environment = Environments.get(environment_id)
 
     with claim_for_update(environment) as environment:
@@ -163,13 +173,10 @@ def do_create_environment(csp: CloudProviderInterface, environment_id=None):
             )
             return
 
-        csp_details = environment.portfolio.csp_data
         parent_id = environment.application.cloud_id
-        tenant_id = csp_details.get("tenant_id")
+        tenant_id = environment.portfolio.csp_data["tenant_id"]
 
-        app.logger.debug("environment.portfolio.id = %s", environment.portfolio.id)
-        app.logger.debug("parent_id = %s", parent_id)
-        app.logger.debug("tenant_id = %s", tenant_id)
+        log_do_create_environment(environment.portfolio.id, parent_id, tenant_id)
 
         payload = EnvironmentCSPPayload(
             tenant_id=tenant_id, display_name=environment.name, parent_id=parent_id
@@ -177,6 +184,34 @@ def do_create_environment(csp: CloudProviderInterface, environment_id=None):
         env_result = csp.create_environment(payload)
         cloud_id = f"/providers/Microsoft.Management/managementGroups/{env_result.name}"
         Environments.update(environment, new_data={"cloud_id": cloud_id})
+
+        create_subscription.delay(environment_id=environment.id)
+
+
+@celery.task(bind=True, base=RecordFailure, autoretry_for=(GeneralCSPException,))
+def create_subscription(self, environment_id=None):
+    do_create_subscription(app.csp.cloud, environment_id=environment_id)
+    return environment_id
+
+
+def do_create_subscription(csp: CloudProviderInterface, environment_id=None):
+    """Creates a subscription under a management group for an environment
+    
+    Creating a subscription is a long-running async job in Azure. For our 
+    purposes, we don't track the success or failure of that job. We only ensure 
+    that a request to kick off this async job is accepted.
+    """
+    environment = Environments.get(environment_id)
+    payload = environment.build_subscription_payload(
+        app.config["AZURE_BILLING_ACCOUNT_NAME"]
+    )
+    try:
+        csp.create_subscription(payload)
+    except GeneralCSPException as e:
+        app.logger.warning(
+            "Unable to create subscription for environment %s.", environment.id,
+        )
+        raise e
 
 
 def do_create_environment_role(csp: CloudProviderInterface, environment_role_id=None):
