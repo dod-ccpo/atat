@@ -672,4 +672,3 @@ class Test_do_create_subscription:
         with pytest.raises(GeneralCSPException):
             do_create_subscription(csp, environment.id)
             assert len(mock_logger.messages) == 1
-
