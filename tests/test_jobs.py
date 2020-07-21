@@ -19,9 +19,13 @@ from tests.factories import (
 
 from atat.domain.csp.cloud import MockCloudProvider
 from atat.domain.csp.cloud.exceptions import GeneralCSPException, ConnectionException
-from atat.domain.csp.cloud.models import UserRoleCSPResult
+from atat.domain.csp.cloud.models import (
+    UserRoleCSPResult,
+    SubscriptionCreationCSPPayload,
+)
 from atat.jobs import (
     RecordFailure,
+    build_subscription_payload,
     create_billing_instruction,
     create_environment,
     do_create_subscription,
@@ -672,3 +676,70 @@ class Test_do_create_subscription:
         with pytest.raises(GeneralCSPException):
             do_create_subscription(csp, environment.id)
             assert len(mock_logger.messages) == 1
+
+
+class TestBuildSubscriptionPayload:
+    def test_unique_display_name(self):
+        # Create 2 Applications with the same name that both have an environment named 'Environment'
+        app_1 = ApplicationFactory.create(
+            name="Application", environments=[{"name": "Environment", "cloud_id": 123}]
+        )
+        env_1 = app_1.environments[0]
+        app_2 = ApplicationFactory.create(
+            name="Application", environments=[{"name": "Environment", "cloud_id": 456}]
+        )
+        env_2 = app_2.environments[0]
+        env_1.portfolio.csp_data = {
+            "billing_account_name": "xxxx-xxxx-xxx-xxx",
+            "billing_profile_name": "xxxxxxxxxxx:xxxxxxxxxxxxx_xxxxxx",
+            "tenant_id": "xxxxxxxxxxx-xxxxxxxxxx-xxxxxxx-xxxxx",
+            "billing_profile_properties": {
+                "invoice_sections": [{"invoice_section_name": "xxxx-xxxx-xxx-xxx"}]
+            },
+        }
+        env_2.portfolio.csp_data = {
+            "billing_account_name": "xxxx-xxxx-xxx-xxx",
+            "billing_profile_name": "xxxxxxxxxxx:xxxxxxxxxxxxx_xxxxxx",
+            "tenant_id": "xxxxxxxxxxx-xxxxxxxxxx-xxxxxxx-xxxxx",
+            "billing_profile_properties": {
+                "invoice_sections": [{"invoice_section_name": "xxxx-xxxx-xxx-xxx"}]
+            },
+        }
+
+        # Create subscription payload for each environment
+        payload_1 = build_subscription_payload(env_1)
+        payload_2 = build_subscription_payload(env_2)
+
+        assert payload_1.display_name != payload_2.display_name
+
+    def test_populates_payload_correctly(self, app):
+        application = ApplicationFactory.create(
+            name="Application", environments=[{"name": "Environment", "cloud_id": 123}]
+        )
+        environment = application.environments[0]
+        account_name = app.config["AZURE_BILLING_ACCOUNT_NAME"]
+        profile_name = "fake-profile-name"
+        tenant_id = "123"
+        section_name = "fake-section-name"
+
+        environment.portfolio.csp_data = {
+            "billing_profile_name": profile_name,
+            "tenant_id": tenant_id,
+            "billing_profile_properties": {
+                "invoice_sections": [{"invoice_section_name": section_name}]
+            },
+        }
+        payload = build_subscription_payload(environment)
+
+        assert type(payload) == SubscriptionCreationCSPPayload
+        # Check all key/value pairs except for display_name because of the appended random string
+        expected_items = [
+            ("tenant_id", tenant_id),
+            ("parent_group_id", environment.cloud_id),
+            ("billing_account_name", account_name),
+            ("billing_profile_name", profile_name),
+            ("invoice_section_name", section_name),
+        ]
+        payload_items = payload.dict().items()
+        for item in expected_items:
+            assert item in payload_items

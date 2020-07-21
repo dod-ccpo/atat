@@ -786,53 +786,8 @@ def test_handle_update_member_with_error(set_g, monkeypatch, mock_logger):
     assert mock_logger.messages[-1] == exception
 
 
-def test_create_subscription_success(
-    client, user_session, mock_azure: AzureCloudProvider
-):
+def test_create_subscription(client, user_session):
     environment = EnvironmentFactory.create()
-    user_session(environment.portfolio.owner)
-    environment.cloud_id = "management/group/id"
-    environment.portfolio.csp_data = {
-        "billing_account_name": "xxxx-xxxx-xxx-xxx",
-        "billing_profile_name": "xxxxxxxxxxx:xxxxxxxxxxxxx_xxxxxx",
-        "tenant_id": "xxxxxxxxxxx-xxxxxxxxxx-xxxxxxx-xxxxx",
-        "billing_profile_properties": {
-            "invoice_sections": [{"invoice_section_name": "xxxx-xxxx-xxx-xxx"}]
-        },
-    }
-
-    with patch.object(
-        AzureCloudProvider, "create_subscription", wraps=mock_azure.create_subscription,
-    ) as create_subscription:
-        create_subscription.return_value = SubscriptionCreationCSPResult(
-            subscription_verify_url="https://zombo.com", subscription_retry_after=10
-        )
-
-        response = client.post(
-            url_for("applications.create_subscription", environment_id=environment.id),
-        )
-
-        assert response.status_code == 302
-        assert response.location == url_for(
-            "applications.settings",
-            application_id=environment.application.id,
-            _external=True,
-            fragment="application-environments",
-            _anchor="application-environments",
-        )
-
-
-def test_create_subscription_failure(client, user_session, monkeypatch):
-    environment = EnvironmentFactory.create()
-
-    def _raise_csp_exception(*args, **kwargs):
-        raise GeneralCSPException("An error occurred.")
-
-    monkeypatch.setattr(
-        "atat.domain.csp.cloud.MockCloudProvider.create_subscription",
-        _raise_csp_exception,
-    )
-
     user_session(environment.portfolio.owner)
     environment.cloud_id = "management/group/id"
     environment.portfolio.csp_data = {
@@ -848,4 +803,11 @@ def test_create_subscription_failure(client, user_session, monkeypatch):
         url_for("applications.create_subscription", environment_id=environment.id),
     )
 
-    assert response.status_code == 400
+    assert response.status_code == 302
+    assert response.location == url_for(
+        "applications.settings",
+        application_id=environment.application.id,
+        _external=True,
+        fragment="application-environments",
+        _anchor="application-environments",
+    )

@@ -1,11 +1,8 @@
-from secrets import token_urlsafe
-
 from sqlalchemy import Column, ForeignKey, String, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 import atat.models.mixins as mixins
 import atat.models.types as types
-from atat.domain.csp.cloud.models import SubscriptionCreationCSPPayload
 from atat.models.base import Base
 
 
@@ -80,23 +77,3 @@ class Environment(
     @property
     def history(self):
         return self.get_changes()
-
-    def build_subscription_payload(
-        self, billing_account_name
-    ) -> SubscriptionCreationCSPPayload:
-        csp_data = self.portfolio.csp_data
-        parent_group_id = self.cloud_id
-        invoice_section_name = csp_data["billing_profile_properties"][
-            "invoice_sections"
-        ][0]["invoice_section_name"]
-
-        display_name = f"{self.application.name}-{self.name}-{token_urlsafe(6)}"
-
-        return SubscriptionCreationCSPPayload(
-            tenant_id=csp_data.get("tenant_id"),
-            display_name=display_name,
-            parent_group_id=parent_group_id,
-            billing_account_name=billing_account_name,
-            billing_profile_name=csp_data.get("billing_profile_name"),
-            invoice_section_name=invoice_section_name,
-        )

@@ -1,5 +1,4 @@
 from flask import (
-    current_app as app,
     g,
     redirect,
     render_template,
@@ -27,7 +26,7 @@ from atat.models.permissions import Permissions
 from atat.domain.permission_sets import PermissionSets
 from atat.utils.flash import formatted_flash as flash
 from atat.utils.localization import translate
-from atat.jobs import send_mail
+from atat.jobs import send_mail, create_subscription as create_subscription_job
 from atat.routes.errors import log_error
 
 
@@ -536,20 +535,7 @@ def resend_invite(application_id, application_role_id):
 @user_can(Permissions.EDIT_ENVIRONMENT, message="create new environment subscription")
 def create_subscription(environment_id):
     environment = Environments.get(environment_id)
-
-    try:
-        payload = environment.build_subscription_payload(
-            app.config["AZURE_BILLING_ACCOUNT_NAME"]
-        )
-        app.csp.cloud.create_subscription(payload)
-        flash("environment_subscription_success", name=environment.displayname)
-
-    except GeneralCSPException:
-        flash("environment_subscription_failure")
-        return (
-            render_settings_page(application=environment.application, show_flash=True),
-            400,
-        )
+    create_subscription_job.delay(environment_id=environment.id)
 
     return redirect(
         url_for(
