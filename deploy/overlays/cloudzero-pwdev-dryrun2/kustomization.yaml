@@ -1,0 +1,10 @@
+namespace: dryrun2
+bases:
+  - ../../azure/
+resources:
+  - namespace.yml
+patchesStrategicMerge:
+  - envvars.yml
+  - ports.yml
+  - flex_vol.yml
+  - autoscaling.yml

@@ -1,0 +1,104 @@
+---
+- name: This is a hello-world example
+  hosts: localhost
+  tasks:
+    - name: Connect to the kubernetes cluster
+      shell: az aks get-credentials -g cloudzero-dryrun2-vpc -n cloudzero-dryrun2-k8s # TODO(heyzoos) Variablize! From terraform outputs.
+
+    - shell: kubectl get nodes
+      register: nodes
+
+    - debug:
+        msg: "{{ nodes }}"
+
+    - name: Verify login to the kubernetes cluster
+      assert:
+        that:
+          - nodes # TODO(heyzoos) What should I put here?
+
+    - name: Create namespace
+      k8s:
+        kind: Namespace
+        state: present
+        name: dryrun-jesse # TODO(heyzoos) Register this and make it dynamically somehow
+
+    # Depends on:
+    # - Kubernetes namespace existing
+    # - Kubernetes secret existing
+    - name: Create HTTP Basic Auth Password
+      set_fact:
+        password: "{{ lookup('password', 'htpasswd') }}"
+
+    - name: Base64 encode the password
+      shell: 'echo "{{ password }}" | base64'
+      register: encoded_password_shell_output
+
+    - debug:
+        msg: "{{ encoded_password_shell_output }}"
+
+    - name: Create dryrun-jesse namespace
+      k8s:
+        kind: Namespace
+        state: present
+        name: dryrun2 # TODO(heyzoos) Register this and make it dynamically somehow
+
+    - name: Set password
+      k8s:
+        name: htpasswd-jesse
+        kind: Secret
+        state: present
+        namespace: dryrun2 # TODO(heyzoos) Make sure to use a fact here
+        definition:
+          type: Opaque
+          data:
+            secret: "{{ encoded_password_shell_output.stdout }}"
+
+    - name: Apply the storage class
+      k8s:
+        state: present
+        src: /Users/jesus/Workspace/atst/deploy/azure/storage-class.yml
+
+    - shell: kubectl get nodes
+      register: nodes
+
+    - debug:
+        msg: "{{ nodes }}"
+
+    - name: Create kv namespace
+      k8s:
+        kind: Namespace
+        state: present
+        name: kv # TODO(heyzoos) Register this and make it dynamically somehow
+
+    # - name: Install the v1beta1 extension
+    #   k8s:
+    #     name: v1beta1
+    #     kind: Extensions
+    #     state: present
+
+    - name: Apply flex vol installer
+      k8s:
+        state: present
+        src: /Users/jesus/Workspace/atst/deploy/azure/keyvault/kv-flex-vol-installer.yml
+
+    - name: Check that the storage class is correct
+      shell: kubectl get storageclasses.storage.k8s.io
+
+    - name: Check that FlexVol was created correctly
+      shell: kubectl -n kv get pods
+
+    - name: Perform a diff to ensure the config can load correctly
+      shell: /Users/jesus/Workspace/atst/script/k8s_config /Users/jesus/Workspace/atst/deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl diff -f -
+
+    - name: Run a diff to ensure the config is loading correctly
+      shell: /Users/jesus/Workspace/atst/script/k8s_config /Users/jesus/Workspace/atst/deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl diff -f -
+
+    - name: Apply the rest of the Kubernetes config for the site
+      shell: /Users/jesus/Workspace/atst/script/k8s_config /Users/jesus/Workspace/atst/deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl apply -f -
+
+    - name: Obtain IP addresses
+      shell: kubectl -n dryrun get services
+      register: ips
+
+    - debug:
+        msg: "{{ ips }}"
