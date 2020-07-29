@@ -84,6 +84,7 @@ js/test_templates
 *.tfstate
 *.backup
 *.tfplan
+*.terraform
 
 # vscode config files
 .vscode/

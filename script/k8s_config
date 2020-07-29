@@ -42,4 +42,4 @@ fi
 
 # Use Kustomize to compile Kubernetes configuration and pipe to envsubst to
 # substitute the templated values.
-kubectl kustomize $1 | envsubst "'${CONCAT_SETTINGS}'"
+kubectl -v 5 kustomize $1 | envsubst "'${CONCAT_SETTINGS}'"
