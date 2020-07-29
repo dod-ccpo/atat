@@ -112,10 +112,11 @@ def do_create_user(csp: CloudProviderInterface, application_role_ids=None):
 
     with claim_many_for_update(app_roles) as app_roles:
 
-        if any([ar.cloud_id for ar in app_roles]):
-            app.logger.warning(
-                "Application role cloud ID %s already present.", ar.cloud_id
-            )
+        for ar in app_roles:
+            if ar.cloud_id:
+                app.logger.warning(
+                    "Application role cloud ID %s already present.", ar.cloud_id
+                )
             return
 
         csp_details = app_roles[0].application.portfolio.csp_data
