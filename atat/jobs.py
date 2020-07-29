@@ -117,7 +117,7 @@ def do_create_user(csp: CloudProviderInterface, application_role_ids=None):
                 app.logger.warning(
                     "Application role cloud ID %s already present.", ar.cloud_id
                 )
-            return
+                return
 
         csp_details = app_roles[0].application.portfolio.csp_data
         user = app_roles[0].user
