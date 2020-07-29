@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: atst-main
+  annotations:
+    # service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "cloudzero-dryrun2-public"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: atst-auth
+  annotations:
+    # service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "cloudzero-dryrun2-public"

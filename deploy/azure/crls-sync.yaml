@@ -4,7 +4,7 @@ metadata:
   name: crls
   namespace: atat
 spec:
-  schedule: "0 * * * *"
+  schedule: "29 * * * *"
   concurrencyPolicy: Replace
   successfulJobsHistoryLimit: 1
   jobTemplate:
@@ -18,26 +18,22 @@ spec:
         spec:
           restartPolicy: OnFailure
           containers:
-          - name: crls
-            image: $CONTAINER_IMAGE
-            securityContext:
-              allowPrivilegeEscalation: false
-            command: [
-              "/bin/sh", "-c"
-            ]
-            args: [
-              "/opt/atat/atst/script/sync-crls",
-            ]
-            envFrom:
-            - configMapRef:
-                name: atst-envvars
-            - configMapRef:
-                name: atst-worker-envvars
-            volumeMounts:
-              - name: crls-vol
-                mountPath: "/opt/atat/atst/crls"
-              - name: flask-secret
-                mountPath: "/config"
+            - name: crls
+              image: $CONTAINER_IMAGE
+              securityContext:
+                allowPrivilegeEscalation: false
+              command: ["/bin/sh", "-c"]
+              args: ["/opt/atat/atst/script/sync-crls"]
+              envFrom:
+                - configMapRef:
+                    name: atst-envvars
+                - configMapRef:
+                    name: atst-worker-envvars
+              volumeMounts:
+                - name: crls-vol
+                  mountPath: "/opt/atat/atst/crls"
+                - name: flask-secret
+                  mountPath: "/config"
           volumes:
             - name: crls-vol
               persistentVolumeClaim:
