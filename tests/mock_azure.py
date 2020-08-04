@@ -61,15 +61,15 @@ class MockAzureSDK(object):
 @pytest.fixture(scope="function")
 def mock_azure(monkeypatch):
     monkeypatch.setattr(
-        AzureCloudProvider,
-        "_get_elevated_management_token",
-        Mock(return_value=MOCK_ACCESS_TOKEN),
-    )
-    monkeypatch.setattr(
         AzureCloudProvider, "validate_domain_name", Mock(return_value=True),
     )
     azure_cloud_provider = AzureCloudProvider(
         AZURE_CONFIG, azure_sdk_provider=MockAzureSDK()
+    )
+    monkeypatch.setattr(
+        azure_cloud_provider,
+        "_elevate_tenant_admin_access",
+        Mock(return_value=MOCK_ACCESS_TOKEN),
     )
     monkeypatch.setattr(
         azure_cloud_provider,

@@ -25,7 +25,7 @@ run_python_unit_tests() {
 }
 
 run_python_render_vue_component() {
-  run_command "python -m pytest tests/render_vue_component.py --no-cov --no-print-logs --tb=no -q --disable-warnings"
+  run_command "python -m pytest tests/render_vue_component.py --no-cov --show-capture=no --tb=no -q --disable-warnings"
   return $?
 }
 

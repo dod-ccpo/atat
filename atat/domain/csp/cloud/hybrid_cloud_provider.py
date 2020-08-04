@@ -121,12 +121,12 @@ class HybridCloudProvider(object):
     def create_tenant_principal_app(
         self, payload: TenantPrincipalAppCSPPayload
     ) -> TenantPrincipalAppCSPResult:
-        with monkeypatched(
-            self.azure,
-            "tenant_principal_app_display_name",
-            f"{HYBRID_PREFIX} {payload.display_name} :: ATAT Remote Admin",
-        ):
-            return self.azure.create_tenant_principal_app(payload)
+        payload.tenant_principal_app_display_name = "{} {} :: {}".format(
+            HYBRID_PREFIX,
+            payload.display_name,
+            payload.tenant_principal_app_display_name,
+        )
+        return self.azure.create_tenant_principal_app(payload)
 
     def create_tenant_principal(
         self, payload: TenantPrincipalCSPPayload
@@ -149,11 +149,12 @@ class HybridCloudProvider(object):
             creds.tenant_id = self.hybrid_tenant_id
             original_update_tenant_creds(tenant_id, creds)
 
-        with monkeypatched(self.azure, "_get_tenant_admin_token", lambda *_a: token):
-            with monkeypatched(
-                self.azure, "update_tenant_creds", mocked_update_tenant_creds
-            ):
-                return self.azure.create_tenant_principal_credential(payload)
+        with monkeypatched(
+            self.azure, "update_tenant_creds", mocked_update_tenant_creds
+        ):
+            return self.azure.create_tenant_principal_credential(
+                payload, graph_token=token
+            )
 
     def create_admin_role_definition(
         self, payload: AdminRoleDefinitionCSPPayload
@@ -188,19 +189,13 @@ class HybridCloudProvider(object):
         token from KeyVault with the original tenant id, but make the role assignment
         request with the root credentials.
         """
-
-        token = self.azure._get_elevated_management_token(payload.tenant_id)
-        payload.tenant_id = self.hybrid_tenant_id
-
-        with monkeypatched(
-            self.azure, "_get_elevated_management_token", lambda _: token
-        ):
-            try:
-                return self.azure.create_tenant_admin_ownership(payload)
-            except UnknownServerException:
-                return TenantAdminOwnershipCSPResult(
-                    id=self.azure.config["AZURE_ADMIN_ROLE_ASSIGNMENT_ID"]
-                )
+        payload.root_management_group_name = self.hybrid_tenant_id
+        try:
+            return self.azure.create_tenant_admin_ownership(payload)
+        except UnknownServerException:
+            return TenantAdminOwnershipCSPResult(
+                id=self.azure.config["AZURE_ADMIN_ROLE_ASSIGNMENT_ID"]
+            )
 
     def create_tenant_principal_ownership(
         self, payload: TenantPrincipalOwnershipCSPPayload
@@ -211,12 +206,8 @@ class HybridCloudProvider(object):
         the tenant principal ownership request with the root credentials.
         """
 
-        token = self.azure._get_elevated_management_token(payload.tenant_id)
-        payload.tenant_id = self.hybrid_tenant_id
-        with monkeypatched(
-            self.azure, "_get_elevated_management_token", lambda _: token
-        ):
-            return self.azure.create_tenant_principal_ownership(payload)
+        payload.root_management_group_name = self.hybrid_tenant_id
+        return self.azure.create_tenant_principal_ownership(payload)
 
     def create_billing_owner(
         self, payload: BillingOwnerCSPPayload
@@ -225,11 +216,8 @@ class HybridCloudProvider(object):
             payload.tenant_id, scope=self.azure.graph_resource + "/.default"
         )
         payload.tenant_id = self.hybrid_tenant_id
-        with monkeypatched(
-            self.azure, "_get_tenant_principal_token", lambda *a, **kw: token
-        ):
-            payload.display_name = f"{HYBRID_PREFIX} {payload.display_name} :: Billing"
-            return self.azure.create_billing_owner(payload)
+        payload.display_name = f"{HYBRID_PREFIX} {payload.display_name} :: Billing"
+        return self.azure.create_billing_owner(payload, graph_token=token)
 
     def create_tenant_admin_credential_reset(
         self, payload: TenantAdminCredentialResetCSPPayload
@@ -250,19 +238,6 @@ class HybridCloudProvider(object):
         return self.azure.create_environment(payload)
 
     def create_user(self, payload: UserCSPPayload) -> UserCSPResult:
-        """Create a user in an Azure Active Directory instance.
-        Unlike most of the methods on this interface, this requires
-        two API calls: one POST to create the user and one PATCH to
-        set the alternate email address. The email address cannot
-        be set on the first API call. The email address is
-        necessary so that users can do Self-Service Password
-        Recovery.
-        Arguments:
-            payload {UserCSPPayload} -- a payload object with the
-            data necessary for both calls
-        Returns:
-            UserCSPResult -- a result object containing the AAD ID.
-        """
         return self.azure.create_user(payload)
 
     def create_user_role(self, payload: UserRoleCSPPayload) -> UserRoleCSPResult:
