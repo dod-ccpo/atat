@@ -56,7 +56,7 @@
     - name: Apply the storage class
       k8s:
         state: present
-        src: /Users/jesus/Workspace/atst/deploy/azure/storage-class.yml
+        src: ./deploy/azure/storage-class.yml
 
     - shell: kubectl get nodes
       register: nodes
@@ -73,7 +73,7 @@
     - name: Apply flex vol installer
       k8s:
         state: present
-        src: /Users/jesus/Workspace/atst/deploy/azure/keyvault/kv-flex-vol-installer.yml
+        src: ./deploy/azure/keyvault/kv-flex-vol-installer.yml
 
     - name: Check that the storage class is correct
       shell: kubectl get storageclasses.storage.k8s.io
@@ -82,13 +82,13 @@
       shell: kubectl -n kv get pods
 
     - name: Perform a diff to ensure the config can load correctly
-      shell: /Users/jesus/Workspace/atst/script/k8s_config /Users/jesus/Workspace/atst/deploy/overlays/cloudzero-pwdev-{{ environment }} | kubectl diff -f -
+      shell: ./script/k8s_config ./deploy/overlays/cloudzero-pwdev-{{ environment }} | kubectl diff -f -
 
     - name: Run a diff to ensure the config is loading correctly
-      shell: /Users/jesus/Workspace/atst/script/k8s_config /Users/jesus/Workspace/atst/deploy/overlays/cloudzero-pwdev-{{ environment }} | kubectl diff -f -
+      shell: ./script/k8s_config ./deploy/overlays/cloudzero-pwdev-{{ environment }} | kubectl diff -f -
 
     - name: Apply the rest of the Kubernetes config for the site
-      shell: /Users/jesus/Workspace/atst/script/k8s_config /Users/jesus/Workspace/atst/deploy/overlays/cloudzero-pwdev-{{ environment }} | kubectl apply -f -
+      shell: ./script/k8s_config ./deploy/overlays/cloudzero-pwdev-{{ environment }} | kubectl apply -f -
 
     - name: Obtain IP addresses
       shell: kubectl -n {{ environment }} get services
