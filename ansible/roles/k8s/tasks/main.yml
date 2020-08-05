@@ -1,9 +1,9 @@
 ---
-- name: This is a hello-world example
+- name: Apply kubernetes configurations
   hosts: localhost
   tasks:
     - name: Connect to the kubernetes cluster
-      shell: az aks get-credentials -g cloudzero-dryrun2-vpc -n cloudzero-dryrun2-k8s # TODO(heyzoos) Variablize! From terraform outputs.
+      shell: az aks get-credentials -g cloudzero-{{ environment }}-vpc -n cloudzero-{{ environment }}-k8s # TODO(heyzoos) Variablize! From terraform outputs.
 
     - shell: kubectl get nodes
       register: nodes
@@ -20,7 +20,7 @@
       k8s:
         kind: Namespace
         state: present
-        name: dryrun-jesse # TODO(heyzoos) Register this and make it dynamically somehow
+        name: "{{ environment }}" # TODO(heyzoos) Register this and make it dynamically somehow
 
     # Depends on:
     # - Kubernetes namespace existing
@@ -36,18 +36,18 @@
     - debug:
         msg: "{{ encoded_password_shell_output }}"
 
-    - name: Create dryrun-jesse namespace
+    - name: Create {{ environment }} namespace
       k8s:
         kind: Namespace
         state: present
-        name: dryrun2 # TODO(heyzoos) Register this and make it dynamically somehow
+        name: "{{ environment }}" # TODO(heyzoos) Register this and make it dynamically somehow
 
     - name: Set password
       k8s:
         name: htpasswd-jesse
         kind: Secret
         state: present
-        namespace: dryrun2 # TODO(heyzoos) Make sure to use a fact here
+        namespace: "{{ environment }}" # TODO(heyzoos) Make sure to use a fact here
         definition:
           type: Opaque
           data:
@@ -70,12 +70,6 @@
         state: present
         name: kv # TODO(heyzoos) Register this and make it dynamically somehow
 
-    # - name: Install the v1beta1 extension
-    #   k8s:
-    #     name: v1beta1
-    #     kind: Extensions
-    #     state: present
-
     - name: Apply flex vol installer
       k8s:
         state: present
@@ -88,16 +82,16 @@
       shell: kubectl -n kv get pods
 
     - name: Perform a diff to ensure the config can load correctly
-      shell: /Users/jesus/Workspace/atst/script/k8s_config /Users/jesus/Workspace/atst/deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl diff -f -
+      shell: /Users/jesus/Workspace/atst/script/k8s_config /Users/jesus/Workspace/atst/deploy/overlays/cloudzero-pwdev-{{ environment }} | kubectl diff -f -
 
     - name: Run a diff to ensure the config is loading correctly
-      shell: /Users/jesus/Workspace/atst/script/k8s_config /Users/jesus/Workspace/atst/deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl diff -f -
+      shell: /Users/jesus/Workspace/atst/script/k8s_config /Users/jesus/Workspace/atst/deploy/overlays/cloudzero-pwdev-{{ environment }} | kubectl diff -f -
 
     - name: Apply the rest of the Kubernetes config for the site
-      shell: /Users/jesus/Workspace/atst/script/k8s_config /Users/jesus/Workspace/atst/deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl apply -f -
+      shell: /Users/jesus/Workspace/atst/script/k8s_config /Users/jesus/Workspace/atst/deploy/overlays/cloudzero-pwdev-{{ environment }} | kubectl apply -f -
 
     - name: Obtain IP addresses
-      shell: kubectl -n dryrun get services
+      shell: kubectl -n {{ environment }} get services
       register: ips
 
     - debug:
