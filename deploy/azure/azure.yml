@@ -4,7 +4,7 @@ kind: Namespace
 metadata:
   name: atat
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -168,7 +168,7 @@ spec:
               keyvaultobjecttypes: "secret;secret;secret;secret;key"
               tenantid: $TENANT_ID
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -241,7 +241,7 @@ spec:
               keyvaultobjecttypes: "secret;secret;secret;secret;key"
               tenantid: $TENANT_ID
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:

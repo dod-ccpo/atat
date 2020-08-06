@@ -1,4 +1,4 @@
-namespace: dryrun2
+namespace: staging
 bases:
   - ../../azure/
 resources:

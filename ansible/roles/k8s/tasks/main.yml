@@ -6,6 +6,11 @@
       debug:
         msg: "{{ target_environment }}"
 
+    - name: run add aks perms
+      shell:
+        cmd: script/add-aks-perms.sh dryrun2
+        chdir: /Users/michaelpapetti/Developer/atst
+
     - name: Connect to the kubernetes cluster
       shell: "az aks get-credentials -g cloudzero-{{ target_environment }}-vpc -n cloudzero-{{ target_environment }}-k8s" # TODO(heyzoos) Variablize! From terraform outputs.
 
@@ -38,14 +43,14 @@
       k8s:
         kind: Namespace
         state: present
-        name: "{{ target_environment }}-namespace" # TODO(heyzoos) Register this and make it dynamically somehow
+        name: "staging" # TODO(heyzoos) Register this and make it dynamically somehow
 
     - name: Set password
       k8s:
         name: htpasswd-jesse
         kind: Secret
         state: present
-        namespace: "{{ target_environment }}-namespace" # TODO(heyzoos) Make sure to use a fact here
+        namespace: "staging" # TODO(heyzoos) Make sure to use a fact here
         definition:
           type: Opaque
           data:
@@ -66,7 +71,7 @@
       k8s:
         kind: Namespace
         state: present
-        name: "{{ target_environment }}-kv-namespace" # TODO(heyzoos) Register this and make it dynamically somehow
+        name: "kv" # TODO(heyzoos) Register this and make it dynamically somehow
 
     - name: Apply flex vol installer
       k8s:
@@ -77,16 +82,24 @@
       shell: kubectl get storageclasses.storage.k8s.io
 
     - name: Check that FlexVol was created correctly
-      shell: "kubectl -n {{ target_environment }}-kv-namespace get pods"
+      shell: "kubectl -n kv get pods"
 
-    - name: Perform a diff to ensure the config can load correctly
-      shell: ../../../../script/k8s_config ../../../../deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl diff -f -
+    #- name: Perform a diff to ensure the config can load correctly
+    #  shell: ../../../../script/k8s_config ../../../../deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl diff -f -
 
     - name: Apply the rest of the Kubernetes config for the site
       shell: ../../../../script/k8s_config ../../../../deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl apply -f -
+      environment:
+        CONTAINER_IMAGE: cloudzeropwdevregistry.azurecr.io/atat:staging-ddec387f1148f538632eec8fc3430321d4d4198e
+        NGINX_CONTAINER_IMAGE: cloudzeropwdevregistry.azurecr.io/nginx:rhel-8.2
+        MAIN_DOMAIN: dryrun2.atat.dev
+        AUTH_DOMAIN: auth-dryrun2.atat.dev
+        VMSS_CLIENT_ID: 6c3cab5d-f037-4a00-9271-1756656bee92
+        KV_NAME: cz-dryrun2-keyvault
+        TENANT_ID: b5ab0e1e-09f8-4258-afb7-fb17654bc5b3
 
     - name: Obtain IP addresses
-      shell: kubectl -n {{ target_environment }} get services
+      shell: kubectl -n staging get services
       register: ips
 
     - debug:
