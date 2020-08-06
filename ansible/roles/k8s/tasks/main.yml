@@ -20,12 +20,6 @@
         that:
           - nodes # TODO(heyzoos) What should I put here?
 
-    - name: Create namespace
-      k8s:
-        kind: Namespace
-        state: present
-        name: "{{ target_environment }}" # TODO(heyzoos) Register this and make it dynamically somehow
-
     # Depends on:
     # - Kubernetes namespace existing
     # - Kubernetes secret existing
@@ -44,14 +38,14 @@
       k8s:
         kind: Namespace
         state: present
-        name: "{{ target_environment }}" # TODO(heyzoos) Register this and make it dynamically somehow
+        name: "{{ target_environment }}-namespace" # TODO(heyzoos) Register this and make it dynamically somehow
 
     - name: Set password
       k8s:
         name: htpasswd-jesse
         kind: Secret
         state: present
-        namespace: "{{ target_environment }}" # TODO(heyzoos) Make sure to use a fact here
+        namespace: "{{ target_environment }}-namespace" # TODO(heyzoos) Make sure to use a fact here
         definition:
           type: Opaque
           data:
@@ -60,7 +54,7 @@
     - name: Apply the storage class
       k8s:
         state: present
-        src: ./deploy/azure/storage-class.yml
+        src: ../../../../deploy/azure/storage-class.yml
 
     - shell: kubectl get nodes
       register: nodes
@@ -72,27 +66,24 @@
       k8s:
         kind: Namespace
         state: present
-        name: kv # TODO(heyzoos) Register this and make it dynamically somehow
+        name: "{{ target_environment }}-kv-namespace" # TODO(heyzoos) Register this and make it dynamically somehow
 
     - name: Apply flex vol installer
       k8s:
         state: present
-        src: ./deploy/azure/keyvault/kv-flex-vol-installer.yml
+        src: ../../../../deploy/azure/keyvault/kv-flex-vol-installer.yml
 
     - name: Check that the storage class is correct
       shell: kubectl get storageclasses.storage.k8s.io
 
     - name: Check that FlexVol was created correctly
-      shell: kubectl -n kv get pods
+      shell: "kubectl -n {{ target_environment }}-kv-namespace get pods"
 
     - name: Perform a diff to ensure the config can load correctly
-      shell: ./script/k8s_config ./deploy/overlays/cloudzero-pwdev-{{ target_environment }} | kubectl diff -f -
-
-    - name: Run a diff to ensure the config is loading correctly
-      shell: ./script/k8s_config ./deploy/overlays/cloudzero-pwdev-{{ target_environment }} | kubectl diff -f -
+      shell: ../../../../script/k8s_config ../../../../deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl diff -f -
 
     - name: Apply the rest of the Kubernetes config for the site
-      shell: ./script/k8s_config ./deploy/overlays/cloudzero-pwdev-{{ target_environment }} | kubectl apply -f -
+      shell: ../../../../script/k8s_config ../../../../deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl apply -f -
 
     - name: Obtain IP addresses
       shell: kubectl -n {{ target_environment }} get services
