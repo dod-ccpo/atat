@@ -11,8 +11,8 @@ data:
   CELERY_DEFAULT_QUEUE: celery-staging
   CSP: hybrid
   FLASK_ENV: staging
-  PGDATABASE: cloudzero_dryrun2 # TODO(heyzoos) Parameterize from terraform!
-  PGHOST: http://cloudzero-dryrun2-sql.postgres.database.azure.com/ # TODO(heyzoos) Parameterize from terraform!
+  PGDATABASE: cloudzero_dryrun2_staging # TODO(heyzoos) Parameterize from terraform!
+  PGHOST: cloudzero-dryrun2-sql.postgres.database.azure.com # TODO(heyzoos) Parameterize from terraform!
   PGUSER: atat@cloudzero-dryrun2-sql # TODO(heyzoos) Parameterize from terraform!
   PGSSLMODE: require
   REDIS_HOST: cloudzero-dryrun2-redis.redis.cache.windows.net:6380 # TODO(heyzoos) Parameterize from terraform!
@@ -34,8 +34,8 @@ data:
   CELERY_DEFAULT_QUEUE: celery-staging
   CSP: hybrid
   FLASK_ENV: staging
-  PGDATABASE: cloudzero_dryrun2 # TODO(heyzoos) Parameterize from terraform!
-  PGHOST: http://cloudzero-dryrun2-sql.postgres.database.azure.com/ # TODO(heyzoos) Parameterize from terraform!
+  PGDATABASE: cloudzero_dryrun2_staging # TODO(heyzoos) Parameterize from terraform!
+  PGHOST: cloudzero-dryrun2-sql.postgres.database.azure.com # TODO(heyzoos) Parameterize from terraform!
   PGUSER: atat@cloudzero-dryrun2-sql # TODO(heyzoos) Parameterize from terraform!
   PGSSLMODE: require
   REDIS_HOST: cloudzero-dryrun2-redis.redis.cache.windows.net:6380 # TODO(heyzoos) Parameterize from terraform!

@@ -6,10 +6,10 @@
       debug:
         msg: "{{ target_environment }}"
 
-    - name: run add aks perms
-      shell:
-        cmd: script/add-aks-perms.sh dryrun2
-        chdir: /Users/michaelpapetti/Developer/atst
+    # - name: run add aks perms
+    #   shell:
+    #     cmd: script/add-aks-perms.sh dryrun2
+    #     chdir: /Users/jesus/Workspace/atst
 
     - name: Connect to the kubernetes cluster
       shell: "az aks get-credentials -g cloudzero-{{ target_environment }}-vpc -n cloudzero-{{ target_environment }}-k8s" # TODO(heyzoos) Variablize! From terraform outputs.
@@ -31,6 +31,11 @@
     - name: Create HTTP Basic Auth Password
       set_fact:
         password: "{{ lookup('password', 'htpasswd') }}"
+
+    - name: Dump htpassword into file
+      copy:
+        dest: "./htpasswd"
+        content: "{{ password }}"
 
     - name: Base64 encode the password
       shell: 'echo "{{ password }}" | base64'
@@ -90,11 +95,13 @@
     - name: Apply the rest of the Kubernetes config for the site
       shell: ../../../../script/k8s_config ../../../../deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl apply -f -
       environment:
-        CONTAINER_IMAGE: cloudzeropwdevregistry.azurecr.io/atat:staging-ddec387f1148f538632eec8fc3430321d4d4198e
-        NGINX_CONTAINER_IMAGE: cloudzeropwdevregistry.azurecr.io/nginx:rhel-8.2
+        CONTAINER_IMAGE: cloudzerodryrun2blessedligerregistry.azurecr.io/atat:staging-a6a789ac8bf583b0764e2853dbde95173bc1e5b7
+        NGINX_CONTAINER_IMAGE: cloudzerodryrun2blessedligerregistry.azurecr.io/nginx:rhel-8.2
         MAIN_DOMAIN: dryrun2.atat.dev
         AUTH_DOMAIN: auth-dryrun2.atat.dev
-        VMSS_CLIENT_ID: 6c3cab5d-f037-4a00-9271-1756656bee92
+        # TODO(heyzoos) Where did we source this ID from??
+        # VMSS_CLIENT_ID: 6c3cab5d-f037-4a00-9271-1756656bee92
+        VMSS_CLIENT_ID: 1213334e-f149-4f5a-a5e0-550eef158a75
         KV_NAME: cz-dryrun2-keyvault
         TENANT_ID: b5ab0e1e-09f8-4258-afb7-fb17654bc5b3
 
