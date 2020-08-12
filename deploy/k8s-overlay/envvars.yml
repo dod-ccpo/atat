@@ -1,10 +1,19 @@
+# A ConfigMap is an API object used to store non-confidential data in key-value
+# pairs. https://kubernetes.io/docs/concepts/configuration/configmap/
+#
+# Our `envvar` `ConfigMap`s are used in conjuction with `envFrom` to set the
+# environment variables for containers.
+#
+# Many of these containers need to point at resources whose identifying
+# information is not known until after they are deployed. We rely on Ansible
+# to fill in that information.
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: atst-worker-envvars
 data:
-  AZURE_ACCOUNT_NAME: dryrun2tasks # TODO(heyzoos) Parameterize from terraform!
+  AZURE_STORAGE_ACCOUNT_NAME: dryrun2tasks # TODO(heyzoos) Parameterize from terraform!
   AZURE_POWERSHELL_CLIENT_ID: 1950a258-227b-4e31-a9cf-717495945fc2
   AZURE_TENANT_ADMIN_USERNAME: hybrid.admin@atathybrid.onmicrosoft.com
   AZURE_VAULT_URL: "https://tenants-dryrun2-keyvault.vault.azure.net/" # TODO(heyzoos) Parameterize from terraform!
@@ -24,7 +33,7 @@ metadata:
   name: atst-envvars
 data:
   ASSETS_URL: ""
-  AZURE_ACCOUNT_NAME: dryrun2tasks # TODO(heyzoos) Parameterize from terraform!
+  AZURE_STORAGE_ACCOUNT_NAME: dryrun2tasks # TODO(heyzoos) Parameterize from terraform!
   AZURE_POWERSHELL_CLIENT_ID: 1950a258-227b-4e31-a9cf-717495945fc2
   AZURE_TENANT_ADMIN_USERNAME: hybrid.admin@atathybrid.onmicrosoft.com
   AZURE_VAULT_URL: "https://tenants-dryrun2-keyvault.vault.azure.net/" # TODO(heyzoos) Parameterize from terraform!
