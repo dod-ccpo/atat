@@ -13,7 +13,7 @@ variable "name" {}
 
 
 variable "admin_users" {
-type = map
+  type = map
 }
 
 variable "storage_admin_whitelist" {
@@ -27,14 +27,14 @@ variable "storage_admin_whitelist" {
 variable "tenant_id" {}
 
 
-variable "admin_user_whitelist" { type = map}
+variable "admin_user_whitelist" { type = map }
 
-variable "networks" { type = map}
+variable "networks" { type = map }
 
-variable "virtual_network"{}
-variable "route_tables"{ type = map}
+variable "virtual_network" {}
+variable "route_tables" { type = map }
 variable "dns_servers" {
-type = list
+  type = list
 }
 variable "service_endpoints" { type = map }
 variable "routes" { type = map }

@@ -61,5 +61,5 @@ variable "workspace_id" {
 variable "pet_name" {}
 
 variable "subnet_list" {
-type=map
+  type = map
 }

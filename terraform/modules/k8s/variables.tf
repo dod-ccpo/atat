@@ -73,7 +73,7 @@ variable "private_cluster_enabled" {
 
 variable "node_resource_group" {}
 
-variable "client_id"  {}
+variable "client_id" {}
 variable "client_secret" {}
 variable "client_object_id" {}
 variable "virtual_network" {}

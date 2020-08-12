@@ -66,7 +66,7 @@ resource "azurerm_route" "custom_routes" {
   name                = "${var.name}-${var.environment}-${element(split(",", each.value), 1)}"
   resource_group_name = azurerm_resource_group.vpc.name
   #route_table_name    = "${var.name}-${var.environment}-${element(split(",", each.value), 0)}"
-  route_table_name    = azurerm_route_table.route_table[each.key].name
-  address_prefix = element(split(",", each.value), 2)
-  next_hop_type  = element(split(",", each.value), 3)
+  route_table_name = azurerm_route_table.route_table[each.key].name
+  address_prefix   = element(split(",", each.value), 2)
+  next_hop_type    = element(split(",", each.value), 3)
 }

@@ -28,7 +28,7 @@ resource "azurerm_subnet" "mgmt_subnet" {
 
   enforce_private_link_endpoint_network_policies = true
 
-  service_endpoints = ["Microsoft.KeyVault","Microsoft.ContainerRegistry"]
+  service_endpoints = ["Microsoft.KeyVault", "Microsoft.ContainerRegistry"]
 
 
 }
@@ -77,8 +77,8 @@ resource "azurerm_kubernetes_cluster" "k8s_bastion" {
 
 
   service_principal {
-  client_id = var.bastion_aks_sp_id
-  client_secret= var.bastion_aks_sp_secret
+    client_id     = var.bastion_aks_sp_id
+    client_secret = var.bastion_aks_sp_secret
   }
 
 
