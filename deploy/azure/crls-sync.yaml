@@ -4,7 +4,7 @@ metadata:
   name: crls
   namespace: atat
 spec:
-  schedule: "29 * * * *"
+  schedule: "0 * * * *"
   concurrencyPolicy: Replace
   successfulJobsHistoryLimit: 1
   jobTemplate:
