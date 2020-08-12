@@ -1,8 +1,0 @@
-namespace: master
-bases:
-  - ../cloudzero-dryrun-staging
-resources:
-  - namespace.yml
-patchesStrategicMerge:
-  - envvars.yml
-  - autoscaling.yml
