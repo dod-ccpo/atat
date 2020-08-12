@@ -21,9 +21,9 @@ module "bastion" {
   environment                = var.environment
   owner                      = var.owner
   name                       = var.name
-  bastion_ssh_pub_key_path = var.bastion_ssh_pub_key_path
-  log_analytics_workspace_id            =  module.logs.workspace_id
-  depends_on     = [module.vpc]
+  bastion_ssh_pub_key_path   = var.bastion_ssh_pub_key_path
+  log_analytics_workspace_id = module.logs.workspace_id
+  depends_on                 = [module.vpc]
 
 
 

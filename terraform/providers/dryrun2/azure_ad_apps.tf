@@ -16,5 +16,5 @@ module "bastion_sp" {
 
 module "ops_keyvault_app" {
   source = "../../modules/azure_ad"
-  name = "ops-keyvault-sp"
+  name   = "ops-keyvault-sp"
 }

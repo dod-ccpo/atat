@@ -12,16 +12,16 @@ provider "azuread" {
 
 terraform {
   backend "azurerm" {
-  resource_group_name="cloudzero-dryrun3-cloudzerodryrun3tfstate"
-  container_name= "tfstate"
-  key = "dryrun3.tfstate"
-  storage_account_name = "cloudzerodryrun3tfstate"
+    resource_group_name  = "cloudzero-dryrun3-cloudzerodryrun3tfstate"
+    container_name       = "tfstate"
+    key                  = "dryrun3.tfstate"
+    storage_account_name = "cloudzerodryrun3tfstate"
   }
 }
 
 resource "random_pet" "unique_id" {
 
-  length = 2
-  separator=""
+  length    = 2
+  separator = ""
 
 }

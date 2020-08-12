@@ -96,10 +96,10 @@ variable "aks_min_node_count" {
 variable "postgres_admin_login" {}
 
 variable "task_order_bucket_storage_container_name" {
-   default = "task-order-pdfs"
- }
+  default = "task-order-pdfs"
+}
 
- variable "tf_state_storage_container_name" {
-   default = "tfstate"
- }
- 
+variable "tf_state_storage_container_name" {
+  default = "tfstate"
+}
+

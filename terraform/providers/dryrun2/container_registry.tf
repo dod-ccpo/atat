@@ -14,5 +14,5 @@ module "container_registry" {
   workspace_id  = module.logs.workspace_id
   pet_name      = random_pet.unique_id.id
   subnet_list   = module.vpc.subnet_list
-  depends_on          = [module.vpc]
+  depends_on    = [module.vpc]
 }
