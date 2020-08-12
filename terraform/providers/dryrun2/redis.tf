@@ -8,4 +8,5 @@ module "redis" {
   sku_name     = "Premium"
   family       = "P"
   workspace_id = module.logs.workspace_id
+  pet_name     = random_pet.unique_id.id
 }

@@ -1,22 +1,41 @@
-source       = "../../modules/bucket"
-service_name = "${var.name}${var.environment}tfstate"
-owner        = var.owner
-name         = var.name
-environment  = var.environment
-region       = var.region
-policy       = "Deny"
-subnet_ids   = []
-whitelist    = var.storage_admin_whitelist
-account_kind = "Storage"
-
 variable "environment" {}
 
 variable "region" {}
+
+variable "backup_region" {}
+
+
 
 variable "owner" {}
 
 variable "name" {}
 
+
+
+variable "admin_users" {
+type = map
+}
+
 variable "storage_admin_whitelist" {
   type = map
 }
+
+
+
+
+
+variable "tenant_id" {}
+
+
+variable "admin_user_whitelist" { type = map}
+
+variable "networks" { type = map}
+
+variable "virtual_network"{}
+variable "route_tables"{ type = map}
+variable "dns_servers" {
+type = list
+}
+variable "service_endpoints" { type = map }
+variable "routes" { type = map }
+variable "storage_container_name" {}

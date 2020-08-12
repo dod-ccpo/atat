@@ -13,4 +13,5 @@ module "tf_state" {
   subnet_ids   = []
   whitelist    = var.storage_admin_whitelist
   account_kind = "Storage"
+  storage_container_name = var.storage_container_name
 }

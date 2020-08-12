@@ -7,9 +7,10 @@ module "operator_keyvault" {
   tenant_id         = var.tenant_id
   principal_id      = ""
   admin_principals  = var.admin_users
-  tenant_principals = {}
+  tenant_principals = { "${module.ops_keyvault_app.name}" = "${module.ops_keyvault_app.sp_object_id}" }
   policy            = "Deny"
   subnet_ids        = [module.vpc.subnet_list["aks"].id, module.bastion.mgmt_subnet_id]
   whitelist         = var.admin_user_whitelist
   workspace_id      = module.logs.workspace_id
+  pet_name     = random_pet.unique_id.id
 }

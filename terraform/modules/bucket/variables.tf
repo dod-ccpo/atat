@@ -62,6 +62,6 @@ variable "bucket_cors_properties" {
 }
 
 variable "storage_container_name" {
-  type        = string
-  description = "What to name the created storage container"
+type        = string
+description = "What to name the created storage container"
 }

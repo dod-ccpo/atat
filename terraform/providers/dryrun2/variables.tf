@@ -70,7 +70,7 @@ variable "bucket_cors_properties" {
 
 variable "log_analytics_workspace_id" {}
 
-variable "private_k8s_resource_group" {}
+variable "k8s_resource_group" {}
 
 variable "private_k8s_subnet_cidr" {}
 
@@ -93,11 +93,13 @@ variable "aks_max_node_count" {
 variable "aks_min_node_count" {
   default = 3
 }
+variable "postgres_admin_login" {}
 
 variable "task_order_bucket_storage_container_name" {
-  default = "task-order-pdfs"
-}
+   default = "task-order-pdfs"
+ }
 
-variable "tf_state_storage_container_name" {
-  default = "tfstate"
-}
+ variable "tf_state_storage_container_name" {
+   default = "tfstate"
+ }
+ 

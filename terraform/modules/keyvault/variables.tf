@@ -61,3 +61,5 @@ variable "workspace_id" {
   type        = string
 
 }
+
+variable "pet_name" {}

@@ -1,6 +1,4 @@
-locals {
-  whitelist = values(var.whitelist)
-}
+
 
 resource "azurerm_resource_group" "acr" {
   name     = "${var.name}-${var.environment}-acr"
@@ -8,12 +6,14 @@ resource "azurerm_resource_group" "acr" {
 }
 
 resource "azurerm_container_registry" "acr" {
-  name                = "${var.name}${var.environment}registry" # Alpha Numeric Only
+  name                = "${var.name}${var.environment}${var.pet_name}registry" # Alpha Numeric Only
   resource_group_name = azurerm_resource_group.acr.name
   location            = azurerm_resource_group.acr.location
   sku                 = var.sku
   admin_enabled       = var.admin_enabled
   #georeplication_locations = [azurerm_resource_group.acr.location, var.backup_region]
+
+
 
   network_rule_set {
     default_action = var.policy
@@ -33,13 +33,19 @@ resource "azurerm_container_registry" "acr" {
     #  }
     #}
 
-    virtual_network = [
-      for subnet in var.subnet_ids : {
-        action    = "Allow"
-        subnet_id = subnet
-      }
-    ]
-  }
+     virtual_network = [
+         for sub_name, sub_map in var.subnet_list: {
+
+          action    = "Allow"
+          subnet_id = sub_map.id
+          
+          }
+          if sub_name == "aks"
+
+  ]
+
+}
+
 }
 
 resource "azurerm_monitor_diagnostic_setting" "acr_diagnostic" {

@@ -1,4 +1,6 @@
 **/*.terraform
 **/*.tfvars
 **/*.sh
+**/*.json
 **/*retrieved_tfvars.*
+**/*dryrun2.tfvars.json

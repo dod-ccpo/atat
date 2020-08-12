@@ -97,25 +97,3 @@ resource "azurerm_key_vault_access_policy" "keyvault_admin_policy" {
     "update",
   ]
 }
-
-resource "azurerm_monitor_diagnostic_setting" "keyvault_diagnostic" {
-  name                       = "${var.name}-${var.environment}-keyvault-diag"
-  target_resource_id         = azurerm_key_vault.keyvault.id
-  log_analytics_workspace_id = var.workspace_id
-
-  log {
-    category = "AuditEvent"
-    enabled  = true
-
-    retention_policy {
-      enabled = true
-    }
-  }
-  metric {
-    category = "AllMetrics"
-
-    retention_policy {
-      enabled = true
-    }
-  }
-}

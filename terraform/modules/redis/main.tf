@@ -23,16 +23,3 @@ resource "azurerm_redis_cache" "redis" {
     owner       = var.owner
   }
 }
-
-resource "azurerm_monitor_diagnostic_setting" "redis_diagnostic" {
-  name                       = "${var.name}-${var.environment}-redis-diag"
-  target_resource_id         = azurerm_redis_cache.redis.id
-  log_analytics_workspace_id = var.workspace_id
-  metric {
-    category = "AllMetrics"
-
-    retention_policy {
-      enabled = true
-    }
-  }
-}

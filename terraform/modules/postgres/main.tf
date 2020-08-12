@@ -38,25 +38,3 @@ resource "azurerm_postgresql_database" "db" {
   charset             = "UTF8"
   collation           = "en-US"
 }
-
-resource "azurerm_monitor_diagnostic_setting" "postgresql_diagnostic" {
-  name                       = "${var.name}-${var.environment}-postgresql-diag"
-  target_resource_id         = azurerm_postgresql_server.sql.id
-  log_analytics_workspace_id = var.workspace_id
-
-  log {
-    category = "PostgreSQLLogs"
-    enabled  = true
-
-    retention_policy {
-      enabled = true
-    }
-  }
-  metric {
-    category = "AllMetrics"
-
-    retention_policy {
-      enabled = true
-    }
-  }
-}

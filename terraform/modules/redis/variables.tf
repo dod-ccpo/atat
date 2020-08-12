@@ -63,3 +63,5 @@ variable "workspace_id" {
   description = "Log Analytics workspace for this resource to log to"
   type        = string
 }
+
+variable "pet_name" {}

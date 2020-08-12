@@ -41,31 +41,19 @@ variable "enable_auto_scaling" {
 }
 
 variable "max_count" {
-  default     = 5
+  default     = 1
   type        = string
   description = "Maximum number of nodes to use in autoscaling. This requires `enable_auto_scaling` to be set to true"
+
 }
 
 variable "min_count" {
-  default     = 3
+  default     = 1
   type        = string
   description = "Minimum number of nodes to use in autoscaling. This requires `enable_auto_scaling` to be set to true"
 }
 
-variable "client_id" {
-  type        = string
-  description = "The client ID for the Service Principal associated with the AKS cluster."
-}
 
-variable "client_secret" {
-  type        = string
-  description = "The client secret for the Service Principal associated with the AKS cluster."
-}
-
-variable "client_object_id" {
-  type        = string
-  description = "The client object_id for the Service Principal associated with the AKS cluster."
-}
 
 variable "workspace_id" {
   description = "Log Analytics workspace for this resource to log to"
@@ -82,3 +70,15 @@ variable "private_cluster_enabled" {
   default     = false
   type        = bool
 }
+
+variable "node_resource_group" {}
+
+variable "client_id"  {}
+variable "client_secret" {}
+variable "client_object_id" {}
+variable "virtual_network" {}
+variable "aks_subnet_id" {}
+
+variable "aks_route_table" {}
+
+variable "vnet_resource_group_name" {}

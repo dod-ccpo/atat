@@ -57,3 +57,9 @@ variable "workspace_id" {
   description = "The Log Analytics Workspace ID"
   type        = string
 }
+
+variable "pet_name" {}
+
+variable "subnet_list" {
+type=map
+}
