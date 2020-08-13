@@ -92,7 +92,7 @@ commands:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-          version: 18.06.0-ce
+          version: 18.09.3
       - restore_docker_image
       - azlogin
       - run:
@@ -133,12 +133,12 @@ commands:
 jobs:
   docker-build:
     docker:
-      - image: docker:18.06.0-ce-git
+      - image: docker:18.09.3-git
     steps:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-          version: 18.06.0-ce
+          version: 18.09.3
       - azlogin
       - run:
           name: Build image
@@ -149,7 +149,7 @@ jobs:
 
   test:
     docker:
-      - image: docker:18.06.0-ce-git
+      - image: docker:18.09.3-git
       - image: circleci/postgres:10-alpine-ram
       - image: circleci/redis:4-alpine3.8
     environment:
@@ -157,7 +157,7 @@ jobs:
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
-          version: 18.06.0-ce
+          version: 18.09.3
       - restore_docker_image
       - setup_datastores:
           pgdatabase: atat_test
@@ -176,13 +176,13 @@ jobs:
 
   integration-tests:
     docker:
-      - image: docker:18.06.0-ce-git
+      - image: docker:18.09.3-git
       - image: circleci/postgres:10-alpine-ram
       - image: circleci/redis:4-alpine3.8
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
-          version: 18.06.0-ce
+          version: 18.09.3
       - restore_docker_image
       - setup_datastores:
           pgdatabase: atat
@@ -235,13 +235,13 @@ jobs:
 
   test-crl-parser:
     docker:
-      - image: docker:18.06.0-ce-git
+      - image: docker:18.09.3-git
       - image: circleci/postgres:10-alpine-ram
       - image: circleci/redis:4-alpine3.8
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
-          version: 18.06.0-ce
+          version: 18.09.3
       - restore_docker_image
       - setup_datastores:
           pgdatabase: atat_test
@@ -257,7 +257,7 @@ jobs:
 
   deploy-staging:
     docker:
-      - image: docker:18.06.0-ce-git
+      - image: docker:18.09.3-git
     steps:
       - deploy:
           namespace: staging
@@ -265,7 +265,7 @@ jobs:
 
   deploy-master:
     docker:
-      - image: docker:18.06.0-ce-git
+      - image: docker:18.09.3-git
     steps:
       - deploy:
           namespace: master
