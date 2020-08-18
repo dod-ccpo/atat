@@ -1,48 +1,45 @@
 resource "azurerm_subnet" "private_aks_subnet" {
 
-  name                 = "private-aks-subnet"
-  resource_group_name  = var.rg
-  virtual_network_name = var.vpc_name
-  address_prefixes     = ["${var.subnet_cidr}"]
-
-  enforce_private_link_endpoint_network_policies = true
+   name                 = "private-aks-subnet"
+   resource_group_name  = var.rg
+   virtual_network_name = var.vpc_name
+   address_prefixes     = ["${var.subnet_cidr}"]
 
 
-}
+   service_endpoints = ["Microsoft.Sql", "Microsoft.KeyVault","Microsoft.Storage","Microsoft.ContainerRegistry"]
+ }
 
-
-resource "azurerm_route_table" "route_table" {
-  name                = "${var.name}-${var.environment}-private-aks"
-  location            = var.region
-  resource_group_name = var.rg
-}
+ resource "azurerm_route_table" "route_table" {
+   name                = "${var.name}-${var.environment}-private-aks"
+   location            = var.region
+   resource_group_name = var.rg
+ }
 
 
 
-resource "azurerm_subnet_route_table_association" "route_table" {
+ resource "azurerm_subnet_route_table_association" "route_table" {
 
-  subnet_id      = azurerm_subnet.private_aks_subnet.id
-  route_table_id = azurerm_route_table.route_table.id
-}
-
-# Default Routes
-resource "azurerm_route" "local_route" {
-  name                = "${var.name}-${var.environment}-default"
-  resource_group_name = var.rg
-  route_table_name    = azurerm_route_table.route_table.name
-  address_prefix      = var.subnet_cidr
-  next_hop_type       = "VnetLocal"
-}
-
-resource "azurerm_route" "internet_route" {
-  name                = "${var.name}-${var.environment}-internet"
-  resource_group_name = var.rg
-  route_table_name    = azurerm_route_table.route_table.name
-  address_prefix      = "0.0.0.0/0"
-  next_hop_type       = "Internet"
-}
+   subnet_id      = azurerm_subnet.private_aks_subnet.id
+   route_table_id = azurerm_route_table.route_table.id
+ }
 
 
+
+ resource "azurerm_route" "vnet_route" {
+    name                = "${var.name}-${var.environment}-virtual-network"
+    resource_group_name = var.rg
+    route_table_name    = azurerm_route_table.route_table.name
+    address_prefix      = var.vpc_address_space
+    next_hop_type       = "VnetLocal"
+  }
+
+  resource "azurerm_route" "internet" {
+     name                = "${var.name}-${var.environment}-virtual-network"
+     resource_group_name = var.rg
+     route_table_name    = azurerm_route_table.route_table.name
+     address_prefix      = "0.0.0.0/0"
+     next_hop_type       = "Internet"
+   }
 
 
 
@@ -57,11 +54,11 @@ resource "azurerm_kubernetes_cluster" "k8s_private" {
   resource_group_name     = var.rg
   dns_prefix              = "atat-aks-private"
   private_cluster_enabled = true
-  node_resource_group     = "${var.rg}-private-aks-node-rg"
-
+  node_resource_group     = "${var.rg}-private-aks-node-rgs"
+  depends_on = [azurerm_subnet_route_table_association.route_table]
 
   linux_profile {
-    admin_username = "mike_papetti"
+    admin_username = "ops_person"
     ssh_key {
 
       key_data = file("${var.aks_ssh_pub_key_path}")
