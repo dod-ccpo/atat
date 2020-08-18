@@ -1,0 +1,9 @@
+
+
+- hosts: localhost
+  roles:
+    - role: db
+      vars:
+        db_init_details: "{{ tf_app_env_outputs.outputs }}"
+        db_name: "{{ az_environment }}"
+        postgresql:  "true"
