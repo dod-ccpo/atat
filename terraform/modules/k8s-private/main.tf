@@ -1,6 +1,6 @@
 resource "azurerm_subnet" "private_aks_subnet" {
 
-   name                 = "private-aks-subnet"
+   name                 = "${var.name}-${var.environment}-private-aks-subnet"
    resource_group_name  = var.rg
    virtual_network_name = var.vpc_name
    address_prefixes     = ["${var.subnet_cidr}"]
