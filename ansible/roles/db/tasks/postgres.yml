@@ -15,7 +15,7 @@
   - name: install poetry deps
     shell:
       cmd: poetry install
-      chdir: /Users/michaelpapetti/Developer/atst
+      chdir: /src
 
   - name: Create database user
     shell:
