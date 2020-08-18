@@ -1,9 +1,2 @@
-
-
-
-
-- import_playbook: pw-dev.yml
-  when: provision_pwdev is defined
-
-- import_playbook: dryrun.yml
-  when: provision_dryrun is defined
+- import_playbook: infra.yml
+- import_playbook: databases.yml

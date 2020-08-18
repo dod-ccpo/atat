@@ -5,7 +5,7 @@
 - name: get variables
   import_tasks: get_variables.yml
 
-- name: deploy application env
+- name: show outputs
   import_tasks: show_outputs.yml
   when: show_app_env_outputs is defined
 
