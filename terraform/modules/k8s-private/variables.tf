@@ -22,6 +22,10 @@ variable "rg" {}
 
 variable "vpc_name" {}
 
+variable "vpc_address_space" {}
+
+variable "aks_subnet_id" {}
+
 variable "subnet_cidr" {}
 
 variable "aks_ssh_pub_key_path" {}
@@ -71,6 +75,9 @@ variable "min_count" {
   description = "Minimum number of nodes to use in autoscaling. This requires `enable_auto_scaling` to be set to true"
 }
 
+
+
+
 variable "vnet_id" {
   description = "The ID of the VNET that the AKS cluster app registration needs to provision load balancers in"
   type        = string
@@ -81,5 +88,3 @@ variable "private_cluster_enabled" {
   default     = false
   type        = bool
 }
-
-variable "vpc_address_space" {}
