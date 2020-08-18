@@ -73,7 +73,7 @@ resource "azurerm_kubernetes_cluster" "k8s_private" {
     network_plugin     = "azure"
     dns_service_ip     = var.service_dns
     docker_bridge_cidr = var.docker_bridge_cidr
-    outbound_type      = "userDefinedRouting"
+    outbound_type      = "loadBalancer"
     service_cidr       = var.service_cidr
     load_balancer_sku  = "Standard"
 
