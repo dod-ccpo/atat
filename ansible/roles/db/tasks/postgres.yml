@@ -12,11 +12,6 @@
       tenant: "{{ lookup('env','SUBSCRIPTION_TENANT')}}"
 
 
-  - name: install poetry deps
-    shell:
-      cmd: poetry install
-      chdir: /src
-
   - name: Create database user
     shell:
       cmd:   script/create_database_user.py "{{ tf_app_env_outputs.atat_user_name.value }}" "{{ tf_app_env_outputs.atat_user_password.value }}"
