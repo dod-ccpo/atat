@@ -1,40 +1,20 @@
-# deploy
 ---
+- name: get backend config
+  import_tasks: get_backend.yml
 
-# ops_keyvault_* use service principle that has read and list rights to target vault
+- name: get variables
+  import_tasks: get_variables.yml
 
-- name: "print config to json"
-  include_role:
-    name: azure_keyvault
-  vars:
-    get_secrets: true
-    deploy_tag: "{{ deploy_tag }}"
-
-
-
-- name: sdhow tf_vars
-  debug:
-    msg: "{{ kv_tf | to_nice_json }}"
+- name: deploy application env
+  import_tasks: show_outputs.yml
+  when: show_app_env_outputs is defined
 
 
-- name: tf plan
-  terraform:
-    project_path: "{{tf_dir}}"
-    state: "planned"
-    plan_file: "plan.tfplan"
-    variables: "{{ kv_tf }}"
-  register: tf_run
+- name: deploy application env
+  import_tasks: setup.yml
+  when: deploy_app_env is defined
 
 
-- debug:
-   msg: "{{ tf_run }}"
-
-
-- name: tf apply
-  terraform:
-    project_path: "{{ tf_dir }}"
-    state: "{{ desired_state }}"
-    plan_file: "plan.tfplan"
-    variables: "{{ kv_tf }}"
-  register: tf_run
-  when: desired_state is defined
+- name: teardown application env
+  import_tasks: teardown.yml
+  when: teardown_app_env is defined
