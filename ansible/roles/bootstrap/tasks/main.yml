@@ -1,8 +1,8 @@
+---
 
 
-- name: provision keyvaults
-  terraform:
-    project_path: "{{tf_pw_bootstrap_proj_path}}"
-    state: "planned"
-    plan_file: "plan.tfplan"
-  register: tf_run
+- name: get vars
+  import_tasks: get_variables.yml
+
+- name: bootstrap env
+  import_tasks: setup.yml
