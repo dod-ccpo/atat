@@ -1,0 +1,13 @@
+- name: tf get backend info
+  terraform:
+    force_init: "{{bootstrap_init_tf}}"
+    project_path: "{{ tf_base_dir }}/bootstrap"
+    state:  "present"
+    variables: "{{ kv_tf }}"
+  register: tf_bootstrap_backend_outputs
+  environment:
+    ARM_SUBSCRIPTION_ID: "{{ bootstrap_subscription_id }}"
+
+- debug:
+   msg: "{{ tf_bootstrap_backend_outputs.outputs }}"
+  when: tf_bootstrap_backend_outputs.outputs is defined

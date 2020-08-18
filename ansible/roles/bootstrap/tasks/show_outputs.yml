@@ -1,0 +1,9 @@
+- name: tf get outputs
+  shell: terraform init && terraform output -json > bootstrap_outputs.json
+  args:
+    chdir: "{{ tf_base_dir }}/bootstrap"
+
+
+- name: register json var
+  set_fact:
+    tf_bootstrap_backend_outputs: "{{ lookup('file','{{ tf_base_dir }}/bootstrap/bootstrap_outputs.json') | from_json }} "

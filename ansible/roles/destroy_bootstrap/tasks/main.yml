@@ -1,0 +1,13 @@
+---
+
+
+- name: get vars
+  import_tasks: get_variables.yml
+
+
+
+- name: get bootstrap env outputs before destroy
+  import_tasks: show_outputs.yml
+
+- name: destroy bootstrap env
+  import_tasks: teardown.yml

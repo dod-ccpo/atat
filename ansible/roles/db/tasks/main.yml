@@ -1,0 +1,6 @@
+---
+
+
+- name: get vars
+  import_tasks: postgres.yml
+  when: postgresql is defined

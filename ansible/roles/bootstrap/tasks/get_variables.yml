@@ -1,0 +1,12 @@
+- name: provision remote state tfvars
+  set_fact:
+    vars_vals: "{{ lookup('to_hcl', tfvars_file_path )   }}"
+
+- name: show tfvars
+  debug:
+    msg: "{{ lookup('to_hcl', tfvars_file_path )  }}"
+
+- name: make k/v
+  set_fact:
+    kv_tf: "{{ kv_tf|default({}) | combine({ item : (vars_vals[item] | regex_replace(\"'\",'\"'))  }) }}"
+  with_items: "{{ vars_vals }}"

@@ -1,0 +1,18 @@
+- name: set tf vars file path
+  set_fact:
+    tf_vars_file_path: "{{tf_base_dir }}/{{az_environment}}/{{az_environment}}.tfvars.json"
+
+
+- name: pull in tfvars values
+  set_fact:
+    vars_vals: "{{ lookup('to_hcl', tf_vars_file_path )   }}"
+  when: tf_vars_file_path is defined
+
+- name: show tfvars
+  debug:
+    msg: "{{ lookup('to_hcl', tf_vars_file_path )  }}"
+
+- name: make k/v
+  set_fact:
+    app_kv_tf: "{{ app_kv_tf|default({}) | combine({ item : (vars_vals[item] | regex_replace(\"'\",'\"'))  }) }}"
+  with_items: "{{ vars_vals }}"
