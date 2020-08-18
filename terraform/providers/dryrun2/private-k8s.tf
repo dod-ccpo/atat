@@ -1,6 +1,6 @@
 module "private-k8s" {
   source                     = "../../modules/k8s-private"
-  rg                         = var.private_k8s_resource_group
+  rg                         = module.vpc.resource_group_name
   region                     = var.region
   name                       = var.name
   environment                = var.environment
@@ -20,5 +20,8 @@ module "private-k8s" {
   vnet_id                    = module.vpc.id
   vpc_name                   = module.vpc.vpc_name
   aks_ssh_pub_key_path       = var.aks_ssh_pub_key_path
-  vpc_address_space          = module.vpc.address_space
+  depends_on                 = [module.vpc]
+  aks_subnet_id              = module.vpc.subnet_list["aks"].id
+  vpc_address_space          = "10.1.0.0/16"
+
 }
