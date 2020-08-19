@@ -1,6 +1,6 @@
-namespace: staging
+namespace: "{{ namespace }}"
 bases:
-  - ../../azure/
+  - ../../../../../deploy/azure/
 resources:
   - namespace.yml
 patchesStrategicMerge:

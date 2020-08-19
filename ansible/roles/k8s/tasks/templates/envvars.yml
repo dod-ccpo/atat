@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atst-worker-envvars
+data:
+  AZURE_STORAGE_ACCOUNT_NAME: "{{ namespace }}tasks"
+  AZURE_POWERSHELL_CLIENT_ID: 1950a258-227b-4e31-a9cf-717495945fc2
+  AZURE_TENANT_ADMIN_USERNAME: hybrid.admin@atathybrid.onmicrosoft.com
+  AZURE_VAULT_URL: "https://tenants-{{ namespace }}-keyvault.vault.azure.net/"
+  CELERY_DEFAULT_QUEUE: celery-{{ namespace }}
+  CSP: hybrid
+  FLASK_ENV: "{{ namespace }}"
+  PGDATABASE: "cloudzero_{{ namespace }}_{{ deployment }}"
+  PGHOST: "cloudzero-{{ namespace }}-sql.postgres.database.azure.com"
+  PGUSER: "atat@cloudzero-{{ namespace }}-sql"
+  PGSSLMODE: require
+  REDIS_HOST: "cloudzero-{{ namespace }}-redis.redis.cache.windows.net:6380"
+  SERVER_NAME: "{{ namespace }}.atat.dev"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atst-envvars
+data:
+  ASSETS_URL: ""
+  AZURE_STORAGE_ACCOUNT_NAME: "{{ namespace }}tasks"
+  AZURE_POWERSHELL_CLIENT_ID: 1950a258-227b-4e31-a9cf-717495945fc2
+  AZURE_TENANT_ADMIN_USERNAME: hybrid.admin@atathybrid.onmicrosoft.com
+  AZURE_VAULT_URL: "https://tenants-{{ namespace }}-keyvault.vault.azure.net/"
+  BLOB_STORAGE_URL: "https://{{ namespace }}tasks.blob.core.windows.net/"
+  CAC_URL: https://auth-{{ namespace }}.atat.dev/login-redirect
+  CDN_ORIGIN: https://{{ namespace }}.atat.dev
+  CELERY_DEFAULT_QUEUE: celery-{{ namespace }}
+  CSP: hybrid
+  FLASK_ENV: "{{ namespace }}"
+  PGDATABASE: "cloudzero_{{ namespace }}_{{ deployment }}"
+  PGHOST: "cloudzero-{{ namespace }}-sql.postgres.database.azure.com"
+  PGUSER: "atat@cloudzero-{{ namespace }}-sql"
+  PGSSLMODE: require
+  REDIS_HOST: "cloudzero-{{ namespace }}-redis.redis.cache.windows.net:6380"
+  SESSION_COOKIE_DOMAIN: atat.dev
+  STATIC_URL: "https://{{ namespace }}.atat.dev/static/"

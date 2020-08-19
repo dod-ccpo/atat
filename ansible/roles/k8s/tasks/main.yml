@@ -2,32 +2,9 @@
 - name: Apply kubernetes configurations
   hosts: localhost
   tasks:
-    - name: Show variable "target_environment"
-      debug:
-        msg: "{{ target_environment }}"
+    - name: Connect to the {{ namespace }} kubernetes cluster
+      shell: "az aks get-credentials -g cloudzero-{{ namespace }}-vpc -n cloudzero-{{ namespace }}-k8s"
 
-    # - name: run add aks perms
-    #   shell:
-    #     cmd: script/add-aks-perms.sh dryrun2
-    #     chdir: /Users/jesus/Workspace/atst
-
-    - name: Connect to the kubernetes cluster
-      shell: "az aks get-credentials -g cloudzero-{{ target_environment }}-vpc -n cloudzero-{{ target_environment }}-k8s" # TODO(heyzoos) Variablize! From terraform outputs.
-
-    - shell: kubectl get nodes
-      register: nodes
-
-    - debug:
-        msg: "{{ nodes }}"
-
-    - name: Verify login to the kubernetes cluster
-      assert:
-        that:
-          - nodes # TODO(heyzoos) What should I put here?
-
-    # Depends on:
-    # - Kubernetes namespace existing
-    # - Kubernetes secret existing
     - name: Create HTTP Basic Auth Password
       set_fact:
         password: "{{ lookup('password', 'htpasswd') }}"
@@ -41,21 +18,18 @@
       shell: 'echo "{{ password }}" | base64'
       register: encoded_password_shell_output
 
-    - debug:
-        msg: "{{ encoded_password_shell_output }}"
-
-    - name: Create {{ target_environment }} namespace
+    - name: Create {{ namespace }} namespace
       k8s:
         kind: Namespace
         state: present
-        name: "staging" # TODO(heyzoos) Register this and make it dynamically somehow
+        name: "{{ namespace }}"
 
     - name: Set password
       k8s:
-        name: htpasswd-jesse
+        name: htpasswd
         kind: Secret
         state: present
-        namespace: "staging" # TODO(heyzoos) Make sure to use a fact here
+        namespace: "{{ namespace }}"
         definition:
           type: Opaque
           data:
@@ -66,48 +40,50 @@
         state: present
         src: ../../../../deploy/azure/storage-class.yml
 
-    - shell: kubectl get nodes
-      register: nodes
-
-    - debug:
-        msg: "{{ nodes }}"
-
     - name: Create kv namespace
       k8s:
         kind: Namespace
         state: present
-        name: "kv" # TODO(heyzoos) Register this and make it dynamically somehow
+        name: "kv"
 
     - name: Apply flex vol installer
       k8s:
         state: present
         src: ../../../../deploy/azure/keyvault/kv-flex-vol-installer.yml
 
-    - name: Check that the storage class is correct
-      shell: kubectl get storageclasses.storage.k8s.io
+    - name: Create template output directory
+      file:
+        state: directory
+        path: .out.{{ namespace }}
 
-    - name: Check that FlexVol was created correctly
-      shell: "kubectl -n kv get pods"
+    - name: Interpolate the templates
+      template:
+        src: "{{ item }}"
+        dest: ".out.{{ namespace }}/{{ item | basename }}"
+      with_fileglob: "{{ playbook_dir + '/templates/*' }}"
 
-    #- name: Perform a diff to ensure the config can load correctly
-    #  shell: ../../../../script/k8s_config ../../../../deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl diff -f -
+    - name: Show output directory
+      debug:
+        msg: "{{ playbook_dir + '/.out.' + namespace }}"
 
     - name: Apply the rest of the Kubernetes config for the site
-      shell: ../../../../script/k8s_config ../../../../deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl apply -f -
+      shell: ../../../../script/k8s_config {{ playbook_dir + '/.out.' + namespace }} | kubectl apply -f -
       environment:
-        CONTAINER_IMAGE: cloudzerodryrun2blessedligerregistry.azurecr.io/atat:staging-a6a789ac8bf583b0764e2853dbde95173bc1e5b7
-        NGINX_CONTAINER_IMAGE: cloudzerodryrun2blessedligerregistry.azurecr.io/nginx:rhel-8.2
-        MAIN_DOMAIN: dryrun2.atat.dev
-        AUTH_DOMAIN: auth-dryrun2.atat.dev
+        #TODO(heyzoos) all these need to come from ansible outputs
+        CONTAINER_IMAGE: cloudzero{{ namespace }}registry.azurecr.io/atat:staging-a6a789ac8bf583b0764e2853dbde95173bc1e5b7
+        NGINX_CONTAINER_IMAGE: cloudzero{{ namespace }}registry.azurecr.io/nginx:rhel-8.2
+        MAIN_DOMAIN: "{{ namespace }}.atat.dev"
+        AUTH_DOMAIN: "auth-{{ namespace }}.atat.dev"
         # TODO(heyzoos) Where did we source this ID from??
         # VMSS_CLIENT_ID: 6c3cab5d-f037-4a00-9271-1756656bee92
         VMSS_CLIENT_ID: 1213334e-f149-4f5a-a5e0-550eef158a75
-        KV_NAME: cz-dryrun2-keyvault
+        KV_NAME: "cz-{{ namespace }}-keyvault"
         TENANT_ID: b5ab0e1e-09f8-4258-afb7-fb17654bc5b3
 
     - name: Obtain IP addresses
-      shell: kubectl -n staging get services
+      shell: kubectl -n {{ namespace }} get services
       register: ips
 
-    - debug:
+    - name: Show IP addresses
+      debug:
         msg: "{{ ips }}"
