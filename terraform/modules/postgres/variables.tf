@@ -100,3 +100,6 @@ variable "workspace_id" {
 }
 
 variable "pet_name" {}
+
+
+variable "operator_ip" {}

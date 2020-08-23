@@ -21,6 +21,7 @@ resource "azurerm_postgresql_server" "sql" {
   administrator_login_password = var.administrator_login_password
   version                      = var.postgres_version
   ssl_enforcement_enabled      = var.ssl_enforcement
+
 }
 
 resource "azurerm_postgresql_virtual_network_rule" "sql" {
@@ -30,6 +31,16 @@ resource "azurerm_postgresql_virtual_network_rule" "sql" {
   subnet_id                            = var.subnet_id
   ignore_missing_vnet_service_endpoint = true
 }
+
+resource "azurerm_postgresql_firewall_rule" "operator" {
+  name                = "office"
+  resource_group_name = azurerm_resource_group.sql.name
+  server_name         = azurerm_postgresql_server.sql.name
+  start_ip_address    = var.operator_ip
+  end_ip_address      = var.operator_ip
+}
+
+
 
 resource "azurerm_postgresql_database" "db" {
   name                = "${var.name}-${var.environment}-atat"

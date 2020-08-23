@@ -12,4 +12,5 @@ module "task_order_bucket" {
   whitelist              = var.storage_admin_whitelist
   bucket_cors_properties = var.bucket_cors_properties
   storage_container_name = var.task_order_bucket_storage_container_name
+  depends_on    = [module.vpc]
 }

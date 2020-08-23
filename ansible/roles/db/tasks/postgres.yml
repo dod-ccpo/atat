@@ -1,11 +1,13 @@
 
 
 
+
+
   - name: Create (or update) PostgreSQL Database
     azure_rm_postgresqldatabase:
       resource_group: "{{tf_app_env_outputs.postgres_resource_group_name.value}}"
       server_name: "{{ tf_app_env_outputs.atat_database_instance_name.value }}"
-      name: "{{ tf_app_env_outputs.pg_server_name.value }}"
+      name: "{{ tf_app_env_outputs.atat_database_name.value }}"
       secret: "{{ lookup('env','SUBSCRIPTION_SECRET') }}"
       client_id: "{{ lookup('env','SUBSCRIPTION_CID') }}"
       subscription_id: "{{ lookup('env','SUBSCRIPTION_ID')}}"
@@ -14,42 +16,48 @@
 
   - name: Create database user
     shell:
-      cmd:   script/create_database_user.py "{{ tf_app_env_outputs.atat_user_name.value }}" "{{ tf_app_env_outputs.atat_user_password.value }}"
+      cmd:  python3.7 script/create_database_user.py "{{ tf_app_env_outputs.atat_user_name.value | quote }}" "{{  tf_app_env_outputs.atat_user_password.value | quote }}"
       chdir: /src
     environment:
-       PGDATABASE: "atat"
+       PGHOST: "{{ tf_app_env_outputs.pg_host.value }}"
        SERVER_NAME: "{{ tf_app_env_outputs.atat_database_instance_name.value }}"
        SERVER_GROUP: "{{ tf_app_env_outputs.postgres_resource_group_name.value }}"
        SERVER_ADMIN_NAME: "{{ tf_app_env_outputs.postgres_root_user_name.value }}"
        PGUSER: "{{ tf_app_env_outputs.postgres_root_user_name.value  }}"
        PGPASSWORD: "{{  tf_app_env_outputs.postgres_root_password.value  }}"
-       PGHOST: "{{ tf_app_env_outputs.pg_host.value }}"
+       POSTGRES_ROOT_USER: "{{ tf_app_env_outputs.postgres_root_user_name.value  }}"
+       POSTGRES_ROOT_PASS: "{{  tf_app_env_outputs.postgres_root_password.value  }}"
+       PGSSLROOTCERT: /src/pgsslrootca.cert
        ATAT_PGUSER: "{{ tf_app_env_outputs.atat_user_name.value }}"
        ATAT_PGPASSWORD: "{{  tf_app_env_outputs.atat_user_password.value  }}"
-       PGDATABASE: "atat"
+       PGDATABASE: "{{ tf_app_env_outputs.atat_database_name.value }}"
+       PGSSLMODE: verify-full
 
   - name: Initialize database
-    script: "poetry run script/reset_database.py"
-    args:
+    shell:
+      cmd: python3.7 script/reset_database.py
       chdir: /src
     environment:
-        PGDATABASE: "atat"
+        PGDATABASE: "{{ tf_app_env_outputs.atat_database_name.value }}"
         SERVER_NAME: "{{ tf_app_env_outputs.atat_database_instance_name.value }}"
         SERVER_GROUP: "{{ tf_app_env_outputs.postgres_resource_group_name.value }}"
         SERVER_ADMIN_NAME: "{{ tf_app_env_outputs.postgres_root_user_name.value }}"
-        PGUSER: "{{ tf_app_env_outputs.postgres_root_user_name.value  }}"
-        PGPASSWORD: "{{  tf_app_env_outputs.postgres_root_password.value  }}"
+        PGUSER: "{{ tf_app_env_outputs.atat_user_name.value }}"
+        PGPASSWORD: "{{  tf_app_env_outputs.atat_user_password.value  }}"
         PGHOST: "{{ tf_app_env_outputs.pg_host.value }}"
+        PGSSLMODE: verify-full
+
 
   - name: Add CCPO users
-    script: "script/add_ccpo_users.py script/users.yml"
-    args:
+    shell:
+      cmd: python3.7 script/add_ccpo_users.py script/users.yml
       chdir: /src
     environment:
-        PGDATABASE: "atat"
+        PGDATABASE: "{{ tf_app_env_outputs.atat_database_name.value }}"
         SERVER_NAME: "{{ tf_app_env_outputs.atat_database_instance_name.value }}"
         SERVER_GROUP: "{{ tf_app_env_outputs.postgres_resource_group_name.value }}"
         SERVER_ADMIN_NAME: "{{ tf_app_env_outputs.postgres_root_user_name.value }}"
-        PGUSER: "{{ tf_app_env_outputs.postgres_root_user_name.value  }}"
-        PGPASSWORD: "{{  tf_app_env_outputs.postgres_root_password.value  }}"
+        PGUSER: "{{ tf_app_env_outputs.atat_user_name.value }}"
+        PGPASSWORD: "{{  tf_app_env_outputs.atat_user_password.value  }}"
         PGHOST: "{{ tf_app_env_outputs.pg_host.value }}"
+        PGSSLMODE: verify-full

@@ -9,9 +9,9 @@
     - role: azure_keyvault
       vars:
         bootstrap_terraform: "true"
-        vault_url: "{{ tf_app_env_outputs.outputs.operator_keyvault_url.value }}"
-        subscription_tenant: "{{ tf_app_env_outputs.outputs.tenant_id.value }}"
-        subscription_id: "{{ tf_app_env_outputs.outputs.subscription_id.value }}"
-        subscription_secret: "{{ tf_app_env_outputs.outputs.ops_keyvault_sp_secret.value }}"
-        subscription_cid: "{{ tf_app_env_outputs.outputs.ops_keyvault_sp_client_id.value  }}"
+        vault_url: "{{ tf_app_env_outputs.operator_keyvault_url.value }}"
+        subscription_tenant: "{{ tf_app_env_outputs.tenant_id.value }}"
+        subscription_id: "{{ tf_app_env_outputs.subscription_id.value }}"
+        subscription_secret: "{{ tf_app_env_outputs.ops_keyvault_sp_secret.value }}"
+        subscription_cid: "{{ tf_app_env_outputs.ops_keyvault_sp_client_id.value  }}"
       when: deploy_app_env is defined

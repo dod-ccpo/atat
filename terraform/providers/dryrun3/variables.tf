@@ -1,4 +1,7 @@
 variable "environment" {}
+variable "dev_env_name" {
+default = "staging"
+}
 
 variable "region" {}
 
@@ -103,3 +106,6 @@ variable "tf_state_storage_container_name" {
   default = "tfstate"
 }
 
+variable "OPS_CID" {}
+variable "OPS_SEC" {}
+variable "OPS_OID" {}

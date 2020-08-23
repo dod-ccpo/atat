@@ -1,6 +1,6 @@
-
 ---
 
+application_subscription_id: "{{ lookup('env','SUBSCRIPTION_ID') }}"
 terraform_dir: "{{ tf_dir }}"
 terraform_deploy_version: "{{ deploy_tag }}"
 keyvault_list_service_principle_client_id: "{{ vault_client_id }}"

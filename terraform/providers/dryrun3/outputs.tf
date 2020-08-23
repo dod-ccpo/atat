@@ -18,6 +18,9 @@ output "atat_user_name" {
 output "atat_database_instance_name" {
   value = "${var.name}-${var.environment}-sql"
 }
+output "atat_database_name" {
+  value = "${var.name}_${var.environment}_${var.dev_env_name}"
+}
 
 
 output "postgres_resource_group_name" {
@@ -30,7 +33,7 @@ output "postgres_root_password" {
 
 output "postgres_root_user_name" {
 
-  value = module.sql.admin_name
+  value = module.sql.pg_admin_user
 }
 
 output pg_host {

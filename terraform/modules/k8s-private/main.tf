@@ -26,7 +26,7 @@ resource "azurerm_subnet" "private_aks_subnet" {
 
 
  resource "azurerm_route" "vnet_route" {
-    name                = "${var.name}-${var.environment}-virtual-network"
+    name                = "private-k8s-${var.name}-${var.environment}-virtual-network"
     resource_group_name = var.rg
     route_table_name    = azurerm_route_table.route_table.name
     address_prefix      = var.vpc_address_space
@@ -34,7 +34,7 @@ resource "azurerm_subnet" "private_aks_subnet" {
   }
 
   resource "azurerm_route" "internet" {
-     name                = "${var.name}-${var.environment}-virtual-network"
+     name                = "private-k8s-${var.name}-${var.environment}-internet"
      resource_group_name = var.rg
      route_table_name    = azurerm_route_table.route_table.name
      address_prefix      = "0.0.0.0/0"
@@ -83,19 +83,6 @@ resource "azurerm_kubernetes_cluster" "k8s_private" {
     client_secret = var.private_aks_sp_secret
   }
 
-  addon_profile {
-
-    oms_agent {
-
-      enabled = true
-
-      log_analytics_workspace_id = var.log_analytics_workspace_id
-
-    }
-
-  }
-
-
   default_node_pool {
     name                  = "default"
     vm_size               = "Standard_B2s"
@@ -116,47 +103,5 @@ resource "azurerm_kubernetes_cluster" "k8s_private" {
     Name        = "private-aks-atat"
     environment = var.environment
     owner       = var.owner
-  }
-}
-
-resource "azurerm_monitor_diagnostic_setting" "k8s_private-diagnostic" {
-  name                       = "${var.name}-${var.environment}-private-k8s-diag"
-  target_resource_id         = azurerm_kubernetes_cluster.k8s_private.id
-  log_analytics_workspace_id = var.log_analytics_workspace_id
-  log {
-    category = "kube-apiserver"
-    retention_policy {
-      enabled = true
-    }
-  }
-  log {
-    category = "kube-controller-manager"
-    retention_policy {
-      enabled = true
-    }
-  }
-  log {
-    category = "kube-scheduler"
-    retention_policy {
-      enabled = true
-    }
-  }
-  log {
-    category = "kube-audit"
-    retention_policy {
-      enabled = true
-    }
-  }
-  log {
-    category = "cluster-autoscaler"
-    retention_policy {
-      enabled = true
-    }
-  }
-  metric {
-    category = "AllMetrics"
-    retention_policy {
-      enabled = true
-    }
   }
 }

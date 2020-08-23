@@ -108,9 +108,10 @@ js/test_templates
 .mypy_cache/
 
 # terraform
-*.tfstate
-*.backup
-*.tfplan
+**/*.terraform
+**/*.tfstate
+**/*.backup
+**/*.tfplan
 
 # vscode config files
 .vscode/

@@ -11,7 +11,7 @@ output "admin_name" {
   value = var.administrator_login
 }
 
-output "pg_user" {
+output "pg_admin_user" {
   value = "${var.administrator_login}@${var.name}-${var.environment}-sql"
 }
 

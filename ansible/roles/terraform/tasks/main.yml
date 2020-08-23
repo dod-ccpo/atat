@@ -5,11 +5,6 @@
 - name: get variables
   import_tasks: get_variables.yml
 
-- name: show outputs
-  import_tasks: show_outputs.yml
-  when: show_app_env_outputs is defined
-
-
 - name: deploy application env
   import_tasks: setup.yml
   when: deploy_app_env is defined
@@ -18,3 +13,7 @@
 - name: teardown application env
   import_tasks: teardown.yml
   when: teardown_app_env is defined
+
+- name: show outputs
+  import_tasks: show_outputs.yml
+  when: show_app_env_outputs is defined
