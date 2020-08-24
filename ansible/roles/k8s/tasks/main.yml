@@ -66,7 +66,7 @@
 - name: Apply the rest of the Kubernetes config for the site
   shell: ../../../../script/k8s_config {{ playbook_dir + '/.out.' + namespace }} | kubectl apply -f -
   environment:
-    CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name }}.azurecr.io/atat:staging-a6a789ac8bf583b0764e2853dbde95173bc1e5b7"
+    CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name }}.azurecr.io/{{ tf_app_env_outputs.latest_built_docker_image }}"
     NGINX_CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name }}.azurecr.io/nginx:rhel-8.2"
     MAIN_DOMAIN: "{{ namespace }}.atat.dev"
     AUTH_DOMAIN: "auth-{{ namespace }}.atat.dev"
