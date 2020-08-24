@@ -81,3 +81,7 @@ output "redis_hostname" {
 output "redis_ssl_port" {
   value = module.redis.ssl_port
 }
+
+output "container_registry_name" {
+  value = module.container_registry.name
+}

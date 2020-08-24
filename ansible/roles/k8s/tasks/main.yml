@@ -1,89 +1,83 @@
 ---
-- name: Apply kubernetes configurations
-  hosts: localhost
-  tasks:
-    - name: Connect to the {{ namespace }} kubernetes cluster
-      shell: "az aks get-credentials -g cloudzero-{{ namespace }}-vpc -n cloudzero-{{ namespace }}-k8s"
+- name: Connect to the {{ namespace }} kubernetes cluster
+  shell: "az aks get-credentials -g cloudzero-{{ namespace }}-vpc -n cloudzero-{{ namespace }}-k8s"
 
-    - name: Create HTTP Basic Auth Password
-      set_fact:
-        password: "{{ lookup('password', 'htpasswd') }}"
+- name: Create HTTP Basic Auth Password
+  set_fact:
+    password: "{{ lookup('password', 'htpasswd') }}"
 
-    - name: Dump htpassword into file
-      copy:
-        dest: "./htpasswd"
-        content: "{{ password }}"
+- name: Dump htpassword into file
+  copy:
+    dest: "./htpasswd"
+    content: "{{ password }}"
 
-    - name: Base64 encode the password
-      shell: 'echo "{{ password }}" | base64'
-      register: encoded_password_shell_output
+- name: Base64 encode the password
+  shell: 'echo "{{ password }}" | base64'
+  register: encoded_password_shell_output
 
-    - name: Create {{ namespace }} namespace
-      k8s:
-        kind: Namespace
-        state: present
-        name: "{{ namespace }}"
+- name: Create {{ namespace }} namespace
+  k8s:
+    kind: Namespace
+    state: present
+    name: "{{ namespace }}"
 
-    - name: Set password
-      k8s:
-        name: htpasswd
-        kind: Secret
-        state: present
-        namespace: "{{ namespace }}"
-        definition:
-          type: Opaque
-          data:
-            secret: "{{ encoded_password_shell_output.stdout }}"
+- name: Set password
+  k8s:
+    name: htpasswd
+    kind: Secret
+    state: present
+    namespace: "{{ namespace }}"
+    definition:
+      type: Opaque
+      data:
+        secret: "{{ encoded_password_shell_output.stdout }}"
 
-    - name: Apply the storage class
-      k8s:
-        state: present
-        src: ../../../../deploy/azure/storage-class.yml
+- name: Apply the storage class
+  k8s:
+    state: present
+    src: ../../../../deploy/azure/storage-class.yml
 
-    - name: Create kv namespace
-      k8s:
-        kind: Namespace
-        state: present
-        name: "kv"
+- name: Create kv namespace
+  k8s:
+    kind: Namespace
+    state: present
+    name: "kv"
 
-    - name: Apply flex vol installer
-      k8s:
-        state: present
-        src: ../../../../deploy/azure/keyvault/kv-flex-vol-installer.yml
+- name: Apply flex vol installer
+  k8s:
+    state: present
+    src: ../../../../deploy/azure/keyvault/kv-flex-vol-installer.yml
 
-    - name: Create template output directory
-      file:
-        state: directory
-        path: .out.{{ namespace }}
+- name: Create template output directory
+  file:
+    state: directory
+    path: .out.{{ namespace }}
 
-    - name: Interpolate the templates
-      template:
-        src: "{{ item }}"
-        dest: ".out.{{ namespace }}/{{ item | basename }}"
-      with_fileglob: "{{ playbook_dir + '/templates/*' }}"
+- name: Interpolate the templates
+  template:
+    src: "{{ item }}"
+    dest: ".out.{{ namespace }}/{{ item | basename }}"
+  with_fileglob: "{{ playbook_dir + '/templates/*' }}"
 
-    - name: Show output directory
-      debug:
-        msg: "{{ playbook_dir + '/.out.' + namespace }}"
+- name: Show output directory
+  debug:
+    msg: "{{ playbook_dir + '/.out.' + namespace }}"
 
-    - name: Apply the rest of the Kubernetes config for the site
-      shell: ../../../../script/k8s_config {{ playbook_dir + '/.out.' + namespace }} | kubectl apply -f -
-      environment:
-        #TODO(heyzoos) all these need to come from ansible outputs
-        CONTAINER_IMAGE: cloudzero{{ namespace }}registry.azurecr.io/atat:staging-a6a789ac8bf583b0764e2853dbde95173bc1e5b7
-        NGINX_CONTAINER_IMAGE: cloudzero{{ namespace }}registry.azurecr.io/nginx:rhel-8.2
-        MAIN_DOMAIN: "{{ namespace }}.atat.dev"
-        AUTH_DOMAIN: "auth-{{ namespace }}.atat.dev"
-        # TODO(heyzoos) Where did we source this ID from??
-        # VMSS_CLIENT_ID: 6c3cab5d-f037-4a00-9271-1756656bee92
-        VMSS_CLIENT_ID: 1213334e-f149-4f5a-a5e0-550eef158a75
-        KV_NAME: "cz-{{ namespace }}-keyvault"
-        TENANT_ID: b5ab0e1e-09f8-4258-afb7-fb17654bc5b3
+- name: Apply the rest of the Kubernetes config for the site
+  shell: ../../../../script/k8s_config {{ playbook_dir + '/.out.' + namespace }} | kubectl apply -f -
+  environment:
+    CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name }}.azurecr.io/atat:staging-a6a789ac8bf583b0764e2853dbde95173bc1e5b7"
+    NGINX_CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name }}.azurecr.io/nginx:rhel-8.2"
+    MAIN_DOMAIN: "{{ namespace }}.atat.dev"
+    AUTH_DOMAIN: "auth-{{ namespace }}.atat.dev"
+    VMSS_CLIENT_ID: "{{ tf_app_env_outputs.keyvault_reader_client_id }}"
+    KV_NAME: "cz-{{ namespace }}-keyvault"
+    TENANT_ID: "{{ tf_app_env_outputs.tenant_id }}"
 
-    - name: Obtain IP addresses
-      shell: kubectl -n {{ namespace }} get services
-      register: ips
+- name: Obtain IP addresses
+  shell: kubectl -n {{ namespace }} get services
+  register: ips
 
-    - name: Show IP addresses
-      debug:
-        msg: "{{ ips }}"
+- name: Show IP addresses
+  debug:
+    msg: "{{ ips }}"
