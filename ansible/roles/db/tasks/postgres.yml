@@ -1,6 +1,15 @@
 
 
+  - name: grab the root cert from yaml
+    shell: cat /src/deploy/azure/pgsslrootcert.yml
+    register: cert_text
 
+  - name: set cert fact
+    set_fact:
+      pgrootcert_yaml: "{{ cert_text.stdout | from_yaml }}"
+
+  - name: write cert to temp file
+    shell: mkdir -p /tmp/pgcaroot && echo "{{pgrootcert_yaml.data.cert }}" > /tmp/pgcaroot/pgcaroot.cert
 
 
   - name: Create (or update) PostgreSQL Database
@@ -16,7 +25,7 @@
 
   - name: Create database user
     shell:
-      cmd:  python3.7 script/create_database_user.py "{{ tf_app_env_outputs.atat_user_name.value | quote }}" "{{  tf_app_env_outputs.atat_user_password.value | quote }}"
+      cmd:  python3.7 script/create_database_user.py "{{ tf_app_env_outputs.atat_user_name.value | trim }}" "{{  tf_app_env_outputs.atat_user_password.value | trim }}"
       chdir: /src
     environment:
        PGHOST: "{{ tf_app_env_outputs.pg_host.value }}"
@@ -27,7 +36,27 @@
        PGPASSWORD: "{{  tf_app_env_outputs.postgres_root_password.value  }}"
        POSTGRES_ROOT_USER: "{{ tf_app_env_outputs.postgres_root_user_name.value  }}"
        POSTGRES_ROOT_PASS: "{{  tf_app_env_outputs.postgres_root_password.value  }}"
-       PGSSLROOTCERT: /src/pgsslrootca.cert
+       PGSSLROOTCERT: /tmp/pgcaroot/pgcaroot.cert
+       ATAT_PGUSER: "{{ tf_app_env_outputs.atat_user_name.value }}"
+       ATAT_PGPASSWORD: "{{  tf_app_env_outputs.atat_user_password.value  }}"
+       PGDATABASE: "{{ tf_app_env_outputs.atat_database_name.value }}"
+       PGSSLMODE: verify-full
+
+
+  - name: Create database user
+    shell:
+      cmd:  python3.7 script/create_database_user.py "{{ tf_app_env_outputs.atat_user_name.value | trim | regex_replace('@.*','') }}" "{{  tf_app_env_outputs.atat_user_password.value | trim }}"
+      chdir: /src
+    environment:
+       PGHOST: "{{ tf_app_env_outputs.pg_host.value }}"
+       SERVER_NAME: "{{ tf_app_env_outputs.atat_database_instance_name.value }}"
+       SERVER_GROUP: "{{ tf_app_env_outputs.postgres_resource_group_name.value }}"
+       SERVER_ADMIN_NAME: "{{ tf_app_env_outputs.postgres_root_user_name.value }}"
+       PGUSER: "{{ tf_app_env_outputs.postgres_root_user_name.value  }}"
+       PGPASSWORD: "{{  tf_app_env_outputs.postgres_root_password.value  }}"
+       POSTGRES_ROOT_USER: "{{ tf_app_env_outputs.postgres_root_user_name.value  }}"
+       POSTGRES_ROOT_PASS: "{{  tf_app_env_outputs.postgres_root_password.value  }}"
+       PGSSLROOTCERT: /tmp/pgcaroot/pgcaroot.cert
        ATAT_PGUSER: "{{ tf_app_env_outputs.atat_user_name.value }}"
        ATAT_PGPASSWORD: "{{  tf_app_env_outputs.atat_user_password.value  }}"
        PGDATABASE: "{{ tf_app_env_outputs.atat_database_name.value }}"
@@ -38,19 +67,24 @@
       cmd: python3.7 script/reset_database.py
       chdir: /src
     environment:
-        PGDATABASE: "{{ tf_app_env_outputs.atat_database_name.value }}"
+        PGHOST: "{{ tf_app_env_outputs.pg_host.value }}"
         SERVER_NAME: "{{ tf_app_env_outputs.atat_database_instance_name.value }}"
         SERVER_GROUP: "{{ tf_app_env_outputs.postgres_resource_group_name.value }}"
         SERVER_ADMIN_NAME: "{{ tf_app_env_outputs.postgres_root_user_name.value }}"
-        PGUSER: "{{ tf_app_env_outputs.atat_user_name.value }}"
-        PGPASSWORD: "{{  tf_app_env_outputs.atat_user_password.value  }}"
-        PGHOST: "{{ tf_app_env_outputs.pg_host.value }}"
+        PGUSER: "{{ tf_app_env_outputs.postgres_root_user_name.value }}"
+        PGPASSWORD: "{{ tf_app_env_outputs.postgres_root_password.value }}"
+        POSTGRES_ROOT_USER: "{{ tf_app_env_outputs.postgres_root_user_name.value  }}"
+        POSTGRES_ROOT_PASS: "{{  tf_app_env_outputs.postgres_root_password.value  }}"
+        PGSSLROOTCERT: /tmp/pgcaroot/pgcaroot.cert
+        ATAT_PGUSER: "{{ tf_app_env_outputs.atat_user_name.value }}"
+        ATAT_PGPASSWORD: "{{  tf_app_env_outputs.atat_user_password.value  }}"
+        PGDATABASE: "{{ tf_app_env_outputs.atat_database_name.value }}"
         PGSSLMODE: verify-full
 
 
   - name: Add CCPO users
     shell:
-      cmd: python3.7 script/add_ccpo_users.py script/users.yml
+      cmd: python3.7 /src/script/add_ccpo_users.py /src/script/ccpo_users.yml
       chdir: /src
     environment:
         PGDATABASE: "{{ tf_app_env_outputs.atat_database_name.value }}"
@@ -60,4 +94,5 @@
         PGUSER: "{{ tf_app_env_outputs.atat_user_name.value }}"
         PGPASSWORD: "{{  tf_app_env_outputs.atat_user_password.value  }}"
         PGHOST: "{{ tf_app_env_outputs.pg_host.value }}"
+        PGSSLROOTCERT: /tmp/pgcaroot/pgcaroot.cert
         PGSSLMODE: verify-full

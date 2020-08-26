@@ -42,3 +42,6 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     owner       = var.owner
   }
 }
+
+
+# assign the user identity to vmss

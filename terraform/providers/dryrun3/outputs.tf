@@ -19,7 +19,7 @@ output "atat_database_instance_name" {
   value = "${var.name}-${var.environment}-sql"
 }
 output "atat_database_name" {
-  value = "${var.name}_${var.environment}_${var.dev_env_name}"
+  value = "${var.name}_${var.environment}_${var.lifecycle_env_name}"
 }
 
 
@@ -73,6 +73,19 @@ output "ops_keyvault_sp_secret" {
   value = module.ops_keyvault_app.service_principal_password
 }
 
+output "application_keyvault_name" {
+ value = module.keyvault.keyvault_name
+}
+
 output "subnets" {
   value = module.vpc.subnet_list
+}
+
+output "container_registry_name" {
+value= module.container_registry.container_registry_name
+}
+
+
+output "keyvault_reader_client_id" {
+value = module.keyvault_reader_identity.client_id
 }

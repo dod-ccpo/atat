@@ -2,9 +2,9 @@
 - name: Apply kubernetes configurations
   hosts: localhost
   tasks:
-    - name: Show variable "target_environment"
+    - name: Show variable "az_environment"
       debug:
-        msg: "{{ target_environment }}"
+        msg: "{{ az_environment }}"
 
     # - name: run add aks perms
     #   shell:
@@ -12,7 +12,7 @@
     #     chdir: /Users/jesus/Workspace/atst
 
     - name: Connect to the kubernetes cluster
-      shell: "az aks get-credentials -g cloudzero-{{ target_environment }}-vpc -n cloudzero-{{ target_environment }}-k8s" # TODO(heyzoos) Variablize! From terraform outputs.
+      shell: "az aks get-credentials -g cloudzero-{{ az_environment }}-vpc -n cloudzero-{{ az_environment }}-k8s" # TODO(heyzoos) Variablize! From terraform outputs.
 
     - shell: kubectl get nodes
       register: nodes
@@ -44,7 +44,7 @@
     - debug:
         msg: "{{ encoded_password_shell_output }}"
 
-    - name: Create {{ target_environment }} namespace
+    - name: Create {{ az_environment }} namespace
       k8s:
         kind: Namespace
         state: present
@@ -91,19 +91,27 @@
 
     #- name: Perform a diff to ensure the config can load correctly
     #  shell: ../../../../script/k8s_config ../../../../deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl diff -f -
+    vars_prompt:
+        - name: atat_container_image_version
+          prompt: "State the atat container image version in {{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/atat you'd like to deploy"
+          private: no
+        - name: nginx_container_image_version
+          prompt: "State the nginx container image version in {{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/atat you'd like to deploy"
+          private: no
+
 
     - name: Apply the rest of the Kubernetes config for the site
       shell: ../../../../script/k8s_config ../../../../deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl apply -f -
       environment:
-        CONTAINER_IMAGE: cloudzerodryrun2blessedligerregistry.azurecr.io/atat:staging-a6a789ac8bf583b0764e2853dbde95173bc1e5b7
-        NGINX_CONTAINER_IMAGE: cloudzerodryrun2blessedligerregistry.azurecr.io/nginx:rhel-8.2
-        MAIN_DOMAIN: dryrun2.atat.dev
-        AUTH_DOMAIN: auth-dryrun2.atat.dev
+        CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/atat:{{atat_container_image_version}}"
+        NGINX_CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/nginx:{{nginx_container_image_version}}"
+        MAIN_DOMAIN: "{{az_environment}}".atat.dev
+        AUTH_DOMAIN: auth-"{{az_environment}}".atat.dev
         # TODO(heyzoos) Where did we source this ID from??
         # VMSS_CLIENT_ID: 6c3cab5d-f037-4a00-9271-1756656bee92
         VMSS_CLIENT_ID: 1213334e-f149-4f5a-a5e0-550eef158a75
-        KV_NAME: cz-dryrun2-keyvault
-        TENANT_ID: b5ab0e1e-09f8-4258-afb7-fb17654bc5b3
+        KV_NAME: "cz--keyvault"
+        TENANT_ID: "{{tf_app_env_outputs.tenant_id.value}}"
 
     - name: Obtain IP addresses
       shell: kubectl -n staging get services

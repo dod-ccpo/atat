@@ -53,7 +53,7 @@ resource "azurerm_kubernetes_cluster" "k8s_private" {
   location                = var.region
   resource_group_name     = var.rg
   dns_prefix              = "atat-aks-private"
-  private_cluster_enabled = true
+  private_cluster_enabled = var.private_cluster_enabled
   node_resource_group     = "${var.rg}-private-aks-node-rgs"
   depends_on = [azurerm_subnet_route_table_association.route_table]
 

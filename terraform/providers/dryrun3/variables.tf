@@ -1,5 +1,5 @@
 variable "environment" {}
-variable "dev_env_name" {
+variable "lifecycle_env_name" {
 default = "staging"
 }
 

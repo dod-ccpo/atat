@@ -110,20 +110,3 @@ def lookup_secret_list_non_msi(terms, vault_url, kwargs):
         except ResourceNotFoundError:
             raise AnsibleError("Failed to fetch secret " + term + ".")
     return ret
-
-
-def lookup_secret_list_msi(token, term, vault_url):
-    ret = []
-    secret_params = {"api-version": "2016-10-01"}
-    secret_headers = {"Authorization": "Bearer " + token}
-    for term in terms:
-        try:
-            secret_res = requests.get(
-                vault_url + "/secrets/", params=secret_params, headers=secret_headers
-            )
-            ret.append(secret_res.json()["value"])
-        except requests.exceptions.RequestException:
-            raise AnsibleError("Failed to fetch secret: " + term + " via MSI endpoint.")
-        except KeyError:
-            raise AnsibleError("Failed to fetch secret " + term + ".")
-    return ret

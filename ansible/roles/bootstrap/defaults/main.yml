@@ -1,0 +1,4 @@
+---
+
+
+bootstrap_subscription_id: "{{ lookup('env','SUBSCRIPTION_ID') }}"

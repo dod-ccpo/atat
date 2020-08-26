@@ -1,0 +1,20 @@
+
+
+
+- name: Kick off a build for image
+  uri:
+    url: "https://circleci.com/api/v2/project/github/dod-ccpo/atst/pipeline"
+    method: POST
+  register: _result
+
+
+
+
+- name: poll container registry for image
+  uri:
+    url: https://diapers_days_left
+    method: GET
+  register: _reg_result
+  until: _reg_result.status == 200
+  retries: 720 # 720 * 5 seconds = 1hour (60*60/5)
+  delay: 5 # Every 5 seconds
