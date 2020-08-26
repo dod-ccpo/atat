@@ -2,32 +2,9 @@
 - name: Apply kubernetes configurations
   hosts: localhost
   tasks:
-    - name: Show variable "az_environment"
-      debug:
-        msg: "{{ az_environment }}"
+    - name: Connect to the {{ namespace }} kubernetes cluster
+      shell: "az aks get-credentials -g cloudzero-{{ namespace }}-vpc -n cloudzero-{{ namespace }}-k8s"
 
-    # - name: run add aks perms
-    #   shell:
-    #     cmd: script/add-aks-perms.sh dryrun2
-    #     chdir: /Users/jesus/Workspace/atst
-
-    - name: Connect to the kubernetes cluster
-      shell: "az aks get-credentials -g cloudzero-{{ az_environment }}-vpc -n cloudzero-{{ az_environment }}-k8s" # TODO(heyzoos) Variablize! From terraform outputs.
-
-    - shell: kubectl get nodes
-      register: nodes
-
-    - debug:
-        msg: "{{ nodes }}"
-
-    - name: Verify login to the kubernetes cluster
-      assert:
-        that:
-          - nodes # TODO(heyzoos) What should I put here?
-
-    # Depends on:
-    # - Kubernetes namespace existing
-    # - Kubernetes secret existing
     - name: Create HTTP Basic Auth Password
       set_fact:
         password: "{{ lookup('password', 'htpasswd') }}"
@@ -41,21 +18,18 @@
       shell: 'echo "{{ password }}" | base64'
       register: encoded_password_shell_output
 
-    - debug:
-        msg: "{{ encoded_password_shell_output }}"
-
-    - name: Create {{ az_environment }} namespace
+    - name: Create {{ namespace }} namespace
       k8s:
         kind: Namespace
         state: present
-        name: "staging" # TODO(heyzoos) Register this and make it dynamically somehow
+        name: "{{ namespace }}"
 
     - name: Set password
       k8s:
-        name: htpasswd-jesse
+        name: htpasswd
         kind: Secret
         state: present
-        namespace: "staging" # TODO(heyzoos) Make sure to use a fact here
+        namespace: "{{ namespace }}"
         definition:
           type: Opaque
           data:
@@ -66,56 +40,66 @@
         state: present
         src: ../../../../deploy/azure/storage-class.yml
 
-    - shell: kubectl get nodes
-      register: nodes
-
-    - debug:
-        msg: "{{ nodes }}"
-
     - name: Create kv namespace
       k8s:
         kind: Namespace
         state: present
-        name: "kv" # TODO(heyzoos) Register this and make it dynamically somehow
+        name: "kv"
 
     - name: Apply flex vol installer
       k8s:
         state: present
         src: ../../../../deploy/azure/keyvault/kv-flex-vol-installer.yml
 
-    - name: Check that the storage class is correct
-      shell: kubectl get storageclasses.storage.k8s.io
+    - name: Fetch latest `atat` image from {{ tf_app_env_outputs.container_registry_name }}
+      shell: az acr repository show-tags --top 1 --orderby time_desc --repository atat --name {{ tf_app_env_outputs.container_registry_name }}
+      register: atat_images
+      retries: 100
+      delay: 10
+      until: atat_images is not failed
 
-    - name: Check that FlexVol was created correctly
-      shell: "kubectl -n kv get pods"
+    - name: Extract latest tag
+      set_fact:
+        latest_tag: "{{ (atat_images.stdout | from_json)[0] }}"
 
-    #- name: Perform a diff to ensure the config can load correctly
-    #  shell: ../../../../script/k8s_config ../../../../deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl diff -f -
-    vars_prompt:
-        - name: atat_container_image_version
-          prompt: "State the atat container image version in {{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/atat you'd like to deploy"
-          private: no
-        - name: nginx_container_image_version
-          prompt: "State the nginx container image version in {{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/atat you'd like to deploy"
-          private: no
+    - name: Show variable "atat_images"
+      debug:
+        msg: "{{ atat_images }}"
 
+    - name: Show variable "latest_tag"
+      debug:
+        msg: "{{ latest_tag }}"
+
+    - name: Create template output directory
+      file:
+        state: directory
+        path: .out.{{ namespace }}
+
+    - name: Interpolate the templates
+      template:
+        src: "{{ item }}"
+        dest: ".out.{{ namespace }}/{{ item | basename }}"
+      with_fileglob: "{{ playbook_dir + '/templates/*' }}"
+
+    - name: Show output directory
+      debug:
+        msg: "{{ playbook_dir + '/.out.' + namespace }}"
 
     - name: Apply the rest of the Kubernetes config for the site
-      shell: ../../../../script/k8s_config ../../../../deploy/overlays/cloudzero-pwdev-dryrun2 | kubectl apply -f -
+      shell: ../../../../script/k8s_config {{ playbook_dir + '/.out.' + namespace }} | kubectl apply -f -
       environment:
-        CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/atat:{{atat_container_image_version}}"
-        NGINX_CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/nginx:{{nginx_container_image_version}}"
-        MAIN_DOMAIN: "{{az_environment}}".atat.dev
-        AUTH_DOMAIN: auth-"{{az_environment}}".atat.dev
-        # TODO(heyzoos) Where did we source this ID from??
-        # VMSS_CLIENT_ID: 6c3cab5d-f037-4a00-9271-1756656bee92
-        VMSS_CLIENT_ID: 1213334e-f149-4f5a-a5e0-550eef158a75
-        KV_NAME: "cz--keyvault"
-        TENANT_ID: "{{tf_app_env_outputs.tenant_id.value}}"
+        CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name }}.azurecr.io/atat:{{ latest_tag }}"
+        NGINX_CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name }}.azurecr.io/nginx:rhel-8.2"
+        MAIN_DOMAIN: "{{ namespace }}.atat.dev"
+        AUTH_DOMAIN: "auth-{{ namespace }}.atat.dev"
+        VMSS_CLIENT_ID: "{{ tf_app_env_outputs.keyvault_reader_client_id }}"
+        KV_NAME: "cz-{{ namespace }}-keyvault"
+        TENANT_ID: "{{ tf_app_env_outputs.tenant_id }}"
 
     - name: Obtain IP addresses
-      shell: kubectl -n staging get services
+      shell: kubectl -n {{ namespace }} get services
       register: ips
 
-    - debug:
+    - name: Show IP addresses
+      debug:
         msg: "{{ ips }}"

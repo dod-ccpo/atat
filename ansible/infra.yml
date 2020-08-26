@@ -1,5 +1,3 @@
-
-
 - hosts: localhost
   roles:
     - role: bootstrap
@@ -15,3 +13,14 @@
         subscription_secret: "{{ tf_app_env_outputs.ops_keyvault_sp_secret.value }}"
         subscription_cid: "{{ tf_app_env_outputs.ops_keyvault_sp_client_id.value  }}"
       when: deploy_app_env is defined
+    - role: azure_keyvault
+      vars:
+        bootstrap_terraform: "true"
+        vault_url: "{{ tf_app_env_outputs.application_keyvault_url.value }}"
+        subscription_tenant: "{{ tf_app_env_outputs.tenant_id.value }}"
+        subscription_id: "{{ tf_app_env_outputs.subscription_id.value }}"
+        subscription_secret: "{{ tf_app_env_outputs.ops_keyvault_sp_secret.value }}"
+        subscription_cid: "{{ tf_app_env_outputs.ops_keyvault_sp_client_id.value  }}"
+      when: deploy_app_env is defined
+    # Requires `namespace` to be defined in `--extra-vars`. Example: `namespace=staging`
+    - role: k8s

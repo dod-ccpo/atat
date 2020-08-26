@@ -1,3 +1,4 @@
+
 output "container_registry_name" {
-value = "${var.name}${var.environment}${var.pet_name}registry"
+  value = azurerm_container_registry.acr.name
 }

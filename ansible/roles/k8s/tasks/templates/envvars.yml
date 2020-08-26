@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atst-worker-envvars
+data:
+  AZURE_STORAGE_ACCOUNT_NAME: "{{ tf_app_env_outputs.azure_storage_account_name }}"
+  AZURE_POWERSHELL_CLIENT_ID: 1950a258-227b-4e31-a9cf-717495945fc2
+  AZURE_TENANT_ADMIN_USERNAME: hybrid.admin@atathybrid.onmicrosoft.com
+  AZURE_VAULT_URL: "{{ tf_app_env_outputs.outputs.operator_keyvault_url.value }}"
+  CELERY_DEFAULT_QUEUE: celery-{{ namespace }}
+  CSP: hybrid
+  FLASK_ENV: "{{ namespace }}"
+  PGDATABASE: "{{ tf_app_env_outputs.atat_database_name }}"
+  PGHOST: "{{ tf_app_env_outputs.pg_host }}"
+  PGUSER: "{{ tf_app_env_outputs.atat_user_name }}@{{ tf_app_env_outputs.atat_database_instance_name }}"
+  PGSSLMODE: require
+  REDIS_HOST: "{{ tf_app_env_outputs.redis_hostname }}:{{ tf_app_env_outputs.redis_ssl_port }}"
+  SERVER_NAME: "{{ namespace }}.atat.dev"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atst-envvars
+data:
+  ASSETS_URL: ""
+  AZURE_STORAGE_ACCOUNT_NAME: "{{ tf_app_env_outputs.azure_storage_account_name }}"
+  AZURE_POWERSHELL_CLIENT_ID: 1950a258-227b-4e31-a9cf-717495945fc2
+  AZURE_TENANT_ADMIN_USERNAME: hybrid.admin@atathybrid.onmicrosoft.com
+  AZURE_VAULT_URL: "{{ tf_app_env_outputs.outputs.operator_keyvault_url.value }}"
+  BLOB_STORAGE_URL: "https://{{ namespace }}tasks.blob.core.windows.net/"
+  CAC_URL: https://auth-{{ namespace }}.atat.dev/login-redirect
+  CDN_ORIGIN: https://{{ namespace }}.atat.dev
+  CELERY_DEFAULT_QUEUE: celery-{{ namespace }}
+  CSP: hybrid
+  FLASK_ENV: "{{ namespace }}"
+  PGDATABASE: "{{ tf_app_env_outputs.atat_database_name }}"
+  PGHOST: "{{ tf_app_env_outputs.pg_host }}"
+  PGUSER: "{{ tf_app_env_outputs.atat_user_name }}@{{ tf_app_env_outputs.atat_database_instance_name }}"
+  PGSSLMODE: require
+  REDIS_HOST: "{{ tf_app_env_outputs.redis_hostname }}:{{ tf_app_env_outputs.redis_ssl_port }}"
+  SESSION_COOKIE_DOMAIN: atat.dev
+  STATIC_URL: "https://{{ namespace }}.atat.dev/static/"

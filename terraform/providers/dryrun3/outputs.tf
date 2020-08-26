@@ -1,5 +1,4 @@
 output "subscription_id" {
-
   value = "a0f587a4-2876-498d-a3d3-046cd98d5363"
 }
 
@@ -22,7 +21,6 @@ output "atat_database_name" {
   value = "${var.name}_${var.environment}_${var.lifecycle_env_name}"
 }
 
-
 output "postgres_resource_group_name" {
   value = module.sql.postgres_resource_group_name
 }
@@ -41,7 +39,6 @@ output pg_host {
 }
 
 output pg_server_name {
-
   value = module.sql.database_name
 }
 
@@ -59,12 +56,12 @@ output aks_sp_secret {
 
 output "operator_keyvault_url" {
   value = module.operator_keyvault.url
-
 }
 
 output "ops_keyvault_sp_client_id" {
   value = module.ops_keyvault_app.application_id
 }
+
 output "ops_keyvault_sp_object_id" {
   value = module.ops_keyvault_app.sp_object_id
 }
@@ -81,6 +78,7 @@ output "subnets" {
   value = module.vpc.subnet_list
 }
 
+
 output "container_registry_name" {
 value= module.container_registry.container_registry_name
 }
@@ -88,4 +86,27 @@ value= module.container_registry.container_registry_name
 
 output "keyvault_reader_client_id" {
 value = module.keyvault_reader_identity.client_id
+}
+
+output "azure_storage_account_name" {
+  value = module.task_order_bucket.storage_account_name
+}
+
+output "redis_hostname" {
+  value = module.redis.hostname
+}
+
+output "redis_ssl_port" {
+  value = module.redis.ssl_port
+}
+
+output "app_values" {
+
+   value = {
+    
+
+
+
+   }
+
 }
