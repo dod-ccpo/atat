@@ -9,6 +9,10 @@
       vars:
         bootstrap_terraform_secrets: "true"
         vault_url: "{{ tf_app_env_outputs.operator_keyvault_url.value }}"
+        subscription_tenant: "{{ tf_app_env_outputs.tenant_id.value }}"
+        subscription_id: "{{ tf_app_env_outputs.subscription_id.value }}"
+        subscription_secret: "{{ tf_app_env_outputs.ops_keyvault_sp_secret.value }}"
+        subscription_cid: "{{ tf_app_env_outputs.ops_keyvault_sp_client_id.value }}"
         keyvault_name: "{{ tf_app_env_outputs.operator_keyvault_name.value }}"
         secrets_source: "tfvars"
       when: asdf is defined
@@ -17,6 +21,10 @@
       vars:
         bootstrap_terraform_secrets: "false"
         vault_url: "{{ tf_app_env_outputs.application_keyvault_url.value }}"
+        subscription_tenant: "{{ tf_app_env_outputs.tenant_id.value }}"
+        subscription_id: "{{ tf_app_env_outputs.subscription_id.value }}"
+        subscription_secret: "{{ tf_app_env_outputs.ops_keyvault_sp_secret.value }}"
+        subscription_cid: "{{ tf_app_env_outputs.ops_keyvault_sp_client_id.value }}"
         secrets_source: "tfoutputs"
         top_level_secrets: true
         keyvault_name: "{{ tf_app_env_outputs.application_keyvault_name.value }}"
