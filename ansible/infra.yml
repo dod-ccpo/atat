@@ -11,7 +11,7 @@
         subscription_tenant: "{{ tf_app_env_outputs.tenant_id.value }}"
         subscription_id: "{{ tf_app_env_outputs.subscription_id.value }}"
         subscription_secret: "{{ tf_app_env_outputs.ops_keyvault_sp_secret.value }}"
-        subscription_cid: "{{ tf_app_env_outputs.ops_keyvault_sp_client_id.value  }}"
+        subscription_cid: "{{ tf_app_env_outputs.ops_keyvault_sp_client_id.value }}"
         keyvault_name: "{{ tf_app_env_outputs.operator_keyvault_name.value }}"
         secrets_source: "tfvars"
       when: deploy_app_env is defined
@@ -22,7 +22,7 @@
         subscription_tenant: "{{ tf_app_env_outputs.tenant_id.value }}"
         subscription_id: "{{ tf_app_env_outputs.subscription_id.value }}"
         subscription_secret: "{{ tf_app_env_outputs.ops_keyvault_sp_secret.value }}"
-        subscription_cid: "{{ tf_app_env_outputs.ops_keyvault_sp_client_id.value  }}"
+        subscription_cid: "{{ tf_app_env_outputs.ops_keyvault_sp_client_id.value }}"
         secrets_source: "tfoutputs"
         keyvault_name: "{{ tf_app_env_outputs.application_keyvault_name.value }}"
       when: deploy_app_env is defined

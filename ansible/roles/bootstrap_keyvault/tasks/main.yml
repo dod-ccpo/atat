@@ -55,7 +55,7 @@
     blaz: "{{ tf_vars_types.0 }}"
 
 - debug:
-    msg: "{{item}}"
+    msg: "{{ item }}"
   loop: "{{ blaz}}"
 
 - name: split off and flatten type and description
