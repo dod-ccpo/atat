@@ -2,15 +2,11 @@
 - name: Connect to the {{ namespace }} kubernetes cluster
   shell: "az aks get-credentials -g cloudzero-{{ namespace }}-vpc -n cloudzero-{{ namespace }}-k8s"
 
-
-
 - name: Create {{ namespace }} namespace
   k8s:
     kind: Namespace
     state: present
     name: "{{ namespace }}"
-
-
 
 - name: Create HTTP Basic Auth Password
   set_fact:
