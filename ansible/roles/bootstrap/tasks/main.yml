@@ -1,14 +1,10 @@
 ---
-
-
 - name: get vars
   import_tasks: get_variables.yml
-
 
 - name: bootstrap env
   import_tasks: setup.yml
   when: deploy_bootstrap_env is defined
-
 
 - name: show outputs from run
   import_tasks: show_outputs.yml

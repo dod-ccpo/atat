@@ -9,7 +9,6 @@
   import_tasks: setup.yml
   when: deploy_app_env is defined
 
-
 - name: teardown application env
   import_tasks: teardown.yml
   when: teardown_app_env is defined

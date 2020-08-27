@@ -7,8 +7,6 @@
     b_end: "{{ b_end|default({}) | combine( { item : tf_bootstrap_backend_outputs[item].value } ) }}"
   with_items: "{{ tf_bootstrap_backend_outputs }}"
 
-
-
 - name: debug be
   debug:
     msg: "{{ b_end }}"

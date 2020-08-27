@@ -1,12 +1,9 @@
 ---
-
-
-
 terraform_dir: "{{ target_terraform_config }}"
 terraform_deploy_version: "{{ version_tag }}"
-keyvault_list_service_principle_client_id: "{{ kvault_read_client_id}}"
-keyvault_list_service_principle_secret:    "{{ kvault_read_secret }}"
-keyvault_list_service_principle_tenant:  "{{ keyvault_read_tenant }}"
+keyvault_list_service_principle_client_id: "{{ kvault_read_client_id }}"
+keyvault_list_service_principle_secret: "{{ kvault_read_secret }}"
+keyvault_list_service_principle_tenant: "{{ keyvault_read_tenant }}"
 vault_client_id: "{{ lookup('env','SUBSCRIPTION_CID') }}"
 vault_tenant: "{{ lookup('env','AZURE_TENANT_ID') }}"
 vault_secret: "{{ lookup('env','SUBSCRIPTION_SECRET') }}"
