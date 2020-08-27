@@ -1,105 +1,103 @@
 ---
-- name: Apply kubernetes configurations
-  hosts: localhost
-  tasks:
-    - name: Connect to the {{ namespace }} kubernetes cluster
-      shell: "az aks get-credentials -g cloudzero-{{ namespace }}-vpc -n cloudzero-{{ namespace }}-k8s"
+- name: Connect to the {{ namespace }} kubernetes cluster
+  shell: "az login --service-principal -u {{ lookup('env','AZ_CLI_SP') }} -p {{ lookup('env', 'TF_VAR_OPS_SEC' )}} --tenant {{ lookup('env','AZURE_TENANT_ID') }}  && az aks get-credentials -g cloudzero-{{ namespace }}-vpc -n cloudzero-{{ namespace }}-k8s"
 
-    - name: Create HTTP Basic Auth Password
-      set_fact:
-        password: "{{ lookup('password', 'htpasswd') }}"
+- name: Create HTTP Basic Auth Password
+  set_fact:
+    password: "{{ lookup('password', 'htpasswd') }}"
 
-    - name: Dump htpassword into file
-      copy:
-        dest: "./htpasswd"
-        content: "{{ password }}"
+- name: Dump htpassword into file
+  copy:
+    dest: "./htpasswd"
+    content: "{{ password }}"
 
-    - name: Base64 encode the password
-      shell: 'echo "{{ password }}" | base64'
-      register: encoded_password_shell_output
+- name: Base64 encode the password
+  shell: 'echo "{{ password }}" | base64'
+  register: encoded_password_shell_output
 
-    - name: Create {{ namespace }} namespace
-      k8s:
-        kind: Namespace
-        state: present
-        name: "{{ namespace }}"
+- name: Create {{ namespace }} namespace
+  k8s:
+    kind: Namespace
+    state: present
+    name: "{{ namespace }}"
 
-    - name: Set password
-      k8s:
-        name: htpasswd
-        kind: Secret
-        state: present
-        namespace: "{{ namespace }}"
-        definition:
-          type: Opaque
-          data:
-            secret: "{{ encoded_password_shell_output.stdout }}"
+- name: Set password
+  k8s:
+    name: htpasswd
+    kind: Secret
+    state: present
+    namespace: "{{ namespace }}"
+    definition:
+      type: Opaque
+      data:
+        secret: "{{ encoded_password_shell_output.stdout }}"
 
-    - name: Apply the storage class
-      k8s:
-        state: present
-        src: ../../../../deploy/azure/storage-class.yml
+- name: Apply the storage class
+  k8s:
+    state: present
+    src: /src/deploy/azure/storage-class.yml
 
-    - name: Create kv namespace
-      k8s:
-        kind: Namespace
-        state: present
-        name: "kv"
+- name: Create kv namespace
+  k8s:
+    kind: Namespace
+    state: present
+    name: "kv"
 
-    - name: Apply flex vol installer
-      k8s:
-        state: present
-        src: ../../../../deploy/azure/keyvault/kv-flex-vol-installer.yml
+- name: Apply flex vol installer
+  k8s:
+    state: present
+    src: /src/deploy/azure/keyvault/kv-flex-vol-installer.yml
 
-    - name: Fetch latest `atat` image from {{ tf_app_env_outputs.container_registry_name }}
-      shell: az acr repository show-tags --top 1 --orderby time_desc --repository atat --name {{ tf_app_env_outputs.container_registry_name }}
-      register: atat_images
-      retries: 100
-      delay: 10
-      until: atat_images is not failed
+- name: Fetch latest `atat` image from {{ tf_app_env_outputs.container_registry_name }}
+  shell: az acr repository show-tags --top 1 --orderby time_desc --repository atat --name {{ tf_app_env_outputs.container_registry_name.value }}
+  register: atat_images
+  retries: 100
+  delay: 10
+  until: atat_images is not failed
 
-    - name: Extract latest tag
-      set_fact:
-        latest_tag: "{{ (atat_images.stdout | from_json)[0] }}"
+- name: Extract latest tag
+  set_fact:
+    latest_tag: "{{ (atat_images.stdout | from_json)[0] }}"
 
-    - name: Show variable "atat_images"
-      debug:
-        msg: "{{ atat_images }}"
+- name: Show variable "atat_images"
+  debug:
+    msg: "{{ atat_images }}"
 
-    - name: Show variable "latest_tag"
-      debug:
-        msg: "{{ latest_tag }}"
+- name: Show variable "latest_tag"
+  debug:
+    msg: "{{ latest_tag }}"
 
-    - name: Create template output directory
-      file:
-        state: directory
-        path: .out.{{ namespace }}
+- name: Create template output directory
+  file:
+    state: directory
+    path: "{{ playbook_dir}}/.out"
 
-    - name: Interpolate the templates
-      template:
-        src: "{{ item }}"
-        dest: ".out.{{ namespace }}/{{ item | basename }}"
-      with_fileglob: "{{ playbook_dir + '/templates/*' }}"
+- name: Interpolate the templates
+  template:
+    src: "{{ item }}"
+    dest: "{{ playbook_dir }}/.out/{{ item | basename }}"
+  with_fileglob: "{{ playbook_dir + '/roles/k8s/tasks/templates/*' }}"
 
-    - name: Show output directory
-      debug:
-        msg: "{{ playbook_dir + '/.out.' + namespace }}"
+- name: Show output directory
+  debug:
+    msg: "{{ playbook_dir + '/.out.' + namespace }}"
 
-    - name: Apply the rest of the Kubernetes config for the site
-      shell: ../../../../script/k8s_config {{ playbook_dir + '/.out.' + namespace }} | kubectl apply -f -
-      environment:
-        CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name }}.azurecr.io/atat:{{ latest_tag }}"
-        NGINX_CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name }}.azurecr.io/nginx:rhel-8.2"
-        MAIN_DOMAIN: "{{ namespace }}.atat.dev"
-        AUTH_DOMAIN: "auth-{{ namespace }}.atat.dev"
-        VMSS_CLIENT_ID: "{{ tf_app_env_outputs.keyvault_reader_client_id }}"
-        KV_NAME: "cz-{{ namespace }}-keyvault"
-        TENANT_ID: "{{ tf_app_env_outputs.tenant_id }}"
+- name: Apply the rest of the Kubernetes config for the site
+  shell: /src/script/k8s_config {{ playbook_dir + '/.out' }} | kubectl apply -f -
+  environment:
+    CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/atat:{{ latest_tag }}"
+    NGINX_CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/nginx:rhel-8.2"
+    MAIN_DOMAIN: "{{ namespace }}.atat.dev"
+    AUTH_DOMAIN: "auth-{{ namespace }}.atat.dev"
+    VMSS_CLIENT_ID: "{{ tf_app_env_outputs.keyvault_reader_client_id.value }}"
+    KV_NAME: "cz-{{ namespace }}-keyvault"
+    TENANT_ID: "{{ tf_app_env_outputs.tenant_id.value }}"
+    DEPLOY_TAG: "tf-{{ deploy_tag | regex_replace('\\.','-') }}"
 
-    - name: Obtain IP addresses
-      shell: kubectl -n {{ namespace }} get services
-      register: ips
+- name: Obtain IP addresses
+  shell: kubectl -n {{ namespace }} get services
+  register: ips
 
-    - name: Show IP addresses
-      debug:
-        msg: "{{ ips }}"
+- name: Show IP addresses
+  debug:
+    msg: "{{ ips }}"

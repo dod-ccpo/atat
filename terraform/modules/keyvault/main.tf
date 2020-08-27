@@ -97,3 +97,23 @@ resource "azurerm_key_vault_access_policy" "keyvault_admin_policy" {
     "update",
   ]
 }
+
+
+resource "azurerm_key_vault_key" "generated" {
+  count        = var.name == "cz" ? 1 :0
+  name         = "SECRET-KEY"
+  key_vault_id = azurerm_key_vault.keyvault.id
+  key_type     = "RSA"
+  key_size     = 2048
+
+  key_opts = [
+    "decrypt",
+    "encrypt",
+    "sign",
+    "unwrapKey",
+    "verify",
+    "wrapKey",
+  ]
+
+  depends_on = [azurerm_key_vault_access_policy.keyvault_admin_policy]
+}

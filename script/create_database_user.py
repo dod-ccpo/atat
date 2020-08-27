@@ -26,7 +26,7 @@ def create_database_user(username, password, dbname):
 
     try:
         engine.execute(
-            f"CREATE ROLE \"{username}\" WITH LOGIN NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION PASSWORD \"{password}\"; "
+            f"CREATE ROLE \"{username}\" WITH LOGIN NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION PASSWORD '{password}'; "
             f"GRANT ALL PRIVILEGES ON DATABASE {dbname} TO \"{username}\";\n"
             f"ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO \"{username}\"; \n"
             f"ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO \"{username}\"; \n"

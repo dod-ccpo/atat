@@ -1,2 +1,3 @@
 - import_playbook: infra.yml
 - import_playbook: databases.yml
+- import_playbook: k8s.yml

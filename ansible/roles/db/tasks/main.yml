@@ -1,6 +1,6 @@
 ---
 
 
-- name: get vars
+- name: provision postgres
   import_tasks: postgres.yml
   when: postgresql is defined

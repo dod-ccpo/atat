@@ -109,3 +109,9 @@ variable "tf_state_storage_container_name" {
 variable "OPS_CID" {}
 variable "OPS_SEC" {}
 variable "OPS_OID" {}
+
+variable "mailgun_api_key" {}
+
+variable "azure_hybrid_tenant_id" {}
+variable "azure_hybrid_user_object_id" {}
+variable "azure_hybrid_tenant_admin_password" {}

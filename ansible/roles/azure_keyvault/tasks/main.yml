@@ -1,12 +1,8 @@
 ---
-- name: bootstrap keyvault with application vals
-  import_tasks: bootstrap_terraform_secrets.yml
-  when: bootstrap_terraform_secrets is defined
 
-- name: bootstrap keyvault with terraform vars
-  import_tasks: bootstrap_terraform_secrets.yml
-  when: bootstrap_terraform_secrets is defined
-
+- name: source the secrets
+  import_tasks: source_secrets.yml
+  
 - name: bootstrap keyvault with terraform vars
   import_tasks: bootstrap_terraform_secrets.yml
   when: bootstrap_terraform_secrets is defined
