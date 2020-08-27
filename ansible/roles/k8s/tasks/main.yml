@@ -1,6 +1,6 @@
 ---
 - name: Connect to the {{ namespace }} kubernetes cluster
-  shell: "az login --service-principal -u {{ lookup('env','AZ_CLI_SP') }} -p {{ lookup('env', 'TF_VAR_OPS_SEC' )}} --tenant {{ lookup('env','AZURE_TENANT_ID') }}  && az aks get-credentials -g cloudzero-{{ namespace }}-vpc -n cloudzero-{{ namespace }}-k8s"
+  shell: "az login --service-principal -u {{ lookup('env','AZ_CLI_SP') }} -p {{ lookup('env', 'TF_VAR_OPS_SEC' ) }} --tenant {{ lookup('env','AZURE_TENANT_ID') }}  && az aks get-credentials -g cloudzero-{{ namespace }}-vpc -n cloudzero-{{ namespace }}-k8s"
 
 - name: Create HTTP Basic Auth Password
   set_fact:
@@ -70,7 +70,7 @@
 - name: Create template output directory
   file:
     state: directory
-    path: "{{ playbook_dir}}/.out"
+    path: "{{ playbook_dir }}/.out"
 
 - name: Interpolate the templates
   template:
