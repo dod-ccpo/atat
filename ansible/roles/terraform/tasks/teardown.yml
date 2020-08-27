@@ -1,21 +1,15 @@
 # deploy
 ---
-
 # ops_keyvault_* use service principle that has read and list rights to target vault
-
-
 
 - name: build backend
   set_fact:
     b_end: "{{ b_end|default({}) | combine( { item : tf_bootstrap_backend_outputs.outputs[item].value } ) }}"
   with_items: "{{ tf_bootstrap_backend_outputs.outputs }}"
 
-
-
 - name: debug be
   debug:
     msg: "{{ b_end }}"
-
 
 - name: "print config to json"
   include_role:
@@ -28,10 +22,9 @@
     - vault_url is defined
     - tfvars_file_path is not defined
 
-
 - name: set tf vars file path
   set_fact:
-    tf_vars_file_path: "{{tf_base_dir }}/{{az_environment}}/{{az_environment}}.tfvars.json"
+    tf_vars_file_path: "{{ tf_base_dir }}/{{ az_environment }}/{{ az_environment }}.tfvars.json"
   when:
     - vault_url is not defined
 
@@ -46,50 +39,41 @@
 
 - name: make k/v
   set_fact:
-    app_kv_tf: "{{ app_kv_tf|default({}) | combine({ item : (vars_vals[item] | regex_replace(\"'\",'\"'))  }) }}"
+    app_kv_tf: '{{ app_kv_tf|default({}) | combine({ item : (vars_vals[item] | regex_replace("''",''"''))  }) }}'
   with_items: "{{ vars_vals }}"
-
 
 - name: sdhow tf_vars
   debug:
     msg: "{{ app_kv_tf | to_nice_json }}"
 
-
 - debug:
-    msg: "{{az_environment}}"
+    msg: "{{ az_environment }}"
 
 - name: set tf_dir
   set_fact:
     tf_dir: "{{ tf_base_dir }}/{{ az_environment }}"
 
-
-
-
-
-
-
-
 - name: tf plan (no modules)
   terraform:
-    force_init: "{{init_tf}}"
-    project_path: "{{tf_dir}}"
+    force_init: "{{ init_tf }}"
+    project_path: "{{ tf_dir }}"
     state: "planned"
     plan_file: "plan.tfplan"
     variables: "{{ app_kv_tf }}"
     backend_config: "{{ b_end }}"
   register: tf_run
   environment:
-     ARM_SUBSCRIPTION_ID: "{{ application_subscription_id }}"
+    ARM_SUBSCRIPTION_ID: "{{ application_subscription_id }}"
   when:
     - target_modules is not defined
     - b_end is defined
 
 - debug:
-    msg:  "{{tf_run}}"
+    msg: "{{ tf_run }}"
 
 - name: tf apply (no modules)
   terraform:
-    force_init: "{{init_tf}}"
+    force_init: "{{ init_tf }}"
     project_path: "{{ tf_dir }}"
     state: "absent"
     plan_file: "plan.tfplan"
@@ -97,17 +81,13 @@
     backend_config: "{{ b_end }}"
   register: tf_run_no_modules
   environment:
-     ARM_SUBSCRIPTION_ID: "{{ application_subscription_id }}"
+    ARM_SUBSCRIPTION_ID: "{{ application_subscription_id }}"
   when:
     - target_modules is not defined
     - b_end is defined
 
-
+- debug:
+    msg: "{{ tf_run }}"
 
 - debug:
-    msg:  "{{tf_run}}"
-
-
-
-- debug:
-    msg:  "{{tf_run_no_modules}}"
+    msg: "{{ tf_run_no_modules }}"
