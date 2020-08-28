@@ -57,7 +57,7 @@ detect-secrets = "*"
 beautifulsoup4 = "*"
 mypy = "*"
 rope = "*"
-black = "^19.10b0"
+black = "^20.8b1"
 pytest-depends = "^1.0.1"
 
 
