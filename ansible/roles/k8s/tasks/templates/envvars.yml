@@ -15,7 +15,7 @@ data:
   PGHOST: "{{ tf_app_env_outputs.pg_host }}"
   PGUSER: "{{ tf_app_env_outputs.atat_user_name }}@{{ tf_app_env_outputs.atat_database_instance_name }}"
   PGSSLMODE: require
-  REDIS_HOST: "{{ tf_app_env_outputs.redis_hostname }}:{{ tf_app_env_outputs.redis_ssl_port }}"
+  REDIS_HOST: "{{ tf_app_env_outputs.redis_hostname.value }}:{{ tf_app_env_outputs.redis_ssl_port }}"
   SERVER_NAME: "{{ namespace }}.atat.dev"
 ---
 apiVersion: v1
@@ -38,6 +38,6 @@ data:
   PGHOST: "{{ tf_app_env_outputs.pg_host }}"
   PGUSER: "{{ tf_app_env_outputs.atat_user_name }}@{{ tf_app_env_outputs.atat_database_instance_name }}"
   PGSSLMODE: require
-  REDIS_HOST: "{{ tf_app_env_outputs.redis_hostname }}:{{ tf_app_env_outputs.redis_ssl_port }}"
+  REDIS_HOST: "{{ tf_app_env_outputs.redis_hostname.value }}:{{ tf_app_env_outputs.redis_ssl_port }}"
   SESSION_COOKIE_DOMAIN: atat.dev
   STATIC_URL: "https://{{ namespace }}.atat.dev/static/"
