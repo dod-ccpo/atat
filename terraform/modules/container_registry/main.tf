@@ -1,4 +1,11 @@
+data "azurerm_resource_group" "ops" {
+  name = var.ops_resource_group_name
+}
 
+data "azurerm_container_registry" "ops" {
+  name                = var.ops_container_registry_name
+  resource_group_name = azurerm_resource_group.ops.name
+}
 
 resource "azurerm_resource_group" "acr" {
   name     = "${var.name}-${var.environment}-acr"
