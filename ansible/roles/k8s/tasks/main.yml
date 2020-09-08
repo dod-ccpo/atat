@@ -75,17 +75,36 @@
   delay: 10
   until: atat_images is not failed
 
-- name: Extract latest tag
+- name: Fetch latest `nginx` image from {{ tf_app_env_outputs.container_registry_name }}
+  shell: az acr repository show-tags --top 1 --orderby time_desc --repository nginx --name {{ tf_app_env_outputs.container_registry_name.value }}
+  register: nginx_images
+  retries: 100
+  delay: 10
+  until: nginx_images is not failed
+
+- name: Extract latest ATAT tag
   set_fact:
-    latest_tag: "{{ (atat_images.stdout | from_json)[0] }}"
+    latest_atat_image_tag: "{{ (atat_images.stdout | from_json)[0] }}"
+
+- name: Extract latest Nginx tag
+  set_fact:
+    latest_nginx_image_tag: "{{ (nginx_images.stdout | from_json)[0] }}"
 
 - name: Show variable "atat_images"
   debug:
     msg: "{{ atat_images }}"
 
-- name: Show variable "latest_tag"
+- name: Show variable "nginx_images"
   debug:
-    msg: "{{ latest_tag }}"
+    msg: "{{ nginx_images }}"
+
+- name: Show variable "latest_atat_image_tag"
+  debug:
+    msg: "{{ latest_atat_image_tag }}"
+
+- name: Show variable "latest_nginx_image_tag"
+  debug:
+    msg: "{{ latest_nginx_image_tag }}"
 
 - name: Create template output directory
   file:
@@ -105,8 +124,8 @@
 - name: Apply the rest of the Kubernetes config for the site
   shell: /src/script/k8s_config {{ playbook_dir + '/.out' }} | kubectl apply -f -
   environment:
-    CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/atat:{{ latest_tag }}"
-    NGINX_CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/nginx:rhel-8.2"
+    CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/atat:{{ latest_atat_image_tag }}"
+    NGINX_CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/nginx:{{ latest_nginx_image_tag }}"
     MAIN_DOMAIN: "{{ namespace }}.atat.dev"
     AUTH_DOMAIN: "auth-{{ namespace }}.atat.dev"
     VMSS_CLIENT_ID: "{{ tf_app_env_outputs.keyvault_reader_client_id.value }}"
