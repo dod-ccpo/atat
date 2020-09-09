@@ -1,0 +1,6 @@
+
+- hosts: localhost
+  roles:
+    - role: k8s
+      vars:
+        namespace: "{{ az_environment }}"
