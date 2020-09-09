@@ -1,8 +1,8 @@
 - name: tf get outputs
-  shell: terraform init --backend-config="container_name={{b_end.container_name}}" --backend-config="key={{b_end.key}}" --backend-config="resource_group_name={{b_end.resource_group_name}}" --backend-config="storage_account_name={{b_end.storage_account_name}}" && terraform output -json > {{az_environment}}_outputs.json
+  shell: terraform init --backend-config="container_name={{ b_end.container_name }}" --backend-config="key={{ b_end.key }}" --backend-config="resource_group_name={{ b_end.resource_group_name }}" --backend-config="storage_account_name={{ b_end.storage_account_name }}" && terraform output -json > {{ az_environment }}_outputs.json
   args:
     chdir: "{{ tf_base_dir }}/{{ az_environment }}"
 
 - name: register json var
   set_fact:
-    tf_app_env_outputs: "{{ lookup('file','{{ tf_base_dir }}/{{ az_environment }}/{{az_environment}}_outputs.json') | from_json }} "
+    tf_app_env_outputs: "{{ lookup('file', tf_base_dir ~ '/' ~ az_environment ~ '/' ~ az_environment ~ '_outputs.json') | from_json }} "

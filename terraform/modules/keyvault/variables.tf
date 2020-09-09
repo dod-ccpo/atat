@@ -28,6 +28,12 @@ variable "principal_id" {
   description = "The service principal_id of the k8s cluster"
 }
 
+variable "principal_id_count" {
+  type        = number
+  default     = 0
+  description = "The service principal_id of the k8s cluster"
+}
+
 variable "admin_principals" {
   type        = map
   description = "A list of user principals who need access to manage the keyvault"
@@ -63,3 +69,7 @@ variable "workspace_id" {
 }
 
 variable "pet_name" {}
+
+variable "tls_cert_path" {
+default = ""
+}

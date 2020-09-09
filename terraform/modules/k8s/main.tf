@@ -6,11 +6,17 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   dns_prefix              = var.k8s_dns_prefix
   private_cluster_enabled = var.private_cluster_enabled
   node_resource_group     = var.node_resource_group
-  #enable_pod_security_policy = true
+
 
 
   role_based_access_control {
     enabled = true
+  }
+
+  addon_profile {
+    azure_policy {
+     enabled =true 
+    }
   }
 
   service_principal {

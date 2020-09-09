@@ -97,6 +97,12 @@ output "keyvault_reader_client_id" {
 value = module.keyvault_reader_identity.client_id
 }
 
+output "keyvault_reader_id" {
+value = module.keyvault_reader_identity.id
+}
+
+
+
 output "azure_storage_account_name" {
   value = module.task_order_bucket.storage_account_name
 }
@@ -107,6 +113,15 @@ output "redis_hostname" {
 
 output "redis_ssl_port" {
   value = module.redis.ssl_port
+}
+
+output "k8s_node_group" {
+ value = var.k8s_resource_group
+}
+
+output "vnet_id" {
+
+  value = module.vpc.id
 }
 
 output "app_config_values" {
@@ -121,6 +136,23 @@ output "app_config_values" {
     "AZURE-HYBRID-TENANT-ID": var.azure_hybrid_tenant_id
     "AZURE-USER-OBJECT-ID": var.azure_hybrid_user_object_id
     "AZURE-TENANT-ADMIN-PASSWORD": var.azure_hybrid_tenant_admin_password
+    "REDIS-PASSWORD": module.redis.primary_key
+    "AZURE-BILLING-ACCOUNT-NAME": var.AZURE-BILLING-ACCOUNT-NAME
+    "AZURE-BILLING-PROFILE-ID": var.AZURE-BILLING-PROFILE-ID
+    "AZURE-INVOICE-SECTION-ID": var.AZURE-INVOICE-SECTION-ID
+    "SAML-IDP-CERT":""
+    "dhparam4096": var.dhparam4096
+    "PGPASSWORD": random_password.atat_user_password.result
+    "AZURE-VAULT-URL": module.tenant_keyvault.url
+    "AZURE-SUBSCRIPTION-CREATION-CLIENT-ID":var.AZURE_SUBSCRIPTION_CREATION_CLIENT_ID
+    "AZURE-SUBSCRIPTION-CREATIONSECRET": var.AZURE_SUBSCRIPTION_CREATION_SECRET
+    "AZURE-TENANT-ADMIN-USERNAME": var.AZURE_TENANT_ADMIN_USERNAME
+    "AZURE-TENANT-ID": var.AZURE_TENANT_ID
+    "AZURE-USER-OBJECT-ID": var.AZURE_USER_OBJECT_ID
+    "CSP": var.CSP
+    "AZURE-HYBRID-REPORTING-CLIENT-ID": var.AZURE_HYBRID_REPORTING_CLIENT_ID
+    "AZURE-HYBRID-REPORTING-SECRET": var.AZURE_HYBRID_REPORTING_SECRET
+
 
 
 

@@ -1,12 +1,10 @@
-
-
 - name: set tf_dir
   set_fact:
     tf_dir: "{{ tf_base_dir }}/bootstrap"
 
 - name: plan  (modules)
   terraform:
-    force_init: "{{bootstrap_init_tf}}"
+    force_init: "{{ bootstrap_init_tf }}"
     project_path: "{{ tf_dir }}"
     state: "planned"
     plan_file: "plan.tfplan"
@@ -14,14 +12,13 @@
     variables: "{{ kv_tf }}"
   register: tf_bootstrap_run
   environment:
-     ARM_SUBSCRIPTION_ID: "{{ bootstrap_subscription_id }}"
+    ARM_SUBSCRIPTION_ID: "{{ bootstrap_subscription_id }}"
   when:
     - target_modules is defined
 
-
 - name: plan (no modules)
   terraform:
-    force_init: "{{bootstrap_init_tf}}"
+    force_init: "{{ bootstrap_init_tf }}"
     project_path: "{{ tf_dir }}"
     state: "planned"
     plan_file: "plan.tfplan"
@@ -32,11 +29,9 @@
   when:
     - target_modules is not defined
 
-
-
 - name: tf apply (modules)
   terraform:
-    force_init: "{{bootstrap_init_tf}}"
+    force_init: "{{ bootstrap_init_tf }}"
     project_path: "{{ tf_dir }}"
     state: "present"
     plan_file: "plan.tfplan"
@@ -48,11 +43,9 @@
   when:
     - target_modules is defined
 
-
-
 - name: tf apply (no modules)
   terraform:
-    force_init: "{{bootstrap_init_tf}}"
+    force_init: "{{ bootstrap_init_tf }}"
     project_path: "{{ tf_dir }}"
     state: "present"
     variables: "{{ kv_tf }}"
@@ -62,7 +55,6 @@
   when:
     - target_modules is not defined
 
-
 - debug:
-   msg: "{{ tf_bootstrap_backend_outputs.outputs }}"
+    msg: "{{ tf_bootstrap_backend_outputs.outputs }}"
   when: tf_bootstrap_backend_outputs.outputs is defined

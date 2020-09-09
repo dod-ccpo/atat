@@ -1,22 +1,24 @@
 ---
-
 - name: source the secrets
   import_tasks: source_secrets.yml
-  
+
 - name: bootstrap keyvault with terraform vars
   import_tasks: bootstrap_terraform_secrets.yml
-  when: bootstrap_terraform_secrets is defined
+  when: bootstrap_terraform_secrets == "true"
 
+- name: store secrets as plain key=value
+  import_tasks: secret.yml
+  when:
+    - top_level_secrets == true
+    - secrets_source == "tfoutputs"
 
 - name: secrets to json file
   import_tasks: secrets_to_json_file.yml
   when: secrets_to_file is defined
 
-
 - name: wipe secrets
   import_tasks: wipe_secrets.yml
   when: wipe_secrets is defined
-
 
 - name: get secrets
   import_tasks: get_secrets.yml

@@ -1,8 +1,8 @@
 - name: tf destroy bootstrap env (no modules)
   terraform:
-    force_init: "{{bootstrap_init_tf}}"
+    force_init: "{{ bootstrap_init_tf }"
     project_path: "{{ tf_base_dir }}/bootstrap"
-    state:  "absent"
+    state: "absent"
     variables: "{{ kv_tf }}"
   register: tf_bootstrap_destroy
   environment:

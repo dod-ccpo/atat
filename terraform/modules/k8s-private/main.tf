@@ -55,15 +55,17 @@ resource "azurerm_kubernetes_cluster" "k8s_private" {
   dns_prefix              = "atat-aks-private"
   private_cluster_enabled = var.private_cluster_enabled
   node_resource_group     = "${var.rg}-private-aks-node-rgs"
+
   depends_on = [azurerm_subnet_route_table_association.route_table]
 
-  linux_profile {
-    admin_username = "ops_person"
-    ssh_key {
 
-      key_data = file("${var.aks_ssh_pub_key_path}")
+  addon_profile {
+    azure_policy {
+     enabled =true
     }
   }
+
+
 
   network_profile {
 

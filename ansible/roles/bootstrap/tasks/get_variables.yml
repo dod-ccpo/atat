@@ -8,5 +8,5 @@
 
 - name: make k/v
   set_fact:
-    kv_tf: "{{ kv_tf|default({}) | combine({ item : (vars_vals[item] | regex_replace(\"'\",'\"'))  }) }}"
+    kv_tf: '{{ kv_tf|default({}) | combine({ item : (vars_vals[item] | regex_replace("''",''"'')) }) }}'
   with_items: "{{ vars_vals }}"
