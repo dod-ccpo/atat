@@ -1,6 +1,16 @@
 ---
 - name: Connect to the {{ namespace }} kubernetes cluster
-  shell: "az login --service-principal -u {{ lookup('env','AZ_CLI_SP') }} -p {{ lookup('env', 'TF_VAR_OPS_SEC' )}} --tenant {{ lookup('env','AZURE_TENANT_ID') }}  && az aks get-credentials -g cloudzero-{{ namespace }}-vpc -n cloudzero-{{ namespace }}-k8s"
+  shell: "az aks get-credentials -g cloudzero-{{ namespace }}-vpc -n cloudzero-{{ namespace }}-k8s"
+
+
+
+- name: Create {{ namespace }} namespace
+  k8s:
+    kind: Namespace
+    state: present
+    name: "{{ namespace }}"
+
+
 
 - name: Create HTTP Basic Auth Password
   set_fact:
@@ -9,28 +19,42 @@
 - name: Dump htpassword into file
   copy:
     dest: "./htpasswd"
-    content: "{{ password }}"
+    content: "{{ password }} | base64"
+
+- name: Create the secret in k8s
+  shell:
+    cmd: kubectl -n {{ namespace }} create secret generic atst-nginx-htpasswd --from-file=./htpasswd
+
+- name: "Attach the ACR to the K8s cluster"
+  shell:
+    cmd: az aks update -n cloudzero-{{namespace}}-k8s -g cloudzero-{{namespace}}-vpc --attach-acr {{tf_app_env_outputs.container_registry_name.value}}
+
+- name: Assign Network Contributor role to the AKS Service Principal for the Virtual Network
+  shell:
+    cmd: az role assignment create --role "Network Contributor" --assignee {{ tf_app_env_outputs.aks_sp_id.value }} --scope {{tf_app_env_outputs.vnet_id.value }}
+
+
+- name: Get vmss
+  shell:
+    cmd: az vmss list --resource-group {{ tf_app_env_outputs.k8s_node_group.value }}
+  register: k8s_vmss
+
+- name: show vmss output
+  debug:
+    msg: "{{ k8s_vmss.stdout | from_json  }}"
+
+- name: Assign the Vault Reader identity to the AKS VMSS
+  shell:
+    cmd: az vmss identity assign -g {{ tf_app_env_outputs.k8s_node_group.value }} -n {{ (k8s_vmss.stdout | from_json)[0].name }} --identities {{ tf_app_env_outputs.keyvault_reader_id.value }}
 
 - name: Base64 encode the password
   shell: 'echo "{{ password }}" | base64'
   register: encoded_password_shell_output
 
-- name: Create {{ namespace }} namespace
-  k8s:
-    kind: Namespace
-    state: present
-    name: "{{ namespace }}"
+- name: see output of secret file
+  debug:
+    msg: "{{ encoded_password_shell_output.stdout }}"
 
-- name: Set password
-  k8s:
-    name: htpasswd
-    kind: Secret
-    state: present
-    namespace: "{{ namespace }}"
-    definition:
-      type: Opaque
-      data:
-        secret: "{{ encoded_password_shell_output.stdout }}"
 
 - name: Apply the storage class
   k8s:
@@ -48,7 +72,7 @@
     state: present
     src: /src/deploy/azure/keyvault/kv-flex-vol-installer.yml
 
-- name: Fetch latest `atat` image from {{ tf_app_env_outputs.container_registry_name }}
+- name: Fetch latest `atat` image from {{ tf_app_env_outputs.container_registry_name.value }}
   shell: az acr repository show-tags --top 1 --orderby time_desc --repository atat --name {{ tf_app_env_outputs.container_registry_name.value }}
   register: atat_images
   retries: 100
@@ -70,7 +94,7 @@
 - name: Create template output directory
   file:
     state: directory
-    path: "{{ playbook_dir}}/.out"
+    path: "{{ playbook_dir }}/.out"
 
 - name: Interpolate the templates
   template:

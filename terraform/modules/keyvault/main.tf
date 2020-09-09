@@ -27,7 +27,7 @@ resource "azurerm_key_vault" "keyvault" {
 }
 
 resource "azurerm_key_vault_access_policy" "keyvault_k8s_policy" {
-  count        = length(var.principal_id) > 0 ? 1 : 0
+  count        = var.principal_id_count
   key_vault_id = azurerm_key_vault.keyvault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
@@ -116,4 +116,13 @@ resource "azurerm_key_vault_key" "generated" {
   ]
 
   depends_on = [azurerm_key_vault_access_policy.keyvault_admin_policy]
+}
+
+
+module "atatdev_cert" {
+ 
+ source = "../keyvault_cert"
+ keyvault_id = azurerm_key_vault.keyvault.id
+ certificate_path = var.tls_cert_path
+
 }

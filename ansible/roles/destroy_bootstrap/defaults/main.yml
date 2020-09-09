@@ -1,8 +1,5 @@
 ---
 
-show_bs_env: yes
 bootstrap_init_tf: yes
-deploy_bootstrap_env: yes
 tf_base_dir: /src/terraform/providers/
 tfvars_file_path: /src/terraform/providers/bootstrap/dryrun.tfvars
-bootstrap_subscription_id: "{{ lookup('env','SUBSCRIPTION_ID') }}"

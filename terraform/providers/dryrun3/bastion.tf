@@ -1,12 +1,4 @@
-
-
-
-
-
 module "bastion" {
-
-
-
   source                     = "../../modules/bastion"
   rg                         = "${var.name}-${var.environment}-jump"
   region                     = var.region
@@ -24,7 +16,4 @@ module "bastion" {
   bastion_ssh_pub_key_path   = var.bastion_ssh_pub_key_path
   log_analytics_workspace_id = module.logs.workspace_id
   depends_on                 = [module.vpc]
-
-
-
 }

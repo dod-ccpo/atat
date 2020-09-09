@@ -109,9 +109,26 @@ variable "tf_state_storage_container_name" {
 variable "OPS_CID" {}
 variable "OPS_SEC" {}
 variable "OPS_OID" {}
+variable "OPS_SP_URL" {}
 
 variable "mailgun_api_key" {}
 
 variable "azure_hybrid_tenant_id" {}
 variable "azure_hybrid_user_object_id" {}
 variable "azure_hybrid_tenant_admin_password" {}
+variable "AZURE-BILLING-ACCOUNT-NAME" {}
+variable "AZURE-INVOICE-SECTION-ID" {}
+variable "SAML-IDP-CERT" {}
+variable "AZURE-BILLING-PROFILE-ID" {}
+variable "dhparam4096" {}
+variable "AZURE_SUBSCRIPTION_CREATION_CLIENT_ID" {}
+variable "AZURE_SUBSCRIPTION_CREATION_SECRET" {}
+variable "AZURE_POWERSHELL_CLIENT_ID" {}
+variable "AZURE_ROOT_MGMT_GROUP_ID" {}
+variable "AZURE_TENANT_ADMIN_USERNAME" {}
+variable "AZURE_TENANT_ID" {}
+variable "AZURE_USER_OBJECT_ID" {}
+variable "CSP" {}
+variable "AZURE_HYBRID_REPORTING_CLIENT_ID" {}
+variable "AZURE_HYBRID_REPORTING_SECRET" {}
+variable "tls_cert_path" {}
