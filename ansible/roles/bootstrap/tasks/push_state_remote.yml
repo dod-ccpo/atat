@@ -1,0 +1,11 @@
+
+
+
+- name: push bootstrap tf state to storage account
+  azure_rm_storageblob:
+    resource_group: "{{tf_bootstrap_backend_outputs.resource_group_name.value}}"
+    storage_account_name: "{{tf_bootstrap_backend_outputs.storage_account_name.value}}"
+    container: "{{tf_bootstrap_backend_outputs.container_name.value}}"
+    blob: terraform.bootstrap.tfstate
+    src: "{{tf_dir}}/terraform.tfstate"
+    content_type: 'application/json'
