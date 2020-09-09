@@ -7,12 +7,6 @@ ARG azure_subscription_id
 ARG operator_sp_url
 ARG operator_sp_object_id
 
-
-ARG local_ssh_key_path
-
-ENV LOCAL_SSH_KEY_PATH="$local_ssh_key_path"
-
-
 ENV ARM_CLIENT_ID_BUILD="$operator_sp_client_id"
 ENV ARM_CLIENT_SECRET_BUILD="$operator_sp_secret"
 ENV ARM_SUBSCRIPTION_ID_BUILD="$azure_subscription_id"
@@ -99,12 +93,8 @@ RUN 	pip3 install \
   	  sudo mv terraform /usr/local/bin && \
       ln -s /usr/bin/python /usr/bin/python3.7
 
-RUN 	mkdir src && \
-      mkdir -p ~/.ssh
+RUN 	mkdir src
 COPY . /src
-
-COPY "$LOCAL_SSH_KEY_PATH" ~/.ssh
-
 
 RUN yum install -y \
   libxml2-devel \
@@ -132,11 +122,6 @@ RUN cd /tmp \
     && curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" \
     && chmod +x /tmp/kubectl \
     && sudo mv /tmp/kubectl /usr/bin/kubectl
-
-
-RUN cp /src/breakglass_two.pub ~/.ssh/
-
-
 
 WORKDIR /src/ansible
 
