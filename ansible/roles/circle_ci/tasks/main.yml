@@ -6,6 +6,6 @@
       container_registry: "{{ tf_app_env_outputs.ops_container_registry_name }}"
       environment_container_registry: "{{ tf_app_env_outputs.container_registry_name }}"
       subscription_id: "{{ tf_app_env_outputs.subscription_id.value }}"
-      sp: "{{ }}"
-      sp_password: "{{ }}"
+      sp: "{{ lookup('env', ARM_CLIENT_ID_BUILD) }}"
+      sp_password: "{{ lookup('env', ARM_CLIENT_SECRET_BUILD) }}"
   register: _result
