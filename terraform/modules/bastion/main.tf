@@ -15,7 +15,7 @@ resource "azurerm_subnet" "mgmt_subnet" {
 
   enforce_private_link_endpoint_network_policies = true
 
-  service_endpoints = ["Microsoft.KeyVault", "Microsoft.ContainerRegistry","Microsoft.Sql"]
+  service_endpoints = ["Microsoft.KeyVault", "Microsoft.ContainerRegistry", "Microsoft.Sql"]
 
   delegation {
     name = "delegation"

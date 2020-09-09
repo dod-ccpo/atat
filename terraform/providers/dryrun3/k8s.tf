@@ -22,7 +22,7 @@ module "k8s" {
   vnet_resource_group_name = module.vpc.resource_group_name
   aks_subnet_id            = module.vpc.subnet_list["aks"].id
   aks_route_table          = "${var.name}-${var.environment}-aks"
-  depends_on               = [module.aks_sp,module.keyvault_reader_identity]
+  depends_on               = [module.aks_sp, module.keyvault_reader_identity]
 
 
 }

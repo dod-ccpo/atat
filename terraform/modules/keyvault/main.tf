@@ -100,7 +100,7 @@ resource "azurerm_key_vault_access_policy" "keyvault_admin_policy" {
 
 
 resource "azurerm_key_vault_key" "generated" {
-  count        = var.name == "cz" ? 1 :0
+  count        = var.name == "cz" ? 1 : 0
   name         = "SECRET-KEY"
   key_vault_id = azurerm_key_vault.keyvault.id
   key_type     = "RSA"

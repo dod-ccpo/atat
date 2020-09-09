@@ -71,15 +71,15 @@ output "ops_keyvault_sp_secret" {
 }
 
 output "application_keyvault_name" {
- value = module.keyvault.keyvault_name
+  value = module.keyvault.keyvault_name
 }
 
 output "application_keyvault_url" {
- value = module.keyvault.url
+  value = module.keyvault.url
 }
 
 output "operator_keyvault_name" {
- value = module.operator_keyvault.keyvault_name
+  value = module.operator_keyvault.keyvault_name
 }
 
 
@@ -89,12 +89,12 @@ output "subnets" {
 
 
 output "container_registry_name" {
-value= module.container_registry.container_registry_name
+  value = module.container_registry.container_registry_name
 }
 
 
 output "keyvault_reader_client_id" {
-value = module.keyvault_reader_identity.client_id
+  value = module.keyvault_reader_identity.client_id
 }
 
 output "azure_storage_account_name" {
@@ -111,19 +111,19 @@ output "redis_ssl_port" {
 
 output "app_config_values" {
 
-   value = {
-    "AZURE-CLIENT-ID":  module.tenant_keyvault_app.application_id
-    "AZURE-SECRET-KEY": module.tenant_keyvault_app.application_password
-    "AZURE-TENANT-ID": var.tenant_id
-    "MAIL-PASSWORD": var.mailgun_api_key
-    "AZURE-STORAGE-KEY": module.task_order_bucket.primary_access_key
-    "REDIS-PASSWORD": module.redis.primary_key
-    "AZURE-HYBRID-TENANT-ID": var.azure_hybrid_tenant_id
-    "AZURE-USER-OBJECT-ID": var.azure_hybrid_user_object_id
-    "AZURE-TENANT-ADMIN-PASSWORD": var.azure_hybrid_tenant_admin_password
+  value = {
+    "AZURE-CLIENT-ID" : module.tenant_keyvault_app.application_id
+    "AZURE-SECRET-KEY" : module.tenant_keyvault_app.application_password
+    "AZURE-TENANT-ID" : var.tenant_id
+    "MAIL-PASSWORD" : var.mailgun_api_key
+    "AZURE-STORAGE-KEY" : module.task_order_bucket.primary_access_key
+    "REDIS-PASSWORD" : module.redis.primary_key
+    "AZURE-HYBRID-TENANT-ID" : var.azure_hybrid_tenant_id
+    "AZURE-USER-OBJECT-ID" : var.azure_hybrid_user_object_id
+    "AZURE-TENANT-ADMIN-PASSWORD" : var.azure_hybrid_tenant_admin_password
 
 
 
-   }
+  }
 
 }

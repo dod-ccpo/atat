@@ -1,6 +1,6 @@
 variable "environment" {}
 variable "lifecycle_env_name" {
-default = "staging"
+  default = "staging"
 }
 
 variable "region" {}

@@ -27,31 +27,31 @@ def create_database_user(username, password, dbname):
     try:
         engine.execute(
             f"CREATE ROLE \"{username}\" WITH LOGIN NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION PASSWORD '{password}'; "
-            f"GRANT ALL PRIVILEGES ON DATABASE {dbname} TO \"{username}\";\n"
-            f"ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO \"{username}\"; \n"
-            f"ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO \"{username}\"; \n"
-            f"ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON FUNCTIONS TO \"{username}\"; \n"
+            f'GRANT ALL PRIVILEGES ON DATABASE {dbname} TO "{username}";\n'
+            f'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO "{username}"; \n'
+            f'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO "{username}"; \n'
+            f'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON FUNCTIONS TO "{username}"; \n'
         )
     except sqlalchemy.exc.ProgrammingError as err:
-        print(f"Database role \"{username}\" not created")
+        print(f'Database role "{username}" not created')
         print(err.orig)
 
     try:
         # TODO: make this more configurable
-        engine.execute(f"GRANT \"{username}\" TO azure_pg_admin;")
+        engine.execute(f'GRANT "{username}" TO azure_pg_admin;')
     except sqlalchemy.exc.ProgrammingError as err:
-        print(f"Unable to grant new role \"{username}\" to azure_pg_admin")
+        print(f'Unable to grant new role "{username}" to azure_pg_admin')
         print(err.orig)
 
     for table in meta.tables:
-        engine.execute(f"ALTER TABLE {table} OWNER TO \"{username}\";\n")
+        engine.execute(f'ALTER TABLE {table} OWNER TO "{username}";\n')
 
     sequence_results = engine.execute(
         "SELECT c.relname FROM pg_class c WHERE c.relkind = 'S';"
     ).fetchall()
     sequences = [p[0] for p in sequence_results]
     for sequence in sequences:
-        engine.execute(f"ALTER SEQUENCE {sequence} OWNER TO \"{username}\";\n")
+        engine.execute(f'ALTER SEQUENCE {sequence} OWNER TO "{username}";\n')
 
     trans.commit()
 
