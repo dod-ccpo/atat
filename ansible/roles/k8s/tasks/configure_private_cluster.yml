@@ -1,0 +1,135 @@
+---
+
+
+- name: Download k8s overlays
+  azure_rm_storageblob:
+    resource_group: "{{ b_end.resource_group_name }}"
+    storage_account_name: "{{ b_end.storage_account_name }}"
+    container: "{{ b_end.container_name }}"
+    blob: k8s.overlays
+    dest:  /tmp/private_k8s_overlays.tgz
+
+- name: Extract private cluster configs
+  unarchive:
+    src: /tmp/private_k8s_overlays.tgz
+    dest: "{{ playbook_dir + '/.out' }}"
+
+
+
+- name: Connect to the {{ namespace }} kubernetes cluster
+  shell: "az aks get-credentials -g cloudzero-vpc-{{ namespace }} -n cloudzero-private-k8s-{{ namespace }}"
+
+
+
+- name: Create {{ namespace }} namespace
+  k8s:
+    kind: Namespace
+    state: present
+    name: "{{ namespace }}"
+
+
+
+- name: Create HTTP Basic Auth Password
+  set_fact:
+    password: "{{ lookup('password', 'htpasswd') }}"
+
+- name: Dump htpassword into file
+  copy:
+    dest: "./htpasswd"
+    content: "{{ password }} | base64"
+
+- name: Create the secret in k8s
+  shell:
+    cmd: kubectl -n {{ namespace }} create secret generic atst-nginx-htpasswd --from-file=./htpasswd
+
+- name: "Attach the ACR to the K8s cluster"
+  shell:
+    cmd: az aks update -n cloudzero-k8s-{{namespace}} -g cloudzero-vpc-{{namespace}} --attach-acr {{tf_app_env_outputs.container_registry_name.value}}
+
+- name: Assign Network Contributor role to the AKS Service Principal for the Virtual Network
+  shell:
+    cmd: az role assignment create --role "Network Contributor" --assignee {{ tf_app_env_outputs.aks_sp_id.value }} --scope {{tf_app_env_outputs.vnet_id.value }}
+
+
+- name: Get vmss
+  shell:
+    cmd: az vmss list --resource-group {{ tf_app_env_outputs.private_k8s_node_group.value }}
+  register: k8s_vmss
+
+- name: show vmss output
+  debug:
+    msg: "{{ k8s_vmss.stdout | from_json  }}"
+
+- name: Assign the Vault Reader identity to the AKS VMSS
+  shell:
+    cmd: az vmss identity assign -g {{ tf_app_env_outputs.private_k8s_node_group.value }} -n {{ (k8s_vmss.stdout | from_json)[0].name }} --identities {{ tf_app_env_outputs.keyvault_reader_id.value }}
+
+- name: Base64 encode the password
+  shell: 'echo "{{ password }}" | base64'
+  register: encoded_password_shell_output
+
+- name: see output of secret file
+  debug:
+    msg: "{{ encoded_password_shell_output.stdout }}"
+
+
+- name: Apply the storage class
+  k8s:
+    state: present
+    src: /src/deploy/azure/storage-class.yml
+
+- name: Create kv namespace
+  k8s:
+    kind: Namespace
+    state: present
+    name: "kv"
+
+- name: Apply flex vol installer
+  k8s:
+    state: present
+    src: /src/deploy/azure/keyvault/kv-flex-vol-installer.yml
+
+- name: Fetch latest `atat` image from {{ tf_app_env_outputs.container_registry_name.value }}
+  shell: az acr repository show-tags --top 1 --orderby time_desc --repository atat --name {{ tf_app_env_outputs.container_registry_name.value }}
+  register: atat_images
+  retries: 100
+  delay: 10
+  until: atat_images is not failed
+
+- name: Extract latest tag
+  set_fact:
+    latest_tag: "{{ (atat_images.stdout | from_json)[0] }}"
+
+- name: Show variable "atat_images"
+  debug:
+    msg: "{{ atat_images }}"
+
+- name: Show variable "latest_tag"
+  debug:
+    msg: "{{ latest_tag }}"
+
+
+
+- name: Show output directory
+  debug:
+    msg: "{{ playbook_dir + '/.out.' + namespace }}"
+
+- name: Apply the rest of the Kubernetes config for the site
+  shell: /src/script/k8s_config {{ playbook_dir + '/.out' }} | kubectl apply -f -
+  environment:
+    CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/atat:{{ latest_tag }}"
+    NGINX_CONTAINER_IMAGE: "{{ tf_app_env_outputs.container_registry_name.value }}.azurecr.io/nginx:latest"
+    MAIN_DOMAIN: "{{ namespace }}.atat.dev"
+    AUTH_DOMAIN: "auth-{{ namespace }}.atat.dev"
+    VMSS_CLIENT_ID: "{{ tf_app_env_outputs.keyvault_reader_client_id.value }}"
+    KV_NAME: "cz-keyvault-{{ namespace }}"
+    TENANT_ID: "{{ tf_app_env_outputs.tenant_id.value }}"
+    DEPLOY_TAG: "tf-{{ deploy_tag | regex_replace('\\.','-') }}"
+
+- name: Obtain IP addresses
+  shell: kubectl -n {{ namespace }} get services
+  register: ips
+
+- name: Show IP addresses
+  debug:
+    msg: "{{ ips }}"

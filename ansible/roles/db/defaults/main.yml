@@ -1,0 +1,2 @@
+
+postgres_root_cert: /src/deploy/azure/pgsslrootcert.yml
