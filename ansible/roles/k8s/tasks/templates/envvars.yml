@@ -13,7 +13,7 @@ data:
   FLASK_ENV: {{ namespace }}
   PGDATABASE: {{ tf_app_env_outputs.atat_database_name.value }}
   PGHOST: {{ tf_app_env_outputs.pg_host.value }}
-  PGUSER: {{ tf_app_env_outputs.atat_user_name.value }}@{{ tf_app_env_outputs.atat_database_instance_name.value }}
+  PGUSER: {{ tf_app_env_outputs.atat_user_name.value }}
   PGSSLMODE: verify-full
   REDIS_HOST: {{ tf_app_env_outputs.redis_hostname.value }}:{{ tf_app_env_outputs.redis_ssl_port.value }}
   REDIS_SSLMODE: required
@@ -37,7 +37,7 @@ data:
   FLASK_ENV: {{ namespace }}
   PGDATABASE: {{ tf_app_env_outputs.atat_database_name.value }}
   PGHOST: {{ tf_app_env_outputs.pg_host.value }}
-  PGUSER: {{ tf_app_env_outputs.atat_user_name.value }}@{{ tf_app_env_outputs.atat_database_instance_name.value }}
+  PGUSER: {{ tf_app_env_outputs.atat_user_name.value }}
   PGSSLMODE: require
   REDIS_HOST: {{ tf_app_env_outputs.redis_hostname.value }}:{{ tf_app_env_outputs.redis_ssl_port.value }}
   REDIS_SSLMODE: required
