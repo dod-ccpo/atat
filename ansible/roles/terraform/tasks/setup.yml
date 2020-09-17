@@ -4,19 +4,17 @@
   debug:
     msg: "{{ app_kv_tf | to_nice_json }}"
 
-- debug:
-    msg: "{{ az_environment }}"
 
 - debug:
     msg: "{{ lookup('env','TF_VAR_OPS_OID') }} {{ lookup('env','TF_VAR_OPS_SEC') }}"
 
 - name: set tf_dir
   set_fact:
-    tf_dir: "{{ tf_base_dir }}/{{ az_environment }}"
+    tf_dir: "{{ tf_base_dir }}"
 
 - name: tf apply (modules)
   terraform:
-    project_path: "{{ tf_base_dir }}/{{ az_environment }}"
+    project_path: "{{ tf_base_dir }}/{{ tf_subdir }}"
     state: "present"
     targets: "{{ target_modules }}"
     variables: "{{ app_kv_tf }}"
@@ -24,6 +22,7 @@
   register: tf_run_modules
   environment:
     ARM_SUBSCRIPTION_ID: "{{ application_subscription_id }}"
+    TF_VAR_environment: "{{ tf_bootstrap_backend_outputs.environment.value }}"
 
   when:
     - target_modules is defined
@@ -32,7 +31,7 @@
 - name: tf apply (no modules)
   terraform:
     force_init: "{{ init_tf }}"
-    project_path: "{{ tf_base_dir }}/{{ az_environment }}"
+    project_path: "{{ tf_base_dir }}/{{ tf_subdir }}"
     state: "present"
     variables: "{{ app_kv_tf }}"
     backend_config: "{{ b_end }}"
@@ -42,6 +41,7 @@
     TF_VAR_OPS_OID: "{{ lookup('env','TF_VAR_OPS_OID') }}"
     TF_VAR_OPS_SEC: "{{ lookup('env','TF_VAR_OPS_SEC') }}"
     TF_VAR_dhparam4096: "{{ lookup('file','/src/ansible/dh/dhparams.pem')}}"
+    TF_VAR_environment: "{{ tf_bootstrap_backend_outputs.environment.value }}"
   when:
     - target_modules is not defined
     - b_end is defined

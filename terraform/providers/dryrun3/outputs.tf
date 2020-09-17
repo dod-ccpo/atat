@@ -159,3 +159,11 @@ output "app_config_values" {
    }
 
 }
+
+output "circle_ci_api_key" {
+ value = var.circle_ci_api_key
+}
+
+output "ops_container_registry_name" {
+ value = module.container_registry.ops_container_registry_name
+}

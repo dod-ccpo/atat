@@ -99,7 +99,7 @@ variable "workspace_id" {
   type        = string
 }
 
-variable "pet_name" {}
+
 
 
 variable "operator_ip" {}

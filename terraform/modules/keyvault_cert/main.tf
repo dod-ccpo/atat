@@ -16,7 +16,7 @@ resource "azurerm_key_vault_certificate" "example" {
 
   certificate_policy {
     issuer_parameters {
-      name = "Self"
+      name = "Unknown"
     }
 
     key_properties {
@@ -27,7 +27,7 @@ resource "azurerm_key_vault_certificate" "example" {
     }
 
     secret_properties {
-      content_type = "application/x-pkcs12"
+      content_type = "application/x-pem-file"
     }
   }
 }

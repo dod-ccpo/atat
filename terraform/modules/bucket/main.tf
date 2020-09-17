@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "bucket" {
-  name     = "${var.name}-${var.environment}-${var.service_name}"
+  name     = "${var.name}-${var.service_name}-${var.environment}"
   location = var.region
 }
 

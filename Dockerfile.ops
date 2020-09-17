@@ -152,6 +152,7 @@ ENV TF_VAR_OPS_CID="$operator_sp_client_id"
 ENV TF_VAR_OPS_OID="$operator_sp_object_id"
 ENV TF_VAR_OPS_SEC="$operator_sp_secret"
 ENV TF_VAR_OPS_SP_URL="$operator_sp_url"
+ENV TF_VAR_azure_subscription_id="$azure_subscription_id"
 ENV AZ_CLI_SP="$operator_sp_url"
 
 

@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "vpc" {
-  name     = "${var.name}-${var.environment}-vpc"
+  name     = "${var.name}-vpc-${var.environment}"
   location = var.region
 
   tags = {
@@ -10,13 +10,13 @@ resource "azurerm_resource_group" "vpc" {
 
 resource "azurerm_network_ddos_protection_plan" "vpc" {
   count               = var.ddos_enabled
-  name                = "${var.name}-${var.environment}-ddos"
+  name                = "${var.name}-ddos-${var.environment}"
   location            = azurerm_resource_group.vpc.location
   resource_group_name = azurerm_resource_group.vpc.name
 }
 
 resource "azurerm_virtual_network" "vpc" {
-  name                = "${var.name}-${var.environment}-network"
+  name                = "${var.name}-network-${var.environment}"
   location            = azurerm_resource_group.vpc.location
   resource_group_name = azurerm_resource_group.vpc.name
   address_space       = ["${var.virtual_network}"]
@@ -30,7 +30,7 @@ resource "azurerm_virtual_network" "vpc" {
 
 resource "azurerm_subnet" "subnet" {
   for_each             = var.networks
-  name                 = "${var.name}-${var.environment}-${each.key}"
+  name                 = "${ each.key == "AzureFirewallSubnet" ? "AzureFirewallSubnet" : "${var.name}-${each.key}-${var.environment}" }"
   resource_group_name  = azurerm_resource_group.vpc.name
   virtual_network_name = azurerm_virtual_network.vpc.name
   address_prefixes     = [element(split(",", each.value), 0)]
@@ -39,7 +39,7 @@ resource "azurerm_subnet" "subnet" {
 
 resource "azurerm_route_table" "route_table" {
   for_each            = var.route_tables
-  name                = "${var.name}-${var.environment}-${each.key}"
+  name                = "${var.name}-${each.key}-${var.environment}"
   location            = azurerm_resource_group.vpc.location
   resource_group_name = azurerm_resource_group.vpc.name
 }
@@ -53,7 +53,7 @@ resource "azurerm_subnet_route_table_association" "route_table" {
 # Default Routes
 resource "azurerm_route" "route" {
   for_each            = var.route_tables
-  name                = "${var.name}-${var.environment}-default"
+  name                = "${var.name}-default-${var.environment}"
   resource_group_name = azurerm_resource_group.vpc.name
   route_table_name    = azurerm_route_table.route_table[each.key].name
   address_prefix      = "0.0.0.0/0"
@@ -63,9 +63,9 @@ resource "azurerm_route" "route" {
 # Custom Routes
 resource "azurerm_route" "custom_routes" {
   for_each            = var.custom_routes
-  name                = "${var.name}-${var.environment}-${element(split(",", each.value), 1)}"
+  name                = "${var.name}-${element(split(",", each.value), 1)}-${var.environment}"
   resource_group_name = azurerm_resource_group.vpc.name
-  #route_table_name    = "${var.name}-${var.environment}-${element(split(",", each.value), 0)}"
+  #route_table_name    = "${var.name}-${element(split(",", each.value), 0)}-${var.environment}"
   route_table_name = azurerm_route_table.route_table[each.key].name
   address_prefix   = element(split(",", each.value), 2)
   next_hop_type    = element(split(",", each.value), 3)

@@ -1,5 +1,10 @@
+-  name: lets see outputs
+   debug:
+     msg: "{{tf_app_env_outputs}}"
+
+
 - name: grab the root cert from yaml
-  shell: cat /src/deploy/azure/pgsslrootcert.yml
+  shell: cat "{{ postgres_root_cert }}"
   register: cert_text
 
 - name: set cert fact

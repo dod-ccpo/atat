@@ -9,7 +9,7 @@ module "task_order_bucket" {
   region                 = var.region
   policy                 = "Allow"
   subnet_ids             = [module.vpc.subnet_list["aks"].id]
-  whitelist              = var.storage_admin_whitelist
+  whitelist              = merge(var.storage_admin_whitelist,{ "${data.azurerm_client_config.current.client_id}": chomp(data.http.myip.body) })
   bucket_cors_properties = var.bucket_cors_properties
   storage_container_name = var.task_order_bucket_storage_container_name
   depends_on    = [module.vpc]

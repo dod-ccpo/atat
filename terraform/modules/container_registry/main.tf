@@ -1,12 +1,17 @@
 
+ data "azurerm_container_registry" "ops" {
+   name                = var.ops_container_registry_name
+   resource_group_name = var.ops_resource_group_name
+ }
+
 
 resource "azurerm_resource_group" "acr" {
-  name     = "${var.name}-${var.environment}-acr"
+  name     = "${var.name}-acr-${var.environment}"
   location = var.region
 }
 
 resource "azurerm_container_registry" "acr" {
-  name                = "${var.name}${var.environment}${var.pet_name}registry" # Alpha Numeric Only
+  name                = "${var.name}${var.environment}registry" # Alpha Numeric Only
   resource_group_name = azurerm_resource_group.acr.name
   location            = azurerm_resource_group.acr.location
   sku                 = var.sku
@@ -49,7 +54,7 @@ resource "azurerm_container_registry" "acr" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "acr_diagnostic" {
-  name                       = "${var.name}-${var.environment}-acr-diag"
+  name                       = "${var.name}-acr-diag-${var.environment}"
   target_resource_id         = azurerm_container_registry.acr.id
   log_analytics_workspace_id = var.workspace_id
   log {

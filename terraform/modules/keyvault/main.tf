@@ -1,12 +1,12 @@
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_resource_group" "keyvault" {
-  name     = "${var.name}-${var.environment}-keyvault"
+  name     = "${var.name}-keyvault-${var.environment}"
   location = var.region
 }
 
 resource "azurerm_key_vault" "keyvault" {
-  name                = "${var.name}-${var.environment}-keyvault"
+  name                = "${var.name}-keyvault-${var.environment}"
   location            = azurerm_resource_group.keyvault.location
   resource_group_name = azurerm_resource_group.keyvault.name
   tenant_id           = data.azurerm_client_config.current.tenant_id
@@ -40,6 +40,11 @@ resource "azurerm_key_vault_access_policy" "keyvault_k8s_policy" {
   secret_permissions = [
     "get",
   ]
+
+  certificate_permissions = [
+    "get"
+  ]
+
 }
 
 
@@ -59,7 +64,9 @@ resource "azurerm_key_vault_access_policy" "keyvault_tenant_policy" {
     "delete"
   ]
 
-  certificate_permissions = []
+  certificate_permissions = [
+  "get"
+  ]
 }
 
 # Admin Access
@@ -88,6 +95,7 @@ resource "azurerm_key_vault_access_policy" "keyvault_admin_policy" {
   certificate_permissions = [
     "get",
     "list",
+    "delete",
     "create",
     "import",
     "listissuers",
@@ -120,9 +128,11 @@ resource "azurerm_key_vault_key" "generated" {
 
 
 module "atatdev_cert" {
- 
+
  source = "../keyvault_cert"
  keyvault_id = azurerm_key_vault.keyvault.id
  certificate_path = var.tls_cert_path
+
+ depends_on = [azurerm_key_vault_access_policy.keyvault_admin_policy]
 
 }

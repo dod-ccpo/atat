@@ -1,10 +1,10 @@
 output "database_name" {
 
-  value = "${var.name}-${var.environment}-sql"
+  value = "${var.name}-sql-${var.environment}"
 }
 
 output "postgres_resource_group_name" {
-  value = "${var.name}-${var.environment}-postgres"
+  value = "${var.name}-postgres-${var.environment}"
 }
 
 output "admin_name" {
@@ -12,7 +12,7 @@ output "admin_name" {
 }
 
 output "pg_admin_user" {
-  value = "${var.administrator_login}@${var.name}-${var.environment}-sql"
+  value = "${var.administrator_login}@${var.name}-sql-${var.environment}"
 }
 
 output "pgpassword" {
@@ -25,10 +25,10 @@ output "fqdn" {
 
 output "pgdb_name" {
 
-  value = "${var.name}-${var.environment}-staging"
+  value = "${var.name}-staging-${var.environment}"
 
 }
 
 output "app_user" {
-  value = "atat@${var.name}-${var.environment}-sql"
+  value = "atat@${var.name}-sql-${var.environment}"
 }

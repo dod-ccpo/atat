@@ -1,4 +1,7 @@
-variable "environment" {}
+variable "environment" {
+
+default = ""
+}
 
 variable "region" {}
 

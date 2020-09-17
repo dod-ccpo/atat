@@ -1,5 +1,5 @@
 resource "azurerm_network_security_group" "security_group" {
-  name                = "${var.name}-${var.environment}-sg"
+  name                = "${var.name}-sg-${var.environment}"
   location            = var.region
   resource_group_name = var.resource_group_name
 

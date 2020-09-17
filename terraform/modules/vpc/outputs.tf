@@ -13,11 +13,11 @@ output "id" {
 }
 
 output "vpc_name" {
-  value = "${var.name}-${var.environment}-network"
+  value = "${var.name}-network-${var.environment}"
 }
 
 output "resource_group_name" {
 
-  value = "${var.name}-${var.environment}-vpc"
+  value = "${var.name}-vpc-${var.environment}"
 
 }

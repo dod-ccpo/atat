@@ -15,5 +15,7 @@ module "bastion" {
   name                       = var.name
   bastion_ssh_pub_key_path   = var.bastion_ssh_pub_key_path
   log_analytics_workspace_id = module.logs.workspace_id
+  registry_password          = var.OPS_SEC
+  registry_username          = var.OPS_CID
   depends_on                 = [module.vpc]
 }

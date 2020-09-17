@@ -3,6 +3,22 @@
 
 - name: Kick off a build for image
   uri:
-    url: "https://circleci.com/api/v2/project/github/dod-ccpo/atst/pipeline"
+    url: https://circleci.com/api/v2/project/github/dod-ccpo/atst/pipeline
     method: POST
+    headers:
+      Circle-Token: "{{ tf_app_env_outputs.circle_ci_api_key.value }}"
+    body:
+      branch: build-ops-container
+      parameters:
+        container_registry: "{{ tf_app_env_outputs.container_registry_name.value }}"
+        build_and_push_app_images: true
+        subscription_id: "{{ tf_app_env_outputs.subscription_id.value }}"
+        atat_image_tag: "{{tf_app_env_outputs.container_registry_name.value}}.azurecr.io/atat:latest"
+        nginx_image_tag: "{{tf_app_env_outputs.container_registry_name.value}}.azurecr.io/nginx:latest"
+        sp: "{{ lookup('env', 'ARM_CLIENT_ID_BUILD' ) }}"
+        sp_password: "{{ lookup('env', 'ARM_CLIENT_SECRET_BUILD' ) }}"
+        ops_registry:  "{{ tf_app_env_outputs.ops_container_registry_name.value }}"
+    body_format: json
+    status_code:
+      - 201
   register: _result

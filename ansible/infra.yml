@@ -5,19 +5,12 @@
     - role: terraform
     - role: destroy_bootstrap
       when: teardown_bootstrap_env is defined
-    - role: azure_keyvault
-      vars:
-        bootstrap_terraform_secrets: "true"
-        vault_url: "{{ tf_app_env_outputs.operator_keyvault_url.value }}"
-        keyvault_name: "{{ tf_app_env_outputs.operator_keyvault_name.value }}"
-        secrets_source: "tfvars"
+    - role: circle_ci
       when: asdf is defined
-
     - role: azure_keyvault
       vars:
-        bootstrap_terraform_secrets: "false"
-        vault_url: "{{ tf_app_env_outputs.application_keyvault_url.value }}"
-        secrets_source: "tfoutputs"
-        top_level_secrets: true
-        keyvault_name: "{{ tf_app_env_outputs.application_keyvault_name.value }}"
+        ops_vault_url: "{{ tf_app_env_outputs.operator_keyvault_url.value }}"
+        ops_keyvault_name: "{{ tf_app_env_outputs.operator_keyvault_name.value }}"
+        app_vault_url: "{{ tf_app_env_outputs.application_keyvault_url.value }}"
+        app_keyvault_name: "{{ tf_app_env_outputs.application_keyvault_name.value }}"
       when: asdf is defined

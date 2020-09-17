@@ -2,6 +2,12 @@
 ---
 # ops_keyvault_* use service principle that has read and list rights to target vault
 
+- name: set tf_dir
+  set_fact:
+    tf_dir: "{{ tf_base_dir }}/{{tf_subdir}}"
+
+
+
 - name: build backend
   set_fact:
     b_end: "{{ b_end|default({}) | combine( { item : tf_bootstrap_backend_outputs.outputs[item].value } ) }}"
@@ -24,7 +30,7 @@
 
 - name: set tf vars file path
   set_fact:
-    tf_vars_file_path: "{{ tf_base_dir }}/{{ az_environment }}/{{ az_environment }}.tfvars.json"
+    tf_vars_file_path: "{{ tf_dir }}/{{ tfvars_file_name }}"
   when:
     - vault_url is not defined
 
@@ -46,12 +52,7 @@
   debug:
     msg: "{{ app_kv_tf | to_nice_json }}"
 
-- debug:
-    msg: "{{ az_environment }}"
 
-- name: set tf_dir
-  set_fact:
-    tf_dir: "{{ tf_base_dir }}/{{ az_environment }}"
 
 - name: tf plan (no modules)
   terraform:

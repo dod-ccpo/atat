@@ -1,6 +1,6 @@
 resource "azurerm_subnet" "private_aks_subnet" {
 
-   name                 = "${var.name}-${var.environment}-private-aks-subnet"
+   name                 = "${var.name}-private-aks-subnet-${var.environment}"
    resource_group_name  = var.rg
    virtual_network_name = var.vpc_name
    address_prefixes     = ["${var.subnet_cidr}"]
@@ -26,7 +26,7 @@ resource "azurerm_subnet" "private_aks_subnet" {
 
 
  resource "azurerm_route" "vnet_route" {
-    name                = "private-k8s-${var.name}-${var.environment}-virtual-network"
+    name                = "private-k8s-${var.name}-virtual-network-${var.environment}"
     resource_group_name = var.rg
     route_table_name    = azurerm_route_table.route_table.name
     address_prefix      = var.vpc_address_space
@@ -34,7 +34,7 @@ resource "azurerm_subnet" "private_aks_subnet" {
   }
 
   resource "azurerm_route" "internet" {
-     name                = "private-k8s-${var.name}-${var.environment}-internet"
+     name                = "private-k8s-${var.name}-internet-${var.environment}"
      resource_group_name = var.rg
      route_table_name    = azurerm_route_table.route_table.name
      address_prefix      = "0.0.0.0/0"
@@ -49,7 +49,7 @@ resource "azurerm_subnet" "private_aks_subnet" {
 resource "azurerm_kubernetes_cluster" "k8s_private" {
 
 
-  name                    = "${var.name}-${var.environment}-private-k8s"
+  name                    = "${var.name}-private-k8s-${var.environment}"
   location                = var.region
   resource_group_name     = var.rg
   dns_prefix              = "atat-aks-private"
@@ -63,7 +63,18 @@ resource "azurerm_kubernetes_cluster" "k8s_private" {
     azure_policy {
      enabled =true
     }
+
+    oms_agent {
+
+    enabled = true
+    log_analytics_workspace_id = var.log_analytics_workspace_id
+
+    }
+
+
+
   }
+
 
 
 

@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "jump" {
-  name     = "${var.bastion_subnet_rg}-bastion"
+  name     = "${var.name}-bastion-${var.environment}"
   location = var.region
 }
 
@@ -54,10 +54,11 @@ resource "azurerm_container_group" "bastion" {
   os_type             = "Linux"
 
   container {
-    name   = "hello-world"
-    image  = "microsoft/aci-helloworld:latest"
-    cpu    = "0.5"
-    memory = "1.5"
+    name   = "bastion"
+    image  = "${var.container_registry}/${var.container_image}"
+    cpu    = "1"
+    memory = "2"
+    commands = ["tail", "-f", "/dev/null"]
 
     ports {
       port     = 443
@@ -65,12 +66,16 @@ resource "azurerm_container_group" "bastion" {
     }
   }
 
-  container {
-    name   = "sidecar"
-    image  = "microsoft/aci-tutorial-sidecar"
-    cpu    = "0.5"
-    memory = "1.5"
+  image_registry_credential {
+
+  username = var.registry_username
+  password = var.registry_password
+  server= var.container_registry
+
   }
+
+
+
 
   tags = {
     environment = "testing"

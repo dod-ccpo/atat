@@ -132,3 +132,4 @@ variable "CSP" {}
 variable "AZURE_HYBRID_REPORTING_CLIENT_ID" {}
 variable "AZURE_HYBRID_REPORTING_SECRET" {}
 variable "tls_cert_path" {}
+variable "circle_ci_api_key" {}
