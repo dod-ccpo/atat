@@ -58,13 +58,6 @@ data:
             uwsgi_pass unix:///var/run/uwsgi/uwsgi.socket;
             uwsgi_param HTTP_X_REQUEST_ID $request_id;
         }
-        location @appbasicauth {
-            include uwsgi_params;
-            uwsgi_pass unix:///var/run/uwsgi/uwsgi.socket;
-            auth_basic "Developer Access";
-            auth_basic_user_file /etc/nginx/.htpasswd;
-            uwsgi_param HTTP_X_REQUEST_ID $request_id;
-        }
     }
     server {
         access_log /var/log/nginx/access.log json;

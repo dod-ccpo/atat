@@ -1,6 +1,4 @@
 ---
-
-
 - name: Download k8s overlays
   azure_rm_storageblob:
     resource_group: "{{ b_end.resource_group_name }}"
@@ -14,33 +12,14 @@
     src: /tmp/private_k8s_overlays.tgz
     dest: "{{ playbook_dir + '/.out' }}"
 
-
-
 - name: Connect to the {{ namespace }} kubernetes cluster
   shell: "az aks get-credentials -g cloudzero-vpc-{{ namespace }} -n cloudzero-private-k8s-{{ namespace }}"
-
-
 
 - name: Create {{ namespace }} namespace
   k8s:
     kind: Namespace
     state: present
     name: "{{ namespace }}"
-
-
-
-- name: Create HTTP Basic Auth Password
-  set_fact:
-    password: "{{ lookup('password', 'htpasswd') }}"
-
-- name: Dump htpassword into file
-  copy:
-    dest: "./htpasswd"
-    content: "{{ password }} | base64"
-
-- name: Create the secret in k8s
-  shell:
-    cmd: kubectl -n {{ namespace }} create secret generic atst-nginx-htpasswd --from-file=./htpasswd
 
 - name: "Attach the ACR to the K8s cluster"
   shell:
@@ -49,7 +28,6 @@
 - name: Assign Network Contributor role to the AKS Service Principal for the Virtual Network
   shell:
     cmd: az role assignment create --role "Network Contributor" --assignee {{ tf_app_env_outputs.aks_sp_id.value }} --scope {{tf_app_env_outputs.vnet_id.value }}
-
 
 - name: Get vmss
   shell:
@@ -63,15 +41,6 @@
 - name: Assign the Vault Reader identity to the AKS VMSS
   shell:
     cmd: az vmss identity assign -g {{ tf_app_env_outputs.private_k8s_node_group.value }} -n {{ (k8s_vmss.stdout | from_json)[0].name }} --identities {{ tf_app_env_outputs.keyvault_reader_id.value }}
-
-- name: Base64 encode the password
-  shell: 'echo "{{ password }}" | base64'
-  register: encoded_password_shell_output
-
-- name: see output of secret file
-  debug:
-    msg: "{{ encoded_password_shell_output.stdout }}"
-
 
 - name: Apply the storage class
   k8s:
@@ -107,8 +76,6 @@
 - name: Show variable "latest_tag"
   debug:
     msg: "{{ latest_tag }}"
-
-
 
 - name: Show output directory
   debug:

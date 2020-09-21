@@ -82,9 +82,6 @@ spec:
               mountPath: "/etc/nginx/conf.d/"
             - name: uwsgi-socket-dir
               mountPath: "/var/run/uwsgi"
-            - name: nginx-htpasswd
-              mountPath: "/etc/nginx/.htpasswd"
-              subPath: .htpasswd
             - name: nginx-client-ca-bundle
               mountPath: "/etc/ssl/client-ca-bundle.pem"
               subPath: "client-ca-bundle.pem"
@@ -115,13 +112,6 @@ spec:
         - name: uwsgi-socket-dir
           emptyDir:
             medium: Memory
-        - name: nginx-htpasswd
-          secret:
-            secretName: atst-nginx-htpasswd
-            items:
-              - key: htpasswd
-                path: .htpasswd
-                mode: 0640
         - name: crls-vol
           persistentVolumeClaim:
             claimName: crls-vol-claim

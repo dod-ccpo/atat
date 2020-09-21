@@ -36,20 +36,6 @@ If you are satisfied with the output from the diff, you can apply the new config
 
 ## Secrets and Configuration
 
-### nginx-htpasswd
-
-If the site is running in dev mode, the `/login-dev` endpoint is available. This endpoint is protected by basic HTTP auth. To create a new password file, run:
-
-```
-htpasswd -c ./htpasswd atat
-```
-
-Enter a new password string when prompted. Then create the secret:
-
-```
-kubectl -n atat create secret generic nginx-htpasswd --from-file=./htpasswd
-```
-
 ## SSL/TLS
 
 ### Renewing TLS certs
