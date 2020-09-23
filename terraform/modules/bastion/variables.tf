@@ -22,7 +22,7 @@ variable "registry_username" {}
 variable "registry_password" {}
 
 variable "container_image" {
-  default = "bastion:latest"
+  default = "ops:latest"
 }
 
 variable container_registry {

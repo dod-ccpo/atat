@@ -402,10 +402,10 @@ jobs:
             . < Dockerfile.ops
       - run:
           name: Tag ops image
-          command: docker tag ops:latest << pipeline.parameters.ops_registry >>.azurecr.io/ops:latest
+          command: docker tag ops:latest << pipeline.parameters.container_registry >>.azurecr.io/ops:latest
       - run:
           name: Push ops image
-          command: docker push << pipeline.parameters.ops_registry >>.azurecr.io/ops:latest
+          command: docker push << pipeline.parameters.container_registry >>.azurecr.io/ops:latest
 
 workflows:
   version: 2
