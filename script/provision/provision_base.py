@@ -3,6 +3,7 @@ import os
 import pprint
 import sys
 import argparse
+import time
 
 from atat.domain.csp.cloud.models import KeyVaultCredentials
 from atat.app import make_config
@@ -74,3 +75,12 @@ def handle(f):
         import traceback
 
         traceback.print_exc()
+
+
+def verify_async(csp_method, payload, retry_after):
+    while True:
+        response = csp_method(payload)
+        if response.reset_stage:
+            time.sleep(retry_after)
+        else:
+            return response.dict()

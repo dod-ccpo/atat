@@ -1,26 +1,22 @@
-from flask import (
-    g,
-    redirect,
-    url_for,
-    session,
-    request,
-    current_app as app,
-    _request_ctx_stack as request_ctx_stack,
-)
+from flask import _request_ctx_stack as request_ctx_stack
+from flask import current_app as app
+from flask import g, redirect, request, session, url_for
 from werkzeug.datastructures import ImmutableTypeConversionDict
 
 from atat.domain.users import Users
 
-
 UNPROTECTED_ROUTES = [
     "atat.root",
     "dev.login_dev",
-    "dev.dev_new_user",
+    "local_access.dev_new_user",
+    "local_access.local_access",
     "atat.login_redirect",
     "atat.logout",
     "atat.unauthorized",
     "static",
     "atat.about",
+    "atat.login",
+    "atat.handle_login_response",
 ]
 
 

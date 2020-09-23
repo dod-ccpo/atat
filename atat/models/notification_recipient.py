@@ -1,8 +1,8 @@
-from sqlalchemy import String, Column
+from sqlalchemy import Column, String
 
-from atat.models.base import Base
-import atat.models.types as types
 import atat.models.mixins as mixins
+import atat.models.types as types
+from atat.models.base import Base
 
 
 class NotificationRecipient(Base, mixins.TimestampsMixin):

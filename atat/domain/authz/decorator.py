@@ -1,9 +1,11 @@
 from functools import wraps
 
-from flask import g, current_app as app, request
+from flask import current_app as app
+from flask import g, request
+
+from atat.domain.exceptions import UnauthorizedError
 
 from . import user_can_access
-from atat.domain.exceptions import UnauthorizedError
 
 
 def check_access(permission, message, override, *args, **kwargs):

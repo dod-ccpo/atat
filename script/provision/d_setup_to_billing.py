@@ -8,32 +8,25 @@ from atat.domain.csp.cloud.models import (
     TaskOrderBillingCreationCSPPayload,
     TaskOrderBillingVerificationCSPPayload,
 )
-from script.provision.provision_base import handle
-from atat.domain.csp.cloud.exceptions import GeneralCSPException
-import time
-
-
-def poll_billing(csp, inputs, csp_response):
-    if csp_response.get("task_order_billing_verify_url") is not None:
-        enable_to_billing = TaskOrderBillingVerificationCSPPayload(
-            **{**inputs.get("initial_inputs"), **inputs.get("csp_data"), **csp_response}
-        )
-        try:
-            return csp.create_task_order_billing_verification(enable_to_billing)
-        except GeneralCSPException:
-            time.sleep(10)
-            return poll_billing(csp, inputs, csp_response)
-    else:
-        return csp_response
+from script.provision.provision_base import handle, verify_async
 
 
 def setup_to_billing(csp, inputs):
     enable_to_billing = TaskOrderBillingCreationCSPPayload(
         **{**inputs.get("initial_inputs"), **inputs.get("csp_data")}
     )
-    result = csp.create_task_order_billing_creation(enable_to_billing)
-    poll_result = poll_billing(csp, inputs, result.dict())
-    return poll_result.dict()
+    result = csp.create_task_order_billing_creation(enable_to_billing).dict()
+
+    # If there is a verify URL, then we need to poll for the result.
+    if result.get("task_order_billing_verify_url"):
+        csp_method = csp.create_task_order_billing_verification
+        payload = TaskOrderBillingVerificationCSPPayload(
+            **{**inputs.get("initial_inputs"), **inputs.get("csp_data"), **result,}
+        )
+        retry_after = result.get("task_order_retry_after")
+        result = verify_async(csp_method, payload, retry_after)
+
+    return result
 
 
 if __name__ == "__main__":

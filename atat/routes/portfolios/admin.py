@@ -1,20 +1,23 @@
-from flask import render_template, request as http_request, g, redirect, url_for
+from flask import g, redirect, render_template
+from flask import request as http_request
+from flask import url_for
 
-from .blueprint import portfolios_bp
-from atat.domain.portfolios import Portfolios
-from atat.domain.portfolio_roles import PortfolioRoles
-from atat.models.portfolio_role import Status as PortfolioRoleStatus
+import atat.forms.portfolio_member as member_forms
+from atat.domain.audit_log import AuditLog
+from atat.domain.authz.decorator import user_can_access_decorator as user_can
+from atat.domain.common import Paginator
+from atat.domain.exceptions import UnauthorizedError
 from atat.domain.invitations import PortfolioInvitations
 from atat.domain.permission_sets import PermissionSets
-from atat.domain.audit_log import AuditLog
-from atat.domain.common import Paginator
+from atat.domain.portfolio_roles import PortfolioRoles
+from atat.domain.portfolios import Portfolios
 from atat.forms.portfolio import PortfolioForm
-import atat.forms.portfolio_member as member_forms
 from atat.models.permissions import Permissions
-from atat.domain.authz.decorator import user_can_access_decorator as user_can
+from atat.models.portfolio_role import Status as PortfolioRoleStatus
 from atat.utils import first_or_none
 from atat.utils.flash import formatted_flash as flash
-from atat.domain.exceptions import UnauthorizedError
+
+from .blueprint import portfolios_bp
 
 
 def filter_perm_sets_data(member):

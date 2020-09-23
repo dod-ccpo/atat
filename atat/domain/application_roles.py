@@ -2,8 +2,8 @@ from itertools import groupby
 from typing import List
 from uuid import UUID
 
+from sqlalchemy import and_, func, or_
 from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy import func, and_, or_
 
 from atat.database import db
 from atat.domain.environment_roles import EnvironmentRoles
@@ -14,8 +14,9 @@ from atat.models import (
     Portfolio,
     User,
 )
-from .permission_sets import PermissionSets
+
 from .exceptions import NotFoundError
+from .permission_sets import PermissionSets
 
 
 class ApplicationRoles(object):

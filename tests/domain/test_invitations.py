@@ -1,6 +1,7 @@
-import pytest
 import re
+
 import pendulum
+import pytest
 
 from atat.domain.audit_log import AuditLog
 from atat.domain.invitations import (
@@ -12,7 +13,6 @@ from atat.domain.invitations import (
 )
 from atat.models import InvitationStatus
 from atat.models.portfolio_role import Status as PortfolioRoleStatus
-
 from tests.factories import (
     PortfolioFactory,
     PortfolioInvitationFactory,

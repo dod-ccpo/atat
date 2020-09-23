@@ -1,9 +1,9 @@
-from sqlalchemy import String, Column
+from sqlalchemy import Column, String
 from sqlalchemy.dialects.postgresql import ARRAY
 
-from atat.models.base import Base
 import atat.models.mixins as mixins
 import atat.models.types as types
+from atat.models.base import Base
 
 
 class PermissionSet(Base, mixins.TimestampsMixin):

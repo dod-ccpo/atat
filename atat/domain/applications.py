@@ -1,9 +1,9 @@
-from flask import g
-from sqlalchemy import func, or_, and_
 from typing import List
 from uuid import UUID
 
-from . import BaseDomainClass
+from flask import g
+from sqlalchemy import and_, func, or_
+
 from atat.database import db
 from atat.domain.application_roles import ApplicationRoles
 from atat.domain.environments import Environments
@@ -18,7 +18,9 @@ from atat.models import (
     PortfolioStateMachine,
 )
 from atat.models.mixins.state_machines import PortfolioStates
-from atat.utils import first_or_none, commit_or_raise_already_exists_error
+from atat.utils import commit_or_raise_already_exists_error, first_or_none
+
+from . import BaseDomainClass
 
 
 class Applications(BaseDomainClass):

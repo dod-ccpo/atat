@@ -1,6 +1,6 @@
 import os
 
-from .cloud import MockCloudProvider, HybridCloudProvider, AzureCloudProvider
+from .cloud import AzureCloudProvider, HybridCloudProvider, MockCloudProvider
 from .files import AzureFileService, MockFileService
 from .reports import MockReportingProvider
 

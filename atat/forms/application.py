@@ -1,8 +1,10 @@
-from .forms import BaseForm, remove_empty_string
-from wtforms.fields import StringField, TextAreaField, FieldList
-from wtforms.validators import Required, Optional, Length
-from atat.forms.validators import ListItemRequired, ListItemsUnique, Name, AlphaNumeric
+from wtforms.fields import FieldList, StringField, TextAreaField
+from wtforms.validators import Length, Optional, Required
+
+from atat.forms.validators import AlphaNumeric, ListItemRequired, ListItemsUnique, Name
 from atat.utils.localization import translate
+
+from .forms import BaseForm, remove_empty_string
 
 
 class EditEnvironmentForm(BaseForm):

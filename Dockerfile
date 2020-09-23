@@ -34,7 +34,7 @@ RUN yum updateinfo && \
 RUN dnf install python3-devel -y
 
 COPY . .
-RUN pip3 install uwsgi poetry
+RUN pip3 install poetry
 RUN poetry install --no-root --no-dev
 
 # Install yarn.
@@ -95,10 +95,11 @@ RUN pip3 install dumb-init
 # Install the `Python.h` file for compiling certain libraries.
 RUN dnf install python3-devel -y
 
-# Install uwsgi.
-# Logfile plugin is embedded by default.
+# Install uwsgi and pendulum.
+# uwsgi plugins are embedded by default.
 # https://uwsgi-docs.readthedocs.io/en/latest/Logging.html#logging-to-files
-RUN pip3 install uwsgi pendulum
+# Need to build uwsgi with PCRE enabled
+RUN yum install pcre pcre-devel -y && pip3 install uwsgi -I && pip3 install pendulum
 
 COPY --from=builder /install/.venv/ ./.venv/
 COPY --from=builder /install/alembic/ ./alembic/
@@ -114,7 +115,6 @@ COPY --from=builder /install/script/ ./script/
 COPY --from=builder /install/static/ ./static/
 COPY --from=builder /install/fixtures/ ./fixtures
 COPY --from=builder /install/uwsgi.ini .
-COPY --from=builder /usr/local/bin/uwsgi /usr/local/bin/uwsgi
 
 # Use dumb-init for proper signal handling
 ENTRYPOINT ["dumb-init", "--"]

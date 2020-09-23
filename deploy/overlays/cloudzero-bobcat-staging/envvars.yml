@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atst-worker-envvars
+data:
+  AZURE_STORAGE_ACCOUNT_NAME: bobcattasks
+  AZURE_POWERSHELL_CLIENT_ID: 1950a258-227b-4e31-a9cf-717495945fc2
+  AZURE_TENANT_ADMIN_USERNAME: hybrid.admin@atathybrid.onmicrosoft.com
+  AZURE_VAULT_URL: https://tenants-keyvault-bobcat.vault.azure.net/
+  CELERY_DEFAULT_QUEUE: celery-staging
+  CSP: hybrid
+  FLASK_ENV: staging
+  PGDATABASE: cloudzero_bobcat_staging
+  PGHOST: cloudzero-sql-bobcat.postgres.database.azure.com
+  PGUSER: atat@cloudzero-sql-bobcat
+  REDIS_HOST: cloudzero-redis-bobcat.redis.cache.windows.net:6380
+  SERVER_NAME: staging.atat.dev
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atst-envvars
+data:
+  ASSETS_URL:
+  AZURE_STORAGE_ACCOUNT_NAME: bobcattasks
+  AZURE_POWERSHELL_CLIENT_ID: 1950a258-227b-4e31-a9cf-717495945fc2
+  AZURE_TENANT_ADMIN_USERNAME: hybrid.admin@atathybrid.onmicrosoft.com
+  AZURE_VAULT_URL: https://tenants-keyvault-bobcat.vault.azure.net/
+  BLOB_STORAGE_URL: https://bobcattasks.blob.core.windows.net/
+  CDN_ORIGIN: https://staging.atat.dev
+  CELERY_DEFAULT_QUEUE: celery-staging
+  CSP: hybrid
+  FLASK_ENV: staging
+  PGDATABASE: cloudzero_bobcat_staging
+  PGHOST: cloudzero-sql-bobcat.postgres.database.azure.com
+  PGUSER: atat@cloudzero-sql-bobcat
+  REDIS_HOST: cloudzero-redis-bobcat.redis.cache.windows.net:6380
+  SESSION_COOKIE_DOMAIN: atat.dev
+  STATIC_URL: "https://staging.atat.dev/static/"
+  SAML_ENTITY_ID: https://staging.atat.dev
+  SAML_ACS: https://staging.atat.dev/login?acs
+  SAML_SLS: https://staging.atat.dev/login?sls
+  SAML_IDP_URI: https://fs.disa.mil/federationmetadata/2007-06/federationmetadata.xml
+  SAML_DEV_ENTITY_ID: https://staging.atat.dev/login-dev?saml
+  SAML_DEV_ACS: https://staging.atat.dev/login-dev?acs
+  SAML_DEV_SLS: https://staging.atat.dev/login-dev?sls
+  SAML_DEV_IDP_URI: https://login.microsoftonline.com/b5ab0e1e-09f8-4258-afb7-fb17654bc5b3/federationmetadata/2007-06/federationmetadata.xml?appid=41b24b41-dad9-470a-94f2-10b11a71f8ea

@@ -45,15 +45,7 @@ def seed_roles():
 
 
 if __name__ == "__main__":
-    config = make_config(
-        {
-            "default": {
-                "DISABLE_CRL_CHECK": True,
-                "CRL_STORAGE_PROVIDER": "LOCAL",
-                "DEBUG": False,
-            }
-        }
-    )
+    config = make_config({"default": {"DEBUG": False,}})
     app = make_app(config)
     with app.app_context():
         seed_roles()

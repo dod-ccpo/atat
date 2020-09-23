@@ -1,24 +1,23 @@
-import pendulum
-
-from sqlalchemy import or_
 from typing import List
 from uuid import UUID
 
-from atat.database import db
-from atat.domain.permission_sets import PermissionSets
-from atat.domain.authz import Authorization
-from atat.domain.portfolio_roles import PortfolioRoles
+import pendulum
+from sqlalchemy import or_
 
+from atat.database import db
+from atat.domain.authz import Authorization
 from atat.domain.invitations import PortfolioInvitations
+from atat.domain.permission_sets import PermissionSets
+from atat.domain.portfolio_roles import PortfolioRoles
 from atat.models import (
-    Portfolio,
-    PortfolioStateMachine,
-    PortfolioStates,
+    CLIN,
     Permissions,
+    Portfolio,
     PortfolioRole,
     PortfolioRoleStatus,
+    PortfolioStateMachine,
+    PortfolioStates,
     TaskOrder,
-    CLIN,
 )
 
 from .query import PortfoliosQuery, PortfolioStateMachinesQuery

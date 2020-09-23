@@ -7,12 +7,8 @@
 
 - name: deploy application env
   import_tasks: setup.yml
-  when: deploy_app_env is defined
-
-- name: teardown application env
-  import_tasks: teardown.yml
-  when: teardown_app_env is defined
+  when: deploy_app_env == true
 
 - name: show outputs
   import_tasks: show_outputs.yml
-  when: show_app_env_outputs is defined
+  when: show_app_env_outputs == true

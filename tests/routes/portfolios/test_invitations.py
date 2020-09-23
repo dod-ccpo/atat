@@ -1,12 +1,11 @@
-import pendulum
 from unittest.mock import Mock
 
+import pendulum
 from flask import url_for
 
+from atat.domain.permission_sets import PermissionSets
 from atat.domain.portfolios import Portfolios
 from atat.models import InvitationStatus, PortfolioRoleStatus
-from atat.domain.permission_sets import PermissionSets
-
 from tests.factories import *
 
 

@@ -12,9 +12,8 @@ homepage = "https://github.com/dod-ccpo/atst"
 [tool.poetry.dependencies]
 python = "3.7.3"
 alembic = "*"
-azure-storage = "*"
 azure-storage-blob = "*"
-azure-storage-common = "*"
+cachetools = "^4.1.1"
 celery = "*"
 flask = "*"
 flask-assets = "*"
@@ -67,7 +66,7 @@ pytest-depends = "^1.0.1"
 
 [tool.black]
 line-length = 88
-target-version = ['py36']
+target-version = ['py37']
 include = '\.pyi?$'
 exclude = '''
 /(
@@ -83,3 +82,6 @@ exclude = '''
   | node_modules
 )/
 '''
+
+[tool.isort]
+profile = 'black'

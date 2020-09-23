@@ -1,15 +1,16 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import FormField, FieldList, HiddenField, BooleanField
-from wtforms.validators import UUID
 from wtforms import Form
+from wtforms.fields import BooleanField, FieldList, FormField, HiddenField
+from wtforms.validators import UUID, Length
 
-from .member import NewForm as BaseNewMemberForm
-from .data import ENV_ROLES, ENV_ROLE_NO_ACCESS as NO_ACCESS
-from atat.forms.fields import SelectField
 from atat.domain.permission_sets import PermissionSets
-from atat.utils.localization import translate
+from atat.forms.fields import SelectField
 from atat.forms.validators import AlphaNumeric
-from wtforms.validators import Length
+from atat.utils.localization import translate
+
+from .data import ENV_ROLE_NO_ACCESS as NO_ACCESS
+from .data import ENV_ROLES
+from .member import NewForm as BaseNewMemberForm
 
 
 class EnvironmentForm(Form):

@@ -1,7 +1,7 @@
-from hashlib import sha256
 import json
-from werkzeug.datastructures import MultiDict
+from hashlib import sha256
 
+from werkzeug.datastructures import MultiDict
 
 DEFAULT_CACHE_NAME = "formcache"
 

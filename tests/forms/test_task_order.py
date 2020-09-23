@@ -2,11 +2,10 @@ import pendulum
 from dateutil.relativedelta import relativedelta
 from flask import current_app as app
 
+import tests.factories as factories
 from atat.forms.task_order import CLINForm, TaskOrderForm
 from atat.models import JEDICLINType
 from atat.utils.localization import translate
-
-import tests.factories as factories
 
 
 def test_clin_form_jedi_clin_type():

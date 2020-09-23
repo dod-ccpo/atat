@@ -1,13 +1,12 @@
-from werkzeug.datastructures import FileStorage
+from unittest.mock import PropertyMock, patch
+
+import pendulum
 import pytest
-import pendulum
-from unittest.mock import patch, PropertyMock
-import pendulum
+from werkzeug.datastructures import FileStorage
 
 from atat.models import *
 from atat.models.clin import JEDICLINType
-from atat.models.task_order import TaskOrder, Status
-
+from atat.models.task_order import Status, TaskOrder
 from tests.factories import CLINFactory, TaskOrderFactory
 from tests.mocks import PDF_FILENAME
 

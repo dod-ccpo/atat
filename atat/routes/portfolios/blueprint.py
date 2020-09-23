@@ -1,4 +1,5 @@
 from flask import Blueprint
+
 from atat.utils.context_processors import portfolio as portfolio_context_processor
 
 portfolios_bp = Blueprint("portfolios", __name__)

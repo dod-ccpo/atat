@@ -1,20 +1,16 @@
-from flask import (
-    g,
-    redirect,
-    render_template,
-    request as http_request,
-    url_for,
-    current_app as app,
-    jsonify,
-)
+from flask import current_app as app
+from flask import g, jsonify, redirect, render_template
+from flask import request as http_request
+from flask import url_for
 
-from .blueprint import task_orders_bp
 from atat.domain.authz.decorator import user_can_access_decorator as user_can
-from atat.domain.exceptions import NoAccessError, AlreadyExistsError
+from atat.domain.exceptions import AlreadyExistsError, NoAccessError
 from atat.domain.task_orders import TaskOrders
-from atat.forms.task_order import TaskOrderForm, SignatureForm
+from atat.forms.task_order import SignatureForm, TaskOrderForm
 from atat.models.permissions import Permissions
 from atat.utils.flash import formatted_flash as flash
+
+from .blueprint import task_orders_bp
 
 
 def render_task_orders_edit(

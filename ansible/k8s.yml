@@ -1,6 +1,21 @@
 
 - hosts: localhost
   roles:
+    - role: bootstrap
+      vars:
+        show_bs_env: true
+        bootstrap_init_tf: true
+        deploy_bootstrap_env: false
+        fetch_bootstrap_state: true
+      when: private_cluster_deploy == "true"
+
+    - role: terraform
+      vars:
+        show_app_env_outputs: true
+        deploy_app_env: false
+        init_tf: true
+      when: private_cluster_deploy == "true"
+
     - role: k8s
       vars:
-        namespace: "{{ az_environment }}"
+        namespace: "{{ tf_app_env_outputs.environment.value }}"

@@ -1,6 +1,6 @@
 from flask import flash
-from atat.utils.localization import translate
 
+from atat.utils.localization import translate
 
 MESSAGES = {
     "application_created": {

@@ -4,13 +4,9 @@
 
 - name: bootstrap keyvault with terraform vars
   import_tasks: bootstrap_terraform_secrets.yml
-  when: bootstrap_terraform_secrets == "true"
 
 - name: store secrets as plain key=value
   import_tasks: secret.yml
-  when:
-    - top_level_secrets == true
-    - secrets_source == "tfoutputs"
 
 - name: secrets to json file
   import_tasks: secrets_to_json_file.yml

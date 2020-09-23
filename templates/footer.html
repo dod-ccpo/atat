@@ -2,8 +2,9 @@
 
 <footer class='app-footer'>
   {% if g.last_login %}
-    <div class="app-footer__login">
-      {{ "footer.login" | translate }} <local-datetime timestamp='{{ g.last_login }}' format='MMM D YYYY H:mm Z'></local-datetime>
-    </div>
+  <div class="app-footer__login">
+    {{ "footer.login" | translate }} <local-datetime timestamp='{{ g.last_login }}' format='MMM d yyyy H:mm XXX'>
+    </local-datetime>
+  </div>
   {% endif %}
 </footer>

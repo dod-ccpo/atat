@@ -1,18 +1,16 @@
 import pytest
-
 from bs4 import BeautifulSoup
-from flask import Markup, current_app as app
+from flask import Markup
+from flask import current_app as app
 from wtforms import Form, FormField
 from wtforms.fields import StringField
 from wtforms.validators import InputRequired
-from wtforms.widgets import ListWidget, CheckboxInput
+from wtforms.widgets import CheckboxInput, ListWidget
 
-from atat.forms.task_order import CLINForm
-from atat.forms.task_order import TaskOrderForm
+from atat.forms.task_order import CLINForm, TaskOrderForm
 from atat.models import Permissions
 from atat.routes.task_orders.new import render_task_orders_edit
 from atat.utils.context_processors import user_can_view
-
 from tests import factories
 
 

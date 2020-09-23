@@ -1,12 +1,11 @@
 import pendulum
 
 from atat.models import InvitationStatus, PortfolioRoleStatus
-
 from tests.factories import (
-    PortfolioInvitationFactory,
     PortfolioFactory,
-    UserFactory,
+    PortfolioInvitationFactory,
     PortfolioRoleFactory,
+    UserFactory,
 )
 
 

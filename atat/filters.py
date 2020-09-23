@@ -1,10 +1,13 @@
 import re
-from atat.utils.localization import translate
+from decimal import DivisionByZero as DivisionByZeroException
+from decimal import InvalidOperation
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
+
 from flask import render_template
 from jinja2 import contextfilter
 from jinja2.exceptions import TemplateNotFound
-from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
-from decimal import DivisionByZero as DivisionByZeroException, InvalidOperation
+
+from atat.utils.localization import translate
 
 
 def iconSvg(name):

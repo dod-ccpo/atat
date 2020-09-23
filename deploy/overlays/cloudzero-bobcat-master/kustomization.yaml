@@ -1,0 +1,8 @@
+namespace: master
+bases:
+  - ../cloudzero-bobcat-staging
+resources:
+  - namespace.yml
+patchesStrategicMerge:
+  - envvars.yml
+  - autoscaling.yml

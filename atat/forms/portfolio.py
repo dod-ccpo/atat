@@ -1,16 +1,12 @@
-from wtforms.fields import (
-    SelectMultipleField,
-    StringField,
-    TextAreaField,
-)
-from wtforms.validators import Length, InputRequired
-from atat.forms.validators import Name
-from wtforms.widgets import ListWidget, CheckboxInput
+from wtforms.fields import SelectMultipleField, StringField, TextAreaField
+from wtforms.validators import InputRequired, Length
+from wtforms.widgets import CheckboxInput, ListWidget
 
-from .forms import BaseForm
+from atat.forms.validators import Name
 from atat.utils.localization import translate
 
 from .data import SERVICE_BRANCHES
+from .forms import BaseForm
 
 
 class PortfolioForm(BaseForm):

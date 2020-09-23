@@ -1,4 +1,7 @@
-from script.provision.provision_base import get_provider_and_inputs, update_and_write
+import json
+
+import pytest
+
 from script.provision import (
     a_create_tenant,
     b_setup_billing,
@@ -7,8 +10,7 @@ from script.provision import (
     e_report_clin,
     f_purchase_aadp,
 )
-import json
-import pytest
+from script.provision.provision_base import get_provider_and_inputs, update_and_write
 
 
 def _helper(prov_func, input_path, output_path):

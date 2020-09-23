@@ -1,6 +1,6 @@
+from atat.domain.applications import Applications
 from atat.domain.authz import Authorization
 from atat.models.permissions import Permissions
-from atat.domain.applications import Applications
 
 
 class ScopedResource(object):

@@ -1,19 +1,14 @@
 from enum import Enum
-from sqlalchemy import (
-    Column,
-    Date,
-    DateTime,
-    Enum as SQLAEnum,
-    ForeignKey,
-    Numeric,
-    String,
-)
-from sqlalchemy.orm import relationship
-import pendulum
 
-from atat.models.base import Base
+import pendulum
+from sqlalchemy import Column, Date, DateTime
+from sqlalchemy import Enum as SQLAEnum
+from sqlalchemy import ForeignKey, Numeric, String
+from sqlalchemy.orm import relationship
+
 import atat.models.mixins as mixins
 import atat.models.types as types
+from atat.models.base import Base
 
 
 class JEDICLINType(Enum):

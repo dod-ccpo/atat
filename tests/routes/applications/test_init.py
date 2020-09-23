@@ -1,4 +1,4 @@
-from flask import url_for, get_flashed_messages
+from flask import get_flashed_messages, url_for
 
 from tests.factories import *
 

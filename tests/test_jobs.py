@@ -5,30 +5,19 @@ from uuid import uuid4
 import pendulum
 import pytest
 from azure.core.exceptions import AzureError
-from tests.factories import (
-    ApplicationFactory,
-    ApplicationRoleFactory,
-    CLINFactory,
-    EnvironmentFactory,
-    EnvironmentRoleFactory,
-    PortfolioFactory,
-    PortfolioStateMachineFactory,
-    TaskOrderFactory,
-    UserFactory,
-)
 
 from atat.domain.csp.cloud import MockCloudProvider
-from atat.domain.csp.cloud.exceptions import GeneralCSPException, ConnectionException
+from atat.domain.csp.cloud.exceptions import ConnectionException, GeneralCSPException
 from atat.domain.csp.cloud.models import (
-    UserRoleCSPResult,
     SubscriptionCreationCSPPayload,
+    UserRoleCSPResult,
 )
+from atat.domain.csp.cloud.utils import OFFICE_365_DOMAIN
 from atat.jobs import (
     RecordFailure,
     build_subscription_payload,
     create_billing_instruction,
     create_environment,
-    do_create_subscription,
     dispatch_create_application,
     dispatch_create_environment,
     dispatch_create_environment_role,
@@ -37,6 +26,7 @@ from atat.jobs import (
     do_create_application,
     do_create_environment,
     do_create_environment_role,
+    do_create_subscription,
     do_create_user,
     do_provision_portfolio,
     log_do_create_environment,
@@ -48,12 +38,23 @@ from atat.jobs import (
 from atat.models import (
     ApplicationRoleStatus,
     EnvironmentRoleStatus,
-    PortfolioStates,
     JobFailure,
     Portfolio,
+    PortfolioStates,
 )
 from atat.models.mixins.state_machines import AzureStages
 from atat.utils.localization import translate
+from tests.factories import (
+    ApplicationFactory,
+    ApplicationRoleFactory,
+    CLINFactory,
+    EnvironmentFactory,
+    EnvironmentRoleFactory,
+    PortfolioFactory,
+    PortfolioStateMachineFactory,
+    TaskOrderFactory,
+    UserFactory,
+)
 
 
 @pytest.fixture(autouse=True, scope="function")
@@ -163,7 +164,7 @@ class TestCreateUserJob:
         return PortfolioFactory.create(
             csp_data={
                 "tenant_id": str(uuid4()),
-                "domain_name": f"rebelalliance.{app.config.get('OFFICE_365_DOMAIN')}",
+                "domain_name": f"rebelalliance.{OFFICE_365_DOMAIN}",
             }
         )
 
@@ -383,7 +384,7 @@ def test_send_ppoc_email(monkeypatch, app):
             "email.portfolio_ready.body",
             {
                 "password_reset_address": app.config.get("AZURE_LOGIN_URL"),
-                "username": f"{user_id}@{domain_name}.{app.config.get('OFFICE_365_DOMAIN')}",
+                "username": f"{user_id}@{domain_name}.{OFFICE_365_DOMAIN}",
             },
         ),
     )

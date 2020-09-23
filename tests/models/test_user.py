@@ -1,12 +1,11 @@
+import pendulum
 import pytest
 from sqlalchemy.exc import InternalError
-import pendulum
 
 from atat.database import db
 from atat.domain.users import Users
 from atat.models.user import User
-
-from tests.factories import UserFactory, ApplicationFactory, ApplicationRoleFactory
+from tests.factories import ApplicationFactory, ApplicationRoleFactory, UserFactory
 
 
 def test_profile_complete_with_all_info():

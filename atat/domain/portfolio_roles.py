@@ -1,11 +1,12 @@
 from sqlalchemy.orm.exc import NoResultFound
 
 from atat.database import db
-from atat.models.portfolio_role import PortfolioRole, Status as PortfolioRoleStatus
+from atat.models.portfolio_role import PortfolioRole
+from atat.models.portfolio_role import Status as PortfolioRoleStatus
 from atat.models.user import User
 
-from .permission_sets import PermissionSets
 from .exceptions import NotFoundError
+from .permission_sets import PermissionSets
 
 
 class PortfolioRoles(object):

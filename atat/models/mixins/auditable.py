@@ -1,5 +1,6 @@
+from flask import current_app as app
+from flask import g
 from sqlalchemy import event, inspect
-from flask import g, current_app as app
 
 from atat.models.audit_event import AuditEvent
 from atat.utils import camel_to_snake, getattr_path

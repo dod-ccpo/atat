@@ -1,10 +1,10 @@
 resource "azurerm_resource_group" "sql" {
-  name     = "${var.name}-${var.environment}-postgres"
+  name     = "${var.name}-postgres-${var.environment}"
   location = var.region
 }
 
 resource "azurerm_postgresql_server" "sql" {
-  name                = "${var.name}-${var.environment}-sql"
+  name                = "${var.name}-sql-${var.environment}"
   location            = azurerm_resource_group.sql.location
   resource_group_name = azurerm_resource_group.sql.name
 
@@ -25,7 +25,7 @@ resource "azurerm_postgresql_server" "sql" {
 }
 
 resource "azurerm_postgresql_virtual_network_rule" "sql" {
-  name                                 = "${var.name}-${var.environment}-rule"
+  name                                 = "${var.name}-rule-${var.environment}"
   resource_group_name                  = azurerm_resource_group.sql.name
   server_name                          = azurerm_postgresql_server.sql.name
   subnet_id                            = var.subnet_id
@@ -43,7 +43,7 @@ resource "azurerm_postgresql_firewall_rule" "operator" {
 
 
 resource "azurerm_postgresql_database" "db" {
-  name                = "${var.name}-${var.environment}-atat"
+  name                = "${var.name}-atat-${var.environment}"
   resource_group_name = azurerm_resource_group.sql.name
   server_name         = azurerm_postgresql_server.sql.name
   charset             = "UTF8"

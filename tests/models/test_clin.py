@@ -1,6 +1,5 @@
 from atat.models import CLIN
 from atat.models.clin import JEDICLINType
-
 from tests.factories import *
 
 

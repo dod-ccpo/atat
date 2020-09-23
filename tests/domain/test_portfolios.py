@@ -1,15 +1,6 @@
 from uuid import uuid4
 
 import pytest
-from tests.factories import (
-    ApplicationFactory,
-    ApplicationRoleFactory,
-    PortfolioFactory,
-    PortfolioRoleFactory,
-    UserFactory,
-    get_all_portfolio_permission_sets,
-)
-from tests.utils import EnvQueryTest
 
 from atat.domain.applications import Applications
 from atat.domain.exceptions import NotFoundError
@@ -20,6 +11,15 @@ from atat.domain.portfolios import (
     PortfolioStateMachines,
 )
 from atat.models import ApplicationRoleStatus, PortfolioRoleStatus, PortfolioStates
+from tests.factories import (
+    ApplicationFactory,
+    ApplicationRoleFactory,
+    PortfolioFactory,
+    PortfolioRoleFactory,
+    UserFactory,
+    get_all_portfolio_permission_sets,
+)
+from tests.utils import EnvQueryTest
 
 
 @pytest.fixture(scope="function")

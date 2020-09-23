@@ -1,6 +1,8 @@
-import yaml
 from functools import lru_cache
+
+import yaml
 from flask import current_app as app
+
 from atat.utils import getattr_path
 
 

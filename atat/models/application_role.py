@@ -1,14 +1,17 @@
 from enum import Enum
-from sqlalchemy import Index, ForeignKey, Column, Enum as SQLAEnum, Table, String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
-from sqlalchemy.event import listen
 
-from atat.utils import first_or_none
-from atat.models.base import Base
+from sqlalchemy import Column
+from sqlalchemy import Enum as SQLAEnum
+from sqlalchemy import ForeignKey, Index, String, Table
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.event import listen
+from sqlalchemy.orm import relationship
+
 import atat.models.mixins as mixins
 import atat.models.types as types
+from atat.models.base import Base
 from atat.models.mixins.auditable import record_permission_sets_updates
+from atat.utils import first_or_none
 
 
 class Status(Enum):

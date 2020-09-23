@@ -1,10 +1,11 @@
 import pendulum
-from flask import Blueprint, render_template, g, request as http_request, redirect
-from atat.forms.edit_user import EditUserForm
-from atat.domain.users import Users
-from atat.utils.flash import formatted_flash as flash
-from atat.routes import match_url_pattern
+from flask import Blueprint, g, redirect, render_template
+from flask import request as http_request
 
+from atat.domain.users import Users
+from atat.forms.edit_user import EditUserForm
+from atat.routes import match_url_pattern
+from atat.utils.flash import formatted_flash as flash
 
 bp = Blueprint("users", __name__)
 

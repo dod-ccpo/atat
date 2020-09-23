@@ -1,2 +1,1 @@
-from .query import Query
-from .query import Paginator
+from .query import Paginator, Query

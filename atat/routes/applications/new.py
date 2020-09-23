@@ -1,18 +1,21 @@
-from flask import redirect, render_template, request as http_request, url_for
+from flask import redirect, render_template
+from flask import request as http_request
+from flask import url_for
 
-from .blueprint import applications_bp
 from atat.domain.applications import Applications
-from atat.forms.application import NameAndDescriptionForm, EnvironmentsForm
 from atat.domain.authz.decorator import user_can_access_decorator as user_can
+from atat.forms.application import EnvironmentsForm, NameAndDescriptionForm
 from atat.models.permissions import Permissions
-from atat.utils.flash import formatted_flash as flash
 from atat.routes.applications.settings import (
     get_members_data,
     get_new_member_form,
     handle_create_member,
-    handle_update_member,
     handle_update_application,
+    handle_update_member,
 )
+from atat.utils.flash import formatted_flash as flash
+
+from .blueprint import applications_bp
 
 
 def get_new_application_form(form_data, form_class, application_id=None):

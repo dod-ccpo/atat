@@ -38,7 +38,7 @@ Imported from: AT-AT CI - login
 -->
 <tr>
 <td>open</td>
-<td>/login-dev</td>
+<td>/login-local</td>
 <td></td>
 </tr>
 <tr>
@@ -339,6 +339,22 @@ Imported from: AT-AT CI - TO Step 1
 <td></td>
 </tr>
 <!--Imported from: AT-AT CI - TO Step 2
+Imported from: AT-AT CI - TO Step 1
+Pull PDF download HTML for use in later steps for comparison to other download links-->
+<tr data-optional="true">
+<td>storeEval</td>
+<td><script>var pdfLink = document.querySelector(".uploaded-file > a.uploaded-file__name");
+var pdfUrl = pdfLink.href;
+console.log(pdfUrl);
+return pdfUrl;</script></td>
+<td>pdfUrl</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - TO Step 2
 -->
 <tr>
 <td>waitForElementPresent</td>
@@ -411,7 +427,7 @@ Imported from: AT-AT CI - TO Step 1
 <td>css=input[type="submit"]</td>
 <td></td>
 </tr>
-<tr>
+<tr original-target="input[type=&quot;submit&quot;]">
 <td>click</td>
 <td>css=input[type="submit"]</td>
 <td></td>
@@ -535,21 +551,6 @@ Imported from: AT-AT CI - TO Step 1
 <td>assertText</td>
 <td>css=#percent-obligated</td>
 <td>*13%*</td>
-</tr>
-<tr>
-<td>waitForPageToLoad</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>waitForElementPresent</td>
-<td>css=fieldset[name="clins-0-start_date"] > .date-picker-component > .usa-form-group.usa-form-group-month > input[name="date-month"]</td>
-<td></td>
-</tr>
-<tr>
-<td>click</td>
-<td>css=fieldset[name="clins-0-start_date"] > .date-picker-component > .usa-form-group.usa-form-group-month > input[name="date-month"]</td>
-<td></td>
 </tr>
 <tr>
 <td>waitForPageToLoad</td>

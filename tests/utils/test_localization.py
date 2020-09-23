@@ -1,5 +1,6 @@
 import pytest
-from atat.utils.localization import all_keys, translate, LocalizationInvalidKeyError
+
+from atat.utils.localization import LocalizationInvalidKeyError, all_keys, translate
 
 
 def test_looking_up_existing_key():

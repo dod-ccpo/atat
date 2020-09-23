@@ -1,7 +1,8 @@
-from flask import redirect, url_for, g
+from flask import g, redirect, url_for
+
+from atat.domain.invitations import ApplicationInvitations
 
 from .blueprint import applications_bp
-from atat.domain.invitations import ApplicationInvitations
 
 
 @applications_bp.route("/applications/invitations/<token>", methods=["GET"])

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, TIMESTAMP
+from sqlalchemy import TIMESTAMP, Column
 
 
 class ClaimableMixin(object):

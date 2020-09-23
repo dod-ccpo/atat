@@ -1,6 +1,6 @@
 - name: set tf vars file path
   set_fact:
-    tf_vars_file_path: "{{ tf_base_dir }}/{{ az_environment }}/{{ az_environment }}.tfvars.json"
+    tf_vars_file_path: "{{ tf_base_dir }}/{{ tf_subdir }}/{{ tfvars_file_name }}"
 
 - name: pull in tfvars values
   set_fact:
@@ -13,5 +13,5 @@
 
 - name: make k/v
   set_fact:
-    app_kv_tf: '{{ app_kv_tf|default({}) | combine({ item : (vars_vals[item] | regex_replace("''",''"''))  }) }}'
+    app_kv_tf: '{{ app_kv_tf| default({}) | combine({ item : (vars_vals[item] | regex_replace("''",''"''))  }) }}'
   with_items: "{{ vars_vals }}"

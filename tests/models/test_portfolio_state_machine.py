@@ -4,6 +4,17 @@ import pendulum
 import pydantic
 import pytest
 from pytest import raises
+
+from atat.domain.csp.cloud.models import AliasModel
+from atat.models.mixins.state_machines import (
+    AzureStages,
+    PortfolioStates,
+    StateMachineMisconfiguredError,
+)
+from atat.models.portfolio_state_machine import (
+    PortfolioStateMachine,
+    get_stage_csp_class,
+)
 from tests.factories import (
     ApplicationFactory,
     CLINFactory,
@@ -12,17 +23,7 @@ from tests.factories import (
     TaskOrderFactory,
     UserFactory,
 )
-
-from atat.models.mixins.state_machines import (
-    AzureStages,
-    PortfolioStates,
-    StateMachineMisconfiguredError,
-)
-from atat.models.portfolio_state_machine import (
-    PortfolioStateMachine,
-    _stage_to_classname,
-    get_stage_csp_class,
-)
+from tests.utils import lists_contain_same_members
 
 # TODO: Write failure case tests
 
@@ -75,14 +76,6 @@ class TestTriggerNextTransition:
 
 
 @pytest.mark.state_machine
-def test_stage_to_classname():
-    assert (
-        _stage_to_classname(AzureStages.BILLING_PROFILE_CREATION.name)
-        == "BillingProfileCreation"
-    )
-
-
-@pytest.mark.state_machine
 def test_get_stage_csp_class():
     csp_class = get_stage_csp_class(list(AzureStages)[0].name.lower(), "payload")
     assert isinstance(csp_class, pydantic.main.ModelMetaclass)
@@ -95,10 +88,10 @@ def test_get_stage_csp_class_import_fail():
 
 
 @pytest.mark.state_machine
-def test_state_machine_valid_data_classes_for_stages():
-    for stage in AzureStages:
-        assert get_stage_csp_class(stage.name.lower(), "payload") is not None
-        assert get_stage_csp_class(stage.name.lower(), "result") is not None
+@pytest.mark.parametrize("stage", [stage for stage in AzureStages])
+def test_state_machine_valid_data_classes_for_stages(stage):
+    assert get_stage_csp_class(stage.name.lower(), "payload") is not None
+    assert get_stage_csp_class(stage.name.lower(), "result") is not None
 
 
 @pytest.mark.state_machine
@@ -107,28 +100,51 @@ def test_attach_machine(state_machine):
         "reset",
         "configuration_error",
         "create_tenant",
+        "reset_tenant",
         "finish_tenant",
         "fail_tenant",
         "resume_progress_tenant",
     ]
     state_machine.attach_machine()
-    assert list(state_machine.machine.events)[: len(initial_stages)] == initial_stages
+    assert lists_contain_same_members(
+        list(state_machine.machine.events)[: len(initial_stages)], initial_stages
+    )
 
 
 @pytest.mark.state_machine
-@patch("atat.models.PortfolioStateMachine._do_provisioning_stage")
-def test_after_in_progress_callback(_do_provisioning_stage):
-    # Given: a portfolio state machine is attempting a provisioning stage
-    portfolio = PortfolioFactory.create(state="TENANT_IN_PROGRESS")
-    # Given: The provisioning stage throws an exception
-    _do_provisioning_stage.side_effect = Exception()
+class Test_after_in_progress_callback:
+    @patch("atat.models.PortfolioStateMachine._do_provisioning_stage")
+    def test_failure(self, _do_provisioning_stage):
+        # Given: a portfolio state machine is attempting a provisioning stage
+        portfolio = PortfolioFactory.create(state="TENANT_IN_PROGRESS")
+        # Given: The provisioning stage throws an exception
+        _do_provisioning_stage.side_effect = [Exception]
 
-    # When I run the task, then:
-    # The exception is re-raised
-    with raises(Exception):
+        # When I run the task, then:
+        # The exception is re-raised
+        with raises(Exception):
+            portfolio.state_machine.after_in_progress_callback(Mock())
+        # Then the state machine fails the stage
+        assert portfolio.state_machine.state == PortfolioStates.TENANT_FAILED
+
+    @patch("atat.models.PortfolioStateMachine._do_provisioning_stage")
+    def test_reset_stage(self, _do_provisioning_stage):
+        # Given: a portfolio state machine is attempting a provisioning stage
+        portfolio = PortfolioFactory.create(
+            state="TASK_ORDER_BILLING_VERIFICATION_IN_PROGRESS"
+        )
+        # Given: The provisioning stage returns a model where the reset_stage
+        # property is set to True
+        _do_provisioning_stage.side_effect = [AliasModel(reset_stage=True)]
+
+        # When after_in_progress_callback is called
         portfolio.state_machine.after_in_progress_callback(Mock())
-    # Then the state machine fails the stage
-    assert portfolio.state_machine.state == PortfolioStates.TENANT_FAILED
+
+        # Then the state machine resets the stage to the previous "CREATED" state
+        assert (
+            portfolio.state_machine.state
+            == PortfolioStates.TASK_ORDER_BILLING_CREATION_CREATED
+        )
 
 
 @pytest.mark.state_machine
@@ -166,6 +182,13 @@ def test_fail_stage(state_machine):
 
 
 @pytest.mark.state_machine
+def test_reset_stage(state_machine):
+    state_machine.state = PortfolioStates.BILLING_PROFILE_CREATION_IN_PROGRESS
+    state_machine.reset_stage()
+    assert state_machine.state == PortfolioStates.TENANT_CREATED
+
+
+@pytest.mark.state_machine
 def test_finish_stage(state_machine):
     state_machine.portfolio.csp_data = {}
     state_machine.state = PortfolioStates.TENANT_IN_PROGRESS
@@ -188,25 +211,36 @@ def test_current_stage(state_machine_state, state_machine):
 
 
 @pytest.mark.state_machine
-def test_state_machine_initialization(state_machine):
-    for stage in AzureStages:
-
-        # check that all stages have a 'create' and 'fail' triggers
+class Test_state_machine_initialization:
+    @pytest.mark.parametrize("stage", [stage for stage in AzureStages])
+    def test_stages_have_triggers(self, stage, state_machine):
+        # check that all stages have the common trigger prefixes
         stage_name = stage.name.lower()
-        for trigger_prefix in ["create", "fail"]:
+        for trigger_prefix in [
+            "create",
+            "resume_progress",
+            "fail",
+            "finish",
+            "reset",
+        ]:
             assert hasattr(state_machine, trigger_prefix + "_" + stage_name)
 
-        # check that machine
-        in_progress_triggers = state_machine.machine.get_triggers(
-            stage.name + "_IN_PROGRESS"
-        )
-        assert [
-            "reset",
-            "configuration_error",
-            "finish_" + stage_name,
-            "fail_" + stage_name,
-        ] == in_progress_triggers
+    def test_in_progress_triggers(self, state_machine):
+        for stage in AzureStages:
+            in_progress_triggers = state_machine.machine.get_triggers(
+                stage.name + "_IN_PROGRESS"
+            )
+            stage_name = stage.name.lower()
+            expected_triggers = [
+                "reset",
+                "configuration_error",
+                "finish_" + stage_name,
+                "fail_" + stage_name,
+                "reset_" + stage_name,
+            ]
+            assert lists_contain_same_members(expected_triggers, in_progress_triggers)
 
+    def test_created_triggers(self, state_machine):
         started_triggers = state_machine.machine.get_triggers("UNSTARTED")
         create_trigger = next(
             filter(

@@ -1,6 +1,7 @@
+from decimal import Decimal
+
 from atat.domain.reports import Reports
 from tests.factories import PortfolioFactory
-from decimal import Decimal
 
 
 class TestGetPortfolioSpending:

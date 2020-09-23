@@ -2,11 +2,11 @@ from sqlalchemy import Column, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm.exc import NoResultFound
 
-from atat.models.base import Base
 import atat.models.mixins as mixins
 import atat.models.types as types
 from atat.database import db
 from atat.domain.exceptions import NotFoundError
+from atat.models.base import Base
 
 
 class AttachmentError(Exception):

@@ -1,17 +1,14 @@
-from contextlib import contextmanager
 import json
+from contextlib import contextmanager
 from unittest.mock import Mock, call
 from uuid import uuid4
 
 import pendulum
 import pydantic
 import pytest
-from tests.factories import ApplicationFactory, EnvironmentFactory
-from tests.mock_azure import mock_azure, MOCK_ACCESS_TOKEN  # pylint: disable=W0611
-from tests.mock_azure import AZURE_CONFIG
 
-from atat.domain.csp.cloud import AzureCloudProvider
 import atat.domain.csp.cloud.azure_cloud_provider
+from atat.domain.csp.cloud import AzureCloudProvider
 from atat.domain.csp.cloud.azure_cloud_provider import log_and_raise_exceptions
 from atat.domain.csp.cloud.exceptions import (
     AuthenticationException,
@@ -74,7 +71,14 @@ from atat.domain.csp.cloud.models import (
     TenantPrincipalOwnershipCSPPayload,
     TenantPrincipalOwnershipCSPResult,
     UserCSPPayload,
+    UserCSPResult,
     UserRoleCSPPayload,
+)
+from tests.factories import ApplicationFactory, EnvironmentFactory
+from tests.mock_azure import (  # pylint: disable=W0611
+    AZURE_CONFIG,
+    MOCK_ACCESS_TOKEN,
+    mock_azure,
 )
 
 BILLING_ACCOUNT_NAME = "52865e4c-52e8-5a6c-da6b-c58f0814f06f:7ea5de9d-b8ce-4901-b1c5-d864320c7b03_2019-05-31"
@@ -223,9 +227,8 @@ def test_create_initial_mgmt_group_succeeds(
     )
     result: InitialMgmtGroupCSPResult = mock_azure.create_initial_mgmt_group(payload)
 
-    # TODO: The initial mgmt group != the root management group
-    assert result.root_management_group_id == management_group_id
-    assert result.root_management_group_name == payload.management_group_name
+    assert result.initial_management_group_id == management_group_id
+    assert result.initial_management_group_name == payload.management_group_name
 
 
 def test_create_initial_mgmt_group_verification(
@@ -357,6 +360,7 @@ def test_validate_billing_profile_creation(
         json_data={
             "id": "/providers/Microsoft.Billing/billingAccounts/7c89b735-b22b-55c0-ab5a-c624843e8bf6:de4416ce-acc6-44b1-8122-c87c4e903c91_2019-05-31/billingProfiles/KQWI-W2SU-BG7-TGB",
             "name": "KQWI-W2SU-BG7-TGB",
+            "status": "Succeeded",
             "properties": {
                 "address": {
                     "addressLine1": "123 S Broad Street, Suite 2400",
@@ -512,74 +516,108 @@ def test_create_task_order_billing_creation(
     )
 
 
-def test_create_task_order_billing_verification(mock_azure, mock_http_error_response):
-
-    mock_result = mock_requests_response(
-        json_data={
-            "id": "/providers/Microsoft.Billing/billingAccounts/7c89b735-b22b-55c0-ab5a-c624843e8bf6:de4416ce-acc6-44b1-8122-c87c4e903c91_2019-05-31/billingProfiles/KQWI-W2SU-BG7-TGB",
-            "name": "KQWI-W2SU-BG7-TGB",
-            "properties": {
-                "address": {
-                    "addressLine1": "123 S Broad Street, Suite 2400",
-                    "city": "Philadelphia",
-                    "companyName": "Promptworks",
-                    "country": "US",
-                    "postalCode": "19109",
-                    "region": "PA",
-                },
-                "currency": "USD",
-                "displayName": "Test Billing Profile",
-                "enabledAzurePlans": [
-                    {
-                        "productId": "DZH318Z0BPS6",
-                        "skuId": "0001",
-                        "skuDescription": "Microsoft Azure Plan",
-                    }
-                ],
-                "hasReadAccess": True,
-                "invoiceDay": 5,
-                "invoiceEmailOptIn": False,
-                "invoiceSections": [
-                    {
-                        "id": "/providers/Microsoft.Billing/billingAccounts/7c89b735-b22b-55c0-ab5a-c624843e8bf6:de4416ce-acc6-44b1-8122-c87c4e903c91_2019-05-31/billingProfiles/KQWI-W2SU-BG7-TGB/invoiceSections/CHCO-BAAR-PJA-TGB",
-                        "name": "CHCO-BAAR-PJA-TGB",
-                        "properties": {"displayName": "Test Billing Profile"},
-                        "type": "Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections",
-                    }
-                ],
-            },
-            "type": "Microsoft.Billing/billingAccounts/billingProfiles",
-        }
-    )
-
-    mock_azure.sdk.requests.get.side_effect = [
-        mock_azure.sdk.requests.exceptions.ConnectionError,
-        mock_azure.sdk.requests.exceptions.Timeout,
-        mock_http_error_response,
-        mock_result,
-    ]
-
-    payload = TaskOrderBillingVerificationCSPPayload(
-        **dict(
-            tenant_id="60ff9d34-82bf-4f21-b565-308ef0533435",
-            task_order_billing_verify_url="https://management.azure.com/providers/Microsoft.Billing/billingAccounts/7c89b735-b22b-55c0-ab5a-c624843e8bf6:de4416ce-acc6-44b1-8122-c87c4e903c91_2019-05-31/operationResults/createBillingProfile_478d5706-71f9-4a8b-8d4e-2cbaca27a668?api-version=2019-10-01-preview",
+class Test_create_task_order_billing_verification:
+    @pytest.fixture
+    def payload(self):
+        return TaskOrderBillingVerificationCSPPayload(
+            **dict(
+                tenant_id="60ff9d34-82bf-4f21-b565-308ef0533435",
+                task_order_billing_verify_url="https://management.azure.com/providers/Microsoft.Billing/billingAccounts/7c89b735-b22b-55c0-ab5a-c624843e8bf6:de4416ce-acc6-44b1-8122-c87c4e903c91_2019-05-31/operationResults/createBillingProfile_478d5706-71f9-4a8b-8d4e-2cbaca27a668?api-version=2019-10-01-preview",
+            )
         )
-    )
-    with pytest.raises(ConnectionException):
-        mock_azure.create_task_order_billing_verification(payload)
-    with pytest.raises(ConnectionException):
-        mock_azure.create_task_order_billing_verification(payload)
-    with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
-        mock_azure.create_task_order_billing_verification(payload)
 
-    body: TaskOrderBillingVerificationCSPResult = mock_azure.create_task_order_billing_verification(
-        payload
-    )
-    assert body.billing_profile_name == "KQWI-W2SU-BG7-TGB"
-    assert (
-        body.billing_profile_enabled_plan_details.enabled_azure_plans[0].get("skuId")
-        == "0001"
-    )
+    def test_raises_http_error(self, mock_azure, mock_http_error_response, payload):
+        mock_azure.sdk.requests.get.side_effect = [
+            mock_azure.sdk.requests.exceptions.ConnectionError,
+            mock_azure.sdk.requests.exceptions.Timeout,
+            mock_http_error_response,
+        ]
+        with pytest.raises(ConnectionException):
+            mock_azure.create_task_order_billing_verification(payload)
+        with pytest.raises(ConnectionException):
+            mock_azure.create_task_order_billing_verification(payload)
+        with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
+            mock_azure.create_task_order_billing_verification(payload)
+
+    def test_raises_provisioning_error(self, mock_azure, payload):
+        def make_error(status):
+            return {
+                "status": status,
+                "error": {"code": "11235", "message": "An error occured"},
+            }
+
+        mock_azure.sdk.requests.get.side_effect = [
+            mock_requests_response(json_data=make_error("Canceled")),
+            mock_requests_response(json_data=make_error("Failed")),
+        ]
+        with pytest.raises(ResourceProvisioningError):
+            mock_azure.create_task_order_billing_verification(payload)
+        with pytest.raises(ResourceProvisioningError):
+            mock_azure.create_task_order_billing_verification(payload)
+
+    def test_async_operation_succeeds(self, mock_azure, payload):
+        mock_result = mock_requests_response(
+            json_data={
+                "status": "Succeeded",
+                "id": "/providers/Microsoft.Billing/billingAccounts/7c89b735-b22b-55c0-ab5a-c624843e8bf6:de4416ce-acc6-44b1-8122-c87c4e903c91_2019-05-31/billingProfiles/KQWI-W2SU-BG7-TGB",
+                "name": "KQWI-W2SU-BG7-TGB",
+                "properties": {
+                    "address": {
+                        "addressLine1": "123 S Broad Street, Suite 2400",
+                        "city": "Philadelphia",
+                        "companyName": "Promptworks",
+                        "country": "US",
+                        "postalCode": "19109",
+                        "region": "PA",
+                    },
+                    "currency": "USD",
+                    "displayName": "Test Billing Profile",
+                    "enabledAzurePlans": [
+                        {
+                            "productId": "DZH318Z0BPS6",
+                            "skuId": "0001",
+                            "skuDescription": "Microsoft Azure Plan",
+                        }
+                    ],
+                    "hasReadAccess": True,
+                    "invoiceDay": 5,
+                    "invoiceEmailOptIn": False,
+                    "invoiceSections": [
+                        {
+                            "id": "/providers/Microsoft.Billing/billingAccounts/7c89b735-b22b-55c0-ab5a-c624843e8bf6:de4416ce-acc6-44b1-8122-c87c4e903c91_2019-05-31/billingProfiles/KQWI-W2SU-BG7-TGB/invoiceSections/CHCO-BAAR-PJA-TGB",
+                            "name": "CHCO-BAAR-PJA-TGB",
+                            "properties": {"displayName": "Test Billing Profile"},
+                            "type": "Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections",
+                        }
+                    ],
+                },
+                "type": "Microsoft.Billing/billingAccounts/billingProfiles",
+            },
+        )
+        mock_azure.sdk.requests.get.side_effect = [
+            mock_result,
+        ]
+        body = mock_azure.create_task_order_billing_verification(payload)
+        assert body.billing_profile_name == "KQWI-W2SU-BG7-TGB"
+        assert (
+            body.billing_profile_enabled_plan_details.enabled_azure_plans[0].get(
+                "skuId"
+            )
+            == "0001"
+        )
+
+    def test_async_operation_in_progress(self, mock_azure, payload):
+        mock_result = mock_requests_response(
+            json_data={"status": "In Progress"},
+            headers={"Location": "https://retry-url.com", "Retry-After": "0",},
+        )
+        mock_azure.sdk.requests.get.side_effect = [
+            mock_result,
+        ]
+        body = mock_azure.create_task_order_billing_verification(payload)
+        assert body.reset_stage is True
+        assert body.task_order_billing_verify_url == "https://retry-url.com"
+        assert body.task_order_retry_after == 0
 
 
 def test_create_billing_instruction(
@@ -672,6 +710,7 @@ def test_create_product_purchase_verification(mock_azure, mock_http_error_respon
         json_data={
             "id": "/providers/Microsoft.Billing/billingAccounts/BILLINGACCOUNTNAME/billingProfiles/BILLINGPROFILENAME/invoiceSections/INVOICESECTION/products/29386e29-a025-faae-f70b-b1cbbc266600",
             "name": "29386e29-a025-faae-f70b-b1cbbc266600",
+            "status": "Succeeded",
             "properties": {
                 "availabilityId": "C07TTFC7Q9XK",
                 "billingProfileId": "/providers/Microsoft.Billing/billingAccounts/BILLINGACCOUNTNAME/billingProfiles/BILLINGPROFILENAME",
@@ -1183,37 +1222,6 @@ def test_set_secret(unmocked_cloud_provider, mock_http_error_response):
     assert result["id"] == response_id
 
 
-def test_create_active_directory_user(
-    mock_azure: AzureCloudProvider, mock_http_error_response
-):
-    mock_result = mock_requests_response(json_data={"id": "id"})
-
-    mock_azure.sdk.requests.post.side_effect = [
-        mock_azure.sdk.requests.exceptions.ConnectionError,
-        mock_azure.sdk.requests.exceptions.Timeout,
-        mock_http_error_response,
-        mock_result,
-    ]
-
-    payload = UserCSPPayload(
-        tenant_id=uuid4().hex,
-        display_name="Test Testerson",
-        tenant_host_name="testtenant",
-        email="test@testerson.test",
-        password="asdfghjkl",  # pragma: allowlist secret
-    )
-    with pytest.raises(ConnectionException):
-        mock_azure._create_active_directory_user("token", payload)
-    with pytest.raises(ConnectionException):
-        mock_azure._create_active_directory_user("token", payload)
-    with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
-        mock_azure._create_active_directory_user("token", payload)
-
-    result = mock_azure._create_active_directory_user("token", payload)
-
-    assert result.id == "id"
-
-
 def test_update_active_directory_user_email(
     mock_azure: AzureCloudProvider, mock_http_error_response
 ):
@@ -1342,15 +1350,19 @@ def test_create_user_role_failure(mock_azure: AzureCloudProvider):
         mock_azure.create_user_role(payload)
 
 
-def test_create_billing_owner(mock_azure: AzureCloudProvider):
+def test_create_billing_owner(monkeypatch, mock_azure: AzureCloudProvider):
 
     final_result = "1-2-3"
 
     # create_billing_owner does: POST, PATCH, GET, POST
 
+    monkeypatch.setattr(
+        mock_azure,
+        "_create_active_directory_user",
+        Mock(return_value=UserCSPResult(id=final_result)),
+    )
     # mock POST so that it pops off results in the order we want
     mock_azure.sdk.requests.post.side_effect = [
-        mock_requests_response(json_data={"id": final_result}),
         mock_requests_response(),
     ]
     # return value for PATCH doesn't matter much
@@ -2059,12 +2071,12 @@ class Test_remove_tenant_admin_elevated_access:
         @pytest.fixture(autouse=True)
         def patch_submethods(self, mock_azure, monkeypatch):
             monkeypatch.setattr(
-                mock_azure, "_get_tenant_admin_token", Mock(return_value="MOCK_TOKEN"),
+                mock_azure,
+                "_get_tenant_admin_token",
+                Mock(side_effect=["MOCK_TOKEN", "MOCK_ELEVATED_TOKEN"]),
             )
             monkeypatch.setattr(
-                mock_azure,
-                "_elevate_tenant_admin_access",
-                Mock(return_value="MOCK_ELEVATED_TOKEN"),
+                mock_azure, "_elevate_tenant_admin_access", Mock(),
             )
             monkeypatch.setattr(
                 mock_azure, "_remove_tenant_admin_elevated_access", Mock(),
@@ -2080,22 +2092,47 @@ class Test_remove_tenant_admin_elevated_access:
                 ) as _:
                     pass
 
-        def test_get_token(self, mock_azure):
+        def test_get_token(self, mock_azure, mock_logger):
             with mock_azure._get_elevated_access_token(
                 "tenant_id", "user_object_id"
             ) as elevated_token:
                 pass
             assert elevated_token == "MOCK_ELEVATED_TOKEN"
+            assert len(mock_logger.messages) == 2
 
         def test_remove_elevated_access_fails(self, mock_azure, mock_logger):
             mock_azure._remove_tenant_admin_elevated_access.side_effect = [
-                mock_azure.sdk.requests.exceptions.ConnectionError,
-                mock_azure.sdk.requests.exceptions.ConnectionError,
-                mock_azure.sdk.requests.exceptions.ConnectionError,
+                mock_azure.sdk.requests.exceptions.ConnectionError
             ]
             with pytest.raises(Exception):
                 with mock_azure._get_elevated_access_token(
                     "tenant_id", "user_object_id"
                 ) as _:
                     pass
-            assert len(mock_logger.messages) == 1
+            assert len(mock_logger.messages) == 2
+
+        def test_second_token_request_fails(self, mock_azure, monkeypatch):
+            monkeypatch.setattr(
+                mock_azure,
+                "_get_tenant_admin_token",
+                Mock(side_effect=["MOCK_TOKEN", AuthenticationException("weird")]),
+            )
+            with pytest.raises(AuthenticationException):
+                with mock_azure._get_elevated_access_token(
+                    "tenant_id", "user_object_id"
+                ) as _:
+                    mock_azure._remove_tenant_admin_elevated_access.assert_called_with(
+                        "tenant_id", "user_object_id", token="MOCK_TOKEN"
+                    )
+
+        def test_remove_elevated_access_called_after_exception(
+            self, mock_azure, mock_logger
+        ):
+            with pytest.raises(Exception):
+                with mock_azure._get_elevated_access_token(
+                    "tenant_id", "user_object_id"
+                ) as elevated_token:
+                    raise Exception
+            mock_azure._remove_tenant_admin_elevated_access.assert_called_once_with(
+                "tenant_id", "user_object_id", token=elevated_token
+            )

@@ -5,7 +5,6 @@ from atat.domain.environment_roles import EnvironmentRoles
 from atat.domain.exceptions import NotFoundError
 from atat.domain.permission_sets import PermissionSets
 from atat.models import ApplicationRoleStatus
-
 from tests.factories import *
 
 

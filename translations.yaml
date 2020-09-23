@@ -235,12 +235,6 @@ forms:
   environments:
     name_label: Environment Name
   edit_user:
-    date_latest_training_description: |
-      To complete the training, you can find it in
-      <a class="icon-link" href="https://iatraining.disa.mil/eta/disa_cac2018/launchPage.htm" target="_blank">
-        Information Assurance Cyber Awareness Challenge
-      </a> website.
-    date_latest_training_label: Latest information assurance (IA) training completion date
     designation_label: Designation of person
     email_label: Email address
     first_name_label: First name
@@ -346,6 +340,7 @@ fragments:
     explain: AT-AT allows you to create multiple applications within a portfolio. Each application can then be broken down into its own customizable environments.
   edit_user_form:
     save_details_button: Save
+    service_choice: Please choose a service branch or agency
   portfolio_admin:
     none: Not Selected
   ppoc:

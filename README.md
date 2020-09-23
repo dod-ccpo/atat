@@ -145,7 +145,7 @@ If starting the secure server fails, you may need to generate the local certific
 
 ### Users
 
-There are currently six mock users for development:
+When the ALLOW_LOCAL_ACCESS setting is enabled, there are six mock users for development:
 
 - Sam (a CCPO)
 - Amanda
@@ -154,16 +154,13 @@ There are currently six mock users for development:
 - Dominick
 - Erica
 
-To log in as one of them, navigate to `/login-dev?username=<lowercase name>`.
-For example `/login-dev?username=amanda`.
-
-In development mode, there is a `DEV Login` button available on the home page
-that will automatically log you in as Amanda.
+To log in as one of them, navigate to `/login-local?username=<lowercase name>`.
+For example `/login-local?username=amanda`.
 
 Additionally, this endpoint can be used to log into any real users in the dev environments by providing their DoD ID:
-`/login-dev?dod_id=1234567890123`
+`/login-local?dod_id=1234567890123`
 
-When in development mode, you can create new users by passing first name, last name, and DoD ID query parameters to `/dev-new-user` like so:
+With ALLOW_LOCAL_ACCESS enabled, you can create new users by passing first name, last name, and DoD ID query parameters to `/dev-new-user` like so:
 ```
 /dev-new-user?first_name=Harrold&last_name=Henderson&dod_id=1234567890123
 ```
@@ -173,9 +170,7 @@ Once this user is created, you can log in as them again the future using the DoD
 
 **Federated Authentication with Azure**
 
-Note that when `FLASK_ENV` is set to `master`, that the `/login-dev` routes will all require you to have a valid account in the Azure tenant and authenticate against it.
-Alternatively, you can include `saml` in your query string to force federate authentication, which may be useful when debugging.
-Example: `/login-dev?saml`
+The `/login-dev` routes require that you have a valid account in the Azure Active Directory tenant and authenticate against it.
 
 ### Seeding the database
 
@@ -276,6 +271,7 @@ All config settings must be declared in "config/base.ini", even if they are null
 
 #### General Config
 
+- `ALLOW_LOCAL_ACCESS`: Enables additional development routes that will allow developers working locally and automated tools (like functional end-user tests) to authenticate
 - `ASSETS_URL`: URL to host which serves static assets (such as a CDN).
 - `APP_SSL_CERT_PATH`: Path to the self-signed SSL certificate for running the app in secure mode.
 - `APP_SSL_KEY_PATH`: Path to the self-signed SSL certificate key for running the app in secure mode.
@@ -289,18 +285,14 @@ All config settings must be declared in "config/base.ini", even if they are null
 - `AZURE_STORAGE_KEY`: A valid secret key for the Azure blob storage account
 - `AZURE_TO_BUCKET_NAME`: The Azure blob storage container name for task order uploads
 - `BLOB_STORAGE_URL`: URL to Azure blob storage container.
-- `CAC_URL`: URL for the CAC authentication route.
 - `CA_CHAIN`: Path to the CA chain file.
 - `CDN_ORIGIN`: URL for the origin host for asset files.
 - `CELERY_DEFAULT_QUEUE`: String specifying the name of the queue that background tasks will be added to.
 - `CONTRACT_END_DATE`: String specifying the end date of the JEDI contract. Used for task order validation. Example: 2019-09-14
 - `CONTRACT_START_DATE`: String specifying the start date of the JEDI contract. Used for task order validation. Example: 2019-09-14.
-- `CRL_FAIL_OPEN`: Boolean specifying if expired CRLs should fail open, rather than closed.
-- `CRL_STORAGE_CONTAINER`: Path to a directory where the CRL cache will be stored.
 - `CSP`: String specifying the cloud service provider to use. Acceptable values: "azure", "mock", "mock-csp".
 - `DEBUG`: Boolean. A truthy value enables Flask's debug mode. https://flask.palletsprojects.com/en/1.1.x/config/#DEBUG
 - `DEBUG_SMTP`: [0,1,2]. Use to determine the debug logging level of the mailer SMTP connection. `0` is the default, meaning no extra logs are generated. `1` or `2` will enable debug logging. See [official docs](https://docs.python.org/3/library/smtplib.html#smtplib.SMTP.set_debuglevel) for more info.
-- `DISABLE_CRL_CHECK`: Boolean specifying if CRL check should be bypassed. Useful for instances of the application container that are not serving HTTP requests, such as Celery workers.
 - `ENVIRONMENT`: String specifying the current environment. Acceptable values: "dev", "prod".
 - `LIMIT_CONCURRENT_SESSIONS`: Boolean specifying if users should be allowed only one active session at a time.
 - `LOG_JSON`: Boolean specifying whether app should log in a json format.
@@ -319,15 +311,21 @@ All config settings must be declared in "config/base.ini", even if they are null
 - `PGSSLROOTCERT`: Path to the root SSL certificate for the postgres database.
 - `PGUSER`: String specifying the username to use when connecting to the postgres database.
 - `PORT`: Integer specifying the port to bind to when running the flask server. Used only for local development.
-- `REDIS_URI`: URI for the redis server.
+- `REDIS_HOST`: String. Hostname for the redis server, including port number.
+- `REDIS_PASSWORD`: String. Password or authentication key for the Redis server.
+- `REDIS_SSLMODE`: String. Can be one of "required", "optional", or "none". Determines whether the client will perform a certificate verification of the server. (Implemented in redis-py with https://docs.python.org/3/library/ssl.html#ssl.SSLContext.verify_mode)
+- `REDIS_SSLCHECKHOSTNAME`: Boolean. Specifies whether to verify that the Redis server hostname matches what's on the cert the server presents. (Implemented in redis-py with https://docs.python.org/3/library/ssl.html#ssl.SSLContext.check_hostname)
+- `REDIS_TLS`: Boolean. Determines whether the Redis client should use SSL/TLS.
+- `REDIS_USER`: String. The Redis username (generally blank).
 - `SAML_ACS`: Fully qualified URI for the URL that the SAML Identity Provider will redirect to after successful authentication
 - `SAML_ENTITY_ID`: Fully qualified URI that ATAT will invoke SAML authentication from
-- `SAML_IDP_CERT`: Public certificate provided by SAML Identity Provider encoded via base64
-- `SAML_IDP_ENTITY_ID`: Identifier endpoint of SAML Identity Provider.
-- `SAML_IDP_SLS`: URL that SAML logout requests will be sent to
-- `SAML_IDP_SSOS`: URL that SAML login requests will be sent to
+- `SAML_IDP_URI`: URI of the SAML IdP Metadata, will be fetched and used to configure SAML calls
 - `SAML_SLS`: Fully qualified URI that ATAT will invoke SAML logout from
-- `SAMl_LOGIN_DEV`: Boolean that defines if Azure Fed Auth will be require to log in using the developer login route. Defaults to `False` 
+- `SAML_DEV_ACS`: Fully qualified URI for the URL that the SAML Identity Provider used for developer login (only used if `FLASK_ENV` isn't `prod`)
+- `SAML_DEV_ENTITY_ID`: Fully qualified URI that ATAT will invoke developer SAML authentication from (only used if `FLASK_ENV` isn't `prod`)
+- `SAML_DEV_SLS`: Fully qualified URI that ATAT will invoke developer SAML logout from (only used if `FLASK_ENV` isn't `prod`)
+- `SAML_DEV_IDP_URI`: URI of the developer SAML IdP Metadata, will be fetched and used to configure SAML calls (only used if `FLASK_ENV` isn't `prod`)
+- `SAMl_LOGIN_DEV`: Boolean that defines if Azure Fed Auth will be required to log in using the developer login route. Defaults to `False`  (only used if `FLASK_ENV` isn't `prod`)
 - `SECRET_KEY`: String key which will be used to sign the session cookie. Should be a long string of random bytes. https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY
 - `SERVER_NAME`: Hostname for ATAT. Only needs to be specified in contexts where the hostname cannot be inferred from the request, such as Celery workers. https://flask.palletsprojects.com/en/1.1.x/config/#SERVER_NAME
 - `SERVICE_DESK_URL`: The URL for the service desk.  This is the site that will be displayed when the Support button is pressed.
@@ -348,7 +346,6 @@ All config settings must be declared in "config/base.ini", even if they are null
 Values where "[Testing only]" is mentioned are only required for running the Hybrid test suite, **not** for using the Hybrid interface for a running instance of ATAT.
 
 Configuration variables that are needed solely to run Hybrid tests are in the `[hybrid]` section of the base configuration file.
-- `AZURE_ADMIN_ROLE_ASSIGNMENT_ID`: The fully pathed role assignment ID that associates a user with admin privileges to the root tenant of the Hybrid Cloud
 - `AZURE_BILLING_PROFILE_ID`: ID of the billing profile used for Cost Management queries with the Hybrid interface.
 - `AZURE_SUBSCRIPTION_CREATION_CLIENT_ID`: [Testing only] Client ID of an app registration in the root tenant used for subscription integration tests
 - `AZURE_SUBSCRIPTION_CREATION_SECRET`: [Testing only] Secret key for the app registration associated with the `AZURE_SUBSCRIPTION_CREATION_CLIENT_ID`
@@ -396,6 +393,16 @@ regularly and archive them with the AT-AT codebase in the `uitests` directory.
 For further information about Ghost Inspector and its use in AT-AT, check out [its README](./uitests/README.md)
 in the `uitests` directory.
 
+## SonarQube
+
+To run SonarScanner
+
+```
+script/sonarqube <SonarQube user> <SonarQube password>
+```
+
+Both user and password are in 1Password.  It is possible that the hostname for SonarQube will change from time to time.  In this case the value for the key `sonar.host.url` will have to be updated in the The `sonar-qube.properties` file.
+
 ## Notes
 
 Jinja templates are like mustache templates -- add the
@@ -434,19 +441,20 @@ The build assumes that you have redis and postgres running on their usual ports 
 
 Note that the uWSGI config used for this build in the repo root is symlinked from deploy/azure/uwsgi.ini. See the Kubernetes README in deploy/README.md for details.
 
-### Dev login
+### Local login
 
-The `/login-dev` endpoint is protected by HTTP basic auth when deployed. This can be configured for NGINX following the instructions [here](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/). The following config should added within the main server block for the site:
+The `/login-local` endpoint is protected by HTTP basic auth by uWSGI in the docker container (https://uwsgi-docs.readthedocs.io/en/latest/InternalRouting.html#basicauth).
 
-```nginx
-location /login-dev {
-    auth_basic "Developer Access";
-    auth_basic_user_file /etc/apache2/.htpasswd;
-    [proxy information should follow this]
-}
+To enable this in a deployed environment, you must set ALLOW_LOCAL_ACCESS to true and provide a password file to the container my mounting a volume or other means. The uWSGI configuration expects to find the password file at `/config/localpassword`.
+
+You can generate a password with the htpassword. In this example, the command will generate a "localpassword" file in the current directory for a user called "atat":
+
+```
+htpasswd -cd ./localpassword atat
 ```
 
-The location block will require the same proxy pass configuration as other location blocks for the app.
+It will prompt you to enter a password, then produce the password file. Note that the `-d` flag is necessary, per the uWSGI documentation linked above.
+
 
 ## Secrets Detection
 

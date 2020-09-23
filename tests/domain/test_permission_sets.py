@@ -1,6 +1,7 @@
 import pytest
-from atat.domain.permission_sets import PermissionSets
+
 from atat.domain.exceptions import NotFoundError
+from atat.domain.permission_sets import PermissionSets
 from atat.utils import first_or_none
 
 

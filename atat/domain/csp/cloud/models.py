@@ -1,17 +1,14 @@
+import re
 from enum import Enum
 from secrets import token_urlsafe
 from typing import Dict, List, Optional
 from uuid import uuid4
-import re
 
-from pydantic import BaseModel, validator, root_validator
+from pydantic import BaseModel, root_validator, validator
 
-from .utils import (
-    generate_mail_nickname,
-    generate_user_principal_name,
-)
-from atat.utils import snake_to_camel
+from atat.utils import camel_to_snake, snake_to_camel
 
+from .utils import generate_mail_nickname, generate_user_principal_name
 
 AZURE_MGMNT_PATH = "/providers/Microsoft.Management/managementGroups/"
 
@@ -21,6 +18,25 @@ SUBSCRIPTION_ID_REGEX = re.compile(
     "\/?subscriptions\/([0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})",
     re.I,
 )
+PAYLOAD_CLASS_SUFFIX_REGEX = re.compile(r"(Creation|Verification)?CSP.*")
+
+
+def stage_to_classname(stage):
+    return "".join(map(lambda word: word.capitalize(), stage.split("_")))
+
+
+def class_to_stage(klass):
+    """Given a CSP model class, derive the stage name
+
+    Args:
+        klass (pydantic.BaseModel): a pydantic CSP data model class
+
+    Returns:
+        str: the stage name
+    """
+    class_name = klass.__name__
+    stage_camel_case = PAYLOAD_CLASS_SUFFIX_REGEX.split(class_name)[0]
+    return camel_to_snake(stage_camel_case)
 
 
 def normalize_management_group_id(cls, id_):
@@ -40,9 +56,18 @@ class AliasModel(BaseModel):
     * user_object_id:objectId
     """
 
+    reset_stage: bool = False
+
     class Config:
         alias_generator = snake_to_camel
         allow_population_by_field_name = True
+
+    def dict(self, *args, **kwargs):
+        kwargs.setdefault("exclude")
+        if kwargs["exclude"] is None:
+            kwargs["exclude"] = set()
+        kwargs["exclude"].update({"reset_stage"})
+        return super().dict(*args, **kwargs)
 
 
 class BaseCSPPayload(AliasModel):
@@ -295,6 +320,9 @@ class TenantAdminOwnershipCSPPayload(BaseCSPPayload):
     root_management_group_name: str
     user_object_id: str
 
+    class Config:
+        fields = {"root_management_group_name": "tenant_id"}
+
 
 class TenantAdminOwnershipCSPResult(AliasModel):
     admin_owner_assignment_id: str
@@ -316,6 +344,9 @@ class TenantPrincipalOwnershipCSPPayload(BaseCSPPayload):
     root_management_group_name: str
     user_object_id: str
     principal_id: str
+
+    class Config:
+        fields = {"root_management_group_name": "tenant_id"}
 
 
 class TenantPrincipalOwnershipCSPResult(AliasModel):
@@ -379,7 +410,7 @@ class PrincipalAdminRoleCSPResult(AliasModel):
         fields = {"principal_assignment_id": "id"}
 
 
-class ManagementGroupCSPPayload(AliasModel):
+class ManagementGroupCSPPayload(BaseCSPPayload):
     """
     :param: management_group_name: Just pass a UUID for this.
     :param: display_name: This can contain any character and
@@ -388,7 +419,6 @@ class ManagementGroupCSPPayload(AliasModel):
         i.e. /providers/Microsoft.Management/managementGroups/[management group ID]
     """
 
-    tenant_id: str
     management_group_name: Optional[str]
     display_name: str
     parent_id: Optional[str]
@@ -428,7 +458,10 @@ class ManagementGroupGetCSPResponse(AliasModel):
 
 
 class ApplicationCSPPayload(ManagementGroupCSPPayload):
-    pass
+    class Config:
+        fields = {
+            "root_management_group_name": "tenant_id",
+        }
 
 
 class ApplicationCSPResult(ManagementGroupCSPResponse):
@@ -440,23 +473,23 @@ class InitialMgmtGroupCSPPayload(ManagementGroupCSPPayload):
 
 
 class InitialMgmtGroupCSPResult(AliasModel):
-    root_management_group_name: str
+    initial_management_group_name: str
 
     class Config:
         fields = {
-            "root_management_group_name": "name",
+            "initial_management_group_name": "name",
         }
 
     @property
-    def root_management_group_id(self):
-        return f"/providers/Microsoft.Management/managementGroups/{self.root_management_group_name}"
+    def initial_management_group_id(self):
+        return f"/providers/Microsoft.Management/managementGroups/{self.initial_management_group_name}"
 
 
 class InitialMgmtGroupVerificationCSPPayload(ManagementGroupGetCSPPayload):
     user_object_id: str
 
     class Config:
-        fields = {"management_group_name": "root_management_group_name"}
+        fields = {"management_group_name": "initial_management_group_name"}
 
 
 class InitialMgmtGroupVerificationCSPResult(ManagementGroupGetCSPResponse):
@@ -593,9 +626,21 @@ class ProductPurchaseVerificationCSPPayload(BaseCSPPayload):
 class ProductPurchaseVerificationCSPResult(AliasModel):
     premium_purchase_date: str
 
+    @root_validator(pre=True)
+    def populate_premium_purchase_date(cls, values):
+        if "premium_purchase_date" in values:
+            return values
+        try:
+            values["premium_purchase_date"] = values["properties"]["purchaseDate"]
+            return values
+        except KeyError:
+            raise ValueError("Premium purchasedate not present in payload")
+
 
 class UserMixin(BaseModel):
     password: Optional[str]
+    first_name: Optional[str]
+    last_name: Optional[str]
 
     @property
     def user_principal_name(self):
@@ -660,7 +705,9 @@ class CostManagementQueryCSPPayload(BaseCSPPayload):
     to_date: str
 
     @root_validator(pre=True)
-    def extract_invoice_section(cls, values):
+    def populate_invoice_section_id(cls, values):
+        if "invoice_section_id" in values:
+            return values
         try:
             values["invoice_section_id"] = values["billing_profile_properties"][
                 "invoice_sections"
@@ -694,9 +741,12 @@ class BillingOwnerCSPResult(AliasModel):
     billing_owner_id: str
 
 
-class PoliciesCSPPayload(AliasModel):
+class PoliciesCSPPayload(BaseCSPPayload):
     root_management_group_name: str
     tenant_id: str
+
+    class Config:
+        fields = {"root_management_group_name": "tenant_id"}
 
 
 class PoliciesCSPResult(AliasModel):

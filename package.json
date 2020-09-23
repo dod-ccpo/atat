@@ -14,34 +14,35 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@azure/storage-blob": "^12.1.2",
+    "@azure/storage-blob": "^12.2.1",
     "ally.js": "^1.4.1",
     "autoprefixer": "^9.8.6",
     "babel-polyfill": "^6.26.0",
-    "date-fns": "^2.15.0",
+    "date-fns": "^2.16.1",
     "ramda": "^0.27.1",
     "stickybits": "^3.7.7",
     "svg-innerhtml": "^1.1.0",
     "text-mask-addons": "^3.8.0",
     "uswds": "^1.6.13",
     "v-tooltip": "^2.0.3",
-    "vue": "2.6.11",
+    "vue": "2.6.12",
     "vue-text-mask": "^6.1.2",
-    "whatwg-fetch": "^3.4.0"
+    "whatwg-fetch": "^3.4.1"
   },
   "devDependencies": {
-    "@vue/test-utils": "^1.0.4",
+    "@vue/test-utils": "^1.1.0",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
-    "jest": "^23.6.0",
+    "jest": "^26.4.2",
     "jest-serializer-vue": "^2.0.2",
     "node-sass": "^4.14.1",
     "parcel-bundler": "^1.10.3",
-    "prettier": "^2.0.5",
-    "vue-template-compiler": "2.6.11"
+    "prettier": "^2.1.2",
+    "vue-template-compiler": "2.6.12"
   },
   "resolutions": {
+    "node-forge": "^0.10.0",
     "parcel-bundler/**/lodash": "^4.17.13",
     "minimist": ">=1.2.2",
     "acorn": ">=5.7.4 <6.0.0 || >=6.4.1 <7.0.0 || >=7.1.1",
@@ -59,6 +60,7 @@
     },
     "snapshotSerializers": [
       "<rootDir>/node_modules/jest-serializer-vue"
-    ]
+    ],
+    "setupFiles": ["<rootDir>/js/test_utils/setup"]
   }
 }

@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atst-worker-envvars
+data:
+  CAC_URL: https://auth-bugbounty.atat.dev/login-redirect
+  CELERY_DEFAULT_QUEUE: celery-bugbounty
+  FLASK_ENV: bugbounty
+  PGDATABASE: cloudzero_dryrun_bugbounty
+  SERVER_NAME: bugbounty.atat.dev
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atst-envvars
+data:
+  CAC_URL: https://auth-bugbounty.atat.dev/login-redirect
+  CDN_ORIGIN: https://bugbounty.atat.dev
+  CELERY_DEFAULT_QUEUE: celery-bugbounty
+  FLASK_ENV: bugbounty
+  PGDATABASE: cloudzero_dryrun_bugbounty
+  STATIC_URL: "https://bugbounty.atat.dev/static/"
+  SAML_ENTITY_ID: https://bugbounty.atat.dev/login-dev
+  SAML_ACS: https://bugbounty.atat.dev/login-dev?acs
+  SAML_SLS: https://bugbounty.atat.dev/login-dev?sls
+  SAML_IDP_ENTITY_ID: https://sts.windows.net/ab154c46-3d57-4386-9b87-8002123f3858/
+  SAML_IDP_SSOS: https://login.microsoftonline.com/ab154c46-3d57-4386-9b87-8002123f3858/saml2
+  SAML_IDP_SLS: https://login.microsoftonline.com/ab154c46-3d57-4386-9b87-8002123f3858/saml2
+  SAML_LOGIN_DEV: "true"

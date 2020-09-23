@@ -1,20 +1,15 @@
+import random
 from unittest.mock import Mock
 
 import pytest
-import random
-
-from flask import url_for, Response
+from flask import Response, url_for
 
 import atat
 from atat.app import make_app, make_config
 from atat.domain.auth import UNPROTECTED_ROUTES as _NO_LOGIN_REQUIRED
 from atat.domain.permission_sets import PermissionSets
-from atat.models import CSPRole, PortfolioRoleStatus, ApplicationRoleStatus
-
+from atat.models import ApplicationRoleStatus, CSPRole, PortfolioRoleStatus
 from tests.factories import *
-
-
-from atat.app import make_config, make_app
 
 _NO_ACCESS_CHECK_REQUIRED = _NO_LOGIN_REQUIRED + [
     "applications.accept_invitation",  # available to all users; access control is built into invitation logic
@@ -46,7 +41,7 @@ def protected_routes(app):
     return _protected_routes
 
 
-sample_config = make_config({"default": {"CRL_STORAGE_PROVIDER": "LOCAL"}})
+sample_config = make_config()
 sample_app = make_app(sample_config)
 _PROTECTED_ROUTES = protected_routes(sample_app)
 

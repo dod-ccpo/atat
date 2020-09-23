@@ -1,13 +1,16 @@
 import pendulum
-from flask import redirect, render_template, url_for, request as http_request, g
+from flask import g, redirect, render_template
+from flask import request as http_request
+from flask import url_for
+
+from atat.domain.authz.decorator import user_can_access_decorator as user_can
+from atat.domain.portfolios import Portfolios
+from atat.domain.reports import Reports
+from atat.forms.portfolio import PortfolioCreationForm
+from atat.models.permissions import Permissions
+from atat.utils.flash import formatted_flash as flash
 
 from .blueprint import portfolios_bp
-from atat.forms.portfolio import PortfolioCreationForm
-from atat.domain.reports import Reports
-from atat.domain.portfolios import Portfolios
-from atat.models.permissions import Permissions
-from atat.domain.authz.decorator import user_can_access_decorator as user_can
-from atat.utils.flash import formatted_flash as flash
 
 
 @portfolios_bp.route("/portfolios/new")

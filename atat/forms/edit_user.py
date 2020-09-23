@@ -1,19 +1,21 @@
-import pendulum
 from copy import deepcopy
-from wtforms.fields.html5 import DateField, EmailField, TelField
-from wtforms.fields import RadioField, StringField
-from wtforms.validators import Email, DataRequired, Optional
 
-from .fields import SelectField
-from .forms import BaseForm
-from .data import SERVICE_BRANCHES
+from wtforms.fields import RadioField, StringField
+from wtforms.fields.html5 import EmailField, TelField
+from wtforms.validators import DataRequired, Email, Length, Optional
+
+from atat.forms.validators import Number
 from atat.models.user import User
 from atat.utils.localization import translate
-from wtforms.validators import Length
-from atat.forms.validators import Number
 
-from .validators import Name, DateRange, PhoneNumber
+from .data import SERVICE_BRANCHES
+from .fields import SelectField
+from .forms import BaseForm
+from .validators import Name, PhoneNumber
 
+SERVICE_BRANCH_CHOICES = [
+    ("", translate("fragments.edit_user_form.service_choice"))
+] + SERVICE_BRANCHES
 
 USER_FIELDS = {
     "first_name": StringField(
@@ -30,7 +32,9 @@ USER_FIELDS = {
     ),
     "phone_ext": StringField("Extension", validators=[Number(), Length(max=10)]),
     "service_branch": SelectField(
-        translate("forms.edit_user.service_branch_label"), choices=SERVICE_BRANCHES
+        translate("forms.edit_user.service_branch_label"),
+        choices=SERVICE_BRANCH_CHOICES,
+        default="",
     ),
     "citizenship": RadioField(
         choices=[
@@ -46,18 +50,6 @@ USER_FIELDS = {
             ("civilian", "Civilian"),
             ("contractor", "Contractor"),
         ],
-    ),
-    "date_latest_training": DateField(
-        translate("forms.edit_user.date_latest_training_label"),
-        description=translate("forms.edit_user.date_latest_training_description"),
-        validators=[
-            DateRange(
-                lower_bound=pendulum.duration(years=1),
-                upper_bound=pendulum.duration(days=0),
-                message="Must be a date within the last year.",
-            )
-        ],
-        format="%m/%d/%Y",
     ),
 }
 
@@ -90,4 +82,3 @@ class EditUserForm(BaseForm):
     service_branch = inherit_user_field("service_branch")
     citizenship = inherit_user_field("citizenship")
     designation = inherit_user_field("designation")
-    date_latest_training = inherit_user_field("date_latest_training")

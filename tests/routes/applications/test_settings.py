@@ -1,26 +1,23 @@
-import pendulum
 import uuid
 from unittest.mock import Mock, patch
 
+import pendulum
 import pytest
 from flask import get_flashed_messages, url_for
-from tests.factories import *
-from tests.mock_azure import mock_azure
-from tests.utils import captured_templates
 from werkzeug.datastructures import ImmutableMultiDict
 
 from atat.database import db
 from atat.domain.application_roles import ApplicationRoles
 from atat.domain.applications import Applications
-from atat.domain.environments import Environments
 from atat.domain.common import Paginator
 from atat.domain.csp.cloud.azure_cloud_provider import AzureCloudProvider
 from atat.domain.csp.cloud.exceptions import GeneralCSPException
 from atat.domain.csp.cloud.models import (
-    SubscriptionCreationCSPResult,
     SubscriptionCreationCSPPayload,
+    SubscriptionCreationCSPResult,
 )
 from atat.domain.environment_roles import EnvironmentRoles
+from atat.domain.environments import Environments
 from atat.domain.invitations import ApplicationInvitations
 from atat.domain.permission_sets import PermissionSets
 from atat.forms.application import EditEnvironmentForm
@@ -36,6 +33,9 @@ from atat.routes.applications.settings import (
     handle_create_member,
     handle_update_member,
 )
+from tests.factories import *
+from tests.mock_azure import mock_azure
+from tests.utils import captured_templates
 
 
 def test_updating_application_environments_success(client, user_session):

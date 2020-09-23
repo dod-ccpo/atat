@@ -1,11 +1,12 @@
-import pytest
-from redis import Redis
 from unittest.mock import Mock
 from uuid import uuid4
 
+import pytest
+from redis import Redis
+
+from atat.models.user import User
 from atat.utils.session_limiter import SessionLimiter
 from tests.factories import UserFactory
-from atat.models.user import User
 
 
 @pytest.fixture

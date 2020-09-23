@@ -1,6 +1,6 @@
 {% extends "task_orders/builder_base.html" %}
 
-{% from "task_orders/fragments/task_order_view.html" import TaskOrderView %}
+{% from "task_orders/fragments/task_order_view.html" import TaskOrderView with context %}
 {% from 'task_orders/form_header.html' import TOFormStepHeader %}
 
 {% set action = url_for('task_orders.form_step_five_confirm_signature', task_order_id=task_order_id) %}

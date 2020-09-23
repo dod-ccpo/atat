@@ -1,17 +1,17 @@
-from flask import url_for
 import pytest
+from flask import url_for
 
+from atat.domain.portfolios import PortfolioDeletionApplicationsExistError, Portfolios
+from atat.domain.portfolios.query import PortfoliosQuery
+from atat.utils.localization import translate
 from tests.factories import (
-    random_future_date,
-    random_past_date,
     ApplicationFactory,
     PortfolioFactory,
     TaskOrderFactory,
     UserFactory,
+    random_future_date,
+    random_past_date,
 )
-from atat.utils.localization import translate
-from atat.domain.portfolios import Portfolios, PortfolioDeletionApplicationsExistError
-from atat.domain.portfolios.query import PortfoliosQuery
 
 
 def test_new_portfolio(client, user_session):

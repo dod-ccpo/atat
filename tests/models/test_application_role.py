@@ -1,10 +1,9 @@
-import pytest
 import pendulum
+import pytest
 
-from atat.domain.permission_sets import PermissionSets
 from atat.domain.environment_roles import EnvironmentRoles
+from atat.domain.permission_sets import PermissionSets
 from atat.models.audit_event import AuditEvent
-
 from tests.factories import *
 
 

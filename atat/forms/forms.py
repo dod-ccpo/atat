@@ -1,6 +1,8 @@
-from flask_wtf import FlaskForm
-from flask import current_app, request as http_request
 import re
+
+from flask import current_app
+from flask import request as http_request
+from flask_wtf import FlaskForm
 
 from atat.utils.flash import formatted_flash as flash
 

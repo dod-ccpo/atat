@@ -1,11 +1,14 @@
 from enum import Enum
-from sqlalchemy import Index, ForeignKey, Column, String, Enum as SQLAEnum
+
+from sqlalchemy import Column
+from sqlalchemy import Enum as SQLAEnum
+from sqlalchemy import ForeignKey, Index, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
-from atat.models.base import Base
 import atat.models.mixins as mixins
 import atat.models.types as types
+from atat.models.base import Base
 
 
 class CSPRole(Enum):

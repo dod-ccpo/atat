@@ -1,6 +1,6 @@
-from glob import glob
 import json
 from dataclasses import dataclass
+from glob import glob
 from os.path import join as path_join
 
 

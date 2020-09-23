@@ -1,11 +1,12 @@
-from wtforms.validators import Required
 from wtforms.fields import BooleanField, FormField
+from wtforms.validators import Required
 
-from .forms import BaseForm
-from .member import NewForm as BaseNewMemberForm
 from atat.domain.permission_sets import PermissionSets
 from atat.forms.fields import SelectField
 from atat.utils.localization import translate
+
+from .forms import BaseForm
+from .member import NewForm as BaseNewMemberForm
 
 
 class PermissionsForm(BaseForm):

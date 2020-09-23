@@ -1,8 +1,8 @@
 from celery.result import AsyncResult
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, Integer, String
 
-from atat.models.base import Base
 import atat.models.mixins as mixins
+from atat.models.base import Base
 
 
 class JobFailure(Base, mixins.TimestampsMixin):

@@ -1,7 +1,7 @@
 from sqlalchemy import select
 
-from atat.jobs import send_notification_mail
 from atat.database import db
+from atat.jobs import send_notification_mail
 from atat.models.notification_recipient import NotificationRecipient
 
 

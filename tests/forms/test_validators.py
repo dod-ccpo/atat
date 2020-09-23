@@ -1,5 +1,5 @@
-from wtforms.validators import ValidationError, StopValidation
 import pytest
+from wtforms.validators import StopValidation, ValidationError
 
 from atat.forms.validators import *
 

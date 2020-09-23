@@ -27,7 +27,7 @@ def grant_ccpo_perms(dod_id):
 
 
 if __name__ == "__main__":
-    config = make_config({"default": {"DISABLE_CRL_CHECK": True, "DEBUG": False}})
+    config = make_config({"default": {"DEBUG": False}})
     app = make_app(config)
 
     with app.app_context():

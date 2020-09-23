@@ -68,8 +68,7 @@ variable "workspace_id" {
 
 }
 
-variable "pet_name" {}
 
 variable "tls_cert_path" {
-default = ""
+  default = ""
 }

@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atst-worker-envvars
+data:
+  CELERY_DEFAULT_QUEUE: celery-master
+  FLASK_ENV: master
+  PGDATABASE: cloudzero_bobcat_master
+  SERVER_NAME: master.atat.dev
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atst-envvars
+data:
+  CDN_ORIGIN: https://master.atat.dev
+  CELERY_DEFAULT_QUEUE: celery-master
+  FLASK_ENV: master
+  PGDATABASE: cloudzero_bobcat_master
+  STATIC_URL: "https://master.atat.dev/static/"
+  SAML_ENTITY_ID: https://master.atat.dev
+  SAML_ACS: https://master.atat.dev/login?acs
+  SAML_SLS: https://master.atat.dev/login?sls
+  SAML_IDP_URI: https://fs.disa.mil/federationmetadata/2007-06/federationmetadata.xml
+  SAML_DEV_ENTITY_ID: https://master.atat.dev/login-dev
+  SAML_DEV_ACS: https://master.atat.dev/login-dev?acs
+  SAML_DEV_SLS: https://master.atat.dev/login-dev?sls
+  SAML_DEV_IDP_URI: https://login.microsoftonline.com/b5ab0e1e-09f8-4258-afb7-fb17654bc5b3/federationmetadata/2007-06/federationmetadata.xml?appid=29cbbf05-89d2-4c72-a691-fe4fd0f74b3f

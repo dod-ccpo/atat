@@ -1,13 +1,13 @@
 from sqlalchemy import or_
+
 from atat.database import db
 from atat.domain.common import Query
-from atat.models.portfolio import Portfolio
-from atat.models.portfolio_role import PortfolioRole, Status as PortfolioRoleStatus
-from atat.models.application_role import (
-    ApplicationRole,
-    Status as ApplicationRoleStatus,
-)
 from atat.models.application import Application
+from atat.models.application_role import ApplicationRole
+from atat.models.application_role import Status as ApplicationRoleStatus
+from atat.models.portfolio import Portfolio
+from atat.models.portfolio_role import PortfolioRole
+from atat.models.portfolio_role import Status as PortfolioRoleStatus
 from atat.models.portfolio_state_machine import PortfolioStateMachine
 
 # from atat.models.application import Application

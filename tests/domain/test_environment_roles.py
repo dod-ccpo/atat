@@ -3,8 +3,7 @@ from unittest.mock import patch
 import pytest
 
 from atat.domain.environment_roles import EnvironmentRoles
-from atat.models import EnvironmentRole, ApplicationRoleStatus, EnvironmentRoleStatus
-
+from atat.models import ApplicationRoleStatus, EnvironmentRole, EnvironmentRoleStatus
 from tests.factories import *
 
 

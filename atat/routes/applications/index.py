@@ -1,9 +1,10 @@
-from flask import render_template, g
+from flask import g, render_template
 
-from .blueprint import applications_bp
 from atat.domain.authz.decorator import user_can_access_decorator as user_can
 from atat.domain.environment_roles import EnvironmentRoles
 from atat.models.permissions import Permissions
+
+from .blueprint import applications_bp
 
 
 def has_portfolio_applications(_user, portfolio=None, **_kwargs):

@@ -1,21 +1,16 @@
-from flask import (
-    Blueprint,
-    render_template,
-    redirect,
-    url_for,
-    request,
-    current_app as app,
-)
-from atat.domain.users import Users
+from flask import Blueprint
+from flask import current_app as app
+from flask import redirect, render_template, request, url_for
+
 from atat.domain.audit_log import AuditLog
+from atat.domain.authz.decorator import user_can_access_decorator as user_can
 from atat.domain.common import Paginator
 from atat.domain.exceptions import NotFoundError
-from atat.domain.authz.decorator import user_can_access_decorator as user_can
+from atat.domain.users import Users
 from atat.forms.ccpo_user import CCPOUserForm
 from atat.models.permissions import Permissions
 from atat.utils.context_processors import atat as atat_context_processor
 from atat.utils.flash import formatted_flash as flash
-
 
 bp = Blueprint("ccpo", __name__)
 bp.context_processor(atat_context_processor)

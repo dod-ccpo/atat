@@ -6,8 +6,8 @@ import pendulum
 import pytest
 
 from atat.domain.csp import CSP
+from atat.domain.csp.cloud.exceptions import UnknownServerException
 from atat.domain.csp.cloud.hybrid_cloud_provider import HYBRID_PREFIX
-
 from atat.domain.csp.cloud.models import (
     CostManagementQueryCSPPayload,
     SubscriptionCreationCSPPayload,
@@ -81,6 +81,10 @@ class TestIntegration:
     def tenant_id(self, portfolio):
         return portfolio.csp_data["tenant_id"]
 
+    @pytest.fixture(scope="function")
+    def user_object_id(self, portfolio):
+        return portfolio.csp_data["user_object_id"]
+
     @pytest.fixture(scope="session")
     def user(self):
         first_name = f"test-user-{uuid4()}"
@@ -115,6 +119,15 @@ class TestIntegration:
     def state_machine(self, app, csp, portfolio):
         return PortfolioStateMachineFactory.create(portfolio=portfolio, cloud=csp)
 
+    def _get_management_group(self, csp, tenant_id, management_group_id):
+        sp_token = csp.azure._get_tenant_principal_token(tenant_id)
+        response = csp.azure.sdk.requests.get(
+            f"{csp.azure.sdk.cloud.endpoints.resource_manager}{management_group_id}?api-version=2020-02-01",
+            headers=make_auth_header(sp_token),
+        )
+        response.raise_for_status()
+        return response.json()
+
     @pytest.mark.depends(name="portfolio")
     def test_hybrid_provision_portfolio(self, state_machine: PortfolioStateMachine):
         csp_data = {}
@@ -135,7 +148,7 @@ class TestIntegration:
             # create_initial_mgmt_group fails periodically. There must be some kind
             # of race condition on the Azure side we're not accounting for. This
             # sleep is temporary and we should solve the race condition.
-            sleep(1)
+            sleep(2)
             assert (
                 "created" in state_machine.state.value
                 or state_machine.state == PortfolioStates.COMPLETED
@@ -143,14 +156,39 @@ class TestIntegration:
 
             csp_data = state_machine.portfolio.csp_data
 
-    def _get_management_group(self, csp, tenant_id, management_group_id):
-        sp_token = csp.azure._get_tenant_principal_token(tenant_id)
-        response = csp.azure.sdk.requests.get(
-            f"{csp.azure.sdk.cloud.endpoints.resource_manager}{management_group_id}?api-version=2020-02-01",
-            headers=make_auth_header(sp_token),
+    @pytest.mark.depends(on=["portfolio"])
+    def test_hybrid_access_not_elevated(self, csp, tenant_id, env_role):
+        """By the end of portfolio provisioning, access should not be elevated"""
+
+        token = csp.azure._get_tenant_admin_token(
+            tenant_id, csp.azure.sdk.cloud.endpoints.resource_manager + "/.default"
         )
-        response.raise_for_status()
-        return response.json()
+        with pytest.raises(UnknownServerException):
+            # "Asserts" that the tenant admin no longer has elevated access
+            # since "_list_role_assignments" requires elevated acces
+            csp.azure._list_role_assignments(token)
+
+    @pytest.mark.depends(on=["portfolio"])
+    def test_context_manager_removes_access(self, csp, tenant_id, user_object_id):
+        """Specifically test the behavior of the access manager. Elevating
+        access allows a call to an API function that requires it, and trying the
+        same function again without the context manager raises an exception """
+
+        with csp.azure._get_elevated_access_token(
+            tenant_id, user_object_id
+        ) as elevated_token:
+            assert csp.azure._list_role_assignments(
+                elevated_token,
+                params={"$filter": f"principalId eq '{user_object_id}'"},
+            )
+
+        token = csp.azure._get_tenant_admin_token(
+            tenant_id, csp.azure.sdk.cloud.endpoints.resource_manager + "/.default"
+        )
+        with pytest.raises(UnknownServerException):
+            csp.azure._list_role_assignments(
+                token, params={"$filter": f"principalId eq '{user_object_id}'"}
+            )
 
     @pytest.mark.depends(name="application", on=["portfolio"])
     def test_hybrid_create_application_job(self, csp, application, tenant_id, session):
@@ -164,7 +202,7 @@ class TestIntegration:
         # the portfolio management group should be the parent of the management
         # group we just created for the application
         assert (
-            application.portfolio.csp_data["root_management_group_name"]
+            application.portfolio.csp_data["tenant_id"]
             in mgmt_grp_resp["properties"]["details"]["parent"]["id"]
         )
 
@@ -207,7 +245,7 @@ class TestIntegration:
     @pytest.mark.depends(on=["environment_role"])
     def test_hybrid_disable_user(self, csp, user, tenant_id, env_role):
         env_role_cloud_id = env_role.cloud_id
-        disable_user_result = csp.azure.disable_user(tenant_id, env_role_cloud_id)
+        disable_user_result = csp.disable_user(tenant_id, env_role_cloud_id)
         assert disable_user_result["id"] == env_role_cloud_id
 
 

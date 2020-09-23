@@ -1,8 +1,8 @@
-from atat.utils import first_or_none
-from atat.models.permissions import Permissions
 from atat.domain.exceptions import UnauthorizedError
-from atat.models.portfolio_role import Status as PortfolioRoleStatus
 from atat.models.application_role import Status as ApplicationRoleStatus
+from atat.models.permissions import Permissions
+from atat.models.portfolio_role import Status as PortfolioRoleStatus
+from atat.utils import first_or_none
 
 
 class Authorization(object):

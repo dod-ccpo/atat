@@ -1,8 +1,9 @@
-import pytest
 from unittest.mock import Mock
 
-from tests.factories import NotificationRecipientFactory
+import pytest
+
 from atat.utils.notification_sender import NotificationSender
+from tests.factories import NotificationRecipientFactory
 
 
 @pytest.fixture

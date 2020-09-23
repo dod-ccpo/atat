@@ -84,8 +84,8 @@ def do_create_application(csp: CloudProviderInterface, application_id=None):
             return
 
         csp_details = application.portfolio.csp_data
-        parent_id = f"/providers/Microsoft.Management/managementGroups/{csp_details['root_management_group_name']}"
         tenant_id = csp_details["tenant_id"]
+        parent_id = f"/providers/Microsoft.Management/managementGroups/{tenant_id}"
 
         app.logger.debug("application.id = %s", application.id)
         app.logger.debug("application.portfolio.id = %s", application.portfolio.id)

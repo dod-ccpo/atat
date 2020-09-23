@@ -1,19 +1,18 @@
-from sqlalchemy import String, ForeignKey, Column, Date, Table, TIMESTAMP
-from sqlalchemy.orm import relationship
+from sqlalchemy import TIMESTAMP, Column, ForeignKey, String, Table
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.event import listen
+from sqlalchemy.orm import relationship
 
-from atat.models.base import Base
-import atat.models.types as types
 import atat.models.mixins as mixins
-from atat.models.portfolio_invitation import PortfolioInvitation
+import atat.models.types as types
 from atat.models.application_invitation import ApplicationInvitation
+from atat.models.base import Base
 from atat.models.mixins.auditable import (
-    AuditableMixin,
     ACTION_UPDATE,
+    AuditableMixin,
     record_permission_sets_updates,
 )
-
+from atat.models.portfolio_invitation import PortfolioInvitation
 
 users_permission_sets = Table(
     "users_permission_sets",
@@ -56,14 +55,13 @@ class User(
 
     email = Column(String)
     dod_id = Column(String, unique=True, nullable=False)
-    first_name = Column(String, nullable=False)
-    last_name = Column(String, nullable=False)
+    first_name = Column(String, nullable=True)
+    last_name = Column(String, nullable=True)
     phone_number = Column(String)
     phone_ext = Column(String)
     service_branch = Column(String)
     citizenship = Column(String)
     designation = Column(String)
-    date_latest_training = Column(Date)
     last_login = Column(TIMESTAMP(timezone=True), nullable=True)
     last_session_id = Column(UUID(as_uuid=True), nullable=True)
 
@@ -78,7 +76,6 @@ class User(
         "service_branch",
         "citizenship",
         "designation",
-        "date_latest_training",
     ]
 
     @property

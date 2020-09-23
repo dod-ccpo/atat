@@ -7,12 +7,12 @@ resource "random_id" "server" {
 }
 
 resource "azurerm_resource_group" "cdn" {
-  name     = "${var.name}-${var.environment}-cdn"
+  name     = "${var.name}-cdn-${var.environment}"
   location = var.region
 }
 
 resource "azurerm_cdn_profile" "cdn" {
-  name                = "${var.name}-${var.environment}-profile"
+  name                = "${var.name}-profile-${var.environment}"
   location            = azurerm_resource_group.cdn.location
   resource_group_name = azurerm_resource_group.cdn.name
   sku                 = var.sku

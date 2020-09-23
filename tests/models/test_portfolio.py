@@ -1,14 +1,16 @@
+from decimal import Decimal
+
+import pendulum
+import pytest
+
 from tests.factories import (
     ApplicationFactory,
+    CLINFactory,
     PortfolioFactory,
     TaskOrderFactory,
-    CLINFactory,
     random_future_date,
     random_past_date,
 )
-import pendulum
-from decimal import Decimal
-import pytest
 
 
 @pytest.fixture(scope="function")

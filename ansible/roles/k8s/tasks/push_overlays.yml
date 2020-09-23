@@ -1,0 +1,22 @@
+---
+
+
+- name: Compress overlays
+  archive:
+    path: "{{ playbook_dir }}/.out"
+    dest: "{{ playbook_dir }}/k8s_overlays.tgz"
+
+
+- name: show outputs
+  debug:
+    msg: "{{ b_end }}"
+
+
+- name: push overlays to a storage account
+  azure_rm_storageblob:
+    resource_group: "{{ b_end.resource_group_name }}"
+    storage_account_name: "{{ b_end.storage_account_name }}"
+    container: "{{ b_end.container_name }}"
+    blob: k8s.overlays
+    src: "{{ playbook_dir }}/k8s_overlays.tgz"
+    content_type: 'gzip'

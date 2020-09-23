@@ -1,5 +1,5 @@
-from flask import url_for
 import pytest
+from flask import url_for
 
 from atat.domain.permission_sets import PermissionSets
 from atat.domain.task_orders import TaskOrders
@@ -7,7 +7,6 @@ from atat.models import *
 from atat.models.portfolio_role import Status as PortfolioStatus
 from atat.models.task_order import Status as TaskOrderStatus
 from atat.utils.localization import translate
-
 from tests.factories import *
 from tests.utils import captured_templates
 
@@ -45,7 +44,10 @@ def test_view_task_order_not_draft(client, user_session, task_order):
 
 def test_view_task_order_draft(client, user_session, task_order):
     TaskOrders.update(
-        task_order_id=task_order.id, number="1234567890", clins=[], pdf=None
+        task_order_id=task_order.id,
+        number="1234567890",
+        clins=[],
+        pdf={"filename": "sample.pdf", "object_name": "1234567"},
     )
     user_session(task_order.portfolio.owner)
     response = client.get(

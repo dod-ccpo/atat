@@ -1,14 +1,15 @@
+from unittest.mock import Mock
+
 from flask import url_for
 
-from tests.factories import (
-    PortfolioFactory,
-    ApplicationFactory,
-    UserFactory,
-    ApplicationRoleFactory,
-)
-from unittest.mock import Mock
 from atat.forms.data import ENV_ROLE_NO_ACCESS as NO_ACCESS
 from atat.models.application_invitation import ApplicationInvitation
+from tests.factories import (
+    ApplicationFactory,
+    ApplicationRoleFactory,
+    PortfolioFactory,
+    UserFactory,
+)
 
 
 def test_get_name_and_description_form(client, user_session):

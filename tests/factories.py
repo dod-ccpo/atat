@@ -102,9 +102,6 @@ class UserFactory(Base):
     service_branch = factory.LazyFunction(random_service_branch)
     citizenship = "United States"
     designation = "military"
-    date_latest_training = factory.LazyFunction(
-        lambda: pendulum.today(tz="UTC").subtract(days=(random.randrange(1, 365)))
-    )
 
     @classmethod
     def create_ccpo(cls, **kwargs):

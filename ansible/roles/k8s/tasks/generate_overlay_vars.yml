@@ -1,0 +1,5 @@
+---
+
+- name: Create HTTP Basic Auth Password
+  set_fact:
+    password: "{{ lookup('password', 'htpasswd') }} | base64"

@@ -1,7 +1,9 @@
+from decimal import Decimal
+
+import pendulum
+
 from atat.domain.csp.reports import prepare_azure_reporting_data
 from tests.factories import PortfolioFactory
-from decimal import Decimal
-import pendulum
 
 
 class TestPrepareAzureData:

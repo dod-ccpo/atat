@@ -48,6 +48,7 @@ export const buildUploader = (
   config
 ) => {
   if (cloudProvider === 'azure') {
+    // TODO: generate objectName right here instead generating it in the backend and passing it through
     return new AzureUploader(
       config.azureAccountName,
       config.azureContainerName,

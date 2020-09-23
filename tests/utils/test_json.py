@@ -1,8 +1,7 @@
 import json
+
 from atat.utils.json import CustomJSONEncoder
-
 from tests.factories import AttachmentFactory
-
 
 encoder = CustomJSONEncoder()
 

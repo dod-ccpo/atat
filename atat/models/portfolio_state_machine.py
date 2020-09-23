@@ -11,19 +11,16 @@ from transitions.extensions.states import Tags, add_state_features
 
 import atat.models.mixins as mixins
 from atat.database import db
+from atat.domain.csp.cloud.models import stage_to_classname
 from atat.models.base import Base
 from atat.models.mixins.state_machines import (
     AzureStages,
     PortfolioStates,
     StageStates,
-    _build_transitions,
     StateMachineMisconfiguredError,
+    _build_transitions,
 )
 from atat.models.types import Id
-
-
-def _stage_to_classname(stage):
-    return "".join(map(lambda word: word.capitalize(), stage.split("_")))
 
 
 def get_stage_csp_class(stage, class_type):
@@ -32,7 +29,7 @@ def get_stage_csp_class(stage, class_type):
     class_type is either 'payload' or 'result'
 
     """
-    cls_name = f"{_stage_to_classname(stage)}CSP{class_type.capitalize()}"
+    cls_name = f"{stage_to_classname(stage)}CSP{class_type.capitalize()}"
     try:
         return getattr(
             importlib.import_module("atat.domain.csp.cloud.models"), cls_name
@@ -147,16 +144,25 @@ class PortfolioStateMachine(
         payload_data = payload_data_class(**payload)
         return getattr(self.cloud, f"create_{self.current_stage}")(payload_data)
 
+    def _update_csp_data(self, payload: dict) -> None:
+        # TODO: this is a good candidate for a domain class method, but trying
+        # to import the Portfolios domain class results in what appears to be a
+        # cyclical import error
+        if self.portfolio.csp_data is None:
+            self.portfolio.csp_data = {}
+        self.portfolio.csp_data.update(payload)
+        db.session.add(self.portfolio)
+        db.session.commit()
+
     def after_in_progress_callback(self, event):
         try:
             payload = event.kwargs.get("csp_data")
             response = self._do_provisioning_stage(payload)
-            if self.portfolio.csp_data is None:
-                self.portfolio.csp_data = {}
-            self.portfolio.csp_data.update(response.dict())
-            db.session.add(self.portfolio)
-            db.session.commit()
-            self.finish_stage()
+            if response.reset_stage:
+                self.reset_stage()
+            else:
+                self._update_csp_data(response.dict())
+                self.finish_stage()
         except:
             self.fail_stage()
             raise

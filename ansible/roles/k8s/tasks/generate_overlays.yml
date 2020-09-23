@@ -1,0 +1,11 @@
+---
+- name: Create template output directory
+  file:
+    state: directory
+    path: "{{ playbook_dir }}/.out"
+
+- name: Interpolate the templates
+  template:
+    src: "{{ item }}"
+    dest: "{{ playbook_dir }}/.out/{{ item | basename }}"
+  with_fileglob: "{{ playbook_dir + '/roles/k8s/tasks/templates/*' }}"

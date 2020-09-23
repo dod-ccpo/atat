@@ -12,7 +12,7 @@ spec:
               usepodidentity: "false"
               usevmmanagedidentity: "true"
               vmmanagedidentityclientid: $VMSS_CLIENT_ID
-              keyvaultname: "cz-{{ namespace }}-keyvault"
+              keyvaultname: "{{ tf_app_env_outputs.application_keyvault_name.value }}"
               keyvaultobjectnames: "dhparam4096;atatdev;atatdev"
         - name: flask-secret
           flexVolume:
@@ -20,7 +20,7 @@ spec:
               usepodidentity: "false"
               usevmmanagedidentity: "true"
               vmmanagedidentityclientid: $VMSS_CLIENT_ID
-              keyvaultname: "cz-{{ namespace }}-keyvault"
+              keyvaultname: "{{ tf_app_env_outputs.application_keyvault_name.value }}"
               keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY;AZURE-TENANT-ID;AZURE-CLIENT-ID;AZURE-USER-OBJECT-ID;AZURE-TENANT-ADMIN-PASSWORD;AZURE-SECRET-KEY;AZURE-HYBRID-TENANT-ID;AZURE-BILLING-ACCOUNT-NAME;AZURE-BILLING-PROFILE-ID;AZURE-INVOICE-SECTION-ID;AZURE-HYBRID-REPORTING-CLIENT-ID;AZURE-HYBRID-REPORTING-SECRET"
               keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY;AZURE_TENANT_ID;AZURE_CLIENT_ID;AZURE_USER_OBJECT_ID;AZURE_TENANT_ADMIN_PASSWORD;AZURE_SECRET_KEY;AZURE_HYBRID_TENANT_ID;AZURE_BILLING_ACCOUNT_NAME;AZURE_BILLING_PROFILE_ID;AZURE_INVOICE_SECTION_ID;AZURE_HYBRID_REPORTING_CLIENT_ID;AZURE_HYBRID_REPORTING_SECRET"
               keyvaultobjecttypes: "secret;secret;secret;secret;key;secret;secret;secret;secret;secret;secret;secret;secret;secret;secret;secret"
@@ -39,7 +39,7 @@ spec:
               usepodidentity: "false"
               usevmmanagedidentity: "true"
               vmmanagedidentityclientid: $VMSS_CLIENT_ID
-              keyvaultname: "cz-{{ namespace }}-keyvault"
+              keyvaultname: "{{ tf_app_env_outputs.application_keyvault_name.value }}"
               keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY;AZURE-TENANT-ID;AZURE-CLIENT-ID;AZURE-USER-OBJECT-ID;AZURE-TENANT-ADMIN-PASSWORD;AZURE-SECRET-KEY;AZURE-HYBRID-TENANT-ID"
               keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY;AZURE_TENANT_ID;AZURE_CLIENT_ID;AZURE_USER_OBJECT_ID;AZURE_TENANT_ADMIN_PASSWORD;AZURE_SECRET_KEY;AZURE_HYBRID_TENANT_ID"
               keyvaultobjecttypes: "secret;secret;secret;secret;key;secret;secret;secret;secret;secret;secret"
@@ -58,7 +58,7 @@ spec:
               usepodidentity: "false"
               usevmmanagedidentity: "true"
               vmmanagedidentityclientid: $VMSS_CLIENT_ID
-              keyvaultname: "cz-{{ namespace }}-keyvault"
+              keyvaultname: "{{ tf_app_env_outputs.application_keyvault_name.value }}"
               keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY;AZURE-TENANT-ID;AZURE-CLIENT-ID;AZURE-USER-OBJECT-ID;AZURE-TENANT-ADMIN-PASSWORD;AZURE-SECRET-KEY;AZURE-HYBRID-TENANT-ID"
               keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY;AZURE_TENANT_ID;AZURE_CLIENT_ID;AZURE_USER_OBJECT_ID;AZURE_TENANT_ADMIN_PASSWORD;AZURE_SECRET_KEY;AZURE_HYBRID_TENANT_ID"
               keyvaultobjecttypes: "secret;secret;secret;secret;key;secret;secret;secret;secret;secret;secret"
@@ -79,7 +79,7 @@ spec:
                   usepodidentity: "false"
                   usevmmanagedidentity: "true"
                   vmmanagedidentityclientid: $VMSS_CLIENT_ID
-                  keyvaultname: "cz-{{ namespace }}-keyvault"
+                  keyvaultname: "{{ tf_app_env_outputs.application_keyvault_name.value }}"
                   keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY;AZURE-TENANT-ID;AZURE-CLIENT-ID;AZURE-USER-OBJECT-ID;AZURE-TENANT-ADMIN-PASSWORD;AZURE-SECRET-KEY;AZURE-HYBRID-TENANT-ID"
                   keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY;AZURE_TENANT_ID;AZURE_CLIENT_ID;AZURE_USER_OBJECT_ID;AZURE_TENANT_ADMIN_PASSWORD;AZURE_SECRET_KEY;AZURE_HYBRID_TENANT_ID"
                   keyvaultobjecttypes: "secret;secret;secret;secret;key;secret;secret;secret;secret;secret;secret"

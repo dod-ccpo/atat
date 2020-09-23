@@ -1,17 +1,18 @@
-from sqlalchemy import or_, func
 import pendulum
+from sqlalchemy import func, or_
 
 from atat.database import db
 from atat.models import (
     CLIN,
-    TaskOrder,
     Portfolio,
     PortfolioStateMachine,
     PortfolioStates,
+    TaskOrder,
 )
 from atat.models.task_order import SORT_ORDERING
-from . import BaseDomainClass
 from atat.utils import commit_or_raise_already_exists_error
+
+from . import BaseDomainClass
 
 
 class TaskOrders(BaseDomainClass):

@@ -44,21 +44,23 @@ This will return a json blob, you'll need to save the `access_token` for use in 
 
 3. Now that the service principal is SAML enabled, we need to configure some basic SAML properties, namely the endpoints that our new SAML provider should expect to be called from and return to:
 
-    The Identifier URI is the URI that SAML expects users to have hit when being redirected to the SAML identitiy provider for authentication.
+    The Identifier URI is the base URI that saml should expect calls to come from. These need to be unique across apps in a given tenant, you can add a path to create a distinction
 
     The Redirect URI is the URI that SAML will post back to after authentication is complete.
+
+    The Logut URI is the URI that the SAML IdP will redirect the browser back to after IdP signout is complete
 
     Note: Azure expects these are secure, so for local testing, you'll need to create self-signed certificates and run localhost securely.
 
     Some examples of Identifier URIs:
 
-    localhost: https://localhost:8000/saml
+    localhost: https://localhost:8000
 
-    staging: https://staging.atat.dev/saml
+    staging: https://staging.atat.dev
 
-    staging dev login: https://staging.atat.dev/login-dev?saml
+    staging dev login: https://staging.atat.dev/login-dev (example of adding a path to make it distinct from the other staging identity)
 
-    We recommend settig up the Redirect URIs to be the same route as the Identifier URI, but with an `acs` query parameter. Using `acs` as a param is idomatic for Assertion Consumer Service URL, which is the SAML concept it maps to. Example below uses a secure localhost
+    The Redirect URIs will likely be the same as the Identifier URI with the appropriate path and `acs` query parameter. Using `acs` as a param is idomatic for Assertion Consumer Service URL, which is the SAML concept it maps to. Same with the Logout URI, it should be the same as the Redirect URI, except with an `sls` query parameter. Example below uses a secure localhost
 
     ```
     curl --location --request PATCH 'https://graph.microsoft.com/v1.0/applications/<application.objectId>' \
@@ -67,16 +69,29 @@ This will return a json blob, you'll need to save the `access_token` for use in 
     --data-raw '{
         "web": {
             "redirectUris": [
-                "https://localhost:8000/saml?acs"
+                "https://localhost:8000/login?acs"
             ]
         },
         "identifierUris": [
-            "https://localhost:8000/saml"
-        ]
+            "https://localhost:8000"
+        ],
+        "logoutUrl" "https://localhost:8000/login?sls",
     }'
     ```
 
-4. Now we need to add a certificate to the SAML provider. In the guide, this is prescribed as being done via the API. Unfortunately, due to [API issues](https://github.com/MicrosoftDocs/azure-docs/issues/58484) that were unresovled at the time of this work, this step needs to be done manually. There are 2 options for cert generation, you can either generate a self-signed cert and upload it to the UI, or have azure create a certificate for you and grab the details.
+4. Additionally, we need to register our login URL with the new service principal. This should reflect the route that will initiate login (e.g. https://staging.atat.dev/login). This will ensure that our IdP knows where to direct the user after logging out. Example below continues, as above, using a secure localhost server.
+
+    ```
+    curl --location --request PATCH 'https://graph.microsoft.com/v1.0/servicePrincipals/<servicePrincipal.objectId>' \
+    --header 'Authorization: Bearer <access_token>' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "loginUrl": "https://localhost:8000/login",
+
+    }'
+    ```
+
+5. Now we need to add a certificate to the SAML provider. In the guide, this is prescribed as being done via the API. Unfortunately, due to [API issues](https://github.com/MicrosoftDocs/azure-docs/issues/58484) that were unresovled at the time of this work, this step needs to be done manually. There are 2 options for cert generation, you can either generate a self-signed cert and upload it to the UI, or have azure create a certificate for you and grab the details.
 
     To generate your own certificate follow the instructions, otherwise skip to the next section.
 
@@ -103,7 +118,7 @@ This will return a json blob, you'll need to save the `access_token` for use in 
     7. You'll the need to enter a notification email address, currently we're just using our azure account name (e.g. first.last@ttenantname.onmicrosoft.com) but we'll want a prescribed notifcation address in the future
     8. Once all that is done, you can click `Save` and the uploaded certificate should be marked as `Active`. You can dismiss the panel (click `X` in the top right) and you should see the certificate details in the `SAML Signing Certificate` panel
 
-5. Add Groups or Users
+6. Add Groups or Users
 
    TBD: Do we create a group that all authed users should be added to, or add users directly?
 

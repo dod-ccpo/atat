@@ -1,7 +1,7 @@
-from flask import request as http_request, g, render_template
 from operator import attrgetter
 
-from . import index
-from . import invitations
-from . import admin
+from flask import g, render_template
+from flask import request as http_request
+
+from . import admin, index, invitations
 from .blueprint import portfolios_bp

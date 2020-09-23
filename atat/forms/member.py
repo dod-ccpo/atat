@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms.fields.html5 import EmailField, TelField
-from wtforms.validators import Required, Email, Length, Optional
 from wtforms.fields import StringField
+from wtforms.fields.html5 import EmailField, TelField
+from wtforms.validators import Email, Length, Optional, Required
 
-from atat.forms.validators import Number, PhoneNumber, Name
+from atat.forms.validators import Name, Number, PhoneNumber
 from atat.utils.localization import translate
 
 

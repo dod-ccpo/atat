@@ -36,7 +36,7 @@ Imported from: AT-AT CI - login
 -->
 <tr>
 <td>open</td>
-<td>/login-dev</td>
+<td>/login-local</td>
 <td></td>
 </tr>
 <tr>
@@ -291,6 +291,20 @@ Imported from: AT-AT CI - login
 <td>assertText</td>
 <td>css=a[href="#"].uploaded-file__remove</td>
 <td>*Remove*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Pull PDF download HTML for use in later steps for comparison to other download links-->
+<tr data-optional="true">
+<td>storeEval</td>
+<td><script>var pdfLink = document.querySelector(".uploaded-file > a.uploaded-file__name");
+var pdfUrl = pdfLink.href;
+console.log(pdfUrl);
+return pdfUrl;</script></td>
+<td>pdfUrl</td>
 </tr>
 </tbody>
 </table>

@@ -1,20 +1,15 @@
-from sqlalchemy import func, or_, and_
-from sqlalchemy.orm.exc import NoResultFound
 from typing import List
 from uuid import UUID
 
+from sqlalchemy import and_, func, or_
+from sqlalchemy.orm.exc import NoResultFound
+
 from atat.database import db
-from atat.models import (
-    Environment,
-    Application,
-    Portfolio,
-    TaskOrder,
-    CLIN,
-)
 from atat.domain.environment_roles import EnvironmentRoles
+from atat.models import CLIN, Application, Environment, Portfolio, TaskOrder
 from atat.utils import commit_or_raise_already_exists_error
 
-from .exceptions import NotFoundError, DisabledError
+from .exceptions import DisabledError, NotFoundError
 
 
 class Environments(object):

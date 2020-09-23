@@ -293,7 +293,6 @@ def create_demo_portfolio(name, data):
                     "phone_number",
                     "citizenship",
                     "designation",
-                    "date_latest_training",
                 ],
                 DEV_USERS["amanda"],
             ),
@@ -371,7 +370,7 @@ def seed_db():
 
 
 if __name__ == "__main__":
-    config = make_config({"default": {"DISABLE_CRL_CHECK": True, "DEBUG": False}})
+    config = make_config({"default": {"DEBUG": False}})
     app = make_app(config)
     with app.app_context():
         seed_db()

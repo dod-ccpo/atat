@@ -1,25 +1,21 @@
 import os
 import urllib.parse as url
 
-from flask import (
-    Blueprint,
-    g,
-    make_response,
-    redirect,
-    render_template,
-    request,
-    session,
-    url_for,
-)
+from flask import Blueprint
 from flask import current_app as app
+from flask import g, make_response, redirect, render_template, request, session, url_for
 from jinja2.exceptions import TemplateNotFound
 from werkzeug.exceptions import MethodNotAllowed, NotFound
 from werkzeug.routing import RequestRedirect
 
 from atat.domain.auth import logout as _logout
-from atat.domain.authnid import AuthenticationContext
-from atat.domain.exceptions import UnauthenticatedError
 from atat.domain.users import Users
+from atat.routes.saml_helpers import (
+    get_user_from_saml_attributes,
+    init_saml_auth_dev,
+    load_attributes_from_assertion,
+    prepare_idp_url,
+)
 from atat.utils.flash import formatted_flash as flash
 
 bp = Blueprint("atat", __name__)
@@ -30,7 +26,7 @@ def root():
     if g.current_user:
         return redirect(url_for(".home"))
 
-    redirect_url = app.config.get("CAC_URL")
+    redirect_url = url_for(".login")
     if request.args.get("next"):
         redirect_url = url.urljoin(
             redirect_url,
@@ -44,19 +40,6 @@ def root():
 @bp.route("/home")
 def home():
     return render_template("home.html")
-
-
-def _client_s_dn():
-    return request.environ.get("HTTP_X_SSL_CLIENT_S_DN")
-
-
-def _make_authentication_context():
-    return AuthenticationContext(
-        crl_cache=app.crl_cache,
-        auth_status=request.environ.get("HTTP_X_SSL_CLIENT_VERIFY"),
-        sdn=_client_s_dn(),
-        cert=request.environ.get("HTTP_X_SSL_CLIENT_CERT"),
-    )
 
 
 def redirect_after_login_url(next_param=None):
@@ -98,28 +81,18 @@ def current_user_setup(user):
     Users.update_last_login(user)
 
 
-@bp.route("/login-redirect")
-def login_redirect():
-    try:
-        auth_context = _make_authentication_context()
-        auth_context.authenticate()
-
-        user = auth_context.get_user()
-        current_user_setup(user)
-    except UnauthenticatedError as err:
-        app.logger.info(
-            "authentication failed for subject distinguished name %s", _client_s_dn()
-        )
-        raise err
-
-    return redirect(redirect_after_login_url())
-
-
 @bp.route("/logout")
 def logout():
+    login_method = session.pop("login_method", "main")
     _logout()
-    response = make_response(redirect(url_for(".root")))
-    response.set_cookie("expandSidenav", "", expires=0)
+    logout_url = url_for(".root")
+
+    if login_method == "dev":
+        saml_auth = init_saml_auth_dev(request)
+        logout_url = saml_auth.logout(return_to=logout_url)
+
+    response = make_response(redirect(logout_url))
+    response.set_cookie("expandSidenav", "", expires=0, httponly=True)
     flash("logged_out")
     return response
 
@@ -127,3 +100,20 @@ def logout():
 @bp.route("/about")
 def about():
     return render_template("about.html")
+
+
+@bp.route("/login", methods=["GET"])
+def login():
+    saml_login_uri = prepare_idp_url(request)
+    return redirect(saml_login_uri)
+
+
+@bp.route("/login", methods=["POST"])
+def handle_login_response():
+    if "acs" in request.args:
+        attributes = load_attributes_from_assertion(request)
+        user = get_user_from_saml_attributes(attributes)
+
+        next_param = session.pop("query_string_parameters", {}).get("next_param", None)
+        current_user_setup(user)
+        return redirect(redirect_after_login_url(next_param))

@@ -1,19 +1,18 @@
 import pytest
 
-from tests.factories import (
-    ApplicationRoleFactory,
-    TaskOrderFactory,
-    UserFactory,
-    PortfolioFactory,
-    PortfolioRoleFactory,
-)
 from atat.domain.authz import Authorization, user_can_access
 from atat.domain.authz.decorator import user_can_access_decorator
-from atat.domain.permission_sets import PermissionSets
 from atat.domain.exceptions import UnauthorizedError
-from atat.models.permissions import Permissions
+from atat.domain.permission_sets import PermissionSets
 from atat.domain.portfolio_roles import PortfolioRoles
-
+from atat.models.permissions import Permissions
+from tests.factories import (
+    ApplicationRoleFactory,
+    PortfolioFactory,
+    PortfolioRoleFactory,
+    TaskOrderFactory,
+    UserFactory,
+)
 from tests.utils import FakeLogger
 
 

@@ -1,10 +1,12 @@
-from flask import Response, current_app as app
+from flask import Response
+from flask import current_app as app
+
+from atat.domain.authz.decorator import user_can_access_decorator as user_can
+from atat.domain.exceptions import NotFoundError
+from atat.domain.task_orders import TaskOrders
+from atat.models.permissions import Permissions
 
 from .blueprint import task_orders_bp
-from atat.domain.task_orders import TaskOrders
-from atat.domain.exceptions import NotFoundError
-from atat.domain.authz.decorator import user_can_access_decorator as user_can
-from atat.models.permissions import Permissions
 
 
 def send_file(attachment):

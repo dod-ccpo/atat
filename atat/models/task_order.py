@@ -1,15 +1,15 @@
 from enum import Enum
 
-from sqlalchemy import Column, DateTime, ForeignKey, String
+from pendulum import today
+from sqlalchemy import Column, DateTime, ForeignKey, String, func
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
-from atat.models.clin import CLIN
-from atat.models.base import Base
-import atat.models.types as types
+
 import atat.models.mixins as mixins
+import atat.models.types as types
 from atat.models.attachment import Attachment
-from pendulum import today
-from sqlalchemy import func
+from atat.models.base import Base
+from atat.models.clin import CLIN
 
 
 class Status(Enum):

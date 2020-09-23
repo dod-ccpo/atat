@@ -1,4 +1,5 @@
 from uuid import uuid4
+
 import pendulum
 
 from .cloud_provider_interface import CloudProviderInterface
@@ -58,10 +59,10 @@ from .models import (
     TenantCSPResult,
     TenantPrincipalAppCSPPayload,
     TenantPrincipalAppCSPResult,
-    TenantPrincipalCSPPayload,
-    TenantPrincipalCSPResult,
     TenantPrincipalCredentialCSPPayload,
     TenantPrincipalCredentialCSPResult,
+    TenantPrincipalCSPPayload,
+    TenantPrincipalCSPResult,
     TenantPrincipalOwnershipCSPPayload,
     TenantPrincipalOwnershipCSPResult,
     UserCSPPayload,
@@ -88,8 +89,8 @@ class MockCloudProvider(CloudProviderInterface):
     def __init__(
         self, config, with_delay=True, with_failure=True, with_authorization=True
     ):
-        from time import sleep
         import random
+        from time import sleep
 
         self._with_delay = with_delay
         self._with_failure = with_failure

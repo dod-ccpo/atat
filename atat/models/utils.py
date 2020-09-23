@@ -1,7 +1,7 @@
+from contextlib import contextmanager
 from typing import List
 
-from sqlalchemy import func, sql, Interval, and_, or_
-from contextlib import contextmanager
+from sqlalchemy import Interval, and_, func, or_, sql
 
 from atat.database import db
 from atat.domain.exceptions import ClaimFailedException

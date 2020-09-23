@@ -1,14 +1,11 @@
-from flask import render_template, current_app, url_for, redirect, request
-from flask_wtf.csrf import CSRFError
 import werkzeug.exceptions as werkzeug_exceptions
+from flask import current_app, redirect, render_template, request, url_for
+from flask_wtf.csrf import CSRFError
 
 import atat.domain.exceptions as exceptions
-from atat.domain.invitations import (
-    InvitationError,
-    ExpiredError as InvitationExpiredError,
-    WrongUserError as InvitationWrongUserError,
-)
-from atat.domain.authnid.crl import CRLInvalidException
+from atat.domain.invitations import ExpiredError as InvitationExpiredError
+from atat.domain.invitations import InvitationError
+from atat.domain.invitations import WrongUserError as InvitationWrongUserError
 from atat.domain.portfolios import PortfolioError
 from atat.utils.flash import formatted_flash as flash
 from atat.utils.localization import translate
@@ -41,11 +38,6 @@ def make_error_pages(app):
     # pylint: disable=unused-variable
     def not_found(e):
         return handle_error(e)
-
-    @app.errorhandler(CRLInvalidException)
-    # pylint: disable=unused-variable
-    def missing_crl(e):
-        return handle_error(e, message="Error Code 008", code=401)
 
     @app.errorhandler(exceptions.UnauthenticatedError)
     # pylint: disable=unused-variable

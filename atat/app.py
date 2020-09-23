@@ -1,43 +1,42 @@
 import os
 import re
 from configparser import ConfigParser
-import pendulum
-from flask import Flask, request, g, session, url_for as flask_url_for
-from flask_session import Session
-import redis
-from unipath import Path
-from flask_wtf.csrf import CSRFProtect
+from logging.config import dictConfig
 from urllib.parse import urljoin
 
-from atat.database import db
+import pendulum
+import redis
+from flask import Flask, g, request, session
+from flask import url_for as flask_url_for
+from flask_session import Session
+from flask_wtf.csrf import CSRFProtect
+from unipath import Path
+
 from atat.assets import environment as assets_environment
-from atat.filters import register_filters
-from atat.routes import bp
-from atat.routes.portfolios import portfolios_bp as portfolio_routes
-from atat.routes.task_orders import task_orders_bp
-from atat.routes.applications import applications_bp
-from atat.routes.dev import bp as dev_routes
-from atat.routes.users import bp as user_routes
-from atat.routes.errors import make_error_pages
-from atat.routes.ccpo import bp as ccpo_routes
-from atat.domain.authnid.crl import CRLCache, NoOpCRLCache
+from atat.database import db
 from atat.domain.auth import apply_authentication
 from atat.domain.authz import Authorization
 from atat.domain.csp import make_csp_provider
 from atat.domain.portfolios import Portfolios
+from atat.filters import register_filters
 from atat.models.permissions import Permissions
 from atat.queue import celery, update_celery
+from atat.routes import bp
+from atat.routes.applications import applications_bp
+from atat.routes.ccpo import bp as ccpo_routes
+from atat.routes.dev import dev_bp as dev_routes
+from atat.routes.dev import local_access_bp
+from atat.routes.errors import make_error_pages
+from atat.routes.portfolios import portfolios_bp as portfolio_routes
+from atat.routes.task_orders import task_orders_bp
+from atat.routes.users import bp as user_routes
 from atat.utils import mailer
+from atat.utils.context_processors import assign_resources
 from atat.utils.form_cache import FormCache
 from atat.utils.json import CustomJSONEncoder, sqlalchemy_dumps
+from atat.utils.logging import JsonFormatter, RequestContextFilter
 from atat.utils.notification_sender import NotificationSender
 from atat.utils.session_limiter import SessionLimiter
-
-from logging.config import dictConfig
-from atat.utils.logging import JsonFormatter, RequestContextFilter
-
-from atat.utils.context_processors import assign_resources
-
 
 ENV = os.getenv("FLASK_ENV", "dev")
 
@@ -57,6 +56,8 @@ def make_app(config):
     make_redis(app, config)
     csrf = CSRFProtect()
     csrf.exempt("atat.routes.dev.login_dev")
+    csrf.exempt("atat.routes.login")
+    csrf.exempt("atat.routes.handle_login_response")
 
     app.config.update(config)
     app.config.update({"SESSION_REDIS": app.redis})
@@ -67,7 +68,6 @@ def make_app(config):
     register_filters(app)
     register_jinja_globals(app)
     make_csp_provider(app, config.get("CSP", "mock"))
-    make_crl_validator(app)
     make_mailer(app)
     make_notification_sender(app)
 
@@ -87,6 +87,9 @@ def make_app(config):
 
     if ENV != "prod":
         app.register_blueprint(dev_routes)
+
+    if app.config.get("ALLOW_LOCAL_ACCESS"):
+        app.register_blueprint(local_access_bp)
 
     app.form_cache = FormCache(app.redis)
 
@@ -176,8 +179,6 @@ def map_config(config):
         "PERMANENT_SESSION_LIFETIME": config.getint(
             "default", "PERMANENT_SESSION_LIFETIME"
         ),
-        "DISABLE_CRL_CHECK": config.getboolean("default", "DISABLE_CRL_CHECK"),
-        "CRL_FAIL_OPEN": config.getboolean("default", "CRL_FAIL_OPEN"),
         "LOG_JSON": config.getboolean("default", "LOG_JSON"),
         "LIMIT_CONCURRENT_SESSIONS": config.getboolean(
             "default", "LIMIT_CONCURRENT_SESSIONS"
@@ -188,7 +189,6 @@ def map_config(config):
         # with a Beat job once a day)
         "CELERY_RESULT_EXPIRES": 0,
         "CELERY_RESULT_EXTENDED": True,
-        "OFFICE_365_DOMAIN": "onmicrosoft.com",
         "CONTRACT_START_DATE": pendulum.from_format(
             config.get("default", "CONTRACT_START_DATE"), "YYYY-MM-DD"
         ).date(),
@@ -196,7 +196,7 @@ def map_config(config):
             config.get("default", "CONTRACT_END_DATE"), "YYYY-MM-DD"
         ).date(),
         "SESSION_COOKIE_SECURE": config.getboolean("default", "SESSION_COOKIE_SECURE"),
-        "SAML_LOGIN_DEV": config.getboolean("default", "SAML_LOGIN_DEV"),
+        "ALLOW_LOCAL_ACCESS": config.getboolean("default", "ALLOW_LOCAL_ACCESS"),
     }
 
 
@@ -208,17 +208,17 @@ def apply_hybrid_config_options(config: ConfigParser):
 
 def make_config(direct_config=None):
     """Assemble a ConfigParser object to pass to map_config
-    
-    Configuration values are possibly applied from multiple sources. They are 
+
+    Configuration values are possibly applied from multiple sources. They are
     applied in the following order. At each step, options that are currently set
     are overwritten by options of the same name:
     1. The base config file, `base.ini`
     2. An environment's config file -- e.g. if ENV="test", `test.ini`
-    3. Optionally: If an OVERRIDE_CONFIG_DIRECTORY environment variable is 
+    3. Optionally: If an OVERRIDE_CONFIG_DIRECTORY environment variable is
         present, configuration files in that directory
     4. Environment variables
     5. Optionally: A dictionary passed in as the `direct_config` parameter
-    
+
     After the configuration is finished being written / overwritten, a database
     uri, redis uri, and broker uri (in our case, a celery uri) are set.
 
@@ -264,34 +264,24 @@ def make_config(direct_config=None):
     config.set("default", "DATABASE_URI", database_uri)
 
     # Assemble REDIS_URI value
-    redis_use_tls = config["default"].getboolean("REDIS_TLS")
+    redis_use_ssl = config["default"].getboolean("REDIS_TLS")
     redis_uri = "redis{}://{}:{}@{}".format(  # pragma: allowlist secret
-        ("s" if redis_use_tls else ""),
+        ("s" if redis_use_ssl else ""),
         (config.get("default", "REDIS_USER") or ""),
         (config.get("default", "REDIS_PASSWORD") or ""),
         config.get("default", "REDIS_HOST"),
     )
-    celery_uri = redis_uri
-    if redis_use_tls:
-        tls_mode = config.get("default", "REDIS_SSLMODE")
-        tls_mode_str = tls_mode.lower() if tls_mode else "none"
-        redis_uri = f"{redis_uri}/?ssl_cert_reqs={tls_mode_str}"
+    if redis_use_ssl:
+        ssl_mode = config.get("default", "REDIS_SSLMODE")
+        ssl_checkhostname = "false"
 
-        # TODO: Kombu, one of Celery's dependencies, still requires
-        # that ssl_cert_reqs be passed as the string version of an
-        # option on the ssl module. We can clean this up and use
-        # the REDIS_URI for both when this PR to Kombu is released:
-        # https://github.com/celery/kombu/pull/1139
-        kombu_modes = {
-            "none": "CERT_NONE",
-            "required": "CERT_REQUIRED",
-            "optional": "CERT_OPTIONAL",
-        }
-        celery_tls_mode_str = kombu_modes[tls_mode_str]
-        celery_uri = f"{celery_uri}/?ssl_cert_reqs={celery_tls_mode_str}"
+        if config["default"].getboolean("REDIS_SSLCHECKHOSTNAME"):
+            ssl_checkhostname = "true"
+
+        redis_uri = f"{redis_uri}/?ssl_cert_reqs={ssl_mode}&ssl_check_hostname={ssl_checkhostname}"
 
     config.set("default", "REDIS_URI", redis_uri)
-    config.set("default", "BROKER_URL", celery_uri)
+    config.set("default", "BROKER_URL", redis_uri)
 
     return map_config(config)
 
@@ -329,17 +319,6 @@ def apply_config_from_environment(config, section="default"):
 def make_redis(app, config):
     r = redis.Redis.from_url(config["REDIS_URI"])
     app.redis = r
-
-
-def make_crl_validator(app):
-    if app.config.get("DISABLE_CRL_CHECK"):
-        app.crl_cache = NoOpCRLCache(logger=app.logger)
-    else:
-        crl_dir = app.config["CRL_STORAGE_CONTAINER"]
-        if not os.path.isdir(crl_dir):
-            os.makedirs(crl_dir, exist_ok=True)
-
-        app.crl_cache = CRLCache(app.config["CA_CHAIN"], crl_dir, logger=app.logger,)
 
 
 def make_mailer(app):

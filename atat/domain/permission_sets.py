@@ -1,8 +1,9 @@
 from sqlalchemy.orm.exc import NoResultFound
 
 from atat.database import db
-from atat.models.permissions import Permissions
 from atat.models.permission_set import PermissionSet
+from atat.models.permissions import Permissions
+
 from .exceptions import NotFoundError
 
 

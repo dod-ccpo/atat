@@ -1,13 +1,12 @@
-from io import StringIO
 import json
 import logging
-from uuid import uuid4
+from io import StringIO
 from unittest.mock import Mock
+from uuid import uuid4
 
 import pytest
 
 from atat.utils.logging import JsonFormatter, RequestContextFilter
-
 from tests.factories import UserFactory
 
 

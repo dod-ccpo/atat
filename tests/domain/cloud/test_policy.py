@@ -1,4 +1,4 @@
-from atat.domain.csp.cloud.policy import AzurePolicyManager, AzurePolicy
+from atat.domain.csp.cloud.policy import AzurePolicy, AzurePolicyManager
 
 
 def test_portfolio_definitions():

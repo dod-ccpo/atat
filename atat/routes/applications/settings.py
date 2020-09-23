@@ -1,33 +1,32 @@
-from flask import (
-    g,
-    redirect,
-    render_template,
-    request as http_request,
-    url_for,
-)
+from flask import g, redirect, render_template
+from flask import request as http_request
+from flask import url_for
 
-from .blueprint import applications_bp
-from atat.domain.exceptions import AlreadyExistsError
-from atat.domain.environments import Environments
-from atat.domain.applications import Applications
 from atat.domain.application_roles import ApplicationRoles
+from atat.domain.applications import Applications
 from atat.domain.audit_log import AuditLog
-from atat.domain.csp.cloud.exceptions import GeneralCSPException
+from atat.domain.authz.decorator import user_can_access_decorator as user_can
 from atat.domain.common import Paginator
+from atat.domain.csp.cloud.exceptions import GeneralCSPException
 from atat.domain.environment_roles import EnvironmentRoles
+from atat.domain.environments import Environments
+from atat.domain.exceptions import AlreadyExistsError
 from atat.domain.invitations import ApplicationInvitations
+from atat.domain.permission_sets import PermissionSets
 from atat.domain.portfolios import Portfolios
-from atat.forms.application_member import NewForm as NewMemberForm, UpdateMemberForm
-from atat.forms.application import NameAndDescriptionForm, EditEnvironmentForm
+from atat.forms.application import EditEnvironmentForm, NameAndDescriptionForm
+from atat.forms.application_member import NewForm as NewMemberForm
+from atat.forms.application_member import UpdateMemberForm
 from atat.forms.data import ENV_ROLE_NO_ACCESS as NO_ACCESS
 from atat.forms.member import NewForm as MemberForm
-from atat.domain.authz.decorator import user_can_access_decorator as user_can
+from atat.jobs import create_subscription as create_subscription_job
+from atat.jobs import send_mail
 from atat.models.permissions import Permissions
-from atat.domain.permission_sets import PermissionSets
+from atat.routes.errors import log_error
 from atat.utils.flash import formatted_flash as flash
 from atat.utils.localization import translate
-from atat.jobs import send_mail, create_subscription as create_subscription_job
-from atat.routes.errors import log_error
+
+from .blueprint import applications_bp
 
 
 def get_environments_obj_for_app(application):

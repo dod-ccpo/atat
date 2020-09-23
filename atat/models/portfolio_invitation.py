@@ -1,9 +1,9 @@
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import backref, relationship
 
-from atat.models.base import Base
 import atat.models.mixins as mixins
+from atat.models.base import Base
 
 
 class PortfolioInvitation(

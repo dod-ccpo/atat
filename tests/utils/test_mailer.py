@@ -1,11 +1,9 @@
-import pytest
-from atat.utils.mailer import (
-    Mailer,
-    MailConnection,
-    RedisConnection,
-)
-from atat.utils.localization import translate
 from email.mime.base import MIMEBase
+
+import pytest
+
+from atat.utils.localization import translate
+from atat.utils.mailer import MailConnection, Mailer, RedisConnection
 
 
 class MockConnection(MailConnection):

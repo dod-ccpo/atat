@@ -1,0 +1,16 @@
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: atst
+spec:
+  minReplicas: 1
+  maxReplicas: 1
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: atst-worker
+spec:
+  minReplicas: 1
+  maxReplicas: 1

@@ -2,7 +2,7 @@ import datetime
 import json
 import logging
 
-from flask import g, request, has_request_context, session
+from flask import g, has_request_context, request, session
 
 
 class RequestContextFilter(logging.Filter):

@@ -1,29 +1,24 @@
+import numbers
+
+from flask import current_app as app
+from flask_wtf import FlaskForm
 from wtforms.fields import (
     BooleanField,
     DecimalField,
     FieldList,
     FormField,
-    StringField,
     HiddenField,
+    StringField,
 )
 from wtforms.fields.html5 import DateField
-from wtforms.validators import (
-    Required,
-    Length,
-    Optional,
-    NumberRange,
-    ValidationError,
-)
-from flask_wtf import FlaskForm
-import numbers
+from wtforms.validators import Length, NumberRange, Optional, Required, ValidationError
 
-from atat.forms.validators import Number, AlphaNumeric
+from atat.forms.validators import AlphaNumeric, Number
+from atat.utils.localization import translate
 
 from .data import JEDI_CLIN_TYPES
 from .fields import SelectField
 from .forms import BaseForm, remove_empty_string
-from atat.utils.localization import translate
-from flask import current_app as app
 
 MAX_CLIN_AMOUNT = 1_000_000_000
 

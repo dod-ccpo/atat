@@ -1,8 +1,8 @@
 from sqlalchemy.exc import DataError
 from sqlalchemy.orm.exc import NoResultFound
 
-from atat.domain.exceptions import NotFoundError
 from atat.database import db
+from atat.domain.exceptions import NotFoundError
 
 
 class Paginator(object):

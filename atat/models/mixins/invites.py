@@ -1,10 +1,12 @@
-import pendulum
-from enum import Enum
 import secrets
+from enum import Enum
 
-from sqlalchemy import Column, ForeignKey, Enum as SQLAEnum, TIMESTAMP, String
-from sqlalchemy.ext.declarative import declared_attr
+import pendulum
+from sqlalchemy import TIMESTAMP, Column
+from sqlalchemy import Enum as SQLAEnum
+from sqlalchemy import ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import relationship
 
 from atat.models import types

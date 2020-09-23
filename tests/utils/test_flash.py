@@ -1,5 +1,6 @@
-from atat.utils.flash import formatted_flash as flash
 from flask import get_flashed_messages
+
+from atat.utils.flash import formatted_flash as flash
 
 
 def test_flash_message():

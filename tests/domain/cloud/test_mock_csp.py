@@ -2,14 +2,13 @@ import pytest
 
 from atat.domain.csp import MockCloudProvider
 from atat.domain.csp.cloud.models import (
+    BillingProfileCreationCSPPayload,
+    BillingProfileCreationCSPResult,
     EnvironmentCSPPayload,
     EnvironmentCSPResult,
     TenantCSPPayload,
     TenantCSPResult,
-    BillingProfileCreationCSPPayload,
-    BillingProfileCreationCSPResult,
 )
-
 from tests.factories import EnvironmentFactory, EnvironmentRoleFactory, UserFactory
 
 CREDENTIALS = MockCloudProvider(config={})._auth_credentials

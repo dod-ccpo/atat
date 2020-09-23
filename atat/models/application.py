@@ -1,10 +1,10 @@
-from sqlalchemy import and_, Column, ForeignKey, String, UniqueConstraint
+from sqlalchemy import Column, ForeignKey, String, UniqueConstraint, and_
 from sqlalchemy.orm import relationship, synonym
 
-from atat.models.base import Base
-from atat.models.application_role import ApplicationRole
-from atat.models.environment import Environment
 from atat.models import mixins
+from atat.models.application_role import ApplicationRole
+from atat.models.base import Base
+from atat.models.environment import Environment
 from atat.models.types import Id
 
 

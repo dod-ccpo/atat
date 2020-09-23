@@ -1,6 +1,6 @@
 
 resource "azurerm_kubernetes_cluster" "k8s" {
-  name                    = "${var.name}-${var.environment}-k8s"
+  name                    = "${var.name}-k8s-${var.environment}"
   location                = var.region
   resource_group_name     = var.vnet_resource_group_name
   dns_prefix              = var.k8s_dns_prefix
@@ -15,8 +15,17 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 
   addon_profile {
     azure_policy {
-     enabled =true 
+      enabled = true
     }
+
+    oms_agent {
+
+      enabled                    = true
+      log_analytics_workspace_id = var.workspace_id
+
+    }
+
+
   }
 
   service_principal {

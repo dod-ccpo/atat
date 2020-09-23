@@ -1,14 +1,13 @@
-from flask import current_app as app, g, redirect, url_for
+from flask import current_app as app
+from flask import g, redirect, url_for
 
-from . import index
-from . import new
-from . import settings
-from . import invitations
-from .blueprint import applications_bp
+from atat.domain.authz.decorator import user_can_access_decorator as user_can
 from atat.domain.environment_roles import EnvironmentRoles
 from atat.domain.exceptions import UnauthorizedError
-from atat.domain.authz.decorator import user_can_access_decorator as user_can
 from atat.models.permissions import Permissions
+
+from . import index, invitations, new, settings
+from .blueprint import applications_bp
 
 
 def wrap_environment_role_lookup(user, environment_id=None, **kwargs):

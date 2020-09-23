@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# script/sonarqube: Scan code base with sonarQube.
+
+# script variables
+SONAR_SCANNER_IMAGE="sonarsource/sonar-scanner-cli"
+SONAR_SCANNER_LOGIN="$1"
+SONAR_SCANNER_PASSWORD="$2"
+
+# check command line args
+if [ -z "$SONAR_SCANNER_LOGIN" ] || [ -z "$SONAR_SCANNER_PASSWORD" ]
+then
+    echo "Usage: $0 <SonarQube login> <SonarQube password>"
+    exit 1
+fi
+
+# exit when any command fails
+set -e
+
+# generate coverage reports
+poetry run pytest --cov-report=xml
+yarn jest --coverage
+
+# repace local directory with container working directory
+sed -i '' 's/\/.*\/atst/\/usr\/src/g' coverage.xml
+sed -i '' 's/\/.*\/atst/\/usr\/src/g' coverage/lcov.info
+
+# run SonarScanner using docker
+docker pull $SONAR_SCANNER_IMAGE
+docker run --rm \
+    -e JAVA_OPTS="-Xms128m -Xmx256m" \
+    -v $(pwd):/usr/src \
+    $SONAR_SCANNER_IMAGE \
+    -Dsonar.login=$SONAR_SCANNER_LOGIN \
+    -Dsonar.password=$SONAR_SCANNER_PASSWORD

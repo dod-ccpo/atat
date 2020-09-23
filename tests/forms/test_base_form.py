@@ -1,6 +1,6 @@
 import pytest
-from wtforms.fields import RadioField, FieldList, StringField
 from werkzeug.datastructures import ImmutableMultiDict
+from wtforms.fields import FieldList, RadioField, StringField
 
 from atat.forms.forms import BaseForm, remove_empty_string
 

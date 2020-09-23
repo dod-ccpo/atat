@@ -1,8 +1,9 @@
-from flask.json import JSONEncoder
 import json
-from werkzeug.datastructures import FileStorage
 from datetime import date
 from enum import Enum
+
+from flask.json import JSONEncoder
+from werkzeug.datastructures import FileStorage
 
 from atat.models.attachment import Attachment
 

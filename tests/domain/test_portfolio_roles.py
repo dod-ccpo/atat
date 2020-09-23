@@ -1,15 +1,9 @@
 from atat.domain.permission_sets import PermissionSets
 from atat.domain.portfolio_roles import PortfolioRoles
-from atat.domain.users import Users
 from atat.models.permissions import Permissions
 from atat.models.portfolio_role import Status as PortfolioRoleStatus
-
-from tests.factories import (
-    PortfolioFactory,
-    UserFactory,
-    PortfolioInvitationFactory,
-    PortfolioRoleFactory,
-)
+from tests.factories import PortfolioFactory, PortfolioRoleFactory, UserFactory
+from tests.utils import lists_contain_same_members
 
 
 def test_add_portfolio_role_with_permission_sets():
@@ -29,7 +23,7 @@ def test_add_portfolio_role_with_permission_sets():
         PermissionSets.VIEW_PORTFOLIO,
     ]
     actual_names = [prms.name for prms in port_role.permission_sets]
-    assert expected_names == expected_names
+    assert lists_contain_same_members(actual_names, expected_names)
 
 
 def test_disable_portfolio_role():

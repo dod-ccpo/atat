@@ -1,4 +1,5 @@
 from uuid import uuid4
+
 import pendulum
 
 
@@ -9,7 +10,7 @@ class FileService:
     def generate_download_link(self, object_name, filename) -> (dict, str):
         raise NotImplementedError()
 
-    def object_name(self) -> str:
+    def generate_object_name(self) -> str:
         return str(uuid4())
 
     def download_task_order(self, object_name):
@@ -21,7 +22,7 @@ class MockFileService(FileService):
         self.config = config
 
     def get_token(self):
-        return ({}, self.object_name())
+        return {}, self.generate_object_name()
 
     def generate_download_link(self, object_name, filename):
         return ""
@@ -44,15 +45,9 @@ class AzureFileService(FileService):
         self.container_name = config["AZURE_TO_BUCKET_NAME"]
         self.timeout = config["PERMANENT_SESSION_LIFETIME"]
 
-        from azure.storage.common import CloudStorageAccount
-        from azure.storage.blob import BlobSasPermissions
-        from azure.storage.blob.models import BlobPermissions
-        from azure.storage.blob.blockblobservice import BlockBlobService
+        import azure.storage.blob
 
-        self.CloudStorageAccount = CloudStorageAccount
-        self.BlobSasPermissions = BlobSasPermissions
-        self.BlobPermissions = BlobPermissions
-        self.BlockBlobService = BlockBlobService
+        self.blob = azure.storage.blob
 
     def get_token(self):
         """
@@ -62,55 +57,53 @@ class AzureFileService(FileService):
             - token_dict has a `token` key which contains the SAS token as a string
             - object_name is a string
         """
-        account = self.CloudStorageAccount(
-            account_name=self.account_name, account_key=self.storage_key
-        )
-        bbs = account.create_block_blob_service()
-        object_name = self.object_name()
-        sas_token = bbs.generate_blob_shared_access_signature(
-            self.container_name,
-            object_name,
-            permission=self.BlobSasPermissions(create=True),
+        # TODO: Handle errors
+        sas_token = self.blob.generate_container_sas(
+            account_name=self.account_name,
+            container_name=self.container_name,
+            account_key=self.storage_key,
+            permission=self.blob.ContainerSasPermissions(write=True),
             expiry=pendulum.now(tz="UTC").add(self.timeout),
             protocol="https",
         )
-        return ({"token": sas_token}, object_name)
+        # TODO: remove object name from this tuple -- generate in js
+        # We generate a UUID here only for it to be passed through to the frontend where it's used as the name of the
+        # blob that's uploaded. We should just generate the object name there.
+        return {"token": sas_token}, self.generate_object_name()
 
     def generate_download_link(self, object_name, filename):
-        block_blob_service = self.BlockBlobService(
-            account_name=self.account_name, account_key=self.storage_key
-        )
-        sas_token = block_blob_service.generate_blob_shared_access_signature(
+        # TODO: Handle errors
+        sas_token = self.blob.generate_blob_sas(
+            account_name=self.account_name,
             container_name=self.container_name,
             blob_name=object_name,
-            permission=self.BlobPermissions(read=True),
+            account_key=self.storage_key,
+            permission=self.blob.BlobSasPermissions(read=True),
             expiry=pendulum.now(tz="UTC").add(self.timeout),
             content_disposition=f"attachment; filename={filename}",
             protocol="https",
         )
-        return block_blob_service.make_blob_url(
-            container_name=self.container_name,
-            blob_name=object_name,
-            protocol="https",
-            sas_token=sas_token,
+        url = f"https://{self.account_name}.blob.core.windows.net/{self.container_name}/{object_name}"
+        return f"{url}?{sas_token}"
+
+    @staticmethod
+    def get_filename_from_blob(blob):
+        return blob.properties.get("metadata", {}).get(
+            "filename", AzureFileService.DEFAULT_FILENAME
         )
 
     def download_task_order(self, object_name):
-        block_blob_service = self.BlockBlobService(
-            account_name=self.account_name, account_key=self.storage_key
+        # TODO: Handle errors
+        blob_client = self.blob.BlobClient(
+            account_url=f"https://{self.account_name}.blob.core.windows.net",
+            container_name=self.container_name,
+            blob_name=object_name,
+            credential=self.storage_key,
         )
-        # TODO: We should downloading errors more gracefully
-        # - what happens when we try to request a TO that doesn't exist?
-        b = block_blob_service.get_blob_to_bytes(
-            container_name=self.container_name, blob_name=object_name,
-        )
-
-        filename = AzureFileService.DEFAULT_FILENAME
-        if b.metadata:
-            filename = b.metadata.get("filename", AzureFileService.DEFAULT_FILENAME)
+        blob = blob_client.download_blob()
 
         return {
-            "name": b.name,
-            "filename": filename,
-            "content": b.content,
+            "name": blob.name,
+            "content": blob.readall(),
+            "filename": self.get_filename_from_blob(blob),
         }

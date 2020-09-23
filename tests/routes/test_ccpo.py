@@ -2,7 +2,6 @@ from flask import url_for
 
 from atat.domain.users import Users
 from atat.utils.localization import translate
-
 from tests.factories import UserFactory
 
 

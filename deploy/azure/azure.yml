@@ -42,13 +42,8 @@ spec:
             - configMapRef:
                 name: atst-envvars
           volumeMounts:
-            - name: nginx-client-ca-bundle
-              mountPath: "/opt/atat/atst/ssl/server-certs/ca-chain.pem"
-              subPath: client-ca-bundle.pem
             - name: uwsgi-socket-dir
               mountPath: "/var/run/uwsgi"
-            - name: crls-vol
-              mountPath: "/opt/atat/atst/crls"
             - name: pgsslrootcert
               mountPath: "/opt/atat/atst/ssl/pgsslrootcert.crt"
               subPath: pgsslrootcert.crt
@@ -73,21 +68,11 @@ spec:
               name: main-upgrade
             - containerPort: 8442
               name: main
-            - containerPort: 8343
-              name: auth-upgrade
-            - containerPort: 8443
-              name: auth
           volumeMounts:
             - name: nginx-config
               mountPath: "/etc/nginx/conf.d/"
             - name: uwsgi-socket-dir
               mountPath: "/var/run/uwsgi"
-            - name: nginx-htpasswd
-              mountPath: "/etc/nginx/.htpasswd"
-              subPath: .htpasswd
-            - name: nginx-client-ca-bundle
-              mountPath: "/etc/ssl/client-ca-bundle.pem"
-              subPath: "client-ca-bundle.pem"
             - name: acme
               mountPath: "/usr/share/nginx/html/.well-known/acme-challenge/"
             - name: snippets
@@ -102,29 +87,12 @@ spec:
               memory: 20Mi
               cpu: 25m
       volumes:
-        - name: nginx-client-ca-bundle
-          configMap:
-            name: nginx-client-ca-bundle
-            defaultMode: 0444
-            items:
-              - key: "client-ca-bundle.pem"
-                path: "client-ca-bundle.pem"
         - name: nginx-config
           configMap:
             name: atst-nginx
         - name: uwsgi-socket-dir
           emptyDir:
             medium: Memory
-        - name: nginx-htpasswd
-          secret:
-            secretName: atst-nginx-htpasswd
-            items:
-              - key: htpasswd
-                path: .htpasswd
-                mode: 0640
-        - name: crls-vol
-          persistentVolumeClaim:
-            claimName: crls-vol-claim
         - name: pgsslrootcert
           configMap:
             name: pgsslrootcert
@@ -330,26 +298,6 @@ spec:
       name: http
     - port: 443
       targetPort: 8442
-      name: https
-  selector:
-    role: web
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: atst
-  name: atst-auth
-  namespace: atat
-spec:
-  externalTrafficPolicy: Local
-  ports:
-    - port: 80
-      targetPort: 8343
-      name: http
-    - port: 443
-      targetPort: 8443
       name: https
   selector:
     role: web

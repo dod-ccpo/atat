@@ -1,10 +1,10 @@
-import pytest
 from uuid import uuid4
 
-from atat.domain.users import Users
-from atat.domain.exceptions import NotFoundError, AlreadyExistsError, UnauthorizedError
-from atat.utils import pick
+import pytest
 
+from atat.domain.exceptions import AlreadyExistsError, NotFoundError, UnauthorizedError
+from atat.domain.users import Users
+from atat.utils import pick
 from tests.factories import (
     ApplicationFactory,
     ApplicationRoleFactory,

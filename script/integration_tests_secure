@@ -54,7 +54,6 @@ docker run --network atat -e PGDATABASE=atat -e PGHOST=postgres -e REDIS_HOST=re
 
 # Start application container
 docker run -d \
--e DISABLE_CRL_CHECK=true \
 -e PGHOST=postgres \
 -e REDIS_HOST=redis:6379 \
 -p 8000:8000 \

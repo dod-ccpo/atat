@@ -1,7 +1,7 @@
 from atat.database import db
-from tests.factories import UserFactory
-from atat.models.mixins.auditable import AuditableMixin
 from atat.domain.users import Users
+from atat.models.mixins.auditable import AuditableMixin
+from tests.factories import UserFactory
 
 
 def test_logging_audit_event_on_create(mock_logger):

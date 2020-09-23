@@ -1,16 +1,42 @@
 import pytest
-
 from pydantic import ValidationError
 
 from atat.domain.csp.cloud.models import (
     AZURE_MGMNT_PATH,
+    BillingOwnerCSPPayload,
+    BillingProfileCreationCSPResult,
+    BillingProfileVerificationCSPResult,
     KeyVaultCredentials,
     ManagementGroupCSPPayload,
     ManagementGroupCSPResponse,
+    ProductPurchaseVerificationCSPResult,
+    TenantCSPResult,
     UserCSPPayload,
     UserRoleCSPPayload,
-    BillingOwnerCSPPayload,
+    class_to_stage,
+    stage_to_classname,
 )
+from atat.domain.csp.cloud.utils import OFFICE_365_DOMAIN
+from atat.models.mixins.state_machines import AzureStages
+
+
+def test_stage_to_classname():
+    assert (
+        stage_to_classname(AzureStages.BILLING_PROFILE_CREATION.name)
+        == "BillingProfileCreation"
+    )
+
+
+@pytest.mark.parametrize(
+    "klass, stage",
+    [
+        (TenantCSPResult, "tenant"),
+        (BillingProfileCreationCSPResult, "billing_profile"),
+        (BillingProfileVerificationCSPResult, "billing_profile"),
+    ],
+)
+def test_class_to_stage(klass, stage):
+    assert class_to_stage(klass) == stage
 
 
 def test_ManagementGroupCSPPayload_management_group_name():
@@ -102,6 +128,18 @@ def test_KeyVaultCredentials_enforce_root_creds():
     )
 
 
+class Test_ProductPurchaseVerificationCSPResult:
+    def test_azure_payload(self):
+        model = ProductPurchaseVerificationCSPResult(
+            **{"properties": {"purchaseDate": "2020/01/01"}}
+        )
+        assert model.premium_purchase_date == "2020/01/01"
+
+    def test_keywords(self):
+        model = ProductPurchaseVerificationCSPResult(premium_purchase_date="2020/01/01")
+        assert model.premium_purchase_date == "2020/01/01"
+
+
 def test_KeyVaultCredentials_merge_credentials():
     old_secret = KeyVaultCredentials(
         tenant_id="foo",
@@ -137,10 +175,7 @@ def test_UserCSPPayload_mail_nickname():
 
 def test_UserCSPPayload_user_principal_name(app):
     payload = UserCSPPayload(**user_payload)
-    assert (
-        payload.user_principal_name
-        == f"han.solo@rebelalliance.{app.config.get('OFFICE_365_DOMAIN')}"
-    )
+    assert payload.user_principal_name == f"han.solo@rebelalliance.{OFFICE_365_DOMAIN}"
 
 
 def test_UserCSPPayload_password():
@@ -175,7 +210,7 @@ class TestBillingOwnerCSPPayload:
         payload = BillingOwnerCSPPayload(**self.user_payload)
         assert (
             payload.user_principal_name
-            == f"billing.admin@rebelalliance.{app.config.get('OFFICE_365_DOMAIN')}"
+            == f"billing.admin@rebelalliance.{OFFICE_365_DOMAIN}"
         )
 
     def test_email(self):

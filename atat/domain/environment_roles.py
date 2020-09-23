@@ -1,19 +1,20 @@
-from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy import func, and_, or_
+from typing import List
+from uuid import UUID
+
 from flask import current_app as app
+from sqlalchemy import and_, func, or_
+from sqlalchemy.orm.exc import NoResultFound
 
 from atat.database import db
+from atat.domain.exceptions import NotFoundError
 from atat.models import (
-    Environment,
-    EnvironmentRole,
-    EnvironmentRoleStatus,
     Application,
     ApplicationRole,
     ApplicationRoleStatus,
+    Environment,
+    EnvironmentRole,
+    EnvironmentRoleStatus,
 )
-from atat.domain.exceptions import NotFoundError
-from uuid import UUID
-from typing import List
 
 
 class EnvironmentRoles(object):

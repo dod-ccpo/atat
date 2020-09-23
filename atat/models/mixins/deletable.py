@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Boolean
+from sqlalchemy import Boolean, Column
 from sqlalchemy.sql import expression
 
 

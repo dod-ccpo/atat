@@ -1,15 +1,18 @@
-from flask import g, redirect, url_for, render_template, request as http_request
+from flask import g, redirect, render_template
+from flask import request as http_request
+from flask import url_for
 
-from .blueprint import portfolios_bp
+import atat.forms.portfolio_member as member_forms
 from atat.domain.authz.decorator import user_can_access_decorator as user_can
 from atat.domain.exceptions import AlreadyExistsError
 from atat.domain.invitations import PortfolioInvitations
 from atat.domain.portfolios import Portfolios
-from atat.models import Permissions
 from atat.jobs import send_mail
+from atat.models import Permissions
 from atat.utils.flash import formatted_flash as flash
 from atat.utils.localization import translate
-import atat.forms.portfolio_member as member_forms
+
+from .blueprint import portfolios_bp
 
 
 def send_portfolio_invitation(invitee_email, inviter_name, token):

@@ -4,12 +4,9 @@ import pytest
 
 from atat.domain.permission_sets import PermissionSets
 from atat.models import Permissions
-from atat.utils.context_processors import (
-    get_resources_from_context,
-    user_can_view,
-    portfolio as portfolio_context,
-)
-
+from atat.utils.context_processors import get_resources_from_context
+from atat.utils.context_processors import portfolio as portfolio_context
+from atat.utils.context_processors import user_can_view
 from tests.factories import *
 
 

@@ -1,9 +1,9 @@
-from sqlalchemy import String, Column, ForeignKey, inspect
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy import Column, ForeignKey, String, inspect
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import relationship
 
-from atat.models.base import Base
 import atat.models.types as types
+from atat.models.base import Base
 from atat.models.mixins.timestamps import TimestampsMixin
 
 

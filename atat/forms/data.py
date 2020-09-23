@@ -1,7 +1,6 @@
 from atat.models import CSPRole
 from atat.utils.localization import translate
 
-
 SERVICE_BRANCHES = [
     ("air_force", translate("forms.portfolio.defense_component.choices.air_force")),
     ("army", translate("forms.portfolio.defense_component.choices.army")),

@@ -11,7 +11,6 @@ The production configuration (master.atat.dev, currently) is reflected in the co
 - CONTAINER_IMAGE: The ATAT container image to use.
 - NGINX_CONTAINER_IMAGE: Container image to run the nginx server.
 - MAIN_DOMAIN: The host domain for the environment.
-- AUTH_DOMAIN: The host domain for the authentication endpoint for the environment.
 - TENANT_ID: The id of the active directory tenant in which the cluster and it's associated users exist. This is a GUID.
 - VMSS_CLIENT_ID: The client ID for the managed identity associated with the VMSS underlying the AKS instance. This managed identity should have read access to the Key Vault specified by KV_NAME.
 - KV_NAME: The name of the Key Vault where ATAT's configuration secrets are stored.
@@ -33,22 +32,6 @@ If you are satisfied with the output from the diff, you can apply the new config
 ```
 
 **Note:** Depending on how your `kubectl` config is set up, these commands may need to be adjusted. If you have configuration for multiple clusters, you may need to specify the `kubectl` context for each command with the `--context` flag (something like `kubectl --context=my-cluster [etc.]` or `kubectl --context=azure [etc.]`).
-
-## Secrets and Configuration
-
-### nginx-htpasswd
-
-If the site is running in dev mode, the `/login-dev` endpoint is available. This endpoint is protected by basic HTTP auth. To create a new password file, run:
-
-```
-htpasswd -c ./htpasswd atat
-```
-
-Enter a new password string when prompted. Then create the secret:
-
-```
-kubectl -n atat create secret generic nginx-htpasswd --from-file=./htpasswd
-```
 
 ## SSL/TLS
 

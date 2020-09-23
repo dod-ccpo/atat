@@ -16,3 +16,15 @@ variable "name" {}
 
 variable "bastion_ssh_pub_key_path" {}
 variable "log_analytics_workspace_id" {}
+
+
+variable "registry_username" {}
+variable "registry_password" {}
+
+variable "container_image" {
+  default = "bastion:latest"
+}
+
+variable container_registry {
+  default = "cloudzeroopsregistry.azurecr.io"
+}

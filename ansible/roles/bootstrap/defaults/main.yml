@@ -1,8 +1,12 @@
 ---
-
-show_bs_env: yes
-bootstrap_init_tf: yes
-deploy_bootstrap_env: yes
+show_bs_env: true
+bootstrap_init_tf: true
+deploy_bootstrap_env: true
+fetch_bootstrap_state: false
 tf_base_dir: /src/terraform/providers/
-tfvars_file_path: /src/terraform/providers/bootstrap/dryrun.tfvars
+tf_subdir: bootstrap
+tfvars_file_path: /src/terraform/providers/bootstrap/bootstrap.tfvars
 bootstrap_subscription_id: "{{ lookup('env','SUBSCRIPTION_ID') }}"
+bs_client_id: "{{ lookup('env','TF_VAR_OPS_CID') }}"
+bs_tenant: "{{ lookup('env','AZURE_TENANT_ID') }}"
+bs_secret: "{{ lookup('env','TF_VAR_OPS_SEC') }}"
