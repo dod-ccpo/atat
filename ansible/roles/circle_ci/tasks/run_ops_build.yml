@@ -6,7 +6,7 @@
     headers:
       Circle-Token: "{{ circle_ci_api_key }}"
     body:
-      branch: staging
+      branch: "{{ branch_to_build }}"
       parameters:
         container_registry: "{{ container_registry }}"
         sp: "{{ lookup('env', 'ARM_CLIENT_ID_BUILD' ) }}"

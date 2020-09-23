@@ -403,9 +403,11 @@ jobs:
       - run:
           name: Tag ops image
           command: docker tag ops:latest << pipeline.parameters.container_registry >>.azurecr.io/ops:latest
+      - log_into_app_registry
       - run:
           name: Push ops image
-          command: docker push << pipeline.parameters.container_registry >>.azurecr.io/ops:latest
+          command: |
+            docker push << pipeline.parameters.container_registry >>.azurecr.io/ops:latest
 
 workflows:
   version: 2
