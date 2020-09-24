@@ -1,4 +1,7 @@
-
+- name: Generate the folder that will hold the Diffie-Hellman file
+  file:
+    state: directory
+    path: /src/ansible/dh
 
 - name: Generate Diffie-Hellman parameters with the default size (4096 bits)
   openssl_dhparam:
