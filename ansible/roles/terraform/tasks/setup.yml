@@ -28,13 +28,13 @@
     - target_modules is defined
     - b_end is defined
 
-- name: Wait for diffie-hellman algorithm to finish running
+- name: Wait for Diffie-Hellman algorithm to finish running
   async_status:
     jid: "{{ diffie_hellman_job_handle.ansible_job_id }}"
   register: job_result
   until: job_result.finished
   retries: 1000
-  delay: 5 
+  delay: 5
 
 - name: tf apply (no modules)
   terraform:
@@ -48,7 +48,7 @@
     ARM_SUBSCRIPTION_ID: "{{ application_subscription_id }}"
     TF_VAR_OPS_OID: "{{ lookup('env','TF_VAR_OPS_OID') }}"
     TF_VAR_OPS_SEC: "{{ lookup('env','TF_VAR_OPS_SEC') }}"
-    TF_VAR_dhparam4096: "{{ lookup('file','/src/ansible/dh/dhparams.pem')}}"
+    TF_VAR_dhparam4096: "{{ lookup('file', '/src/ansible/dh/dhparams.pem') }}"
     TF_VAR_environment: "{{ tf_bootstrap_backend_outputs.environment.value }}"
   when:
     - target_modules is not defined

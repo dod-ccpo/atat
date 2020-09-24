@@ -2,7 +2,6 @@ FROM cloudzeroopsregistry.azurecr.io/rhel-py:latest
 
 ARG azure_subscription_id
 ARG azure_tenant
-ARG environment_name
 ARG operator_sp_client_id
 ARG operator_sp_object_id
 ARG operator_sp_secret
@@ -20,7 +19,6 @@ ENV AZ_CLI_SP="$operator_sp_url"
 ENV AZURE_CLIENT_ID="$operator_sp_client_id"
 ENV AZURE_CLIENT_SECRET="$operator_sp_secret"
 ENV AZURE_TENANT_ID="$azure_tenant"
-ENV ENVIRONMENT_NAME="$environment_name"
 ENV SUBSCRIPTION_CID="$operator_sp_client_id"
 ENV SUBSCRIPTION_ID="$azure_subscription_id"
 ENV SUBSCRIPTION_SECRET="$operator_sp_secret"
@@ -55,11 +53,22 @@ RUN ln -s /usr/bin/python /usr/bin/python3.7
 
 COPY . /src
 
+WORKDIR /src
+
+RUN pip3 install poetry
+RUN poetry install
 # The ansible module and API specific submodules are not installable with poetry.
 # Since they're really only relevant for deployment, we'll just install them here.
-RUN pip3 install ansible ansible[azure] pyhcl msrest msrestazure
-RUN pip3 install poetry
-RUN cd /src && poetry install
+#
+# TODO(heyzoos) This has been restored to the original list. See if you can't 
+# trim it down or move to pyproject later.
+RUN poetry export -f requirements.txt > requirements.txt && .venv/bin/pip3 install -r requirements.txt
+RUN .venv/bin/pip3 install ansible ansible[azure] azure-storage-common azure-common azure-storage-blob==2.1.0 azure-storage-nspkg pydantic sqlalchemy>=1.3.12 sqlalchemy-json onelogin python3-saml pyhcl msrest msrestazure
+RUN .venv/bin/pip3 install azure-mgmt==4.0.0
+RUN .venv/bin/pip3 install azure-mgmt-compute
+RUN .venv/bin/pip3 install azure-mgmt-network
+RUN .venv/bin/pip3 install azure-mgmt-storage
+RUN .venv/bin/pip3 install azure-mgmt-resource
 
 RUN cd /tmp \
   && curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" \
@@ -70,6 +79,6 @@ WORKDIR /src/ansible
 
 RUN az provider register --namespace Microsoft.ContainerService
 
-ENTRYPOINT ["ansible-playbook"]
+ENTRYPOINT ["/src/.venv/bin/ansible-playbook"]
 
-CMD ["site.yml", "--extra-vars app_name=atat scripts_dir=/src/script az_environment=$ENVIRONMENT_NAME show_bs_env=yes show_app_env_outputs=yes tfvars_file_path=/src/terraform/providers/bootstrap/dryrun.tfvars tf_base_dir=/src/terraform/providers show_app_env_outputs=true bootstrap_subscription_id=$SUBSCRIPTION_ID application_subscription_id=$SUBSCRIPTION_ID", "-vvv"]
+CMD ["site.yml", "--extra-vars app_name=atat scripts_dir=/src/script show_bs_env=yes show_app_env_outputs=yes tfvars_file_path=/src/terraform/providers/bootstrap/dryrun.tfvars tf_base_dir=/src/terraform/providers show_app_env_outputs=true bootstrap_subscription_id=$SUBSCRIPTION_ID application_subscription_id=$SUBSCRIPTION_ID", "-vvv"]
