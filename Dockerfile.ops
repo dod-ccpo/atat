@@ -6,7 +6,6 @@ ARG azure_tenant
 ARG azure_subscription_id
 ARG operator_sp_url
 ARG operator_sp_object_id
-ARG git_repo_url
 
 
 ARG local_ssh_key_path
@@ -100,10 +99,9 @@ RUN 	pip3 install \
   	  sudo mv terraform /usr/local/bin && \
       ln -s /usr/bin/python /usr/bin/python3.7
 
-RUN 	git clone "$git_repo_url" /src \
-      && mkdir -p ~/.ssh \
-
-#COPY . /src
+RUN 	mkdir src && \
+      mkdir -p ~/.ssh
+COPY . /src
 
 COPY "$LOCAL_SSH_KEY_PATH" ~/.ssh
 

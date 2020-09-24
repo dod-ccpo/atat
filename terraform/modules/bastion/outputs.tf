@@ -3,5 +3,5 @@ output "mgmt_subnet_id" {
 }
 
 output "bastion_image_name" {
- value = var.container_image
+  value = var.container_image
 }
