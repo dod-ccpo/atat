@@ -105,3 +105,12 @@ resource "azurerm_route" "fw_route" {
   next_hop_type          = each.value
   next_hop_in_ip_address = chomp(element(split(",", var.virtual_appliance_routes), 4))
 }
+
+
+resource "azurerm_public_ip" "az_fw_ip" {
+  name                = "az-firewall-${var.environment}"
+  location            = var.region
+  resource_group_name = azurerm_resource_group.vpc.name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
