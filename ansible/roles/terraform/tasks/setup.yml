@@ -28,6 +28,14 @@
     - target_modules is defined
     - b_end is defined
 
+- name: Wait for diffie-hellman algorithm to finish running
+  async_status:
+    jid: "{{ diffie_hellman_job_handle.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  retries: 1000
+  delay: 5 
+
 - name: tf apply (no modules)
   terraform:
     force_init: "{{ init_tf }}"

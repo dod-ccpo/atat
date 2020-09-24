@@ -57,7 +57,7 @@ COPY . /src
 
 # The ansible module and API specific submodules are not installable with poetry.
 # Since they're really only relevant for deployment, we'll just install them here.
-RUN pip3 install ansible ansible[azure]
+RUN pip3 install ansible ansible[azure] pyhcl msrest msrestazure
 RUN pip3 install poetry
 RUN cd /src && poetry install
 

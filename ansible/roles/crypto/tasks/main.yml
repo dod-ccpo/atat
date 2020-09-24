@@ -3,6 +3,9 @@
     state: directory
     path: /src/ansible/dh
 
-- name: Generate Diffie-Hellman parameters with the default size (4096 bits)
+- name: (Async) Generate Diffie-Hellman parameters with the default size of 4096 bits
   openssl_dhparam:
     path: /src/ansible/dh/dhparams.pem
+  async: 10000
+  poll: 0
+  register: diffie_hellman_job_handle
