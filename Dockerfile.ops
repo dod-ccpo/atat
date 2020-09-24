@@ -1,165 +1,75 @@
-FROM cloudzeroopsregistry.azurecr.io/rhelubi:8.2
+FROM cloudzeroopsregistry.azurecr.io/rhel-py:latest
 
-ARG operator_sp_client_id
-ARG operator_sp_secret
-ARG azure_tenant
 ARG azure_subscription_id
-ARG operator_sp_url
-ARG operator_sp_object_id
+ARG azure_tenant
 ARG environment_name
-
-
-ARG local_ssh_key_path
-
-ENV LOCAL_SSH_KEY_PATH="$local_ssh_key_path"
-
+ARG operator_sp_client_id
+ARG operator_sp_object_id
+ARG operator_sp_secret
+ARG operator_sp_url
 
 ENV ARM_CLIENT_ID_BUILD="$operator_sp_client_id"
-ENV ARM_CLIENT_SECRET_BUILD="$operator_sp_secret"
-ENV ARM_SUBSCRIPTION_ID_BUILD="$azure_subscription_id"
-ENV ARM_TENANT_ID_BUILD="$azure_tenant"
-
 ENV ARM_CLIENT_ID="$operator_sp_client_id"
+ENV ARM_CLIENT_SECRET_BUILD="$operator_sp_secret"
 ENV ARM_CLIENT_SECRET="$operator_sp_secret"
+ENV ARM_SUBSCRIPTION_ID_BUILD="$azure_subscription_id"
 ENV ARM_SUBSCRIPTION_ID="$azure_subscription_id"
+ENV ARM_TENANT_ID_BUILD="$azure_tenant"
 ENV ARM_TENANT_ID="$azure_tenant"
-
-
-RUN yum remove python3
-RUN yum autoremove python3
-RUN yum updateinfo
-RUN yum upgrade --security
-
-RUN 	sudo yum -y update && \
-  sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc &&  \
-  curl -vv https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -o epel-release-latest-7.noarch.rpm
-
-RUN	rpm -i epel-release-latest-7.noarch.rpm
-
-
-
-
-
-
-
-
- COPY ./azure-cli.repo /etc/yum.repos.d/azure-cli.repo
-
- RUN sudo yum -y install azure-cli
-
- RUN az extension add --name aks-preview \
-     && az extension update --name aks-preview \
-     && az login --service-principal  --username "$operator_sp_client_id" --password "$operator_sp_secret" --tenant "$azure_tenant" \
-     && az feature register --name AKS-AzurePolicyAutoApprove --namespace Microsoft.ContainerService
-
-
-
-RUN	yum install -y \
-	gcc \
-  make \
-	openssl-devel \
-	bzip2-devel \
-	postgresql-devel \
-	libffi-devel \
-	git \
-	unzip \
-  jq \
-  gettext
-
-
-
-RUN rpm --import https://packages.microsoft.com/keys/microsoft.asc && \
-      curl https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -o jq-linux64 && \
-      mv jq-linux64 /usr/bin/jq && \
-      chmod au+x /usr/bin/jq
-
-
-
-RUN cd /usr/src \
-      && curl https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz -o Python-3.7.3.tgz\
-      && tar xzf Python-3.7.3.tgz \
-      && cd Python-3.7.3 \
-      && ./configure --enable-loadable-sqlite-extensions --enable-optimizations \
-      && make install \
-      && rm /usr/src/Python-3.7.3.tgz
-
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3.7 && \
-    source $HOME/.poetry/env
-
-
-
-RUN 	pip3 install \
-      ansible \
-      packaging \
-      ansible[azure] \
-      openshift \
-      sqlalchemy \
-      pyhcl && \
-  	  curl https://releases.hashicorp.com/terraform/0.13.0/terraform_0.13.0_linux_amd64.zip -o tf.zip && \
-  	  unzip tf.zip && \
-  	  sudo mv terraform /usr/local/bin && \
-      ln -s /usr/bin/python /usr/bin/python3.7
-
-RUN 	mkdir src && \
-      mkdir -p ~/.ssh
-COPY . /src
-
-COPY "$LOCAL_SSH_KEY_PATH" ~/.ssh
-
-
-RUN yum install -y \
-  libxml2-devel \
-  xmlsec1 \
-  xmlsec1-openssl
-
-RUN yum install -y ftp://ftp.redhat.com/pub/redhat/rhel/rhel-8-beta/appstream/x86_64/Packages/libtool-ltdl-devel-2.4.6-25.el8.x86_64.rpm --nogpgcheck
-RUN yum install -y http://mirror.centos.org/centos/8/PowerTools/x86_64/os/Packages/xmlsec1-devel-1.2.25-4.el8.x86_64.rpm --nogpgcheck
-
-
-# for the ansible to run python scripts for database stuff
-RUN cd /src && \
-    pip3 install -r requirements.txt && \
-    pip3 install ansible[azure] azure-storage azure-storage-common azure-common azure-storage-blob==2.1.0 azure-storage-nspkg pydantic sqlalchemy>=1.3.12 sqlalchemy-json onelogin python3-saml
-
-
-#RUN cd /src && \
-#pip3 install -r requirements.txt && \
-#cd ansible && \
-#pip3 install -r requirements.txt && \
-#pip3 install ansible[azure] xmlsec && \
-#pip3 install python-hcl2 pydantic python3-saml
-
-RUN cd /tmp \
-    && curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" \
-    && chmod +x /tmp/kubectl \
-    && sudo mv /tmp/kubectl /usr/bin/kubectl
-
-
-RUN cp /src/breakglass_two.pub ~/.ssh/
-
-
-
-WORKDIR /src/ansible
-
-
-ENV SUBSCRIPTION_ID="$azure_subscription_id"
-ENV SUBSCRIPTION_TENANT="$azure_tenant"
-ENV SUBSCRIPTION_CID="$operator_sp_client_id"
-ENV SUBSCRIPTION_SECRET="$operator_sp_secret"
+ENV AZ_CLI_SP="$operator_sp_url"
 ENV AZURE_CLIENT_ID="$operator_sp_client_id"
 ENV AZURE_CLIENT_SECRET="$operator_sp_secret"
 ENV AZURE_TENANT_ID="$azure_tenant"
+ENV ENVIRONMENT_NAME="$environment_name"
+ENV SUBSCRIPTION_CID="$operator_sp_client_id"
+ENV SUBSCRIPTION_ID="$azure_subscription_id"
+ENV SUBSCRIPTION_SECRET="$operator_sp_secret"
+ENV SUBSCRIPTION_TENANT="$azure_tenant"
+ENV TF_VAR_azure_subscription_id="$azure_subscription_id"
 ENV TF_VAR_OPS_CID="$operator_sp_client_id"
 ENV TF_VAR_OPS_OID="$operator_sp_object_id"
 ENV TF_VAR_OPS_SEC="$operator_sp_secret"
 ENV TF_VAR_OPS_SP_URL="$operator_sp_url"
-ENV TF_VAR_azure_subscription_id="$azure_subscription_id"
-ENV AZ_CLI_SP="$operator_sp_url"
-ENV ENVIRONMENT_NAME="$environment_name"
 
+RUN rpm --import https://packages.microsoft.com/keys/microsoft.asc
+
+COPY ./azure-cli.repo /etc/yum.repos.d/azure-cli.repo
+
+RUN sudo yum -y install azure-cli
+RUN az extension add --name aks-preview
+RUN az extension update --name aks-preview
+RUN az login --service-principal --username "$operator_sp_client_id" --password "$operator_sp_secret" --tenant "$azure_tenant"
+RUN az feature register --name AKS-AzurePolicyAutoApprove --namespace Microsoft.ContainerService
+
+RUN rpm --import https://packages.microsoft.com/keys/microsoft.asc && \
+  curl https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -o jq-linux64 && \
+  mv jq-linux64 /usr/bin/jq && \
+  chmod au+x /usr/bin/jq
+
+RUN curl https://releases.hashicorp.com/terraform/0.13.0/terraform_0.13.0_linux_amd64.zip -o tf.zip
+
+RUN yum install -y unzip
+RUN unzip tf.zip
+RUN sudo mv terraform /usr/local/bin
+RUN ln -s /usr/bin/python /usr/bin/python3.7
+
+COPY . /src
+
+# The ansible module and API specific submodules are not installable with poetry.
+# Since they're really only relevant for deployment, we'll just install them here.
+RUN pip3 install ansible ansible[azure]
+RUN pip3 install poetry
+RUN cd /src && poetry install
+
+RUN cd /tmp \
+  && curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" \
+  && chmod +x /tmp/kubectl \
+  && sudo mv /tmp/kubectl /usr/bin/kubectl
+
+WORKDIR /src/ansible
 
 RUN az provider register --namespace Microsoft.ContainerService
-#ENTRYPOINT ["/bin/bash"]
+
 ENTRYPOINT ["ansible-playbook"]
 
-CMD ["site.yml", "--extra-vars app_name=atat scripts_dir=/src/script  az_environment=$ENVIRONMENT_NAME show_bs_env=yes show_app_env_outputs=yes tfvars_file_path=/src/terraform/providers/bootstrap/dryrun.tfvars tf_base_dir=/src/terraform/providers show_app_env_outputs=true bootstrap_subscription_id=$SUBSCRIPTION_ID application_subscription_id=$SUBSCRIPTION_ID", "-vvv"]
+CMD ["site.yml", "--extra-vars app_name=atat scripts_dir=/src/script az_environment=$ENVIRONMENT_NAME show_bs_env=yes show_app_env_outputs=yes tfvars_file_path=/src/terraform/providers/bootstrap/dryrun.tfvars tf_base_dir=/src/terraform/providers show_app_env_outputs=true bootstrap_subscription_id=$SUBSCRIPTION_ID application_subscription_id=$SUBSCRIPTION_ID", "-vvv"]
