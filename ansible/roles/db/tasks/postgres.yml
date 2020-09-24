@@ -24,11 +24,11 @@
     subscription_id: "{{ lookup('env','SUBSCRIPTION_ID') }}"
     tenant: "{{ lookup('env','SUBSCRIPTION_TENANT') }}"
 
+
 - name: Adds uuid-ossp extension to the database
   postgresql_ext:
     name: uuid-ossp
     db: "{{ tf_app_env_outputs.atat_database_name.value }}"
-    schema: "{{ tf_app_env_outputs.atat_database_name.value }}"
     login_user: "{{ tf_app_env_outputs.postgres_root_user_name.value }}"
     login_password: "{{  tf_app_env_outputs.postgres_root_password.value }}"
     login_host: "{{ tf_app_env_outputs.pg_host.value }}"
@@ -37,6 +37,7 @@
   environment:
     PGSSLROOTCERT: /tmp/pgcaroot/pgcaroot.cert
     PGSSLMODE: verify-full
+
 
 
 
