@@ -36,7 +36,7 @@ module "private-aks-firewall" {
   name                = var.name
   environment         = local.environment
   subnet_id           = module.vpc.subnet_list["AzureFirewallSubnet"].id
-  depends_on          = [module.vpc.resource_group_name]
+  depends_on          = [module.vpc.vpc_name]
 
 
 }
