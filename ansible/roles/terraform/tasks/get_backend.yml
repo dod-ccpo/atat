@@ -6,7 +6,9 @@
   set_fact:
     b_end: "{{ b_end|default({}) | combine( { item : tf_bootstrap_backend_outputs[item].value } ) }}"
   with_items: "{{ tf_bootstrap_backend_outputs }}"
-  when: item != 'environment'
+  when:
+    - item != 'environment'
+    - item != 'ops_container_registry_name'
 
 - name: debug be
   debug:
