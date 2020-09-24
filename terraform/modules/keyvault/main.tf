@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "keyvault" {
 }
 
 resource "azurerm_key_vault" "keyvault" {
-  name                = "${var.name}-keyvault-${var.environment}"
+  name                = "${var.name}-kv-${var.environment}"
   location            = azurerm_resource_group.keyvault.location
   resource_group_name = azurerm_resource_group.keyvault.name
   tenant_id           = data.azurerm_client_config.current.tenant_id

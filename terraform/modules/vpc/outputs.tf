@@ -21,3 +21,7 @@ output "resource_group_name" {
   value = "${var.name}-vpc-${var.environment}"
 
 }
+
+output "fw_ip_address_id" {
+  value = azurerm_public_ip.az_fw_ip.id
+}

@@ -7,5 +7,5 @@ output "url" {
 }
 
 output "keyvault_name" {
-  value = "${var.name}-keyvault-${var.environment}"
+  value = "${var.name}-kv-${var.environment}"
 }
