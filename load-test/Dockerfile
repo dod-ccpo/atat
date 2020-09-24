@@ -1,6 +1,6 @@
-FROM locustio/locust
+FROM locustio/locust:1.2.3
 USER root
-RUN apk update && apk --no-cache add g++ gcc libxslt-dev
+RUN pip install -U pip
 RUN pip install pyquery
 USER locust
 ADD locustfile.py locustfile.py

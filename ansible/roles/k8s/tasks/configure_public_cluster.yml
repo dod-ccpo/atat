@@ -33,15 +33,6 @@
   shell:
     cmd: az vmss identity assign -g {{ tf_app_env_outputs.k8s_node_group.value }} -n {{ (k8s_vmss.stdout | from_json)[0].name }} --identities {{ tf_app_env_outputs.keyvault_reader_id.value }}
 
-- name: Base64 encode the password
-  shell: 'echo "{{ password }}" | base64'
-  register: encoded_password_shell_output
-
-- name: see output of secret file
-  debug:
-    msg: "{{ encoded_password_shell_output.stdout }}"
-
-
 - name: Apply the storage class
   k8s:
     state: present

@@ -51,7 +51,7 @@ _DEV_USERS = {
         "service_branch": random_service_branch(),
         "phone_number": "1234567890",
         "citizenship": "United States",
-        "designation": "Military",
+        "designation": "military",
     },
     "amanda": {
         "dod_id": "2345678901",
@@ -61,7 +61,7 @@ _DEV_USERS = {
         "service_branch": random_service_branch(),
         "phone_number": "1234567890",
         "citizenship": "United States",
-        "designation": "Military",
+        "designation": "military",
     },
     "brandon": {
         "dod_id": "3456789012",
@@ -71,7 +71,7 @@ _DEV_USERS = {
         "service_branch": random_service_branch(),
         "phone_number": "1234567890",
         "citizenship": "United States",
-        "designation": "Military",
+        "designation": "military",
     },
     "christina": {
         "dod_id": "4567890123",
@@ -81,7 +81,7 @@ _DEV_USERS = {
         "service_branch": random_service_branch(),
         "phone_number": "1234567890",
         "citizenship": "United States",
-        "designation": "Military",
+        "designation": "military",
     },
     "dominick": {
         "dod_id": "5678901234",
@@ -91,7 +91,7 @@ _DEV_USERS = {
         "service_branch": random_service_branch(),
         "phone_number": "1234567890",
         "citizenship": "United States",
-        "designation": "Military",
+        "designation": "military",
     },
     "erica": {
         "dod_id": "6789012345",
@@ -101,7 +101,7 @@ _DEV_USERS = {
         "service_branch": random_service_branch(),
         "phone_number": "1234567890",
         "citizenship": "United States",
-        "designation": "Military",
+        "designation": "military",
     },
 }
 

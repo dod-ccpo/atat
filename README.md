@@ -455,7 +455,6 @@ htpasswd -cd ./localpassword atat
 
 It will prompt you to enter a password, then produce the password file. Note that the `-d` flag is necessary, per the uWSGI documentation linked above.
 
-
 ## Secrets Detection
 
 This project uses [detect-secrets](https://github.com/Yelp/detect-secrets) to help prevent secrets from being checked into source control. Secret detection is run automatically as part of `script/test` and can be run separately with `script/detect_secrets`.
