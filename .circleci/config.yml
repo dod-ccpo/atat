@@ -400,7 +400,6 @@ jobs:
             docker build \
             --cache-from cloudzeroopsregistry.azurecr.io/ops-cache:latest \
             -t ops:latest \
-            --build-arg IMAGE=<< pipeline.parameters.ops_registry >>.azurecr.io/rhel-py \
             --build-arg operator_sp_client_id=<< pipeline.parameters.sp >> \
             --build-arg operator_sp_object_id=<< pipeline.parameters.sp_object_id >> \
             --build-arg operator_sp_secret=<< pipeline.parameters.sp_password >> \
@@ -408,12 +407,13 @@ jobs:
             --build-arg azure_subscription_id=<< pipeline.parameters.subscription_id >> \
             --build-arg operator_sp_url=<< pipeline.parameters.operator_sp_url >> \
             . < Dockerfile.ops
+      - log_into_app_registry
       - run:
           name: Tag ops image
-          command: docker tag ops:latest << pipeline.parameters.ops_registry >>.azurecr.io/ops:latest
+          command: docker tag ops:latest << pipeline.parameters.container_registry >>.azurecr.io/ops:latest
       - run:
           name: Push ops image
-          command: docker push << pipeline.parameters.ops_registry >>.azurecr.io/ops:latest
+          command: docker push << pipeline.parameters.container_registry >>.azurecr.io/ops:latest
 
   deploy-atat:
      docker:
