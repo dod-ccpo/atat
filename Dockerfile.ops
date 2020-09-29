@@ -10,8 +10,6 @@ ARG operator_sp_object_id
 
 ARG local_ssh_key_path
 
-ENV LOCAL_SSH_KEY_PATH="$local_ssh_key_path"
-
 
 ENV ARM_CLIENT_ID_BUILD="$operator_sp_client_id"
 ENV ARM_CLIENT_SECRET_BUILD="$operator_sp_secret"
@@ -103,7 +101,6 @@ RUN 	mkdir src && \
       mkdir -p ~/.ssh
 COPY . /src
 
-COPY "$LOCAL_SSH_KEY_PATH" ~/.ssh
 
 
 RUN yum install -y \
