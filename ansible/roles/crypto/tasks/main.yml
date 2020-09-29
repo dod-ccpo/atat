@@ -8,5 +8,4 @@
 
 - name: Generate Diffie-Hellman parameters with the default size (4096 bits)
   openssl_dhparam:
-    force: yes
     path: /src/ansible/dh/dhparams.pem

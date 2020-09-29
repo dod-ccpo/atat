@@ -86,7 +86,7 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 
 
 RUN 	pip3 install \
-      ansible \
+      ansible==2.9 \
       packaging \
       ansible[azure] \
       openshift \
@@ -114,8 +114,8 @@ RUN yum install -y http://mirror.centos.org/centos/8/PowerTools/x86_64/os/Packag
 
 # for the ansible to run python scripts for database stuff
 RUN cd /src && \
-    pip3 install -r requirements.txt && \
-    pip3 install ansible[azure] azure-storage azure-storage-common azure-common azure-storage-blob==2.1.0 azure-storage-nspkg pydantic sqlalchemy>=1.3.12 sqlalchemy-json onelogin python3-saml
+    #pip3 install -r requirements.txt && \
+    pip3 install  ansible[azure] azure-storage-common azure-common azure-storage-blob azure-storage-nspkg pydantic sqlalchemy>=1.3.12 sqlalchemy-json onelogin python3-saml
 
 
 #RUN cd /src && \
