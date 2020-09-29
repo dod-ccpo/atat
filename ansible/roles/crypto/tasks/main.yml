@@ -1,5 +1,12 @@
 
 
+- name: Create the dh directory if it does not exist
+  file:
+    path: /src/ansible/dh
+    state: directory
+    mode: '0755'
+
 - name: Generate Diffie-Hellman parameters with the default size (4096 bits)
   openssl_dhparam:
+    force: yes
     path: /src/ansible/dh/dhparams.pem
