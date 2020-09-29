@@ -5,8 +5,11 @@ deploy_bootstrap_env: true
 fetch_bootstrap_state: false
 tf_base_dir: /src/terraform/providers/
 tf_subdir: bootstrap
-tfvars_file_path: /src/terraform/providers/bootstrap/bootstrap.tfvars
+boostrap_resource_group_name: cloudzero-ops
+bootstrap_storage_account_name: czopsstorageaccount
+bootstrap_container_name: tf-configs
 bootstrap_subscription_id: "{{ lookup('env','SUBSCRIPTION_ID') }}"
+tfvars_file_path: /src/terraform/providers/bootstrap/bootstrap.tfvars
 bs_client_id: "{{ lookup('env','TF_VAR_OPS_CID') }}"
 bs_tenant: "{{ lookup('env','AZURE_TENANT_ID') }}"
 bs_secret: "{{ lookup('env','TF_VAR_OPS_SEC') }}"
