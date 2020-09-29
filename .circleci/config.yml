@@ -450,7 +450,7 @@ jobs:
            name: run container image
            command: |
              az account set -s << pipeline.parameters.subscription_id >>
-             az container create -g cloudzero-ops --name deploy-build-${CIRCLE_BUILD_NUM} --ip-address Private --vnet cloudzero-ops-network --subnet deployment-subnet --image cloudzeroopsregistry.azurecr.io/ops:${CIRCLE_BUILD_NUM}  --registry-password <<pipeline.parameters.sp_password >> --registry-username << pipeline.parameters.sp >> --command-line "ansible-playbook site.yml '--extra-vars deploy_tag=v0.1.0'" --cpu 4 --memory 4 --restart-policy Never
+             az container create -g cloudzero-ops --name deploy-build-${CIRCLE_BUILD_NUM} --ip-address Private --vnet cloudzero-ops-network --subnet deployment-subnet --image cloudzeroopsregistry.azurecr.io/ops:${CIRCLE_BUILD_NUM}  --registry-password <<pipeline.parameters.sp_password >> --registry-username << pipeline.parameters.sp >> --command-line "ansible-playbook site.yml --extra-vars deploy_tag=v0.1.0" --cpu 4 --memory 4 --restart-policy Never
 
 workflows:
   version: 2
