@@ -384,7 +384,7 @@ jobs:
 
   push-ops-image:
     docker:
-      - image: docker:18.06.0-ce-git
+      - image: docker:19.03.0-ce-git
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -417,7 +417,7 @@ jobs:
 
   deploy-atat:
      docker:
-       - image: docker:18.06.0-ce-git
+       - image: docker:19.03.0-ce-git
      environment:
        DOCKER_BUILDKIT: 1
      steps:
