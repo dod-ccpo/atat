@@ -2,6 +2,9 @@
 - name: get backend config
   import_tasks: get_backend.yml
 
+- name: get backend config
+  import_tasks: source_vars_from_storage_account.yml
+
 - name: get variables
   import_tasks: get_variables.yml
 

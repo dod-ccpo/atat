@@ -3,6 +3,11 @@
 
 # could move this out to top level or own role
 
+- name: fetch bootstrap vars
+  import_tasks: pull_tfvars.yml
+  when: fetch_bootstrap_state == true
+
+
 - name: fetch bootstrap state
   import_tasks: pull_remote_state.yml
   when: fetch_bootstrap_state == true
