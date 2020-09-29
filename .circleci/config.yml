@@ -1,6 +1,10 @@
 version: 2.1
 
 parameters:
+  deploy_atat:
+    description: whether or not to deploy a new atat infra
+    type: boolean
+    default: false
   subscription_id:
     description: Subscription ID for the registry containing the application docker images.
     type: string
@@ -381,6 +385,8 @@ jobs:
   push-ops-image:
     docker:
       - image: docker:18.06.0-ce-git
+    environment:
+      DOCKER_BUILDKIT: 1
     steps:
       - checkout
       - setup_remote_docker:
@@ -391,7 +397,9 @@ jobs:
       - run:
           name: Build ops deployment image image
           command: |
-            docker build -t ops:latest \
+            docker build \
+            --cache-from cloudzeroopsregistry.azurecr.io/ops-cache:latest \
+            -t ops:latest \
             --build-arg IMAGE=<< pipeline.parameters.ops_registry >>.azurecr.io/rhel-py \
             --build-arg operator_sp_client_id=<< pipeline.parameters.sp >> \
             --build-arg operator_sp_object_id=<< pipeline.parameters.sp_object_id >> \
@@ -402,12 +410,47 @@ jobs:
             . < Dockerfile.ops
       - run:
           name: Tag ops image
-          command: docker tag ops:latest << pipeline.parameters.container_registry >>.azurecr.io/ops:latest
-      - log_into_app_registry
+          command: docker tag ops:latest << pipeline.parameters.ops_registry >>.azurecr.io/ops:latest
       - run:
           name: Push ops image
-          command: |
-            docker push << pipeline.parameters.container_registry >>.azurecr.io/ops:latest
+          command: docker push << pipeline.parameters.ops_registry >>.azurecr.io/ops:latest
+
+  deploy-atat:
+     docker:
+       - image: docker:18.06.0-ce-git
+     environment:
+       DOCKER_BUILDKIT: 1
+     steps:
+       - checkout
+       - setup_remote_docker:
+           docker_layer_caching: true
+           version: 18.06.0-ce
+       - install_azure_cli
+       - log_into_ops_registry
+       - run:
+           name: Build ops deployment image and deploy to container instances
+           command: |
+             docker build \
+             --cache-from cloudzeroopsregistry.azurecr.io/ops-cache:latest \
+             -t ops:latest \
+             --build-arg operator_sp_client_id=<< pipeline.parameters.sp >> \
+             --build-arg operator_sp_object_id=<< pipeline.parameters.sp_object_id >> \
+             --build-arg operator_sp_secret=<< pipeline.parameters.sp_password >> \
+             --build-arg azure_tenant=<< pipeline.parameters.tenant_id >> \
+             --build-arg azure_subscription_id=<< pipeline.parameters.subscription_id >> \
+             --build-arg operator_sp_url=<< pipeline.parameters.operator_sp_url >> \
+              -f Dockerfile.ops .
+       - run:
+           name: Tag ops image
+           command: docker tag ops:latest cloudzeroopsregistry.azurecr.io/ops:${CIRCLE_BUILD_NUM}
+       - run:
+           name: Push ops image
+           command: docker push cloudzeroopsregistry.azurecr.io/ops:${CIRCLE_BUILD_NUM}
+       - run:
+           name: run container image
+           command: |
+             az account set -s << pipeline.parameters.subscription_id >>
+             az container create -g cloudzero-ops --name deploy-build-${CIRCLE_BUILD_NUM} --ip-address Private --vnet cloudzero-ops-network --subnet deployment-subnet --image cloudzeroopsregistry.azurecr.io/ops:${CIRCLE_BUILD_NUM}  --registry-password <<pipeline.parameters.sp_password >> --registry-username << pipeline.parameters.sp >> --command-line "ansible-playbook site.yml '--extra-vars deploy_tag=v0.1.0'" --cpu 4 --memory 4 --restart-policy Never
 
 workflows:
   version: 2
@@ -456,3 +499,7 @@ workflows:
     when: << pipeline.parameters.build_and_push_ops_image >>
     jobs:
       - push-ops-image
+  deploy-atat:
+    when: << pipeline.parameters.deploy_atat >>
+    jobs:
+      - deploy-atat
