@@ -5,7 +5,6 @@
 
 - name: fetch bootstrap vars
   import_tasks: pull_tfvars.yml
-  when: fetch_bootstrap_state == true
 
 
 - name: fetch bootstrap state
