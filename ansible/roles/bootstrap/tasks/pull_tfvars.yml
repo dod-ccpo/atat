@@ -1,0 +1,13 @@
+---
+
+- name: Download bootstrap state
+  azure_rm_storageblob:
+    subscription_id: "{{ bootstrap_subscription_id }}"
+    secret: "{{ bs_secret }}"
+    client_id: "{{  bs_client_id  }}"
+    tenant: "{{ bs_tenant }}"
+    resource_group: "{{ boostrap_resource_group_name }}"
+    storage_account_name: "{{ bootstrap_storage_account_name }}"
+    container: "{{ bootstrap_container_name}}"
+    blob: bootstrap.tfvars
+    dest:  /src/terraform/providers/bootstrap/bootstrap.tfvars
