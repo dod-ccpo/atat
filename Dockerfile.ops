@@ -131,7 +131,6 @@ RUN cd /tmp \
     && sudo mv /tmp/kubectl /usr/bin/kubectl
 
 
-RUN cp /src/breakglass_two.pub ~/.ssh/
 
 
 
