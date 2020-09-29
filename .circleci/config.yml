@@ -390,7 +390,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          docker_layer_caching: true
+          docker_layer_caching: false
           version: 19.03.13
       - install_azure_cli
       - log_into_ops_registry
@@ -423,7 +423,7 @@ jobs:
      steps:
        - checkout
        - setup_remote_docker:
-           docker_layer_caching: true
+           docker_layer_caching: false
            version: 19.03.13
        - install_azure_cli
        - log_into_ops_registry
