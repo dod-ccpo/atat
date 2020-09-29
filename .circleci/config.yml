@@ -384,14 +384,14 @@ jobs:
 
   push-ops-image:
     docker:
-      - image: docker:19.03.13-git
+      - image: docker:19-git
     environment:
       DOCKER_BUILDKIT: 1
     steps:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: false
-          version: 19.03.13
+          version: 19
       - install_azure_cli
       - log_into_ops_registry
       - run:
@@ -417,14 +417,14 @@ jobs:
 
   deploy-atat:
      docker:
-       - image: docker:19.03.13-git
+       - image: docker:19-git
      environment:
        DOCKER_BUILDKIT: 1
      steps:
        - checkout
        - setup_remote_docker:
            docker_layer_caching: false
-           version: 19.03.13
+           version: 19
        - install_azure_cli
        - log_into_ops_registry
        - run:
