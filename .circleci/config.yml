@@ -399,7 +399,7 @@ jobs:
           command: |
             docker build \
             --cache-from cloudzeroopsregistry.azurecr.io/ops-cache:latest \
-            --build-arg IMAGE=<< pipeline.parameters.ops_registry >>.azurecr.io/rhelubi:8.2 \
+            --build-arg IMAGE=cloudzeroopsregistry.azurecr.io/ops-cache:latest \
             -t ops:latest \
             --build-arg operator_sp_client_id=<< pipeline.parameters.sp >> \
             --build-arg operator_sp_object_id=<< pipeline.parameters.sp_object_id >> \
