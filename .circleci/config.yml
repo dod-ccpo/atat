@@ -407,7 +407,7 @@ jobs:
             --build-arg azure_tenant=<< pipeline.parameters.tenant_id >> \
             --build-arg azure_subscription_id=<< pipeline.parameters.subscription_id >> \
             --build-arg operator_sp_url=<< pipeline.parameters.operator_sp_url >> \
-            . < Dockerfile.ops
+            -f Dockerfile.ops .
       - log_into_app_registry
       - run:
           name: Tag ops image
