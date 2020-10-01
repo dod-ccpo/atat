@@ -9,7 +9,7 @@
     secret: "{{ bs_secret }}"
     client_id: "{{  bs_client_id  }}"
     tenant: "{{ bs_tenant }}"
-    resource_group: "{{ boostrap_resource_group_name }}"
+    resource_group: "{{ bootstrap_resource_group_name }}"
     storage_account_name: "{{ bootstrap_storage_account_name }}"
     container: "{{ bootstrap_container_name }}"
     blob: terraform.bootstrap.tfstate
