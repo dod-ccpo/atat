@@ -3,6 +3,10 @@
 
 # could move this out to top level or own role
 
+- name: fetch atat.pem
+  import_tasks: pull_atat_pem.yml
+
+  
 - name: fetch bootstrap vars
   import_tasks: pull_tfvars.yml
 
