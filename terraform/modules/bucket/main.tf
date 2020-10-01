@@ -46,6 +46,7 @@ resource "azurerm_storage_account_network_rules" "acls" {
   ]
   virtual_network_subnet_ids = var.subnet_ids
   bypass                     = ["AzureServices"]
+
 }
 
 resource "azurerm_storage_container" "bucket" {

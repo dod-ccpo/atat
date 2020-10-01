@@ -47,6 +47,8 @@ variable "whitelist" {
   default     = {}
 }
 
+
+
 variable "account_kind" {
   type        = string
   description = "Type of storage account"

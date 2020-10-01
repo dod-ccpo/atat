@@ -44,3 +44,5 @@ variable "dns_servers" {
 variable "service_endpoints" { type = map }
 variable "routes" { type = map }
 variable "storage_container_name" {}
+
+variable "deployment_subnet_id" {}
