@@ -295,7 +295,7 @@ def test_dispatch_create_user(monkeypatch):
     mock.delay.assert_called_once_with(application_role_ids=[app_role.id])
 
 
-def test_create_environment_no_dupes(session, celery_app, celery_worker):
+def test_create_environment_no_dupes(session):
     portfolio = PortfolioFactory.create(
         applications=[{"environments": [{"cloud_id": uuid4().hex}]}],
         task_orders=[

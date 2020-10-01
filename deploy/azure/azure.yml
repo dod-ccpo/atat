@@ -170,7 +170,7 @@ spec:
               "-A",
               "celery_worker.celery",
               "worker",
-              "--loglevel=info",
+              "--loglevel=INFO",
             ]
           envFrom:
             - configMapRef:
@@ -244,7 +244,7 @@ spec:
               "-A",
               "celery_worker.celery",
               "beat",
-              "--loglevel=info",
+              "--loglevel=INFO",
             ]
           envFrom:
             - configMapRef:

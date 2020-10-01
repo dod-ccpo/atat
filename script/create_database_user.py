@@ -14,7 +14,7 @@ from atat.database import db
 
 def create_database_user(username, password, dbname):
     print(
-        f"Creating Postgres user role for \"{username}\" and granting all privileges to database '{dbname}'."
+        f"Creating Postgres user role for \"{username}\" and granting minimum required privileges to database '{dbname}'."
     )
     conn = db.engine.connect()
 

@@ -4,7 +4,7 @@
 
 set -e
 
-WORKER="poetry run celery -A celery_worker.celery worker --loglevel=info -B -c 1"
+WORKER="poetry run celery -A celery_worker.celery worker --loglevel=INFO -B -c 1"
 
 if [[ `command -v entr` ]]; then
   find atat | entr -r $WORKER

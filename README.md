@@ -288,6 +288,7 @@ All config settings must be declared in "config/base.ini", even if they are null
 - `CA_CHAIN`: Path to the CA chain file.
 - `CDN_ORIGIN`: URL for the origin host for asset files.
 - `CELERY_DEFAULT_QUEUE`: String specifying the name of the queue that background tasks will be added to.
+- `CELERYBEAT_SCHEDULE_VALUE`: Integer specifying a default value of how many seconds wait between scheduled celery beat tasks. All celery beat tasks use this value.
 - `CONTRACT_END_DATE`: String specifying the end date of the JEDI contract. Used for task order validation. Example: 2019-09-14
 - `CONTRACT_START_DATE`: String specifying the start date of the JEDI contract. Used for task order validation. Example: 2019-09-14.
 - `CSP`: String specifying the cloud service provider to use. Acceptable values: "azure", "mock", "mock-csp".

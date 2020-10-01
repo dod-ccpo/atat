@@ -17,6 +17,8 @@ from tests.utils import FakeLogger, FakeNotificationSender
 
 dictConfig({"version": 1, "handlers": {"wsgi": {"class": "logging.NullHandler"}}})
 
+pytest_plugins = ("celery.contrib.pytest",)
+
 
 def pytest_addoption(parser):
     parser.addoption("--hybrid", action="store_true", default=False)
