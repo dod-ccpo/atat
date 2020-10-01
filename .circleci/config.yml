@@ -75,6 +75,9 @@ parameters:
     description: The circle ci api token to use when triggering builds from an infra deployment
     type: string
     default: "__NONE__"
+  build_branch:
+    description: This is the branch we tell the deployment image to build its bastion & atat from
+    default: ${CIRCLE_BRANCH}
 
 commands:
   install_azure_cli:
@@ -444,6 +447,7 @@ jobs:
              --build-arg azure_subscription_id=<< pipeline.parameters.subscription_id >> \
              --build-arg operator_sp_url=<< pipeline.parameters.operator_sp_url >> \
              --build-arg circle_api_token=<< pipeline.parameters.circle_api_token >> \
+             --build-arg build_branch="${CIRCLE_BRANCH}"
               -f Dockerfile.ops .
        - run:
            name: Tag ops image

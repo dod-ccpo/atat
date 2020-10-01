@@ -8,7 +8,7 @@
         build_and_push_app_images: false
         build_and_push_ops_image: true
         container_registry: "{{tf_bootstrap_backend_outputs.ops_container_registry_name.value}}"
-        branch_to_build: fix_ops-image-cross-subscription
+        branch_to_build: "{{ lookup('env','BUILD_BRANCH') }}"
     - role: terraform
     - role: circle_ci
       vars:
