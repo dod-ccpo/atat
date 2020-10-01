@@ -47,4 +47,4 @@ data:
   SAML_DEV_ENTITY_ID: https://bugbounty.atat.dev/login-dev
   SAML_DEV_ACS: https://bugbounty.atat.dev/login-dev?acs
   SAML_DEV_SLS: https://bugbounty.atat.dev/login-dev?sls
-  SAML_DEV_IDP_URI: https://login.microsoftonline.com/ab154c46-3d57-4386-9b87-8002123f3858/federationmetadata/2007-06/federationmetadata.xml?appid=69459a6b-da7b-4c84-bb3d-53118fd4ae48
+  SAML_DEV_IDP_URI: https://login.microsoftonline.com/ab154c46-3d57-4386-9b87-8002123f3858/federationmetadata/2007-06/federationmetadata.xml?appid=cdfe7a83-6be4-41ca-b96c-4a3718d3612c

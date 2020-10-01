@@ -1,5 +1,6 @@
 import pendulum
 from sqlalchemy import func, or_
+from sqlalchemy.orm import joinedload
 
 from atat.database import db
 from atat.models import (
@@ -88,6 +89,7 @@ class TaskOrders(BaseDomainClass):
     def get_for_send_task_order_files(cls):
         return (
             db.session.query(TaskOrder)
+            .options(joinedload(TaskOrder.pdf))
             .join(CLIN)
             .filter(
                 or_(
