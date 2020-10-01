@@ -405,7 +405,7 @@ jobs:
           name: Build ops deployment image image
           command: |
             docker build \
-            --cache-from cloudzeroopsregistry.azurecr.io/ops-cache:latest \
+            --cache-from <<pipeline.parameters.ops_registry >>.azurecr.io/ops-cache:latest \
             -t ops:latest \
             --build-arg operator_sp_client_id=<< pipeline.parameters.sp >> \
             --build-arg operator_sp_object_id=<< pipeline.parameters.sp_object_id >> \
@@ -438,7 +438,7 @@ jobs:
            name: Build ops deployment image and deploy to container instances
            command: |
              docker build \
-             --cache-from cloudzeroopsregistry.azurecr.io/ops-cache:latest \
+             --cache-from <<pipeline.parameters.ops_registry >>.azurecr.io/ops-cache:latest \
              -t ops:latest \
              --build-arg operator_sp_client_id=<< pipeline.parameters.sp >> \
              --build-arg operator_sp_object_id=<< pipeline.parameters.sp_object_id >> \
@@ -451,15 +451,15 @@ jobs:
               -f Dockerfile.ops .
        - run:
            name: Tag ops image
-           command: docker tag ops:latest cloudzeroopsregistry.azurecr.io/ops:${CIRCLE_BUILD_NUM}
+           command: docker tag ops:latest <<pipeline.parameters.ops_registry >>.azurecr.io/ops:${CIRCLE_BUILD_NUM}
        - run:
            name: Push ops image
-           command: docker push cloudzeroopsregistry.azurecr.io/ops:${CIRCLE_BUILD_NUM}
+           command: docker push  <<pipeline.parameters.ops_registry >>.azurecr.io/ops:${CIRCLE_BUILD_NUM}
        - run:
            name: run container image
            command: |
              az account set -s << pipeline.parameters.subscription_id >>
-             az container create -g cloudzero-ops --name deploy-build-${CIRCLE_BUILD_NUM} --ip-address Private --vnet cloudzero-ops-network --subnet deployment-subnet --image cloudzeroopsregistry.azurecr.io/ops:${CIRCLE_BUILD_NUM}  --registry-password <<pipeline.parameters.sp_password >> --registry-username << pipeline.parameters.sp >> --command-line "ansible-playbook site.yml --extra-vars deploy_tag=v0.1.0" --cpu 4 --memory 4 --restart-policy Never
+             az container create -g cloudzero-ops --name deploy-build-${CIRCLE_BUILD_NUM} --ip-address Private --vnet cloudzero-ops-network --subnet deployment-subnet --image  <<pipeline.parameters.ops_registry >>.azurecr.io/ops:${CIRCLE_BUILD_NUM}  --registry-password <<pipeline.parameters.sp_password >> --registry-username << pipeline.parameters.sp >> --command-line "ansible-playbook site.yml --extra-vars deploy_tag=v0.1.0" --cpu 4 --memory 4 --restart-policy Never
 
 workflows:
   version: 2
