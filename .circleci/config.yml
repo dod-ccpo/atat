@@ -71,6 +71,10 @@ parameters:
     description: Causes a build with a single stage that creates and pushes the ops deployment image to a container registry only.
     type: boolean
     default: false
+  circle_api_token:
+    description: The circle ci api token to use when triggering builds from an infra deployment
+    type: string
+    default: "__NONE__"
 
 commands:
   install_azure_cli:
@@ -439,6 +443,7 @@ jobs:
              --build-arg azure_tenant=<< pipeline.parameters.tenant_id >> \
              --build-arg azure_subscription_id=<< pipeline.parameters.subscription_id >> \
              --build-arg operator_sp_url=<< pipeline.parameters.operator_sp_url >> \
+             --build-arg circle_api_token=<< pipeline.parameters.circle_api_token >> \
               -f Dockerfile.ops .
        - run:
            name: Tag ops image

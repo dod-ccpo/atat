@@ -4,7 +4,7 @@
     - role: bootstrap
     - role: circle_ci
       vars:
-        token_source_tf: true
+        token_source_tf: false
         build_and_push_app_images: false
         build_and_push_ops_image: true
         container_registry: "{{tf_bootstrap_backend_outputs.ops_container_registry_name.value}}"
@@ -12,7 +12,7 @@
     - role: terraform
     - role: circle_ci
       vars:
-        token_source_tf: true
+        token_source_tf: false
         build_and_push_ops_image: false
         build_and_push_app_images: true
         container_registry: "{{ tf_app_env_outputs.container_registry_name.value}}"

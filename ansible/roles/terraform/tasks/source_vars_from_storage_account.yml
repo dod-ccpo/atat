@@ -11,4 +11,4 @@
     storage_account_name: "{{ bootstrap_storage_account_name }}"
     container: "{{ bootstrap_container_name}}"
     blob: app.tfvars.json
-    dest:  /Users/michaelpapetti/Developer/atst_fresh/terraform/providers/application_env/app.tfvars.json
+    dest: /src/terraform/providers/application_env/app.tfvars.json
