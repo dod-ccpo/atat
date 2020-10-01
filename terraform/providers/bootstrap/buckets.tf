@@ -11,7 +11,7 @@ module "tf_state" {
   region                 = var.region
   policy                 = "Deny"
   subnet_ids             = [var.deployment_subnet_id]
-  whitelist              = merge(var.storage_admin_whitelist, { "operator" : chomp(data.http.myip.body)})
+  whitelist              = merge(var.storage_admin_whitelist, { "operator" : chomp(data.http.myip.body) })
   account_kind           = "Storage"
   storage_container_name = var.storage_container_name
 }
