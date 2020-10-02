@@ -80,7 +80,7 @@ parameters:
     type: string
     default: ${CIRCLE_BRANCH}
   az_environment:
-    descriptoin: Optional declaritive way to specify environment identifier. If length is > 0, this term is used else, a random pet name is generated to avoid collisions.
+    description: Optional declaritive way to specify environment identifier. If length is > 0, this term is used else, a random pet name is generated to avoid collisions.
     type: string
     default: ""
 
