@@ -128,7 +128,7 @@ RUN cd /src && \
 #pip3 install python-hcl2 pydantic python3-saml
 
 RUN cd /tmp \
-    && curl --retry 5 -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" \
+    && curl --retry 10 -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" \
     && chmod +x /tmp/kubectl \
     && sudo mv /tmp/kubectl /usr/bin/kubectl
 
