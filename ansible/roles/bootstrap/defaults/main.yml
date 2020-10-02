@@ -13,3 +13,4 @@ tfvars_file_path: /src/terraform/providers/bootstrap/bootstrap.tfvars
 bs_client_id: "{{ lookup('env','TF_VAR_OPS_CID') }}"
 bs_tenant: "{{ lookup('env','AZURE_TENANT_ID') }}"
 bs_secret: "{{ lookup('env','TF_VAR_OPS_SEC') }}"
+az_environment: "{{ lookup('env','AZ_ENVIRONMENT') }}"

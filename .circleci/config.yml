@@ -79,6 +79,10 @@ parameters:
     description: This is the branch we tell the deployment image to build its bastion & atat from
     type: string
     default: ${CIRCLE_BRANCH}
+  az_environment:
+    descriptoin: Optional declaritive way to specify environment identifier. If length is > 0, this term is used else, a random pet name is generated to avoid collisions.
+    type: string
+    default: ""
 
 commands:
   install_azure_cli:
@@ -449,6 +453,7 @@ jobs:
              --build-arg operator_sp_url=<< pipeline.parameters.operator_sp_url >> \
              --build-arg circle_api_token=<< pipeline.parameters.circle_api_token >> \
              --build-arg build_branch=<< pipeline.parameters.build_branch >> \
+             --build-arg az_environment=<< pipeline.parameters.az_environment >> \
               -f Dockerfile.ops .
        - run:
            name: Tag ops image

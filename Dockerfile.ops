@@ -8,10 +8,12 @@ ARG operator_sp_url
 ARG operator_sp_object_id
 ARG circle_api_token
 ARG build_branch
+ARG az_environment
 
 
 ARG local_ssh_key_path
 
+ENV AZ_ENVIRONMENT="$az_environment"
 ENV BUILD_BRANCH="$build_branch"
 ENV CIRCLE_CI_API_KEY="$circle_api_token"
 ENV ARM_CLIENT_ID_BUILD="$operator_sp_client_id"
