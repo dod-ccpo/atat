@@ -27,6 +27,6 @@
 - name: Fetch latest `ops` image from {{ tf_bootstrap_backend_outputs.ops_container_registry_name.value }}
   shell: az acr repository show-tags --top 1 --orderby time_desc --repository ops --name {{ tf_bootstrap_backend_outputs.ops_container_registry_name.value }}
   register: ops_bastion_image
-  retries: 100
-  delay: 10
+  retries: 500
+  delay: 60
   until: ops_bastion_image is not failed
