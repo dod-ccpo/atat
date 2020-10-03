@@ -103,3 +103,5 @@ variable "workspace_id" {
 
 
 variable "operator_ip" {}
+
+variable "deployment_subnet_id" {}
