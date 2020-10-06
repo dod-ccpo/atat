@@ -1,4 +1,4 @@
-FROM cloudzeroopsregistry.azurecr.io/rhelubi:8.2
+FROM cloudzeroopsregistry.azurecr.io/rhel-py:latest
 
 ARG operator_sp_client_id
 ARG operator_sp_secret
@@ -75,16 +75,6 @@ RUN rpm --import https://packages.microsoft.com/keys/microsoft.asc && \
       mv jq-linux64 /usr/bin/jq && \
       chmod au+x /usr/bin/jq
 
-
-
-RUN cd /usr/src \
-      && curl https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz -o Python-3.7.3.tgz\
-      && tar xzf Python-3.7.3.tgz \
-      && cd Python-3.7.3 \
-      && ./configure --enable-loadable-sqlite-extensions --enable-optimizations \
-      && make install \
-      && rm /usr/src/Python-3.7.3.tgz
-
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3.7 && \
     source $HOME/.poetry/env
 
@@ -119,14 +109,6 @@ RUN cd /src && \
     pip3 install -r requirements.txt && \
     pip3 install  ansible[azure] azure-storage-common azure-common azure-storage-blob azure-storage-nspkg pydantic onelogin python3-saml
 
-
-#RUN cd /src && \
-#pip3 install -r requirements.txt && \
-#cd ansible && \
-#pip3 install -r requirements.txt && \
-#pip3 install ansible[azure] xmlsec && \
-#pip3 install python-hcl2 pydantic python3-saml
-
 RUN cd /tmp \
     && curl --retry 10 -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" \
     && chmod +x /tmp/kubectl \
@@ -155,7 +137,7 @@ ENV AZ_CLI_SP="$operator_sp_url"
 
 
 RUN az provider register --namespace Microsoft.ContainerService
-#ENTRYPOINT ["/bin/bash"]
+
 ENTRYPOINT ["ansible-playbook"]
 
 CMD ["site.yml", "--extra-vars app_name=atat scripts_dir=/src/script  az_environment=dryrun3 show_bs_env=yes show_app_env_outputs=yes tfvars_file_path=/src/terraform/providers/bootstrap/dryrun.tfvars tf_base_dir=/src/terraform/providers show_app_env_outputs=true bootstrap_subscription_id=$SUBSCRIPTION_ID application_subscription_id=$SUBSCRIPTION_ID", "-vvv"]
