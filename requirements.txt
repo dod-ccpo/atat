@@ -23,9 +23,9 @@ azure-keyvault==4.1.0 \
 azure-keyvault-keys==4.3.0 \
     --hash=sha256:a50e6f663378f3603a66d80c7c01e9544ae7e9cfdf4d3a3ae92f5df9fb9f64da \
     --hash=sha256:064a98791fe447a0e57850bb5ec1ec43e7d5fd39266319b5acc44a9704a3b966
-azure-keyvault-secrets==4.1.0 \
-    --hash=sha256:4f3bfac60e025e01dd1c1998b73649d45d706975356c0cf147174cf5a6ddf8be \
-    --hash=sha256:743a2eabb2bbb21d50b46fa6b321361b9b61121387ec35c0f3d953778793c179
+azure-keyvault-secrets==4.2.0 \
+    --hash=sha256:08b8aa518590c394477514f4a0a5d9e557a00ff164de9f6f6e7b112f8d5e6aa1 \
+    --hash=sha256:1083ab900da5ec63c518ffef49d9fdca02c81ddffdf80c52c03cd9da479e021f
 azure-nspkg==3.0.2 \
     --hash=sha256:e7d3cea6af63e667d87ba1ca4f8cd7cb4dfca678e4c55fc1cedb320760e39dd0 \
     --hash=sha256:1d0bbb2157cf57b1bef6c8c8e5b41133957364456c43b0a43599890023cca0a8 \
