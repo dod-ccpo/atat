@@ -3,10 +3,11 @@ from bs4 import BeautifulSoup
 from flask import Markup
 from flask import current_app as app
 from wtforms import Form, FormField
-from wtforms.fields import StringField
+from wtforms.fields import RadioField, StringField
 from wtforms.validators import InputRequired
 from wtforms.widgets import CheckboxInput, ListWidget
 
+from atat.forms.fields import SelectField
 from atat.forms.task_order import CLINForm, TaskOrderForm
 from atat.models import Permissions
 from atat.routes.task_orders.new import render_task_orders_edit
@@ -20,6 +21,12 @@ class InitialValueForm(Form):
     errorfield = StringField(
         label="error", validators=[InputRequired(message="Test Error Message")]
     )
+
+
+class OptionsForm(Form):
+    selectfield = SelectField(default="initialvalue")
+
+    radiofield = RadioField(default="initialvalue")
 
 
 class TaskOrderPdfForm(Form):
@@ -51,6 +58,13 @@ def upload_input_macro(env):
 
 
 @pytest.fixture
+def options_input_macro(env):
+    env.filters["tojson"] = lambda x: x
+    options_template = env.get_template("components/options_input.html")
+    return getattr(options_template.module, "OptionsInput")
+
+
+@pytest.fixture
 def checkbox_input_macro(env):
     checkbox_template = env.get_template("components/checkbox_input.html")
     return getattr(checkbox_template.module, "CheckboxInput")
@@ -71,6 +85,11 @@ def text_input_macro(env):
 @pytest.fixture
 def initial_value_form(scope="function"):
     return InitialValueForm()
+
+
+@pytest.fixture
+def options_form(scope="function"):
+    return OptionsForm()
 
 
 @pytest.fixture
@@ -106,6 +125,20 @@ def test_make_multi_checkbox_input_template(
     write_template(
         rendered_multi_checkbox_input_macro, "multi_checkbox_input_template.html"
     )
+
+
+def test_make_select_input_template(options_input_macro, options_form):
+    options_form.selectfield.choices = [("a", "A"), ("b", "B")]
+    options_form.radiofield.choices = [("a", "A"), ("b", "B")]
+
+    rendered_select_input_macro = options_input_macro(
+        options_form.selectfield, optional=Markup("'optional'")
+    )
+    rendered_radio_input_macro = options_input_macro(
+        options_form.radiofield, optional=Markup("'optional'")
+    )
+    write_template(rendered_select_input_macro, "select_input_template.html")
+    write_template(rendered_radio_input_macro, "radio_input_template.html")
 
 
 def test_make_upload_input_template(upload_input_macro, task_order_form):

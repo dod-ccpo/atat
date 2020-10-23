@@ -83,7 +83,7 @@
             {% if fields %}
               {{ OptionsInput(fields.jedi_clin_type, show_validation=False, optional=False) }}
             {% else %}
-              <optionsinput :name="'clins-' + clinIndex + '-jedi_clin_type'" :optional='false' inline-template>
+              <optionsinput :name="'clins-' + clinIndex + '-jedi_clin_type'" :optional='false' :initial-value="'JEDI_CLIN_1'" inline-template>
                 <div v-bind:class="['usa-input', { 'usa-input--error': showError, 'usa-input--success': showValid }]">
                   <fieldset data-ally-disabled="true" class="usa-input__choices" v-on:change="onInput">
                       <legend>

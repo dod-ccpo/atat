@@ -41,7 +41,8 @@ USER_FIELDS = {
             ("United States", "United States"),
             ("Foreign National", "Foreign National"),
             ("Other", "Other"),
-        ]
+        ],
+        default="",
     ),
     "designation": RadioField(
         translate("forms.edit_user.designation_label"),
@@ -50,6 +51,7 @@ USER_FIELDS = {
             ("civilian", "Civilian"),
             ("contractor", "Contractor"),
         ],
+        default="",
     ),
 }
 
