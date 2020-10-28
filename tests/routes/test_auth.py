@@ -162,3 +162,29 @@ def test_last_login_set_when_user_logs_in(client, mock_login):
     assert session["last_login"]
     assert user.last_login > session["last_login"]
     assert isinstance(session["last_login"], datetime)
+
+
+@pytest.mark.parametrize(
+    "url,status_code", [("/", 200), ("/this-page-will-never-exist", 302)]
+)
+def test_hsts_unprotected(client, url, status_code):
+    response = client.get(url, follow_redirects=False)
+    assert response.status_code == status_code
+    assert (
+        response.headers.get("Strict-Transport-Security")
+        == "max-age=31536000; includeSubDomains; always"
+    )
+
+
+@pytest.mark.parametrize(
+    "url,status_code", [(PROTECTED_URL, 200), ("/this-page-will-never-exist", 404)]
+)
+def test_hsts_protected(client, mock_login, url, status_code):
+    user = UserFactory.create()
+    mock_login(user, client)
+    response = client.get(url, follow_redirects=False)
+    assert response.status_code == status_code
+    assert (
+        response.headers.get("Strict-Transport-Security")
+        == "max-age=31536000; includeSubDomains; always"
+    )
