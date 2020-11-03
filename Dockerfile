@@ -27,29 +27,29 @@ RUN yum install -y \
       unzip \
       util-linux \
       wget \
-      zlib-devel
+      zlib-devel \
+    # Install yarn.
+    # https://linuxize.com/post/how-to-install-yarn-on-centos-8/
+    && curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo \
+    && rpm --import https://dl.yarnpkg.com/rpm/pubkey.gpg \
+    && dnf install -y \
+         yarn \
+         # Install the `Python.h` file for compiling certain libraries.
+         python3-devel \
+    && pip3 install poetry
 
-# Install the `Python.h` file for compiling certain libraries.
-RUN dnf install python3-devel -y
+# download Python and JS dependnencies
+COPY pyproject.toml poetry.lock poetry.toml package.json yarn.lock ./
+RUN poetry install --no-root --no-dev && yarn install
 
+# genrate a production JS bundle
+COPY ./static ./static
+COPY ./styles ./styles
+COPY ./js ./js
+RUN cp -rf ./node_modules/uswds/dist/fonts ./static/fonts && yarn build-prod
+
+# copy everything else
 COPY . .
-RUN pip3 install poetry
-RUN poetry install --no-root --no-dev
-
-# Install yarn.
-# https://linuxize.com/post/how-to-install-yarn-on-centos-8/
-RUN dnf install @nodejs -y
-RUN curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
-RUN rpm --import https://dl.yarnpkg.com/rpm/pubkey.gpg
-RUN dnf install yarn -y
-
-# Install app dependencies
-
-RUN yarn install
-
-RUN rm -rf ./static/fonts \
-      && cp -rf ./node_modules/uswds/dist/fonts ./static/fonts \
-      && yarn build-prod
 
 FROM $IMAGE
 
@@ -65,40 +65,24 @@ ARG GIT_SHA
 ENV APP_DIR "${APP_DIR}"
 ENV GIT_SHA "${GIT_SHA}"
 
+RUN yum install -y \
+        # Need to build uwsgi with PCRE enabled
+        pcre \
+        pcre-devel \
+        # Make `groupadd` command available.
+        # https://stackoverflow.com/a/44834295
+        shadow-utils.x86_64 \
+    && dnf install -y \
+        postgresql-10.6-1.module+el8+2469+5ecd5aae \
+        python3-devel \
+    # dumb-init is a simple process supervisor and init system designed to run as PID 1 inside minimal container environments.
+    && pip3 install dumb-init uwsgi -I
+
 # Create application directory
-RUN set -x ; \
-      mkdir -p ${APP_DIR}
+RUN set -x ; mkdir -p ${APP_DIR}
 
 # Set working dir
 WORKDIR ${APP_DIR}
-
-# Make `groupadd` command available.
-# https://stackoverflow.com/a/44834295
-RUN yum install shadow-utils.x86_64 -y
-
-# Create a system group `atat`.
-# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/s2-groups-cl-tools
-RUN groupadd --system -g 101 atat
-
-# Create a system user `atst` and add them to the `atat` group.
-# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/s2-users-cl-tools
-RUN useradd --system atst -g atat
-
-# Install postgresql client.
-RUN dnf install postgresql-10.6-1.module+el8+2469+5ecd5aae -y
-
-# Install dumb-init.
-# dumb-init is a simple process supervisor and init system designed to run as PID 1 inside minimal container environments.
-RUN pip3 install dumb-init
-
-# Install the `Python.h` file for compiling certain libraries.
-RUN dnf install python3-devel -y
-
-# Install uwsgi and pendulum.
-# uwsgi plugins are embedded by default.
-# https://uwsgi-docs.readthedocs.io/en/latest/Logging.html#logging-to-files
-# Need to build uwsgi with PCRE enabled
-RUN yum install pcre pcre-devel -y && pip3 install uwsgi -I && pip3 install pendulum
 
 COPY --from=builder /install/.venv/ ./.venv/
 COPY --from=builder /install/alembic/ ./alembic/
@@ -115,17 +99,22 @@ COPY --from=builder /install/static/ ./static/
 COPY --from=builder /install/fixtures/ ./fixtures
 COPY --from=builder /install/uwsgi.ini .
 
+RUN mkdir /var/run/uwsgi \
+    # Create a system group `atat`.
+    # https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/s2-groups-cl-tools
+    && groupadd --system -g 101 atat \
+    # Create a system user `atst` and add them to the `atat` group.
+    # https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/s2-users-cl-tools
+    && useradd --system atst -g atat \
+    && chown -R atst:atat /var/run/uwsgi \
+    && chown -R atst:atat "${APP_DIR}" \
+    && update-ca-trust
+
+# Run as the unprivileged APP user
+USER atst
+
 # Use dumb-init for proper signal handling
 ENTRYPOINT ["dumb-init", "--"]
 
 # Default command is to launch the server
 CMD ["uwsgi", "--ini", "uwsgi.ini"]
-
-RUN mkdir /var/run/uwsgi && \
-      chown -R atst:atat /var/run/uwsgi && \
-      chown -R atst:atat "${APP_DIR}"
-
-RUN update-ca-trust
-
-# Run as the unprivileged APP user
-USER atst
