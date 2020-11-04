@@ -2,36 +2,17 @@ data "http" "myip" {
   url = "http://ipinfo.io/ip"
 }
 
-data "terraform_remote_state" "bootstrap_new_tenant_state" {
-  backend = "local"
-
-  config = {
-    path = "../bootstrap_new_tenant/terraform.tfstate"
-  }
-}
-
 locals {
-  operations_container_registry_name = data.terraform_remote_state.bootstrap_new_tenant_state.outputs.operations_container_registry_name
-  operations_deployment_subnet_id    = data.terraform_remote_state.bootstrap_new_tenant_state.outputs.operations_deployment_subnet_id
-  operations_storage_account_name    = data.terraform_remote_state.bootstrap_new_tenant_state.outputs.operations_storage_account_name
+  operations_container_registry_name = data.terraform_remote_state.previous_stage.outputs.operations_container_registry_name
+  operations_container_registry_login_server = data.terraform_remote_state.previous_stage.outputs.operations_container_registry_login_server
+  operations_deployment_subnet_id    = data.terraform_remote_state.previous_stage.outputs.operations_deployment_subnet_id
+  operations_storage_account_name    = data.terraform_remote_state.previous_stage.outputs.operations_storage_account_name
+  operations_resource_group_name    = data.terraform_remote_state.previous_stage.outputs.operations_resource_group_name
 }
 
 resource "azurerm_resource_group" "ops" {
   name     = "${var.deployment_namespace}-ops"
   location = var.deployment_location
-}
-
-resource "azurerm_container_registry" "ops" {
-  name                = "opscontainerregistry${var.deployment_namespace}"
-  resource_group_name = azurerm_resource_group.ops.name
-  location            = azurerm_resource_group.ops.location
-  sku                 = "Premium"
-  admin_enabled       = false
-
-  network_rule_set {
-    default_action = "Allow"
-    ip_rule        = []
-  }
 }
 
 # TF State should be restricted to admins only, but IP protected

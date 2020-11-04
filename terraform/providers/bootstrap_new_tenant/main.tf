@@ -56,10 +56,19 @@ resource "azurerm_container_registry" "operations_container_registry" {
 
 resource "local_file" "generate_bootstrap_provider_remote_backend" {
   content = templatefile("templates/versions.tf.tmpl", {
-    operations_resource_group_name              = azurerm_resource_group.operations_resource_group.name
-    operations_storage_account_name             = azurerm_storage_account.operations_storage_account.name
-    operations_deployment_states_container_name = azurerm_storage_container.deployment_states.name
-    state_container_key                         = "${var.deployment_namespace}.bootstrap.tfstate"
+    backend_resource_group_name  = azurerm_resource_group.operations_resource_group.name
+    backend_storage_account_name = azurerm_storage_account.operations_storage_account.name
+    backend_state_container_name = azurerm_storage_container.deployment_states.name
+    backend_state_container_key  = "${var.deployment_namespace}.bootstrap.tfstate"
+    remote_state_definition      = <<-EOT
+      data "terraform_remote_state" "previous_stage" {
+        backend = "local"
+
+        config = {
+          path = "../bootstrap_new_tenant/terraform.tfstate"
+        }
+      }
+    EOT
   })
 
   filename = "../bootstrap/versions.tf"
@@ -67,10 +76,22 @@ resource "local_file" "generate_bootstrap_provider_remote_backend" {
 
 resource "local_file" "generate_deployment_provider_remote_backend" {
   content = templatefile("templates/versions.tf.tmpl", {
-    operations_resource_group_name              = azurerm_resource_group.operations_resource_group.name
-    operations_storage_account_name             = azurerm_storage_account.operations_storage_account.name
-    operations_deployment_states_container_name = azurerm_storage_container.deployment_states.name
-    state_container_key                         = "${var.deployment_namespace}.application.tfstate"
+    backend_resource_group_name  = azurerm_resource_group.operations_resource_group.name
+    backend_storage_account_name = azurerm_storage_account.operations_storage_account.name
+    backend_state_container_name = azurerm_storage_container.deployment_states.name
+    backend_state_container_key  = "${var.deployment_namespace}.application.tfstate"
+    remote_state_definition      = <<-EOT
+      data "terraform_remote_state" "previous_stage" {
+        backend = "azurerm"
+
+        config = {
+          resource_group_name  = "${azurerm_resource_group.operations_resource_group.name}"
+          storage_account_name = "${azurerm_storage_account.operations_storage_account.name}"
+          container_name       = "${azurerm_storage_container.deployment_states.name}"
+          key                  = "${var.deployment_namespace}.bootstrap.tfstate"
+        }
+      }
+    EOT
   })
 
   filename = "../application_env/versions.tf"

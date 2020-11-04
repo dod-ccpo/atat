@@ -19,7 +19,7 @@ resource "azurerm_virtual_network" "vpc" {
   name                = "${var.name}-network-${var.environment}"
   location            = azurerm_resource_group.vpc.location
   resource_group_name = azurerm_resource_group.vpc.name
-  address_space       = ["${var.virtual_network}"]
+  address_space       = ["${var.virtual_network}"] # TODO(jesse) Can this be wired up dynamically?
   dns_servers         = var.dns_servers
 
   tags = {

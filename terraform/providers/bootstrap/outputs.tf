@@ -1,6 +1,16 @@
-output "deployment_container_registry_name" {
-  value       = azurerm_container_registry.ops.name
-  description = "Stores images built for this deployment through CI/CD."
+output "operations_container_registry_name" {
+  value       = local.operations_container_registry_name
+  description = "The name of the container registry which holds long-lived base images at the tenant level."
+}
+
+output "operations_container_registry_login_server" {
+  value       = local.operations_container_registry_login_server
+  description = "The URL that can be used to log into the container registry which holds long-lived base images at the tenant level."
+}
+
+output "operations_resource_group_name" {
+  value       = local.operations_resource_group_name
+  description = "Resource group containing all operations resources."
 }
 
 output "deployment_storage_account_name" {
@@ -21,4 +31,9 @@ output "deployment_storage_account_container_name" {
 output "deployment_resource_group_name" {
   value       = azurerm_resource_group.ops.name
   description = "Resource group for managing operations resources for this deployment."
+}
+
+output "operations_deployment_subnet_id" {
+  value = local.operations_deployment_subnet_id
+  description = "ID of the subnet all subsequent resources are deployed into."
 }

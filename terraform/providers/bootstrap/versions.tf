@@ -2,10 +2,10 @@ terraform {
   required_version = ">= 0.13"
 
   backend "azurerm" {
-    resource_group_name  = "${backend_resource_group_name}"
-    storage_account_name = "${backend_storage_account_name}"
-    container_name       = "${backend_state_container_name}"
-    key                  = "${backend_state_container_key}"
+    resource_group_name  = "cloudzero-ops-dev"
+    storage_account_name = "czopsstorageaccountdev"
+    container_name       = "tfstatesdev"
+    key                  = "dev.bootstrap.tfstate"
   }
 
   required_providers {
@@ -40,4 +40,10 @@ provider "azurerm" {
   features {}
 }
 
-${remote_state_definition}
+data "terraform_remote_state" "previous_stage" {
+  backend = "local"
+
+  config = {
+    path = "../bootstrap_new_tenant/terraform.tfstate"
+  }
+}

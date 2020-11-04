@@ -3,6 +3,11 @@ output "operations_container_registry_name" {
   description = "Global registry so that docker images can be reused across deployments."
 }
 
+output "operations_container_registry_login_server" {
+  value       = azurerm_container_registry.operations_container_registry.login_server
+  description = "The URL that can be used to log into the container registry."
+}
+
 output "operations_deployment_subnet_id" {
   value       = azurerm_subnet.deployment_subnet.id
   description = "ID of the subnet all subsequent resources are deployed into."
