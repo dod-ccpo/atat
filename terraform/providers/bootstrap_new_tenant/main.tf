@@ -55,12 +55,23 @@ resource "azurerm_container_registry" "operations_container_registry" {
 }
 
 resource "local_file" "generate_bootstrap_provider_remote_backend" {
-  content = templatefile("../bootstrap/provider.tf.tmpl", {
+  content = templatefile("templates/provider.tf.tmpl", {
     operations_resource_group_name              = azurerm_resource_group.operations_resource_group.name
     operations_storage_account_name             = azurerm_storage_account.operations_storage_account.name
     operations_deployment_states_container_name = azurerm_storage_container.deployment_states.name
-    operations_deployment_states_container_key  = "${var.deployment_namespace}.bootstrap.tfstate"
+    state_container_key  = "${var.deployment_namespace}.bootstrap.tfstate"
   })
 
   filename = "../bootstrap/provider.tf"
+}
+
+resource "local_file" "generate_deployment_provider_remote_backend" {
+  content = templatefile("templates/provider.tf.tmpl", {
+    operations_resource_group_name              = azurerm_resource_group.operations_resource_group.name
+    operations_storage_account_name             = azurerm_storage_account.operations_storage_account.name
+    operations_deployment_states_container_name = azurerm_storage_container.deployment_states.name
+    state_container_key  = "${var.deployment_namespace}.application.tfstate"
+  })
+
+  filename = "../application_env/provider.tf"
 }
