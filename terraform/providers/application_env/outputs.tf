@@ -17,6 +17,7 @@ output "atat_user_name" {
 output "atat_database_instance_name" {
   value = "${var.name}-sql-${local.environment}"
 }
+
 output "atat_database_name" {
   value = "${var.name}_${local.environment}_${var.lifecycle_env_name}"
 }
@@ -30,7 +31,6 @@ output "postgres_root_password" {
 }
 
 output "postgres_root_user_name" {
-
   value = module.sql.pg_admin_user
 }
 
@@ -82,16 +82,13 @@ output "operator_keyvault_name" {
   value = module.operator_keyvault.keyvault_name
 }
 
-
 output "subnets" {
   value = module.vpc.subnet_list
 }
 
-
 output "container_registry_name" {
   value = module.container_registry.container_registry_name
 }
-
 
 output "keyvault_reader_client_id" {
   value = module.keyvault_reader_identity.client_id
@@ -100,8 +97,6 @@ output "keyvault_reader_client_id" {
 output "keyvault_reader_id" {
   value = module.keyvault_reader_identity.id
 }
-
-
 
 output "azure_storage_account_name" {
   value = module.task_order_bucket.storage_account_name
@@ -123,15 +118,11 @@ output "private_k8s_node_group" {
   value = module.private-k8s.k8s_resource_group_id
 }
 
-
-
 output "vnet_id" {
-
   value = module.vpc.id
 }
 
 output "app_config_values" {
-
   value = {
     "AZURE-CLIENT-ID" : module.tenant_keyvault_app.application_id
     "AZURE-SECRET-KEY" : module.tenant_keyvault_app.application_password
@@ -158,12 +149,7 @@ output "app_config_values" {
     "CSP" : var.CSP
     "AZURE-HYBRID-REPORTING-CLIENT-ID" : var.AZURE_HYBRID_REPORTING_CLIENT_ID
     "AZURE-HYBRID-REPORTING-SECRET" : var.AZURE_HYBRID_REPORTING_SECRET
-
-
-
-
   }
-
 }
 
 output "circle_ci_api_key" {
