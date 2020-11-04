@@ -10,12 +10,13 @@ FROM $IMAGE
 # be saved in the docker image.
 #
 # https://docs.docker.com/develop/develop-images/build_enhancements/#new-docker-build-secret-information
-RUN --mount=type=secret,id=redhat_username \
-    --mount=type=secret,id=redhat_password \
+ARG redhat_username
+ARG redhat_password
+
     # Removes the specified packages from the system along with any
     # packages depending on the packages being removed.
     # https://man7.org/linux/man-pages/man8/yum.8.html
-    yum remove python3 && \
+RUN  yum remove python3 && \
     # Removes all “leaf” packages from the system that were originally
     # installed as dependencies of user-installed packages, but which
     # are no longer required by any such package.
@@ -36,8 +37,8 @@ RUN --mount=type=secret,id=redhat_username \
     subscription-manager remove --all && \
     subscription-manager clean && \
     subscription-manager register \
-        --username $(cat /run/secrets/redhat_username) \
-        --password $(cat /run/secrets/redhat_password) && \
+        --username $redhat_username \
+        --password $redhat_password && \
     subscription-manager refresh && \
     subscription-manager attach --auto && \
     # Enable the CodeReady repository.

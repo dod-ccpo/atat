@@ -1,179 +1,110 @@
 output "subscription_id" {
-  value = var.azure_subscription_id
+  value = data.azurerm_client_config.azure_client.subscription_id
 }
-
 output "tenant_id" {
-  value = "b5ab0e1e-09f8-4258-afb7-fb17654bc5b3"
+  value = data.azurerm_client_config.azure_client.tenant_id
+}
+output "pg_database_name" {
+  value = azurerm_postgresql_database.db.name
+}
+output "pg_resource_group_name" {
+  value = azurerm_resource_group.sql.name
 }
 
-output "atat_user_password" {
-  value = random_password.atat_user_password.result
-}
-
-output "atat_user_name" {
-  value = module.sql.app_user
-}
-
-output "atat_database_instance_name" {
-  value = "${var.name}-sql-${local.environment}"
-}
-output "atat_database_name" {
-  value = "${var.name}_${local.environment}_${var.lifecycle_env_name}"
-}
-
-output "postgres_resource_group_name" {
-  value = module.sql.postgres_resource_group_name
-}
-
-output "postgres_root_password" {
+output "pg_root_password" {
   value = random_password.pg_root_password.result
 }
 
-output "postgres_root_user_name" {
-
-  value = module.sql.pg_admin_user
+output "pg_root_user_name" {
+  value = "${azurerm_postgresql_server.sql.administrator_login}@${azurerm_postgresql_server.sql.name}"
 }
 
-output pg_host {
-  value = module.sql.fqdn
+output "pg_atat_user_name" {
+  value = "atat@${azurerm_postgresql_server.sql.name}"
 }
 
-output pg_server_name {
-  value = module.sql.database_name
+output "pg_atat_user_password" {
+  value = random_password.atat_user_password.result
 }
 
-output aks_sp_id {
+output "pg_host" {
+  value = azurerm_postgresql_server.sql.fqdn
+}
+
+output "aks_sp_id" {
   value = module.aks_sp.application_id
 }
 
-output aks_sp_oid {
+output "aks_sp_oid" {
   value = module.aks_sp.object_id
 }
 
-output aks_sp_secret {
+output "aks_sp_secret" {
   value = module.aks_sp.application_password
 }
 
-output "operator_keyvault_url" {
-  value = module.operator_keyvault.url
+output "aks_cluster_name" {
+  value = azurerm_kubernetes_cluster.k8s_private.name
 }
 
-output "ops_keyvault_sp_client_id" {
-  value = module.ops_keyvault_app.application_id
+output "aks_resource_group" {
+  value = azurerm_resource_group.vpc.name
 }
 
-output "ops_keyvault_sp_object_id" {
-  value = module.ops_keyvault_app.sp_object_id
+output "aks_node_resource_group" {
+  value = azurerm_kubernetes_cluster.k8s_private.node_resource_group
 }
 
-output "ops_keyvault_sp_secret" {
-  value = module.ops_keyvault_app.service_principal_password
+output "aks_keyvault_reader_client_id" {
+  value = module.keyvault_reader_identity.client_id
+}
+
+output "aks_keyvault_reader_id" {
+  value = module.keyvault_reader_identity.id
 }
 
 output "application_keyvault_name" {
-  value = module.keyvault.keyvault_name
+  value = azurerm_key_vault.app_keyvault.name
+  # value = module.keyvault.keyvault_name
 }
 
 output "application_keyvault_url" {
-  value = module.keyvault.url
+  value = azurerm_key_vault.app_keyvault.vault_uri
+  # value = module.keyvault.url
 }
-
-output "operator_keyvault_name" {
-  value = module.operator_keyvault.keyvault_name
-}
-
-
-output "subnets" {
-  value = module.vpc.subnet_list
-}
-
 
 output "container_registry_name" {
   value = module.container_registry.container_registry_name
 }
-
-
-output "keyvault_reader_client_id" {
-  value = module.keyvault_reader_identity.client_id
-}
-
-output "keyvault_reader_id" {
-  value = module.keyvault_reader_identity.id
-}
-
-
 
 output "azure_storage_account_name" {
   value = module.task_order_bucket.storage_account_name
 }
 
 output "redis_hostname" {
-  value = module.redis.hostname
+  value = azurerm_redis_cache.redis.hostname
 }
 
 output "redis_ssl_port" {
-  value = module.redis.ssl_port
+  value = azurerm_redis_cache.redis.ssl_port
 }
-
-output "k8s_node_group" {
-  value = module.k8s.k8s_resource_group_id
-}
-
-output "private_k8s_node_group" {
-  value = module.private-k8s.k8s_resource_group_id
-}
-
-
 
 output "vnet_id" {
-
-  value = module.vpc.id
-}
-
-output "app_config_values" {
-
-  value = {
-    "AZURE-CLIENT-ID" : module.tenant_keyvault_app.application_id
-    "AZURE-SECRET-KEY" : module.tenant_keyvault_app.application_password
-    "AZURE-TENANT-ID" : var.tenant_id
-    "MAIL-PASSWORD" : var.mailgun_smtp_password
-    "AZURE-STORAGE-KEY" : module.task_order_bucket.primary_access_key
-    "REDIS-PASSWORD" : module.redis.primary_key
-    "AZURE-HYBRID-TENANT-ID" : var.azure_hybrid_tenant_id
-    "AZURE-USER-OBJECT-ID" : var.azure_hybrid_user_object_id
-    "AZURE-TENANT-ADMIN-PASSWORD" : var.azure_hybrid_tenant_admin_password
-    "REDIS-PASSWORD" : module.redis.primary_key
-    "AZURE-BILLING-ACCOUNT-NAME" : var.AZURE-BILLING-ACCOUNT-NAME
-    "AZURE-BILLING-PROFILE-ID" : var.AZURE-BILLING-PROFILE-ID
-    "AZURE-INVOICE-SECTION-ID" : var.AZURE-INVOICE-SECTION-ID
-    "SAML-IDP-CERT" : ""
-    "dhparam4096" : var.dhparam4096
-    "PGPASSWORD" : random_password.atat_user_password.result
-    "AZURE-VAULT-URL" : module.tenant_keyvault.url
-    "AZURE-SUBSCRIPTION-CREATION-CLIENT-ID" : var.AZURE_SUBSCRIPTION_CREATION_CLIENT_ID
-    "AZURE-SUBSCRIPTION-CREATIONSECRET" : var.AZURE_SUBSCRIPTION_CREATION_SECRET
-    "AZURE-TENANT-ADMIN-USERNAME" : var.AZURE_TENANT_ADMIN_USERNAME
-    "AZURE-TENANT-ID" : var.AZURE_TENANT_ID
-    "AZURE-USER-OBJECT-ID" : var.AZURE_USER_OBJECT_ID
-    "CSP" : var.CSP
-    "AZURE-HYBRID-REPORTING-CLIENT-ID" : var.AZURE_HYBRID_REPORTING_CLIENT_ID
-    "AZURE-HYBRID-REPORTING-SECRET" : var.AZURE_HYBRID_REPORTING_SECRET
-
-
-
-
-  }
-
-}
-
-output "circle_ci_api_key" {
-  value = var.circle_ci_api_key
+  value = azurerm_virtual_network.vpc.id
 }
 
 output "ops_container_registry_name" {
-  value = module.container_registry.ops_container_registry_name
+  value = data.terraform_remote_state.previous_stage.outputs.operations_container_registry_name
 }
 
 output "environment" {
-  value = local.environment
+  value = var.deployment_namespace
+}
+
+output "aks_subnet" {
+  value = azurerm_subnet.aks.name
+}
+
+output "aks_internal_lb_ip" {
+  value = var.aks_internal_lb_ip
 }

@@ -50,15 +50,9 @@ spec:
               path: pgsslrootcert.crt
               mode: 0666
         - name: flask-secret
-          flexVolume:
-            driver: "azure/kv"
-            options:
-              usepodidentity: "false"
-              usevmmanagedidentity: "true"
-              vmmanagedidentityclientid: $VMSS_CLIENT_ID
-              keyvaultname: $KEYVAULT_NAME
-              keyvaultobjectnames: "AZURE-STORAGE-KEY;MAIL-PASSWORD;PGPASSWORD;REDIS-PASSWORD;SECRET-KEY"
-              keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY"
-              keyvaultobjecttypes: "secret;secret;secret;secret;key"
-              tenantid: $TENANT_ID
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "atat-secret-provider"
       restartPolicy: Never

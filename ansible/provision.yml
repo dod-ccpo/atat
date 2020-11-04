@@ -1,0 +1,4 @@
+- hosts: localhost
+  roles:
+    - role: db
+    - role: k8s-provisioner

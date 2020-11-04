@@ -1,8 +1,92 @@
 ---
-- name: source ccpo users file
-  import_tasks: source_ccpo_user_file.yml
-  when: postgresql is defined
+- name: grab the root cert from yaml
+  shell: cat "{{ postgres_root_cert }}"
+  register: cert_text
 
-- name: provision postgres
-  import_tasks: postgres.yml
-  when: postgresql is defined
+- name: set cert fact
+  set_fact:
+    pgrootcert_yaml: "{{ cert_text.stdout | from_yaml }}"
+
+- name: write cert to temp file
+  shell: mkdir -p /tmp/pgcaroot && echo "{{ pgrootcert_yaml.data.cert }}" > /tmp/pgcaroot/pgcaroot.cert
+
+- name: Print values
+  debug:
+    msg: resource_group-- "{{ pg_resource_group_name }}" server_name-- "{{ pg_host }}" name-- "{{ pg_database_name }}" secret-- "{{ sp_client_secret }}" client_id-- "{{ sp_client_id }}" subscription_id-- "{{ subscription_id }}" tenant-- "{{ tenant_id }}"
+
+- name: Adds uuid-ossp extension to the database
+  postgresql_ext:
+    name: uuid-ossp
+    db: "{{ pg_database_name }}"
+    login_user: "{{ pg_root_user_name }}"
+    login_password: "{{  pg_root_password }}"
+    login_host: "{{ pg_host }}"
+    cascade: yes
+    ssl_mode: verify-full
+  environment:
+    PGSSLROOTCERT: /tmp/pgcaroot/pgcaroot.cert
+    PGSSLMODE: verify-full
+
+- name: Create database user
+  postgresql_user:
+    db: "{{ pg_database_name }}"
+    login_user: "{{ pg_root_user_name }}"
+    login_password: "{{  pg_root_password }}"
+    login_host: "{{ pg_host }}"
+    name: "{{ pg_atat_user_name }}"
+    password: "{{ pg_atat_user_password }}"
+    priv: "CREATE/CONNECT/TEMPORARY"
+    role_attr_flags: LOGIN,NOSUPERUSER,INHERIT,NOCREATEDB,NOCREATEROLE,NOREPLICATION
+    ssl_mode: verify-full
+  environment:
+    PGSSLROOTCERT: /tmp/pgcaroot/pgcaroot.cert
+    PGSSLMODE: verify-full
+
+- name: Create database user
+  postgresql_user:
+    db: "{{ pg_database_name }}"
+    login_user: "{{ pg_root_user_name }}"
+    login_password: "{{  pg_root_password }}"
+    login_host: "{{ pg_host }}"
+    name: "{{ pg_atat_user_name | regex_replace('@.*','') }}"
+    password: "{{ pg_atat_user_password }}"
+    priv: "CREATE/CONNECT/TEMPORARY"
+    role_attr_flags: LOGIN,NOSUPERUSER,INHERIT,NOCREATEDB,NOCREATEROLE,NOREPLICATION
+  environment:
+    PGSSLROOTCERT: /tmp/pgcaroot/pgcaroot.cert
+    PGSSLMODE: verify-full
+
+    - name: Initialize database
+  shell:
+    cmd: python3.7 script/reset_database.py
+    chdir: "{{ src_dir }}"
+  environment:
+    ATAT_PGPASSWORD: "{{  pg_atat_user_password  }}"
+    ATAT_PGUSER: "{{ pg_atat_user_name }}"
+    PGDATABASE: "{{ pg_database_name }}"
+    PGHOST: "{{ pg_host }}"
+    PGPASSWORD: "{{ pg_atat_user_password }}"
+    PGSSLMODE: verify-full
+    PGSSLROOTCERT: /tmp/pgcaroot/pgcaroot.cert
+    PGUSER: "{{ pg_atat_user_name }}"
+    POSTGRES_ROOT_PASS: "{{  pg_root_password  }}"
+    POSTGRES_ROOT_USER: "{{ pg_root_user_name  }}"
+    SERVER_ADMIN_NAME: "{{ pg_root_user_name }}"
+    SERVER_GROUP: "{{ pg_resource_group_name }}"
+    SERVER_NAME: "{{ pg_host }}"
+
+- name: Add CCPO users
+  shell:
+    cmd: python3.7 script/add_ccpo_users.py /tmp/ccpo_users.yml
+    chdir: "{{ src_dir }}"
+  environment:
+    PGDATABASE: "{{ pg_database_name }}"
+    PGHOST: "{{ pg_host }}"
+    PGPASSWORD: "{{  pg_atat_user_password  }}"
+    PGSSLMODE: verify-full
+    PGSSLROOTCERT: /tmp/pgcaroot/pgcaroot.cert
+    PGUSER: "{{ pg_atat_user_name  }}"
+    SERVER_ADMIN_NAME: "{{ pg_root_user_name }}"
+    SERVER_GROUP: "{{ pg_resource_group_name }}"
+    SERVER_NAME: "{{ pg_host }}"
+

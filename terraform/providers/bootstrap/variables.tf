@@ -1,48 +1,27 @@
-variable "environment" {
-
-  default = ""
+variable "operations_location" {
+  type        = string
+  default     = "East US"
+  description = "Azure region in which operations resources are provisioned."
 }
 
-variable "region" {}
-
-variable "backup_region" {}
-
-
-
-variable "owner" {}
-
-variable "name" {}
-
-
-
-variable "admin_users" {
-  type = map
+variable "namespace" {
+  type = string
+  # default     = "dev"
+  description = "Namespace of provisioned operations resources."
 }
 
-variable "storage_admin_whitelist" {
-  type = map
+variable "operator_subscription_id" {
+  type = string
 }
 
-variable "container_network_whitelist" {
-  type = map
+variable "operator_client_id" {
+  type = string
 }
 
-
-
-variable "tenant_id" {}
-
-
-variable "admin_user_whitelist" { type = map }
-
-variable "networks" { type = map }
-
-variable "virtual_network" {}
-variable "route_tables" { type = map }
-variable "dns_servers" {
-  type = list
+variable "operator_client_secret" {
+  type = string
 }
-variable "service_endpoints" { type = map }
-variable "routes" { type = map }
-variable "storage_container_name" {}
 
-variable "deployment_subnet_id" {}
+variable "operator_tenant_id" {
+  type = string
+}

@@ -36,7 +36,7 @@ variable "admin_enabled" {
 
 }
 
-variable "subnet_ids" {
+variable "subnet_list" {
   description = "List of subnet_ids that will have access to this service"
   type        = list
 }
@@ -48,33 +48,12 @@ variable "policy" {
 }
 
 variable "whitelist" {
-  type        = map
-  description = "A map of whitelisted IPs and CIDR ranges. For single IPs, Azure expects just the IP, NOT a /32."
-  default     = {}
+  type        = list
+  description = "A list of whitelisted IPs and CIDR ranges. For single IPs, Azure expects just the IP, NOT a /32."
+  default     = []
 }
 
 variable "workspace_id" {
   description = "The Log Analytics Workspace ID"
   type        = string
 }
-
-variable "pet_name" {}
-
-variable "subnet_list" {
-  type = map
-}
-
-
-variable "ops_resource_group_name" {
-  type        = string
-  description = "The name of a prexisting resource group holding a container registry with a hardened base image."
-  default     = "cloudzero-ops"
-}
-
-variable "ops_container_registry_name" {
-  type        = string
-  description = "The name of a prexisting container registry with a hardened base image used to build our application images."
-  default     = "cloudzeroopsregistry"
-}
-
-

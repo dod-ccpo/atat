@@ -1,10 +1,11 @@
-namespace: staging
+namespace: "{{ environment }}"
 bases:
-  - ../../azure/
+  - ../../../deploy/azure/
 resources:
   - namespace.yml
 patchesStrategicMerge:
   - envvars.yml
-  - ports.yml
+  - service.yml
   - autoscaling.yml
   - secret_provider.yml
+  - azure.yml

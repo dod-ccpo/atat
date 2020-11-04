@@ -6,5 +6,5 @@ resources:
 patchesStrategicMerge:
   - envvars.yml
   - ports.yml
-  - flex_vol.yml
   - autoscaling.yml
+  - secret_provider.yml
