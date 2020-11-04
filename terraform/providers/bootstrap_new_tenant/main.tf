@@ -59,7 +59,7 @@ resource "local_file" "generate_bootstrap_provider_remote_backend" {
     operations_resource_group_name              = azurerm_resource_group.operations_resource_group.name
     operations_storage_account_name             = azurerm_storage_account.operations_storage_account.name
     operations_deployment_states_container_name = azurerm_storage_container.deployment_states.name
-    state_container_key  = "${var.deployment_namespace}.bootstrap.tfstate"
+    state_container_key                         = "${var.deployment_namespace}.bootstrap.tfstate"
   })
 
   filename = "../bootstrap/versions.tf"
@@ -70,7 +70,7 @@ resource "local_file" "generate_deployment_provider_remote_backend" {
     operations_resource_group_name              = azurerm_resource_group.operations_resource_group.name
     operations_storage_account_name             = azurerm_storage_account.operations_storage_account.name
     operations_deployment_states_container_name = azurerm_storage_container.deployment_states.name
-    state_container_key  = "${var.deployment_namespace}.application.tfstate"
+    state_container_key                         = "${var.deployment_namespace}.application.tfstate"
   })
 
   filename = "../application_env/versions.tf"

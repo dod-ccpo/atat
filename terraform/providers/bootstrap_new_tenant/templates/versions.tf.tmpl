@@ -1,11 +1,11 @@
 terraform {
   required_version = ">= 0.13"
-  
+
   backend "azurerm" {
     resource_group_name  = "${operations_resource_group_name}"
     storage_account_name = "${operations_storage_account_name}"
     container_name       = "${operations_deployment_states_container_name}"
-    key                  = "${bootstrap_state_container_key}"
+    key                  = "${state_container_key}"
   }
 
   required_providers {
