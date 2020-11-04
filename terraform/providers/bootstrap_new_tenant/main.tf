@@ -1,3 +1,7 @@
+data "http" "myip" {
+  url = "http://ipinfo.io/ip"
+}
+
 resource "azurerm_resource_group" "operations_resource_group" {
   name     = "cloudzero-ops-${var.operations_namespace}"
   location = var.operations_location
@@ -34,7 +38,14 @@ resource "azurerm_storage_account" "operations_storage_account" {
   network_rules {
     default_action             = "Deny"
     virtual_network_subnet_ids = [azurerm_subnet.deployment_subnet.id]
+    ip_rules                   = [chomp(data.http.myip.body)]
   }
+}
+
+resource "azurerm_storage_container" "deployment_states" {
+  name = "tfstates${var.operations_namespace}"
+  storage_account_name = azurerm_storage_account.operations_storage_account.name
+  container_access_type = "private"
 }
 
 resource "azurerm_container_registry" "operations_container_registry" {
