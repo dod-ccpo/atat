@@ -106,3 +106,6 @@ js/test_templates
 
 # remove any pems
 **/*.pem
+
+# Terraform Plans
+*.plan
