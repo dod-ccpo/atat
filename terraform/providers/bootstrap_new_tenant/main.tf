@@ -43,8 +43,8 @@ resource "azurerm_storage_account" "operations_storage_account" {
 }
 
 resource "azurerm_storage_container" "deployment_states" {
-  name                  = "tfstates${var.operations_namespace}"
-  storage_account_name  = azurerm_storage_account.operations_storage_account.name
+  name                 = "tfstates${var.operations_namespace}"
+  storage_account_name = azurerm_storage_account.operations_storage_account.name
 }
 
 resource "azurerm_container_registry" "operations_container_registry" {
