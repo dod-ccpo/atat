@@ -40,7 +40,7 @@ resource "azurerm_container_registry" "ops" {
 # not be able to access it when running TF without being on a VPN.
 module "tf_state" {
   source                 = "../../modules/bucket"
-  service_name           = "${var.deployment_namespace}tfstate"
+  service_name           = "czops${var.deployment_namespace}tfstate"
   owner                  = "remove_me"
   name                   = "${var.deployment_namespace}bucket"
   environment            = var.deployment_namespace

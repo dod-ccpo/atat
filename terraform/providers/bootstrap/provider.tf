@@ -1,4 +1,11 @@
 terraform {
+  backend "azurerm" {
+    resource_group_name = "cloudzero-ops-dev"
+    storage_account_name = "czopsstorageaccountdev"
+    container_name = "tfstatesdev"
+    key = "dev.bootstrap.tfstate"
+  }
+
   required_providers {
     azuread = {
       source  = "hashicorp/azuread"

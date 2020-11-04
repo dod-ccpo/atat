@@ -1,3 +1,9 @@
+variable "deployment_namespace" {
+  type        = string
+  default     = "dev"
+  description = "Namespace of provisioned deployment resources."
+}
+
 variable "operations_location" {
   type        = string
   default     = "East US"

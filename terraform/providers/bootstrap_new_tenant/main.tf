@@ -43,9 +43,11 @@ resource "azurerm_storage_account" "operations_storage_account" {
 }
 
 resource "azurerm_storage_container" "deployment_states" {
-  name = "tfstates${var.operations_namespace}"
-  storage_account_name = azurerm_storage_account.operations_storage_account.name
+  name                  = "tfstates${var.operations_namespace}"
+  storage_account_name  = azurerm_storage_account.operations_storage_account.name
   container_access_type = "private"
+
+  # TODO(jesse) Is it possible to use a whitelist here?
 }
 
 resource "azurerm_container_registry" "operations_container_registry" {
@@ -53,4 +55,15 @@ resource "azurerm_container_registry" "operations_container_registry" {
   resource_group_name = azurerm_resource_group.operations_resource_group.name
   location            = var.operations_location
   sku                 = "Premium"
+}
+
+resource "local_file" "generate_bootstrap_provider_remote_backend" {
+  content = templatefile("../bootstrap/provider.tf.tmpl", {
+    operations_resource_group_name              = azurerm_resource_group.operations_resource_group.name
+    operations_storage_account_name             = azurerm_storage_account.operations_storage_account.name
+    operations_deployment_states_container_name = azurerm_storage_container.deployment_states.name
+    operations_deployment_states_container_key  = "${var.deployment_namespace}.bootstrap.tfstate"
+  })
+
+  filename = "../bootstrap/provider.tf"
 }
