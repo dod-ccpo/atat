@@ -1,9 +1,9 @@
 output "subscription_id" {
-  value = var.azure_subscription_id
+  value = data.azurerm_client_config.azure_client.subscription_id
 }
 
 output "tenant_id" {
-  value = "b5ab0e1e-09f8-4258-afb7-fb17654bc5b3"
+  value = data.azurerm_client_config.azure_client.tenant_id
 }
 
 output "atat_user_password" {
@@ -118,7 +118,7 @@ output "app_config_values" {
   value = {
     "AZURE-CLIENT-ID" : module.tenant_keyvault_app.application_id
     "AZURE-SECRET-KEY" : module.tenant_keyvault_app.application_password
-    "AZURE-TENANT-ID" : var.tenant_id
+    "AZURE-TENANT-ID" :  data.azurerm_client_config.azure_client.tenant_id
     "MAIL-PASSWORD" : var.mailgun_smtp_password
     "AZURE-STORAGE-KEY" : module.task_order_bucket.primary_access_key
     "REDIS-PASSWORD" : module.redis.primary_key
@@ -130,7 +130,7 @@ output "app_config_values" {
     "AZURE-BILLING-PROFILE-ID" : var.AZURE-BILLING-PROFILE-ID
     "AZURE-INVOICE-SECTION-ID" : var.AZURE-INVOICE-SECTION-ID
     "SAML-IDP-CERT" : ""
-    "dhparam4096" : var.dhparam4096
+    # "dhparam4096" : var.dhparam4096
     "PGPASSWORD" : random_password.atat_user_password.result
     "AZURE-VAULT-URL" : module.tenant_keyvault.url
     "AZURE-SUBSCRIPTION-CREATION-CLIENT-ID" : var.AZURE_SUBSCRIPTION_CREATION_CLIENT_ID

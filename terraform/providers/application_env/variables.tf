@@ -187,7 +187,6 @@ variable "OPS_SP_URL" {
 # kubernetes but DO NOT configure the terraform in any appreciable way.
 
 variable "mailgun_smtp_password" {}
-variable "azure_subscription_id" {}
 variable "azure_hybrid_tenant_id" {}
 variable "azure_hybrid_user_object_id" {}
 variable "azure_hybrid_tenant_admin_password" {}
@@ -195,7 +194,6 @@ variable "AZURE-BILLING-ACCOUNT-NAME" {}
 variable "AZURE-INVOICE-SECTION-ID" {}
 variable "SAML-IDP-CERT" {}
 variable "AZURE-BILLING-PROFILE-ID" {}
-variable "dhparam4096" {}
 variable "AZURE_SUBSCRIPTION_CREATION_CLIENT_ID" {}
 variable "AZURE_SUBSCRIPTION_CREATION_SECRET" {}
 variable "AZURE_POWERSHELL_CLIENT_ID" {}
