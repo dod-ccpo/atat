@@ -41,15 +41,14 @@ resource "azurerm_kubernetes_cluster" "k8s_private" {
     outbound_type      = "userDefinedRouting"
     service_cidr       = var.service_cidr
     load_balancer_sku  = "Standard"
-
-
   }
-
-
-  service_principal {
-    client_id     = var.private_aks_sp_id
-    client_secret = var.private_aks_sp_secret
+  identity {
+    type = "SystemAssigned"
   }
+  # service_principal {
+  #   client_id     = var.private_aks_sp_id
+  #   client_secret = var.private_aks_sp_secret
+  # }
 
   default_node_pool {
     name                  = "default"
