@@ -45,42 +45,37 @@ resource "azurerm_network_profile" "bastion" {
 }
 
 
-resource "azurerm_container_group" "bastion" {
-  name                = "bastion"
-  location            = azurerm_resource_group.jump.location
-  resource_group_name = azurerm_resource_group.jump.name
-  ip_address_type     = "private"
-  network_profile_id  = azurerm_network_profile.bastion.id
-  os_type             = "Linux"
+# resource "azurerm_container_group" "bastion" {
+#   name                = "bastion"
+#   location            = azurerm_resource_group.jump.location
+#   resource_group_name = azurerm_resource_group.jump.name
+#   ip_address_type     = "private"
+#   network_profile_id  = azurerm_network_profile.bastion.id
+#   os_type             = "Linux"
 
-  container {
-    name     = "bastion"
-    image    = "${var.container_registry}/${var.container_image}"
-    cpu      = "1"
-    memory   = "2"
-    commands = ["tail", "-f", "/dev/null"]
+#   container {
+#     name     = "bastion"
+#     image    = "${var.container_registry}/${var.container_image}"
+#     cpu      = "1"
+#     memory   = "2"
+#     commands = ["tail", "-f", "/dev/null"]
 
-    ports {
-      port     = 443
-      protocol = "TCP"
-    }
-  }
+#     ports {
+#       port     = 443
+#       protocol = "TCP"
+#     }
+#   }
 
-  image_registry_credential {
+#   image_registry_credential {
+#     username = var.registry_username
+#     password = var.registry_password
+#     server   = var.container_registry
+#   }
 
-    username = var.registry_username
-    password = var.registry_password
-    server   = var.container_registry
-
-  }
-
-
-
-
-  tags = {
-    environment = "testing"
-  }
-}
+#   tags = {
+#     environment = "testing"
+#   }
+# }
 
 
 
