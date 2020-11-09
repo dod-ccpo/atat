@@ -171,9 +171,9 @@ module "logs" {
 }
 
 resource "random_password" "pg_root_password" {
-  length           = 15
-  min_numeric      = 0
-  special          = false
+  length           = 16
+  min_numeric      = 1
+  special          = true
   override_special = "!"
 }
 
