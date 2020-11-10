@@ -79,11 +79,12 @@ resource "azurerm_key_vault_access_policy" "keyvault_admin_policy" {
   object_id = each.value
 
   key_permissions = [
+    "create",
+    "delete",
     "get",
     "list",
-    "create",
+    "recover",
     "update",
-    "delete",
   ]
 
   secret_permissions = [
@@ -94,16 +95,16 @@ resource "azurerm_key_vault_access_policy" "keyvault_admin_policy" {
 
   # backup create delete deleteissuers get getissuers import list listissuers managecontacts manageissuers purge recover restore setissuers update
   certificate_permissions = [
-    "get",
-    "list",
-    "delete",
+    "backup",
     "create",
+    "delete",
+    "deleteissuers",
+    "get",
     "import",
+    "list",
     "listissuers",
     "manageissuers",
-    "deleteissuers",
-    "backup",
-    "update",
+    "update"
   ]
 }
 
