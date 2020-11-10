@@ -41,7 +41,7 @@ resource "azurerm_postgresql_virtual_network_rule" "ops_deployment_subnet" {
 }
 
 resource "azurerm_postgresql_firewall_rule" "operator" {
-  name                = "office"
+  name                = "operator"
   resource_group_name = azurerm_resource_group.sql.name
   server_name         = azurerm_postgresql_server.sql.name
   start_ip_address    = var.operator_ip
