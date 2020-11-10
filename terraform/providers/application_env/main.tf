@@ -136,11 +136,11 @@ module "keyvault" {
   tenant_id          = data.azurerm_client_config.azure_client.tenant_id
   principal_id_count = 1
   principal_id       = module.keyvault_reader_identity.principal_id
-  admin_principals   = {} # merge(var.admin_users, { "${local.ops_sp_url_to_name}" : var.OPS_OID })
+  admin_principals   = { "operator" : data.azurerm_client_config.azure_client.object_id }
   tenant_principals  = {}
   policy             = "Deny"
   subnet_ids         = [module.vpc.subnet_list["aks"].id, module.bastion.mgmt_subnet_id, local.deployment_subnet_id]
-  # whitelist          = [] # var.admin_user_whitelist
+  whitelist          = { "operator" = local.operator_ip }
   workspace_id       = module.logs.workspace_id
   tls_cert_path      = var.tls_cert_path
 }
@@ -152,12 +152,28 @@ module "tenant_keyvault" {
   owner             = var.owner
   environment       = var.deployment_namespace
   tenant_id         = data.azurerm_client_config.azure_client.tenant_id
-  principal_id      = ""
-  tenant_principals = { (module.tenant_keyvault_app.name) = module.tenant_keyvault_app.sp_object_id }
+  principal_id      = data.azurerm_client_config.azure_client.object_id
+  tenant_principals = { "${module.tenant_keyvault_app.name}" = "${module.tenant_keyvault_app.sp_object_id}" }
   admin_principals  = {}
   policy            = "Deny"
   subnet_ids        = [module.vpc.subnet_list["aks"].id]
-  # whitelist         = [] # var.admin_user_whitelist
+  whitelist         = { "operator" = local.operator_ip }
+  workspace_id      = module.logs.workspace_id
+}
+
+module "operator_keyvault" {
+  source            = "../../modules/keyvault"
+  name              = "ops"
+  region            = var.deployment_location
+  owner             = var.owner
+  environment       = var.deployment_namespace
+  tenant_id         = data.azurerm_client_config.azure_client.tenant_id
+  principal_id      = data.azurerm_client_config.azure_client.object_id
+  admin_principals  = { "operator" : data.azurerm_client_config.azure_client.object_id }
+  tenant_principals = { (module.ops_keyvault_app.name) = "${module.ops_keyvault_app.sp_object_id}" }
+  policy            = "Deny"
+  subnet_ids        = [module.vpc.subnet_list["aks"].id, module.bastion.mgmt_subnet_id, local.deployment_subnet_id]
+  whitelist         = { "operator" = local.operator_ip }
   workspace_id      = module.logs.workspace_id
 }
 
@@ -247,22 +263,6 @@ module "redis" {
   family       = "P"
   workspace_id = module.logs.workspace_id
   pet_name     = var.deployment_namespace
-}
-
-module "operator_keyvault" {
-  source            = "../../modules/keyvault"
-  name              = "ops"
-  region            = var.deployment_location
-  owner             = var.owner
-  environment       = var.deployment_namespace
-  tenant_id         = data.azurerm_client_config.azure_client.tenant_id
-  principal_id      = ""
-  admin_principals  = {} # merge(var.admin_users, { "TerraformOperator" = "${var.OPS_OID}" })
-  tenant_principals = { (module.ops_keyvault_app.name) = "${module.ops_keyvault_app.sp_object_id}" }
-  policy            = "Deny"
-  subnet_ids        = [module.vpc.subnet_list["aks"].id, module.bastion.mgmt_subnet_id, local.deployment_subnet_id]
-  # whitelist         = {} # var.admin_user_whitelist
-  workspace_id      = module.logs.workspace_id
 }
 
 module "vpc" {

@@ -70,15 +70,9 @@ variable "k8s_dns_prefix" {
   default     = "atat"
 }
 
-# variable "tenant_id" {}
-
-# variable "admin_users" {
-#   type = map
-# }
-
-# variable "admin_user_whitelist" {
-#   type = map
-# }
+variable "admin_user_whitelist" {
+  type = map
+}
 
 # variable "storage_admin_whitelist" {
 #   type = map
@@ -162,7 +156,7 @@ variable "virtual_appliance_route_tables" {
 
 variable "tls_cert_path" {
   type = string
-  description = "Path to the TLS cert generated via diffie helman. (?)" 
+  description = "Long-lived certificate for atat.dev and *.atat.dev." 
   default = "/tmp/atatdev.pem"
 }
 
