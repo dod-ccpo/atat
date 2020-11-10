@@ -2,17 +2,17 @@ data "http" "myip" {
   url = "http://ipinfo.io/ip"
 }
 
-data "azurerm_client_config" "azure_client" { 
+data "azurerm_client_config" "azure_client" {
 }
 
 locals {
-  ops_sp_url_to_name           = replace(var.OPS_SP_URL, "http://", "")
-  private_aks_appliance_routes = var.virtual_appliance_routes["aks-private"]
-  deployment_subnet_id = data.terraform_remote_state.previous_stage.outputs.operations_deployment_subnet_id
-  operations_container_registry_name = data.terraform_remote_state.previous_stage.outputs.operations_container_registry_name
+  ops_sp_url_to_name                         = replace(var.OPS_SP_URL, "http://", "")
+  private_aks_appliance_routes               = var.virtual_appliance_routes["aks-private"]
+  deployment_subnet_id                       = data.terraform_remote_state.previous_stage.outputs.operations_deployment_subnet_id
+  operations_container_registry_name         = data.terraform_remote_state.previous_stage.outputs.operations_container_registry_name
   operations_container_registry_login_server = data.terraform_remote_state.previous_stage.outputs.operations_container_registry_login_server
-  operations_resource_group_name = data.terraform_remote_state.previous_stage.outputs.operations_resource_group_name
-  operator_ip = chomp(data.http.myip.body)
+  operations_resource_group_name             = data.terraform_remote_state.previous_stage.outputs.operations_resource_group_name
+  operator_ip                                = chomp(data.http.myip.body)
 }
 
 module "tenant_keyvault_app" {
@@ -69,7 +69,7 @@ module "task_order_bucket" {
   region                 = var.deployment_location
   policy                 = "Allow"
   subnet_ids             = [module.vpc.subnet_list["aks"].id]
-  whitelist         = { "operator" = local.operator_ip }
+  whitelist              = { "operator" = local.operator_ip }
   bucket_cors_properties = var.bucket_cors_properties
   storage_container_name = var.task_order_bucket_storage_container_name
   depends_on             = [module.vpc]
@@ -84,7 +84,7 @@ module "container_registry" {
   backup_region               = "" # TODO(jesse) Unused.
   policy                      = "Allow"
   subnet_ids                  = [module.vpc.subnet_list["aks"].id]
-  whitelist = { "operator" = local.operator_ip }
+  whitelist                   = { "operator" = local.operator_ip }
   workspace_id                = module.logs.workspace_id
   pet_name                    = var.deployment_namespace
   subnet_list                 = module.vpc.subnet_list

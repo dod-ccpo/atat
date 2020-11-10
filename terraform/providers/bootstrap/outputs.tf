@@ -34,6 +34,6 @@ output "deployment_resource_group_name" {
 }
 
 output "operations_deployment_subnet_id" {
-  value = local.operations_deployment_subnet_id
+  value       = local.operations_deployment_subnet_id
   description = "ID of the subnet all subsequent resources are deployed into."
 }

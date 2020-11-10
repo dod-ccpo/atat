@@ -37,25 +37,25 @@ variable "virtual_network" {
 variable "networks" {
   type        = map
   description = ""
-  default = {}
+  default     = {}
 }
 
 variable "service_endpoints" {
   type        = map
   description = ""
-  default = {}
+  default     = {}
 }
 
 variable "route_tables" {
   type        = map
   description = "Route tables and their default routes"
-  default = {}
+  default     = {}
 }
 
 variable "routes" {
   type        = map
   description = "Routes for next hop types: VirtualNetworkGateway, VnetLocal, Internet or None"
-  default = {}
+  default     = {}
 }
 
 variable "k8s_node_size" {
@@ -143,7 +143,7 @@ variable "tf_state_storage_container_name" {
 variable "virtual_appliance_routes" {
   type        = map
   description = ""
-  default = {}
+  default     = {}
 }
 
 variable "virtual_appliance_route_tables" {
@@ -155,9 +155,9 @@ variable "virtual_appliance_route_tables" {
 }
 
 variable "tls_cert_path" {
-  type = string
-  description = "Long-lived certificate for atat.dev and *.atat.dev." 
-  default = "/tmp/atatdev.pem"
+  type        = string
+  description = "Long-lived certificate for atat.dev and *.atat.dev."
+  default     = "/tmp/atatdev.pem"
 }
 
 variable "OPS_CID" {

@@ -118,7 +118,7 @@ output "app_config_values" {
   value = {
     "AZURE-CLIENT-ID" : module.tenant_keyvault_app.application_id
     "AZURE-SECRET-KEY" : module.tenant_keyvault_app.application_password
-    "AZURE-TENANT-ID" :  data.azurerm_client_config.azure_client.tenant_id
+    "AZURE-TENANT-ID" : data.azurerm_client_config.azure_client.tenant_id
     "MAIL-PASSWORD" : var.mailgun_smtp_password
     "AZURE-STORAGE-KEY" : module.task_order_bucket.primary_access_key
     "REDIS-PASSWORD" : module.redis.primary_key

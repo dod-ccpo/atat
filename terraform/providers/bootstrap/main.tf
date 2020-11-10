@@ -3,11 +3,11 @@ data "http" "myip" {
 }
 
 locals {
-  operations_container_registry_name = data.terraform_remote_state.previous_stage.outputs.operations_container_registry_name
+  operations_container_registry_name         = data.terraform_remote_state.previous_stage.outputs.operations_container_registry_name
   operations_container_registry_login_server = data.terraform_remote_state.previous_stage.outputs.operations_container_registry_login_server
-  operations_deployment_subnet_id    = data.terraform_remote_state.previous_stage.outputs.operations_deployment_subnet_id
-  operations_storage_account_name    = data.terraform_remote_state.previous_stage.outputs.operations_storage_account_name
-  operations_resource_group_name    = data.terraform_remote_state.previous_stage.outputs.operations_resource_group_name
+  operations_deployment_subnet_id            = data.terraform_remote_state.previous_stage.outputs.operations_deployment_subnet_id
+  operations_storage_account_name            = data.terraform_remote_state.previous_stage.outputs.operations_storage_account_name
+  operations_resource_group_name             = data.terraform_remote_state.previous_stage.outputs.operations_resource_group_name
 }
 
 resource "azurerm_resource_group" "ops" {
