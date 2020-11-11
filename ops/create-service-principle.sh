@@ -55,10 +55,4 @@ az ad app permission admin-consent --id $appId
 
 az role assignment create --assignee $appId --role "User Access Administrator" --subscription $subscription_id
 
-cat << EOF
-{
-    "app_id": "$appId",
-    "object_id": $(az ad sp show --id $appId | jq .objectId),
-    "password": $(echo $sp | jq .password)
-}
-EOF
+echo $sp | jq '.'

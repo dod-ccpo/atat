@@ -60,6 +60,10 @@ resource "local_file" "generate_bootstrap_provider_remote_backend" {
     backend_storage_account_name = azurerm_storage_account.operations_storage_account.name
     backend_state_container_name = azurerm_storage_container.deployment_states.name
     backend_state_container_key  = "${var.deployment_namespace}.bootstrap.tfstate"
+    operator_subscription_id     = var.operator_subscription_id
+    operator_client_id           = var.operator_client_id
+    operator_client_secret       = var.operator_client_secret
+    operator_tenant_id           = var.operator_tenant_id
     remote_state_definition      = <<-EOT
       data "terraform_remote_state" "previous_stage" {
         backend = "local"
@@ -80,6 +84,10 @@ resource "local_file" "generate_deployment_provider_remote_backend" {
     backend_storage_account_name = azurerm_storage_account.operations_storage_account.name
     backend_state_container_name = azurerm_storage_container.deployment_states.name
     backend_state_container_key  = "${var.deployment_namespace}.application.tfstate"
+    operator_subscription_id     = var.operator_subscription_id
+    operator_client_id           = var.operator_client_id
+    operator_client_secret       = var.operator_client_secret
+    operator_tenant_id           = var.operator_tenant_id
     remote_state_definition      = <<-EOT
       data "terraform_remote_state" "previous_stage" {
         backend = "azurerm"

@@ -15,3 +15,19 @@ variable "operations_namespace" {
   default     = "dev"
   description = "Namespace of provisioned operations resources."
 }
+
+variable "operator_subscription_id" {
+  type        = string
+}
+
+variable "operator_client_id" {
+  type        = string
+}
+
+variable "operator_client_secret" {
+  type        = string
+}
+
+variable "operator_tenant_id" {
+  type        = string
+}
