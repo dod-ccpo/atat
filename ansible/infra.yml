@@ -1,23 +1,19 @@
 - hosts: localhost
   roles:
     - role: crypto
-    - role: bootstrap
-    - role: circle_ci
-      vars:
-        token_source_tf: false
-        build_and_push_app_images: false
-        build_and_push_ops_image: true
-        container_registry: "{{tf_bootstrap_backend_outputs.ops_container_registry_name.value}}"
-        branch_to_build: "{{ lookup('env','BUILD_BRANCH') }}"
-    - role: terraform
+    # - role: circle_ci
+    #   vars:
+    #     token_source_tf: false
+    #     build_and_push_app_images: false
+    #     build_and_push_ops_image: true
+    #     container_registry: "{{tf_bootstrap_backend_outputs.ops_container_registry_name.value}}"
+    #     branch_to_build: "{{ lookup('env','BUILD_BRANCH') }}"
     - role: circle_ci
       vars:
         token_source_tf: false
         build_and_push_ops_image: false
         build_and_push_app_images: true
         container_registry: "{{ tf_app_env_outputs.container_registry_name.value}}"
-    - role: destroy_bootstrap
-      when: teardown_bootstrap_env is defined
     - role: azure_keyvault
       vars:
         ops_vault_url: "{{ tf_app_env_outputs.operator_keyvault_url.value }}"
