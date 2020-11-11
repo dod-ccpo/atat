@@ -146,6 +146,25 @@ module "keyvault" {
   tls_cert_path      = var.tls_cert_path
 }
 
+resource "azurerm_key_vault_secret" "secret" {
+  for_each = merge(var.keyvault_secrets, {
+    "AZURE-CLIENT-ID"   = module.tenant_keyvault_app.application_id
+    "AZURE-SECRET-KEY"  = module.tenant_keyvault_app.application_password
+    "AZURE-TENANT-ID"   = data.azurerm_client_config.azure_client.tenant_id
+    "AZURE-STORAGE-KEY" = module.task_order_bucket.primary_access_key
+    "REDIS-PASSWORD"    = module.redis.primary_key
+    "REDIS-PASSWORD"    = module.redis.primary_key
+    "SAML-IDP-CERT"     = ""
+    "dhparam4096"       = ""
+    "PGPASSWORD"        = random_password.atat_user_password.result
+    "AZURE-VAULT-URL"   = module.tenant_keyvault.url
+  })
+
+  name         = each.key
+  value        = each.value
+  key_vault_id = module.keyvault.id
+}
+
 module "tenant_keyvault" {
   source            = "../../modules/keyvault"
   name              = "tenants"
