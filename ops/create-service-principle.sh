@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# SUBSCRIPTION ID
+subscription_id=$(az account show | jq '.id')
+
 # How do you find these GUIDs?
 #
 # Coutesy of Jeff Deville, you can watch your `Network` tab for whichever
@@ -51,7 +54,7 @@ az ad app permission add --id $appId --api $appId --api-permissions 9fb74d30-bc3
 az ad app permission admin-consent --id $appId
 
 
-az role assignment create --assignee $appId --role "User Access Administrator" --subscription "a0f587a4-2876-498d-a3d3-046cd98d5363"
+az role assignment create --assignee $appId --role "User Access Administrator" --subscription $subscription_id
 
 cat << EOF
 {
