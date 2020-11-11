@@ -1,13 +1,27 @@
 - hosts: localhost
+  pre_tasks:
+    - name: Generate the terraform `application_env` output
+      shell: terraform output -json
+      args:
+        chdir: "../terraform/providers/application_env"
+      register: terraform_output
+
+    - name: Store the output as a fact
+      set_fact: 
+        tf_app_env_outputs: "{{ terraform_output.stdout | from_json }}"
+  
+    - debug:
+        msg: "{{ tf_app_env_outputs }}"
+
   roles:
     - role: crypto
-    # - role: circle_ci
-    #   vars:
-    #     token_source_tf: false
-    #     build_and_push_app_images: false
-    #     build_and_push_ops_image: true
-    #     container_registry: "{{tf_bootstrap_backend_outputs.ops_container_registry_name.value}}"
-    #     branch_to_build: "{{ lookup('env','BUILD_BRANCH') }}"
+    - role: circle_ci
+      vars:
+        token_source_tf: false
+        build_and_push_app_images: false
+        build_and_push_ops_image: true
+        container_registry: "{{tf_bootstrap_backend_outputs.ops_container_registry_name.value}}"
+        branch_to_build: "{{ lookup('env','BUILD_BRANCH') }}"
     - role: circle_ci
       vars:
         token_source_tf: false
