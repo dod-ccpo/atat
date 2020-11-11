@@ -1,7 +1,5 @@
 #! /bin/bash
 
-# SUBSCRIPTION ID
-subscription_id=$(az account show | jq '.id')
 
 # How do you find these GUIDs?
 #
@@ -11,6 +9,7 @@ subscription_id=$(az account show | jq '.id')
 # wil be he `--api-permissions values`.
 sp=$(az ad sp create-for-rbac)
 appId=$(echo $sp | jq .appId | tr -d '"')
+subscription_id=$(az account show | jq '.id' | tr -d '"')
 echo $sp
 
 ## Azure Active Directory
