@@ -1,34 +1,62 @@
-data "http" "myip" {
-  url = "http://ipinfo.io/ip"
+resource "azurerm_resource_group" "operations_resource_group" {
+  name     = "cloudzero-ops-${var.namespace}"
+  location = var.operations_location
 }
 
-locals {
-  operations_container_registry_name         = data.terraform_remote_state.previous_stage.outputs.operations_container_registry_name
-  operations_container_registry_login_server = data.terraform_remote_state.previous_stage.outputs.operations_container_registry_login_server
-  operations_deployment_subnet_id            = data.terraform_remote_state.previous_stage.outputs.operations_deployment_subnet_id
-  operations_storage_account_name            = data.terraform_remote_state.previous_stage.outputs.operations_storage_account_name
-  operations_resource_group_name             = data.terraform_remote_state.previous_stage.outputs.operations_resource_group_name
+resource "azurerm_virtual_network" "operations_virtual_network" {
+  name                = "cloudzero-ops-network-${var.namespace}"
+  location            = var.operations_location
+  resource_group_name = azurerm_resource_group.operations_resource_group.name
+  address_space       = ["10.0.0.0/16"]
 }
 
-resource "azurerm_resource_group" "ops" {
-  name     = "${var.deployment_namespace}-ops"
-  location = var.deployment_location
+resource "azurerm_subnet" "deployment_subnet" {
+  name                 = "deployment-subnet"
+  address_prefixes     = ["10.0.1.0/24"]
+  resource_group_name  = azurerm_resource_group.operations_resource_group.name
+  virtual_network_name = azurerm_virtual_network.operations_virtual_network.name
+
+  service_endpoints = [
+    "Microsoft.ContainerRegistry",
+    "Microsoft.KeyVault",
+    "Microsoft.Sql",
+    "Microsoft.Storage"
+  ]
 }
 
-# TF State should be restricted to admins only, but IP protected
-# This has to be public due to a chicken/egg issue of VPN not
-# existing until TF is run. If this bucket is private, you would
-# not be able to access it when running TF without being on a VPN.
-module "tf_state" {
-  source                 = "../../modules/bucket"
-  service_name           = "czops${var.deployment_namespace}tfstate"
-  owner                  = "remove_me"
-  name                   = "${var.deployment_namespace}bucket"
-  environment            = var.deployment_namespace
-  region                 = var.deployment_location
-  policy                 = "Deny"
-  subnet_ids             = [local.operations_deployment_subnet_id]
-  whitelist              = { "operator" : chomp(data.http.myip.body) }
-  account_kind           = "Storage"
-  storage_container_name = local.operations_storage_account_name
+resource "azurerm_storage_account" "operations_storage_account" {
+  name                     = "czopsstorageaccount${var.namespace}"
+  resource_group_name      = azurerm_resource_group.operations_resource_group.name
+  location                 = var.operations_location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
 }
+
+resource "azurerm_storage_container" "tf_bootstrap" {
+  name                 = "tf-bootstrap"
+  storage_account_name = azurerm_storage_account.operations_storage_account.name
+}
+resource "azurerm_storage_container" "tf_application" {
+  name                 = "tf-application"
+  storage_account_name = azurerm_storage_account.operations_storage_account.name
+}
+
+resource "azurerm_container_registry" "operations_container_registry" {
+  name                = "cloudzeroopsregistry${var.namespace}"
+  resource_group_name = azurerm_resource_group.operations_resource_group.name
+  location            = var.operations_location
+  sku                 = "Premium"
+}
+
+resource "local_file" "self_remote_backend" {
+  content = templatefile("templates/versions.override.tf.tmpl", {
+    backend_resource_group_name  = azurerm_resource_group.operations_resource_group.name
+    backend_storage_account_name = azurerm_storage_account.operations_storage_account.name
+    backend_state_container_name = azurerm_storage_container.tf_bootstrap.name
+    backend_state_container_key  = "terraform.tfstate"
+  })
+
+  filename = "versions.override.tf"
+}
+
+

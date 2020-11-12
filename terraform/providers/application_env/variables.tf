@@ -134,10 +134,11 @@ variable "task_order_bucket_storage_container_name" {
   default     = "task-order-pdfs"
 }
 
+# TODO: Use the bootstrap data for this value
 variable "tf_state_storage_container_name" {
   type        = string
   description = ""
-  default     = "tfstate"
+  default     = "tf-application"
 }
 
 variable "virtual_appliance_routes" {
@@ -177,6 +178,29 @@ variable "OPS_SP_URL" {
 }
 
 variable "keyvault_secrets" {
-  type = map
+  type        = map
   description = "Variables used to configure the kubernetes cluster, loaded into keyvault."
+}
+
+variable "operator_subscription_id" {
+  type = string
+}
+
+variable "operator_client_id" {
+  type = string
+}
+
+variable "operator_client_secret" {
+  type = string
+}
+
+variable "operator_tenant_id" {
+  type = string
+}
+
+variable "previous_stage_resource_group" {
+  type = string
+}
+variable "previous_stage_storage_account" {
+  type = string
 }

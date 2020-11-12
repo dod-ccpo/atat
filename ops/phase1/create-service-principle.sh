@@ -55,8 +55,5 @@ az ad app permission add --id $appId --api $appId --api-permissions 9fb74d30-bc3
 az ad app permission admin-consent --id $appId
 
 
-az role assignment create --assignee $appId --role "User Access Administrator" --subscription "$(az account show --query id --output tsv)"
-
-echo "APPID: $appId"
-echo "OBJECTID: $(az ad sp show --id $appId | jq .objectId)"
-echo "PASSWORD: $(echo $sp | jq .password)"
+echo $sp | jq '.'
+echo $sp  > service_principal.json
