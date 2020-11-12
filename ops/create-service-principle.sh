@@ -12,6 +12,8 @@ appId=$(echo $sp | jq .appId | tr -d '"')
 subscription_id=$(az account show | jq '.id' | tr -d '"')
 echo $sp
 
+sleep 15
+
 ## Azure Active Directory
 # Application Application.ReadWrite.All
 az ad app permission add --id $appId --api 00000002-0000-0000-c000-000000000000 --api-permissions 1cda74f2-2616-4834-b122-5cb1b07f8a59=Role
@@ -53,6 +55,8 @@ az ad app permission add --id $appId --api $appId --api-permissions 9fb74d30-bc3
 az ad app permission admin-consent --id $appId
 
 
-az role assignment create --assignee $appId --role "User Access Administrator" --subscription $subscription_id
+az role assignment create --assignee $appId --role "User Access Administrator" --subscription "$(az account show --query id --output tsv)"
 
-echo $sp | jq '.'
+echo "APPID: $appId"
+echo "OBJECTID: $(az ad sp show --id $appId | jq .objectId)"
+echo "PASSWORD: $(echo $sp | jq .password)"
