@@ -438,7 +438,7 @@ jobs:
             --build-arg azure_tenant=${AZURE_SP_TENANT} \
             --build-arg azure_subscription_id=${AZURE_SUBSCRIPTION} \
             --build-arg operator_sp_url=${OPERATOR_SP_URL} \
-            -f Dockerfile.ops .
+            -f ops.Dockerfile .
       - log_into_app_registry
       - run:
           name: Tag ops image
@@ -477,7 +477,7 @@ jobs:
             --build-arg circle_api_token=${CIRCLE_API_TOKEN} \
             --build-arg build_branch=<< pipeline.parameters.build_branch >> \
             --build-arg az_environment=<< pipeline.parameters.az_environment >> \
-             -f Dockerfile.ops .
+             -f ops.Dockerfile .
       - run:
           name: Tag ops image
           command: docker tag ops:latest <<pipeline.parameters.ops_registry >>.azurecr.io/ops:${CIRCLE_BUILD_NUM}
