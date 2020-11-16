@@ -9,7 +9,7 @@ output "operations_container_registry_login_server" {
 }
 
 output "operations_virtual_network" {
-  value = azurerm_virtual_network.operations_virtual_network.name
+  value       = azurerm_virtual_network.operations_virtual_network.name
   description = "Name of the virtual network that houses our deployment subnet"
 }
 
