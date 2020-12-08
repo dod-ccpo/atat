@@ -1,4 +1,5 @@
 import random
+from types import SimpleNamespace as Namespace
 
 from flask import Blueprint
 from flask import current_app as app
@@ -7,6 +8,7 @@ from flask import redirect, render_template, request, session, url_for
 from atat.domain.exceptions import AlreadyExistsError, NotFoundError
 from atat.domain.permission_sets import PermissionSets
 from atat.domain.users import Users
+from atat.forms import validators
 from atat.forms.data import SERVICE_BRANCHES
 from atat.jobs import send_mail
 from atat.routes.saml_helpers import (
@@ -182,9 +184,15 @@ def dev_new_user():
     first_name = request.args.get("first_name", None)
     last_name = request.args.get("last_name", None)
     dod_id = request.args.get("dod_id", None)
+    name_validator = validators.Name()
+    number_validator = validators.Number()
 
     if None in [first_name, last_name, dod_id]:
         raise IncompleteInfoError()
+
+    name_validator(None, Namespace(**{"data": last_name}))
+    name_validator(None, Namespace(**{"data": first_name}))
+    number_validator(None, Namespace(**{"data": dod_id}))
 
     try:
         Users.get_by_dod_id(dod_id)
