@@ -38,8 +38,9 @@ export LOGGING_WORKSPACE=$(terraform output logging_workspace_name)
 
 
 # Now, need to lock that folder down to just the subnet that was created.
-az storage account update --resource-group ${TF_VAR_resource_group_name} --name ${TF_VAR_storage_account_name} --default-action Deny
-az storage account network-rule add --resource-group ${TF_VAR_resource_group_name} --account-name ${TF_VAR_storage_account_name} --subnet ${SUBNET_ID}
+# TODO: At the moment, leaving this off because the mgmt_subnet that will be created in phase2 will need access, but we can not grant that until it exists.
+# az storage account update --resource-group ${TF_VAR_resource_group_name} --name ${TF_VAR_storage_account_name} --default-action Deny
+# az storage account network-rule add --resource-group ${TF_VAR_resource_group_name} --account-name ${TF_VAR_storage_account_name} --subnet ${SUBNET_ID}
 
 echo "Building RHEL"
 cd ../../../../atat-rhel-image
