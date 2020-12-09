@@ -73,12 +73,6 @@ variable "admin_user_whitelist" {
   type = map
 }
 
-variable "bucket_cors_properties" {
-  type        = list(map(string))
-  description = "supports cors"
-  default     = []
-}
-
 variable "private_k8s_subnet_cidr" {
   type        = string
   default     = "10.1.5.0/24"

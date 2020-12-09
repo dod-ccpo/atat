@@ -56,13 +56,6 @@ variable "account_kind" {
 
 }
 
-
-variable "bucket_cors_properties" {
-  type        = list(map(string))
-  description = "supports cors rules"
-  default     = []
-}
-
 variable "storage_container_name" {
   type        = string
   description = "What to name the created storage container"

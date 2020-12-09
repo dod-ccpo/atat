@@ -33,7 +33,6 @@ module "task_order_bucket" {
   policy                 = "Allow"
   subnet_ids             = [azurerm_subnet.aks.id]
   whitelist              = { "operator" = local.operator_ip }
-  bucket_cors_properties = var.bucket_cors_properties
   storage_container_name = var.task_order_bucket_storage_container_name
 }
 
