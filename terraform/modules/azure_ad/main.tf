@@ -29,7 +29,7 @@ resource "azurerm_role_assignment" "contributor" {
   principal_id         = azuread_service_principal.principal.id
 }
 resource "azurerm_role_assignment" "network_contrib" {
-   scope                = data.azurerm_subscription.main.id
-   role_definition_name = "Network Contributor"
-   principal_id         = azuread_service_principal.principal.id
+  scope                = data.azurerm_subscription.main.id
+  role_definition_name = "Network Contributor"
+  principal_id         = azuread_service_principal.principal.id
 }

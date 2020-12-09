@@ -27,10 +27,10 @@ resource "azurerm_key_vault" "app_keyvault" {
 
 resource "time_sleep" "app_keyvault_wait_5" {
   depends_on = [
-      azurerm_key_vault.app_keyvault,
-      # azurerm_key_vault_access_policy.app_keyvault_tenant_policy,
-      azurerm_key_vault_access_policy.app_keyvault_admin_policy,
-    ]
+    azurerm_key_vault.app_keyvault,
+    # azurerm_key_vault_access_policy.app_keyvault_tenant_policy,
+    azurerm_key_vault_access_policy.app_keyvault_admin_policy,
+  ]
 
   create_duration = "300s"
 }

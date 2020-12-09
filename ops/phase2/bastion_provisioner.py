@@ -105,9 +105,12 @@ def provision(
     )
 
     # deploy
-    subprocess.run("helm repo add csi-secrets-store-provider-azure https://raw.githubusercontent.com/Azure/secrets-store-csi-driver-provider-azure/master/charts".split()).check_returncode()
-    subprocess.run("helm install csi-secrets-store-provider-azure/csi-secrets-store-provider-azure --generate-name".split())
-
+    subprocess.run(
+        "helm repo add csi-secrets-store-provider-azure https://raw.githubusercontent.com/Azure/secrets-store-csi-driver-provider-azure/master/charts".split()
+    ).check_returncode()
+    subprocess.run(
+        "helm install csi-secrets-store-provider-azure/csi-secrets-store-provider-azure --generate-name".split()
+    )
 
 
 def login(sp_client_id, sp_client_secret, subscription_id, tenant_id):
@@ -177,13 +180,7 @@ def diffie_helman(encryption: int = 4096) -> Optional[subprocess.Popen]:
         return
 
     return subprocess.Popen(
-        [
-            "openssl",
-            "dhparam",
-            "-out",
-            "/tmp/dhparams.pem",
-            "4096",
-        ],
+        ["openssl", "dhparam", "-out", "/tmp/dhparams.pem", "4096",],
         stdout=subprocess.DEVNULL,
     )
 

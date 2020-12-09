@@ -39,4 +39,3 @@
     kind: Namespace
     state: present
     name: "kv"
-

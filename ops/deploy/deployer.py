@@ -68,14 +68,11 @@ logger = logging.getLogger(__name__)
     default="latest",
     help="Set the tag applied to the nginx image that will be build",
 )
-@click.option(
-    "--git-sha",
-    help="The git sha of the current commit"
-)
+@click.option("--git-sha", help="The git sha of the current commit")
 @click.option(
     "--config-azcli/--no-config-azcli",
     default=True,
-    help="Whether to try and run the az login w/ the service principle so we can install the aks plugins"
+    help="Whether to try and run the az login w/ the service principle so we can install the aks plugins",
 )
 def deploy(
     sp_client_id,
@@ -91,7 +88,14 @@ def deploy(
     config_azcli,
     git_sha,
 ):
-    setup(sp_client_id, sp_client_secret, subscription_id, tenant_id, namespace, config_azcli)
+    setup(
+        sp_client_id,
+        sp_client_secret,
+        subscription_id,
+        tenant_id,
+        namespace,
+        config_azcli,
+    )
     import_images(ops_registry, atat_registry)
     build_atat(atat_registry, git_sha, atat_image_tag)
     build_nginx(atat_registry, nginx_image_tag)
@@ -104,42 +108,51 @@ def deploy(
     tf_output_dict = collect_terraform_outputs()
 
     # Create template output directory
-    if os.path.exists('.out'):
+    if os.path.exists(".out"):
         shutil.rmtree(".out")
     os.mkdir(".out")
 
-    env = Environment(loader=FileSystemLoader('templates'), autoescape=select_autoescape(['html', 'xml']))
+    env = Environment(
+        loader=FileSystemLoader("templates"),
+        autoescape=select_autoescape(["html", "xml"]),
+    )
 
     # Gather the template variables
-    template_variables = {**tf_output_dict, **{
-        "sp_client_id": sp_client_id,
-        "sp_client_secret": sp_client_secret,
-        "subscription_id": subscription_id,
-        "tenant_id": tenant_id,
-        "atat_image_tag": atat_image_tag,
-        "nginx_image_tag": nginx_image_tag,
-        "application_container_image": f"{atat_registry}.azurecr.io/atat:{atat_image_tag}",
-        "nginx_container_image": f"{atat_registry}.azurecr.io/nginx:{nginx_image_tag}"
-    }}
+    template_variables = {
+        **tf_output_dict,
+        **{
+            "sp_client_id": sp_client_id,
+            "sp_client_secret": sp_client_secret,
+            "subscription_id": subscription_id,
+            "tenant_id": tenant_id,
+            "atat_image_tag": atat_image_tag,
+            "nginx_image_tag": nginx_image_tag,
+            "application_container_image": f"{atat_registry}.azurecr.io/atat:{atat_image_tag}",
+            "nginx_container_image": f"{atat_registry}.azurecr.io/nginx:{nginx_image_tag}",
+        },
+    }
 
     pprint(template_variables)
 
     # Generate the output files
-    for path in os.listdir('templates'):
+    for path in os.listdir("templates"):
         template = env.get_template(path)
-        with open(f'.out/{path}', "w") as output_file:
+        with open(f".out/{path}", "w") as output_file:
             output_file.write(template.render(**template_variables))
 
-    subprocess.run(["kubectl", "apply", '--kustomize=.out/'])
+    subprocess.run(["kubectl", "apply", "--kustomize=.out/"])
     subprocess.run(["kubectl", "-n", namespace, "get", "services"])
 
-def setup(sp_client_id, sp_client_secret, subscription_id, tenant_id, namespace, config_azcli):
+
+def setup(
+    sp_client_id, sp_client_secret, subscription_id, tenant_id, namespace, config_azcli
+):
     if config_azcli:
         configure_azcli(
             sp_client_id=sp_client_id,
             sp_client_secret=sp_client_secret,
             tenant_id=tenant_id,
-            namespace=namespace
+            namespace=namespace,
         )
 
 
@@ -165,7 +178,10 @@ def configure_azcli(sp_client_id, sp_client_secret, tenant_id, namespace):
     subprocess.run(
         "az provider register --namespace Microsoft.ContainerService".split()
     ).check_returncode()
-    subprocess.run(f"az aks get-credentials -g cloudzero-vpc-{namespace} -n cloudzero-private-k8s-{namespace}".split()).check_returncode()
+    subprocess.run(
+        f"az aks get-credentials -g cloudzero-vpc-{namespace} -n cloudzero-private-k8s-{namespace}".split()
+    ).check_returncode()
+
 
 def import_images(ops_registry, atat_registry):
     cmd = [
@@ -175,10 +191,11 @@ def import_images(ops_registry, atat_registry):
         "--name",
         atat_registry,
         "--source",
-        f"{ops_registry}/rhel-py:latest"
+        f"{ops_registry}/rhel-py:latest",
     ]
     # TODO: Not checking the return code, because it fails if already imported.
     subprocess.run(cmd)
+
 
 def build_atat(atat_registry, git_sha, atat_image_tag):
     cmd = [
@@ -207,7 +224,7 @@ def build_nginx(atat_registry, nginx_image_tag):
         "--registry",
         atat_registry,
         "--build-arg",
-        f"IMAGE={atat_registry}.azurecr.io/rhel-py:latest", # TODO(jesse) Can be built off rhelubi
+        f"IMAGE={atat_registry}.azurecr.io/rhel-py:latest",  # TODO(jesse) Can be built off rhelubi
         "--image",
         f"nginx:{nginx_image_tag}",
         "--file",

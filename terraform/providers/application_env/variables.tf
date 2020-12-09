@@ -5,9 +5,9 @@ variable "deployment_location" {
 }
 
 variable "region" {
-  type = string
+  type        = string
   description = "Azure region in which deployment resources are provisioned - short name"
-  default = "eastus"
+  default     = "eastus"
 }
 
 variable "deployment_namespace" {
@@ -185,13 +185,13 @@ variable "ddos_enabled" {
   default     = "0"
 }
 variable "aks_internal_lb_ip" {
-  type = string
+  type        = string
   description = "The IP of the loadbalancer that will be created by k8s"
-  default = "10.1.2.201"
+  default     = "10.1.2.201"
 }
 
 variable "maintenance_page_ip" {
-  type = string
+  type        = string
   description = "The IP of the loadbalancer that will be created by k8s"
-  default = "10.1.2.203"
+  default     = "10.1.2.203"
 }

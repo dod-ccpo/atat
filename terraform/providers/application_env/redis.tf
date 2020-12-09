@@ -1,8 +1,8 @@
 resource "azurerm_subnet" "redis" {
-  name = "${var.name}-redis-${var.deployment_namespace}"
-  resource_group_name = azurerm_resource_group.vpc.name
+  name                 = "${var.name}-redis-${var.deployment_namespace}"
+  resource_group_name  = azurerm_resource_group.vpc.name
   virtual_network_name = azurerm_virtual_network.vpc.name
-  address_prefixes = ["10.1.3.0/24"]
+  address_prefixes     = ["10.1.3.0/24"]
   service_endpoints = [
     "Microsoft.Storage",
     "Microsoft.Sql"
@@ -10,12 +10,12 @@ resource "azurerm_subnet" "redis" {
 }
 
 resource "azurerm_route_table" "redis" {
-  name = "${var.name}-redis-${var.deployment_namespace}"
-  location = azurerm_resource_group.vpc.location
+  name                = "${var.name}-redis-${var.deployment_namespace}"
+  location            = azurerm_resource_group.vpc.location
   resource_group_name = azurerm_resource_group.vpc.name
 }
 resource "azurerm_subnet_route_table_association" "redis" {
-  subnet_id = azurerm_subnet.redis.id
+  subnet_id      = azurerm_subnet.redis.id
   route_table_id = azurerm_route_table.redis.id
 }
 resource "azurerm_route" "redis_to_internet" {
@@ -26,11 +26,11 @@ resource "azurerm_route" "redis_to_internet" {
   next_hop_type       = "Internet"
 }
 resource "azurerm_route" "redis_to_vnet" {
-  name = "${var.name}-vnet-${var.deployment_namespace}"
+  name                = "${var.name}-vnet-${var.deployment_namespace}"
   resource_group_name = azurerm_resource_group.vpc.name
-  route_table_name = azurerm_route_table.redis.name
-  address_prefix = "10.1.0.0/16"
-  next_hop_type = "VnetLocal"
+  route_table_name    = azurerm_route_table.redis.name
+  address_prefix      = "10.1.0.0/16"
+  next_hop_type       = "VnetLocal"
 }
 
 resource "azurerm_resource_group" "redis" {

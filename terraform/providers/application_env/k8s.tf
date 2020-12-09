@@ -1,14 +1,14 @@
 module "aks_sp" {
-  source = "../../modules/azure_ad"
-  name   = "aks-service-principal"
+  source               = "../../modules/azure_ad"
+  name                 = "aks-service-principal"
   deployment_namespace = var.deployment_namespace
 }
 
 resource "azurerm_subnet" "aks" {
-  name = "${var.name}-aks-${var.deployment_namespace}"
-  resource_group_name = azurerm_resource_group.vpc.name
-  virtual_network_name = azurerm_virtual_network.vpc.name
-  address_prefixes = ["10.1.2.0/24"]
+  name                                           = "${var.name}-aks-${var.deployment_namespace}"
+  resource_group_name                            = azurerm_resource_group.vpc.name
+  virtual_network_name                           = azurerm_virtual_network.vpc.name
+  address_prefixes                               = ["10.1.2.0/24"]
   enforce_private_link_endpoint_network_policies = false
   service_endpoints = [
     "Microsoft.Storage",
@@ -19,29 +19,29 @@ resource "azurerm_subnet" "aks" {
 }
 
 resource "azurerm_route_table" "aks" {
-  name = "${var.name}-aks-${var.deployment_namespace}"
-  location = azurerm_resource_group.vpc.location
+  name                = "${var.name}-aks-${var.deployment_namespace}"
+  location            = azurerm_resource_group.vpc.location
   resource_group_name = azurerm_resource_group.vpc.name
 }
 resource "azurerm_subnet_route_table_association" "aks" {
-  subnet_id = azurerm_subnet.aks.id
+  subnet_id      = azurerm_subnet.aks.id
   route_table_id = azurerm_route_table.aks.id
 }
 
 resource "azurerm_route" "aks_firewall_to_internet" {
-  name = "to-internet"
+  name                = "to-internet"
   resource_group_name = azurerm_resource_group.vpc.name
-  route_table_name = azurerm_route_table.aks.name
-  address_prefix = "${azurerm_public_ip.firewall_ip.ip_address}/32"
-  next_hop_type = "Internet"
+  route_table_name    = azurerm_route_table.aks.name
+  address_prefix      = "${azurerm_public_ip.firewall_ip.ip_address}/32"
+  next_hop_type       = "Internet"
 }
 
 resource "azurerm_route" "aks_to_fw" {
-  name = "to-fw"
-  resource_group_name = azurerm_resource_group.vpc.name
-  route_table_name = azurerm_route_table.aks.name
-  address_prefix = "0.0.0.0/0"
-  next_hop_type = "VirtualAppliance"
+  name                   = "to-fw"
+  resource_group_name    = azurerm_resource_group.vpc.name
+  route_table_name       = azurerm_route_table.aks.name
+  address_prefix         = "0.0.0.0/0"
+  next_hop_type          = "VirtualAppliance"
   next_hop_in_ip_address = azurerm_firewall.fw.ip_configuration[0].private_ip_address
 }
 resource "azurerm_kubernetes_cluster" "k8s_private" {
@@ -72,8 +72,8 @@ resource "azurerm_kubernetes_cluster" "k8s_private" {
     load_balancer_sku  = "Standard"
   }
   service_principal {
-    client_id          = module.aks_sp.sp_client_id
-    client_secret      = module.aks_sp.service_principal_password
+    client_id     = module.aks_sp.sp_client_id
+    client_secret = module.aks_sp.service_principal_password
   }
 
   default_node_pool {

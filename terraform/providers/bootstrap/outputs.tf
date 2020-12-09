@@ -49,11 +49,11 @@ output "namespace" {
 }
 
 output "logging_workspace_name" {
-  value = azurerm_log_analytics_workspace.log_workspace.name
+  value       = azurerm_log_analytics_workspace.log_workspace.name
   description = "Name of the Log Analytics Workspace"
 }
 
 output "logging_workspace_id" {
-  value = azurerm_log_analytics_workspace.log_workspace.id
+  value       = azurerm_log_analytics_workspace.log_workspace.id
   description = "Id of the Log Analytics Workspace"
 }

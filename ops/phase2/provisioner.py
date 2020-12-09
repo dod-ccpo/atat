@@ -99,17 +99,14 @@ def provision(
             ops_storage_account,
             ops_config_container,
             "dhparams.pem",
-            "/tmp/dhparams.pem"
+            "/tmp/dhparams.pem",
         )
         ssl_process = None
     except FileNotFoundError:
         ssl_process = diffie_helman(encryption=4096)
 
     download_file(
-        ops_storage_account,
-        ops_config_container,
-        "atatdev.pem",
-        "/tmp/atatdev.pem"
+        ops_storage_account, ops_config_container, "atatdev.pem", "/tmp/atatdev.pem"
     )
 
     download_file(
@@ -215,13 +212,7 @@ def diffie_helman(encryption: int = 4096) -> Optional[subprocess.Popen]:
     if path.exists("/tmp/dhparams.pem"):
         return
     return subprocess.Popen(
-        [
-            "openssl",
-            "dhparam",
-            "-out",
-            "/tmp/dhparams.pem",
-            "4096",
-        ],
+        ["openssl", "dhparam", "-out", "/tmp/dhparams.pem", "4096",],
         stdout=subprocess.DEVNULL,
     )
 
@@ -230,7 +221,10 @@ def download_file(
     storage_account: str, container_name: str, file_name: str, dest_path: str
 ) -> int:
 
-    result = subprocess.run("az storage blob exists --account-name {storage_account} --container-name {container_name} --name {file_name} -o tsv".split(), capture_output=True)
+    result = subprocess.run(
+        "az storage blob exists --account-name {storage_account} --container-name {container_name} --name {file_name} -o tsv".split(),
+        capture_output=True,
+    )
     if result.stdout == "False":
         echo(f"{file_name} not found")
         raise FileNotFoundError(file_name)

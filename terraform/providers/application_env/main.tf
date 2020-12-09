@@ -4,7 +4,7 @@ data "http" "myip" {
 
 data "azurerm_client_config" "current" {}
 
-data "azurerm_client_config" "azure_client" { }
+data "azurerm_client_config" "azure_client" {}
 
 locals {
   deployment_subnet_id            = data.terraform_remote_state.previous_stage.outputs.operations_deployment_subnet_id
@@ -16,8 +16,8 @@ locals {
 }
 
 module "tenant_keyvault_app" {
-  source = "../../modules/azure_ad"
-  name   = "tenant-keyvault"
+  source               = "../../modules/azure_ad"
+  name                 = "tenant-keyvault"
   deployment_namespace = var.deployment_namespace
 }
 
@@ -46,7 +46,7 @@ module "container_registry" {
   policy        = "Allow"
   whitelist     = ["${local.operator_ip}/32"]
   workspace_id  = local.log_analytics_workspace_id
-  subnet_list   = [
+  subnet_list = [
     azurerm_subnet.aks.id,
     azurerm_subnet.edge.id,
     azurerm_subnet.mgmt_subnet.id,

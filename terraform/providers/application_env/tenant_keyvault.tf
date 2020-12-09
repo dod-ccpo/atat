@@ -27,9 +27,9 @@ resource "azurerm_key_vault" "tenant_keyvault" {
 
 resource "time_sleep" "tenant_keyvault_wait_5" {
   depends_on = [
-      azurerm_key_vault.tenant_keyvault,
-      azurerm_key_vault_access_policy.tenant_keyvault_policy,
-    ]
+    azurerm_key_vault.tenant_keyvault,
+    azurerm_key_vault_access_policy.tenant_keyvault_policy,
+  ]
 
   create_duration = "300s"
 }
@@ -60,8 +60,8 @@ resource "azurerm_key_vault_access_policy" "tenant_keyvault_k8s_policy" {
 
 resource "azurerm_key_vault_access_policy" "tenant_keyvault_policy" {
   key_vault_id = azurerm_key_vault.tenant_keyvault.id
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = module.tenant_keyvault_app.sp_object_id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.tenant_keyvault_app.sp_object_id
 
   key_permissions = []
 

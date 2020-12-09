@@ -1,38 +1,38 @@
 # azure_firewall_subnet
 resource "azurerm_subnet" "azure_firewall" {
-  name = "AzureFirewallSubnet"
-  resource_group_name = azurerm_resource_group.vpc.name
+  name                 = "AzureFirewallSubnet"
+  resource_group_name  = azurerm_resource_group.vpc.name
   virtual_network_name = azurerm_virtual_network.vpc.name
-  address_prefixes = ["10.1.4.0/24"]
-  service_endpoints = []
+  address_prefixes     = ["10.1.4.0/24"]
+  service_endpoints    = []
 }
 
 resource "azurerm_route_table" "azure_firewall" {
-  name = "${var.name}-fw-${var.deployment_namespace}"
-  location = azurerm_resource_group.vpc.location
+  name                = "${var.name}-fw-${var.deployment_namespace}"
+  location            = azurerm_resource_group.vpc.location
   resource_group_name = azurerm_resource_group.vpc.name
 }
 
 resource "azurerm_subnet_route_table_association" "azure_firewall" {
-  subnet_id = azurerm_subnet.azure_firewall.id
+  subnet_id      = azurerm_subnet.azure_firewall.id
   route_table_id = azurerm_route_table.azure_firewall.id
 }
 
 resource "azurerm_route" "firewall_to_internet" {
-  name = "default"
+  name                = "default"
   resource_group_name = azurerm_resource_group.vpc.name
-  route_table_name = azurerm_route_table.azure_firewall.name
-  address_prefix = "0.0.0.0/0"
-  next_hop_type = "Internet"
+  route_table_name    = azurerm_route_table.azure_firewall.name
+  address_prefix      = "0.0.0.0/0"
+  next_hop_type       = "Internet"
 }
 
 resource "azurerm_route" "fw_route_egress" {
-   name                   = "vnetlocal"
-   resource_group_name    = azurerm_resource_group.vpc.name
-   route_table_name       = azurerm_route_table.azure_firewall.name
-   address_prefix         = "10.1.0.0/16"
-   next_hop_type          = "VnetLocal"
- }
+  name                = "vnetlocal"
+  resource_group_name = azurerm_resource_group.vpc.name
+  route_table_name    = azurerm_route_table.azure_firewall.name
+  address_prefix      = "10.1.0.0/16"
+  next_hop_type       = "VnetLocal"
+}
 
 resource "azurerm_public_ip" "firewall_ip" {
   name                = "az-firewall-${var.deployment_namespace}"
@@ -54,7 +54,7 @@ resource "azurerm_firewall" "fw" {
 }
 
 resource "azurerm_firewall_policy" "enable_dns_proxy" {
-  name = "fw-policy-${var.deployment_namespace}"
+  name                = "fw-policy-${var.deployment_namespace}"
   resource_group_name = azurerm_resource_group.vpc.name
   location            = var.deployment_location
   dns {
@@ -127,33 +127,33 @@ resource "azurerm_firewall_network_rule_collection" "natsourcedest" {
   priority            = 102
   action              = "Allow"
   rule {
-    name             = "vnetall"
-    protocols = [ "Any" ]
-    source_addresses = ["*"]
+    name                  = "vnetall"
+    protocols             = ["Any"]
+    source_addresses      = ["*"]
     destination_addresses = ["*"]
-    destination_ports = [ "*" ]
+    destination_ports     = ["*"]
   }
 }
 
 resource "azurerm_firewall_network_rule_collection" "api" {
- name = "api"
- azure_firewall_name = azurerm_firewall.fw.name
- resource_group_name = azurerm_resource_group.vpc.name
- priority = 100
- action   = "Allow"
+  name                = "api"
+  azure_firewall_name = azurerm_firewall.fw.name
+  resource_group_name = azurerm_resource_group.vpc.name
+  priority            = 100
+  action              = "Allow"
   rule {
-      name = "apiudp"
-      source_addresses = ["*"]
-      destination_addresses = ["AzureCloud.${var.region}"]
-      destination_ports = [1194]
-      protocols = ["UDP"]
+    name                  = "apiudp"
+    source_addresses      = ["*"]
+    destination_addresses = ["AzureCloud.${var.region}"]
+    destination_ports     = [1194]
+    protocols             = ["UDP"]
   }
   rule {
-      name = "apitcp"
-      source_addresses = ["*"]
-      destination_addresses = ["AzureCloud.${var.region}"]
-      destination_ports = [9000]
-      protocols = ["TCP"]
+    name                  = "apitcp"
+    source_addresses      = ["*"]
+    destination_addresses = ["AzureCloud.${var.region}"]
+    destination_ports     = [9000]
+    protocols             = ["TCP"]
   }
 }
 
@@ -202,7 +202,7 @@ resource "azurerm_firewall_application_rule_collection" "fqdns" {
   rule {
     name             = "allowk8s"
     source_addresses = ["*"]
-    fqdn_tags= ["AzureKubernetesService"]
+    fqdn_tags        = ["AzureKubernetesService"]
   }
 }
 
