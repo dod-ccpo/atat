@@ -69,10 +69,6 @@ variable "k8s_dns_prefix" {
   default     = "atat"
 }
 
-variable "admin_user_whitelist" {
-  type = map
-}
-
 variable "private_k8s_subnet_cidr" {
   type        = string
   default     = "10.1.5.0/24"
