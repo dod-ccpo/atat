@@ -56,7 +56,7 @@
     PGSSLROOTCERT: /tmp/pgcaroot/pgcaroot.cert
     PGSSLMODE: verify-full
 
-    - name: Initialize database
+- name: Initialize database
   shell:
     cmd: python3.7 script/reset_database.py
     chdir: "{{ src_dir }}"
