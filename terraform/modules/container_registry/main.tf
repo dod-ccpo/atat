@@ -13,15 +13,11 @@ resource "azurerm_container_registry" "acr" {
   location            = azurerm_resource_group.acr.location
   sku                 = var.sku
   admin_enabled       = var.admin_enabled
-  #georeplication_locations = [azurerm_resource_group.acr.location, var.backup_region]
-
-
 
   network_rule_set {
     default_action = var.policy
-
     ip_rule = [
-      for cidr in values(var.whitelist) : {
+      for cidr in var.whitelist : {
         action   = "Allow"
         ip_range = cidr
       }
@@ -35,19 +31,14 @@ resource "azurerm_container_registry" "acr" {
     #  }
     #}
 
+    # virtual_network = var.subnet_list
     virtual_network = [
-      for sub_name, sub_map in var.subnet_list : {
-
+      for subnet_id in var.subnet_list : {
         action    = "Allow"
-        subnet_id = sub_map.id
-
+        subnet_id = subnet_id
       }
-      if sub_name == "aks"
-
     ]
-
   }
-
 }
 
 resource "azurerm_monitor_diagnostic_setting" "acr_diagnostic" {
@@ -74,34 +65,34 @@ resource "azurerm_monitor_diagnostic_setting" "acr_diagnostic" {
   }
 }
 
-# assumes there's an ops acr. i hate this but we're separating out, eventually, some aspects of the architecture will move to the bootstrap TF config and this won't need to exist
+# # assumes there's an ops acr. i hate this but we're separating out, eventually, some aspects of the architecture will move to the bootstrap TF config and this won't need to exist
 
-data "azurerm_container_registry" "ops" {
-  name                = var.ops_container_registry_name
-  resource_group_name = var.ops_resource_group_name
-}
+# data "azurerm_container_registry" "ops" {
+#   name                = var.ops_container_registry_name
+#   resource_group_name = var.ops_resource_group_name
+# }
 
 
-resource "azurerm_monitor_diagnostic_setting" "ops_acr_diagnostic" {
-  name                       = "${var.name}-ops-acr-diag-${var.environment}"
-  target_resource_id         = data.azurerm_container_registry.ops.id
-  log_analytics_workspace_id = var.workspace_id
-  log {
-    category = "ContainerRegistryRepositoryEvents"
-    retention_policy {
-      enabled = true
-    }
-  }
-  log {
-    category = "ContainerRegistryLoginEvents"
-    retention_policy {
-      enabled = true
-    }
-  }
-  metric {
-    category = "AllMetrics"
-    retention_policy {
-      enabled = true
-    }
-  }
-}
+# resource "azurerm_monitor_diagnostic_setting" "ops_acr_diagnostic" {
+#   name                       = "${var.name}-ops-acr-diag-${var.environment}"
+#   target_resource_id         = data.azurerm_container_registry.ops.id
+#   log_analytics_workspace_id = var.workspace_id
+#   log {
+#     category = "ContainerRegistryRepositoryEvents"
+#     retention_policy {
+#       enabled = true
+#     }
+#   }
+#   log {
+#     category = "ContainerRegistryLoginEvents"
+#     retention_policy {
+#       enabled = true
+#     }
+#   }
+#   metric {
+#     category = "AllMetrics"
+#     retention_policy {
+#       enabled = true
+#     }
+#   }
+# }

@@ -1,7 +1,0 @@
-- hosts: localhost
-  roles:
-    - role: db
-      vars:
-        db_init_details: "{{ tf_app_env_outputs.outputs }}"
-        db_name: "{{ tf_bootstrap_backend_outputs.environment.value }}"
-        postgresql: "true"

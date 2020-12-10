@@ -28,3 +28,6 @@ output "service_principal_password" {
 output "application_password" {
   value = azuread_application_password.app_password.value
 }
+output "sp_client_id" {
+  value = azuread_service_principal.principal.application_id
+}

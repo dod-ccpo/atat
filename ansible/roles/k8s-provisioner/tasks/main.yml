@@ -1,0 +1,41 @@
+---
+- name: Connect to the {{ environment }} kubernetes cluster
+  shell: "az aks get-credentials -g {{ aks_resource_group }} -n {{ aks_cluster_name }}"
+
+- name: Create {{ environment }} namespace
+  k8s:
+    kind: Namespace
+    state: present
+    name: "atat"
+
+- name: "Attach the ACR to the K8s cluster"
+  shell:
+    cmd: az aks update -n {{ aks_cluster_name }} -g {{ aks_resource_group }} --attach-acr {{ container_registry_name }}
+
+- name: Assign Network Contributor role to the AKS Service Principal for the Virtual Network
+  shell:
+    cmd: az role assignment create --role "Network Contributor" --assignee {{ aks_sp_id }} --scope {{ vnet_id }}
+
+- name: Get vmss
+  shell:
+    cmd: az vmss list --resource-group {{ aks_node_resource_group }}
+  register: aks_vmss
+
+- name: show vmss output
+  debug:
+    msg: "{{ aks_vmss.stdout | from_json }}"
+
+- name: Assign the Vault Reader identity to the AKS VMSS
+  shell:
+    cmd: az vmss identity assign -g {{ aks_node_resource_group }} -n {{ (aks_vmss.stdout | from_json)[0].name }} --identities {{ aks_keyvault_reader_id }}
+
+- name: Apply the storage class
+  k8s:
+    state: present
+    src: /src/deploy/azure/storage-class.yml
+
+- name: Create kv namespace
+  k8s:
+    kind: Namespace
+    state: present
+    name: "kv"

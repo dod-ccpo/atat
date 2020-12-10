@@ -33,6 +33,11 @@ output "operations_tf_application_container_name" {
   description = "Name of the container in the storage account used to hold deployment terraform states."
 }
 
+output "operations_config_container_name" {
+  value       = azurerm_storage_container.config.name
+  description = "Name of the container in the storage account used to hold certs and config files."
+}
+
 output "operations_storage_account_name" {
   value       = azurerm_storage_account.operations_storage_account.name
   description = "Global storage for deployments to store their configurations and states."
@@ -41,4 +46,14 @@ output "operations_storage_account_name" {
 output "namespace" {
   value       = var.namespace
   description = "Namespace for this deployment - Less than 5 characters, lower case"
+}
+
+output "logging_workspace_name" {
+  value       = azurerm_log_analytics_workspace.log_workspace.name
+  description = "Name of the Log Analytics Workspace"
+}
+
+output "logging_workspace_id" {
+  value       = azurerm_log_analytics_workspace.log_workspace.id
+  description = "Id of the Log Analytics Workspace"
 }

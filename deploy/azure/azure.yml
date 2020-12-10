@@ -36,6 +36,7 @@ spec:
       containers:
         - name: atst
           image: $CONTAINER_IMAGE
+          imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
           env:
@@ -68,6 +69,7 @@ spec:
               cpu: 940m
         - name: nginx
           image: $NGINX_CONTAINER_IMAGE
+          imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
           ports:
@@ -123,25 +125,17 @@ spec:
           configMap:
             name: nginx-snippets
         - name: nginx-secret
-          flexVolume:
-            driver: "azure/kv"
-            options:
-              usepodidentity: "true"
-              keyvaultname: "atat-vault-test"
-              keyvaultobjectnames: "dhparam4096;master-cert;master-cert"
-              keyvaultobjectaliases: "dhparam.pem;atat.key;atat.crt"
-              keyvaultobjecttypes: "secret;secret;secret"
-              tenantid: $TENANT_ID
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "nginx-secret-provider"
         - name: flask-secret
-          flexVolume:
-            driver: "azure/kv"
-            options:
-              usepodidentity: "true"
-              keyvaultname: "atat-vault-test"
-              keyvaultobjectnames: "master-AZURE-STORAGE-KEY;master-MAIL-PASSWORD;master-PGPASSWORD;master-REDIS-PASSWORD;master-SECRET-KEY"
-              keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY"
-              keyvaultobjecttypes: "secret;secret;secret;secret;key"
-              tenantid: $TENANT_ID
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "atat-secret-provider"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -168,6 +162,7 @@ spec:
       containers:
         - name: atst-worker
           image: $CONTAINER_IMAGE
+          imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
           args:
@@ -206,15 +201,11 @@ spec:
                 path: pgsslrootcert.crt
                 mode: 0666
         - name: flask-secret
-          flexVolume:
-            driver: "azure/kv"
-            options:
-              usepodidentity: "true"
-              keyvaultname: "atat-vault-test"
-              keyvaultobjectnames: "master-AZURE-STORAGE-KEY;master-MAIL-PASSWORD;master-PGPASSWORD;master-REDIS-PASSWORD;master-SECRET-KEY"
-              keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY"
-              keyvaultobjecttypes: "secret;secret;secret;secret;key"
-              tenantid: $TENANT_ID
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "atat-secret-provider"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -242,6 +233,7 @@ spec:
       containers:
         - name: atst-beat
           image: $CONTAINER_IMAGE
+          imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
           args:
@@ -280,15 +272,11 @@ spec:
                 path: pgsslrootcert.crt
                 mode: 0666
         - name: flask-secret
-          flexVolume:
-            driver: "azure/kv"
-            options:
-              usepodidentity: "true"
-              keyvaultname: "atat-vault-test"
-              keyvaultobjectnames: "master-AZURE-STORAGE-KEY;master-MAIL-PASSWORD;master-PGPASSWORD;master-REDIS-PASSWORD;master-SECRET-KEY"
-              keyvaultobjectaliases: "AZURE_STORAGE_KEY;MAIL_PASSWORD;PGPASSWORD;REDIS_PASSWORD;SECRET_KEY"
-              keyvaultobjecttypes: "secret;secret;secret;secret;key"
-              tenantid: $TENANT_ID
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "atat-secret-provider"
 ---
 apiVersion: v1
 kind: Service

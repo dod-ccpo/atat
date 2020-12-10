@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: atst
+  name: atst
+  namespace: atat
+spec:
+  template:
+    spec:
+      containers:
+        - name: atst
+          image: {{ application_container_image }}
+        - name: nginx
+          image: {{ nginx_container_image }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: atst
+  name: atst-worker
+  namespace: atat
+spec:
+  template:
+    spec:
+      containers:
+        - name: atst-worker
+          image: {{ application_container_image }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: atst
+  name: atst-beat
+  namespace: atat
+spec:
+  template:
+    spec:
+      containers:
+        - name: atst-beat
+          image: {{ application_container_image }}

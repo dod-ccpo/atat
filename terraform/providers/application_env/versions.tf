@@ -1,6 +1,13 @@
 terraform {
   required_version = ">= 0.13"
 
+  backend "azurerm" {
+    resource_group_name  = var.resource_group_name
+    storage_account_name = var.storage_account_name
+    container_name       = var.container_name
+    key                  = var.key
+  }
+
   required_providers {
     azuread = {
       source  = "hashicorp/azuread"
@@ -17,9 +24,9 @@ terraform {
       version = "~> 2.0.0"
     }
 
-    local = {
-      source  = "hashicorp/local"
-      version = "~> 2.0.0"
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.0.0"
     }
   }
 }
@@ -36,4 +43,15 @@ provider "azurerm" {
   tenant_id       = var.operator_tenant_id
 
   features {}
+}
+
+data "terraform_remote_state" "previous_stage" {
+  backend = "azurerm"
+
+  config = {
+    resource_group_name  = var.ops_resource_group  #"${azurerm_resource_group.operations_resource_group.name}"
+    storage_account_name = var.ops_storage_account #"${azurerm_storage_account.operations_storage_account.name}"
+    container_name       = var.tf_bootstrap_container
+    key                  = "terraform.tfstate"
+  }
 }

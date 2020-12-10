@@ -1,12 +1,6 @@
 # Files to exclude from COPY and ADD commands when
 # building a docker image from this directory
 
-# Exclude Docker build related files
-Dockerfile
-Dockerfile.nginx
-.dockerignore
-docker-compose.yml
-
 # Exclude the git directory and gitignore file
 .git
 .gitignore
