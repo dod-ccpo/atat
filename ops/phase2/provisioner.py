@@ -7,6 +7,7 @@ from subprocess import CalledProcessError
 from typing import Optional, Dict, NoReturn
 
 import click
+import create_saml_idp
 from click.utils import echo
 import sys
 
@@ -115,6 +116,14 @@ def provision(
         "app.tfvars.json",
         "/tmp/app.tfvars.json",
     )
+
+    application_object_id = create_saml_idp.main(tenant_id, sp_client_id, sp_client_secret, namespace)
+    saml_dev_idp_uri = f"https://login.microsoftonline.com/{tenant_id}/federationmetadata/2007-06/federationmetadata.xml?={application_object_id}"
+
+    with open("/tmp/app.tfvars.json", "w") as tfvars_file:
+        tfvars = json.loads(tfvars_file.read())
+        tfvars["SAML-DEV-IDP-URI"] = saml_dev_idp_uri
+        tfvars_file.write(json.dumps(tfvars))
 
     pause_until_complete(ssl_process)
 

@@ -264,7 +264,7 @@ def assign_user_to_saml_idp(user_object_id: str, sp_object_id: str, access_token
 @click.argument("password")
 @click.argument("hostname")
 def main(tenant_id: str, application_id: str, password: str, hostname: str) -> NoReturn:
-    if not path.exists("user_service_principals.txt.txt"):
+    if not path.exists("user_service_principals.txt"):
         print("Could not locate user_service_principals.txt")
         print(
             "This file must exist and contain one user object id per line, each to be registered with the identity provider."
@@ -290,6 +290,8 @@ def main(tenant_id: str, application_id: str, password: str, hostname: str) -> N
         for line in user_service_principals.readlines():
             user_object_id = line.strip()
             assign_user_to_saml_idp(user_object_id, sp_object_id, access_token)
+    
+    return application_object_id
 
 
 if __name__ == "__main__":

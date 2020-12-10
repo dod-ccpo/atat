@@ -151,7 +151,6 @@ resource "azurerm_key_vault_secret" "secret" {
     "DHPARAMS"             = file(var.dhparams_path)
     "PGPASSWORD"           = random_password.atat_user_password.result
     "REDIS-PASSWORD"       = azurerm_redis_cache.redis.primary_access_key
-    "SAML-IDP-CERT"        = ""
   })
 
   name         = each.key
