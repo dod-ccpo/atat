@@ -282,6 +282,7 @@ All config settings must be declared in "config/base.ini", even if they are null
 - `AZURE_CALC_SECRET`: The secret key used to generate a token for the Azure pricing calculator
 - `AZURE_CALC_URL`: The redirect URL for the Azure pricing calculator
 - `AZURE_LOGIN_URL`: The URL used to login for an Azure instance.
+- `AZURE_POWERSHELL_CLIENT_ID`: This client id is set to a value [hardcoded by Microsoft](https://docs.microsoft.com/en-us/azure-stack/user/azure-stack-rest-api-use?view=azs-2008#example) for making API calls
 - `AZURE_STORAGE_KEY`: A valid secret key for the Azure blob storage account
 - `AZURE_TO_BUCKET_NAME`: The Azure blob storage container name for task order uploads
 - `BLOB_STORAGE_URL`: URL to Azure blob storage container.
@@ -483,28 +484,27 @@ Also note that if the line number of a previously whitelisted secret changes, th
 
 ## How to build the RHEL Python base image
 
-First create two files, containing a RedHat username and password respectively.
+First create two files, containing a RedHat username and password respectively. A free RedHat account is needed to access certain required package repositories.
 
 - redhat_username.secret
 - redhat_password.secret
 
-Then run the build script.
 
-```
-env CONTAINER_REGISTRY=cloudzerodryrunregistry.azurecr.io ./script/build-docker-image-python-base.sh
-```
-
-Then publish the image. Start by tagging it with the appropriate registry. In
-this example we use the dry run registry.
-
-```
-docker tag atst:rhel-py cloudzerodryrunregistry.azurecr.io/rhel-py
-```
-
-Make sure you're logged into said registry.
+Make sure you're logged into the appropriate container registry. We're using `cloudzerodryrunregistry` as the example here.
 
 ```
 az acr login -n cloudzerodryrunregistry
+```
+
+Then run the build script:
+
+```
+env CONTAINER_REGISTRY=cloudzerodryrunregistry.azurecr.io ./ops/build-docker-image-python-base.sh
+```
+
+Then publish the image. Start by tagging it with the appropriate registry.
+```
+docker tag atst:rhel-py cloudzerodryrunregistry.azurecr.io/rhel-py:latest
 ```
 
 Then push!

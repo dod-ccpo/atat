@@ -132,10 +132,10 @@ def test_make_select_input_template(options_input_macro, options_form):
     options_form.radiofield.choices = [("a", "A"), ("b", "B")]
 
     rendered_select_input_macro = options_input_macro(
-        options_form.selectfield, optional=Markup("'optional'")
+        options_form.selectfield, optional=Markup("'optional'"), data_literal=True
     )
     rendered_radio_input_macro = options_input_macro(
-        options_form.radiofield, optional=Markup("'optional'")
+        options_form.radiofield, optional=Markup("'optional'"), data_literal=True
     )
     write_template(rendered_select_input_macro, "select_input_template.html")
     write_template(rendered_radio_input_macro, "radio_input_template.html")

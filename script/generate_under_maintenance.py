@@ -14,6 +14,7 @@ import re
 from urllib.parse import urlparse
 import argparse
 from bs4 import BeautifulSoup
+import subprocess
 
 
 # how large the html file can be before showing a warning message
@@ -23,21 +24,39 @@ HTML_FILE_SIZE_LIMIT = 1024 * 1024
 # for additional mime types
 mime_types = {
     ".woff2": "font/woff2",
+    ".woff": "font/woff",
     ".svg": "image/svg+xml",
     ".ico": "image/vnd.microsoft.icon",
     ".eot": "application/vnd.ms-fontobject",
+    ".ttf": "font/ttf",
 }
 
-css_asset_whitelist = [
+# These are the font files required to load this page.  IE 11 increases this list
+# by about 2/3rds.
+css_asset_whitelist = {
+    # woff2
     "sourcesanspro-bold-webfont.*woff2",
     "sourcesanspro-regular-webfont.*woff2",
     "sourcesanspro-light-webfont.*woff2",
     "sourcesanspro-italic-webfont.*woff2",
+    # woff
+    "sourcesanspro-light-webfont.*woff",
+    "sourcesanspro-bold-webfont.*woff",
+    "sourcesanspro-italic-webfont.*woff",
+    # eot
     "merriweather-light-webfont.*eot",
     "merriweather-italic-webfont.*eot",
     "merriweather-bold-webfont.*eot",
     "merriweather-regular-webfont.*eot",
-]
+    "sourcesanspro-regular-webfont.*eot",
+    "sourcesanspro-light-webfont.*eot",
+    "sourcesanspro-italic-webfont.*eot",
+    "sourcesanspro-bold-webfont.*eot",
+    # ttf
+    "sourcesanspro-light-webfont.*ttf",
+    "sourcesanspro-bold-webfont.*ttf",
+    "sourcesanspro-italic-webfont.*ttf",
+}
 
 
 def relative_path(file_path):
@@ -128,7 +147,16 @@ def file_is_too_large(html_file):
     return os.stat(html_file).st_size > HTML_FILE_SIZE_LIMIT
 
 
+def yarn_build():
+    process = subprocess.Popen(["yarn", "build"])
+    process.communicate()
+    if process.returncode:
+        exit(1)
+
+
 def main(output):
+    yarn_build()
+
     soup = render_template()
 
     encode_images(soup)

@@ -11,7 +11,13 @@ from wtforms.fields import (
     StringField,
 )
 from wtforms.fields.html5 import DateField
-from wtforms.validators import Length, NumberRange, Optional, Required, ValidationError
+from wtforms.validators import (
+    DataRequired,
+    Length,
+    NumberRange,
+    Optional,
+    ValidationError,
+)
 
 from atat.forms.validators import AlphaNumeric, Number
 from atat.utils.localization import translate
@@ -164,8 +170,9 @@ class TaskOrderForm(BaseForm):
 class SignatureForm(BaseForm):
     signature = BooleanField(
         translate("task_orders.sign.digital_signature_description"),
-        validators=[Required()],
+        validators=[DataRequired()],
     )
     confirm = BooleanField(
-        translate("task_orders.sign.confirmation_description"), validators=[Required()],
+        translate("task_orders.sign.confirmation_description"),
+        validators=[DataRequired()],
     )

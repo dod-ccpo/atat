@@ -1,5 +1,5 @@
 from wtforms.fields import BooleanField, FormField
-from wtforms.validators import Required
+from wtforms.validators import DataRequired
 
 from atat.domain.permission_sets import PermissionSets
 from atat.forms.fields import SelectField
@@ -60,6 +60,6 @@ class NewForm(PermissionsForm):
 class AssignPPOCForm(PermissionsForm):
     role_id = SelectField(
         label=translate("forms.assign_ppoc.dod_id"),
-        validators=[Required()],
+        validators=[DataRequired()],
         choices=[("", "- Select -")],
     )

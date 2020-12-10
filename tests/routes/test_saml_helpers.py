@@ -32,17 +32,14 @@ def test_prepare_login_url_success():
 
 def test_qp_cache_success():
     request = Mock(
-        args={
-            "next": "https://sp.com/deep/link",
-            "username": "Amanda",
-            "dod_id": "1234567890",
-        }
+        args={"next": "/home", "username": "Amanda", "dod_id": "1234567890",}
     )
 
     _cache_params_in_session(request)
 
     qsp = session["query_string_parameters"]
-    assert qsp["next_param"] == "https://sp.com/deep/link"
+
+    assert qsp["next_param"] == "/home"
     assert qsp["username_param"] == "Amanda"
     assert qsp["dod_id_param"] == "1234567890"
 

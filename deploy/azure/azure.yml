@@ -26,6 +26,13 @@ spec:
     spec:
       securityContext:
         fsGroup: 101
+      initContainers:
+        - name: change-file-access
+          image: $CONTAINER_IMAGE
+          command: ['sh', '-c', 'find /etc/ssl -type f -exec chmod 640 {} \;']
+          volumeMounts:
+          - name: nginx-secret
+            mountPath: "/etc/ssl/"
       containers:
         - name: atst
           image: $CONTAINER_IMAGE

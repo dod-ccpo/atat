@@ -1,12 +1,14 @@
 import os
 import re
-from random import choice, choices, randrange
-
-from locust import HttpUser, SequentialTaskSet, task, between
-
-from pyquery import PyQuery as pq
-from uuid import uuid4
 import string
+from functools import wraps
+from random import choice, choices, randrange
+from uuid import uuid4
+
+import names
+from locust import SequentialTaskSet, between, task
+from locust.contrib.fasthttp import FastHttpUser
+from pyquery import PyQuery as pq
 
 # Provide username/password for basic auth
 USERNAME = os.getenv("ATAT_BA_USERNAME", "")
@@ -25,9 +27,12 @@ ENTITY_ID_MATCHER = re.compile(
 NEW_PORTFOLIO_CHANCE = 10
 NEW_APPLICATION_CHANCE = 10
 NEW_TASK_ORDER_CHANCE = 10
+NEW_LOGOUT_CHANCE = 10
+
+dod_ids = set()
 
 
-def update_user_profile(client, parent):
+def update_user_profile(user, client, parent):
     # get csrf token
     user_url = "/user"
     response = client.get(user_url)
@@ -50,6 +55,10 @@ def update_user_profile(client, parent):
         {
             "csrf_token": csrf_token,
             "phone_number": "".join(choices(string.digits, k=10)),
+            "email": user.email,
+            "citizenship": user.citizenship,
+            "service_branch": user.service_branch,
+            "designation": user.designation,
         }
     )
 
@@ -60,8 +69,8 @@ def update_user_profile(client, parent):
 def create_application(client, parent, portfolio_id):
     # get new application page for csrf token
     create_app_url = f"/portfolios/{portfolio_id}/applications/new"
-    new_app_form = client.get(create_app_url)
-    csrf_token = get_csrf_token(new_app_form)
+    response = client.get(create_app_url)
+    csrf_token = get_csrf_token(response)
 
     # create new application
     response = client.post(
@@ -73,11 +82,14 @@ def create_application(client, parent, portfolio_id):
         },
         headers={"Referer": parent.host + create_app_url},
     )
-    application_id = extract_id(response.url)
+    csrf_token = get_csrf_token(response)
+
+    # get application id
+    application_id = extract_id(response._request.get_full_url())
 
     # set up application environments
     create_environments_url = f"/applications/{application_id}/new/step_2"
-    client.post(
+    response = client.post(
         create_environments_url + f"?portfolio_id={portfolio_id}",
         {
             "environment_names-0": "Development",
@@ -91,8 +103,9 @@ def create_application(client, parent, portfolio_id):
 
     # get environments' ids from step 3 of application creation
     create_team_members_url = f"/applications/{application_id}/new/step_3"
-    create_team_members_response = client.get(create_team_members_url)
-    d = pq(create_team_members_response.text)
+    response = client.get(create_team_members_url)
+    csrf_token = get_csrf_token(response)
+    d = pq(response.text)
     env_0_id = d("#environment_roles-0-environment_id").val()
     env_1_id = d("#environment_roles-1-environment_id").val()
 
@@ -136,7 +149,7 @@ def create_portfolio(client, parent):
         headers={"Referer": parent.host + portfolios_url},
     )
 
-    return extract_id(response.url)
+    return extract_id(response._request.get_full_url())
 
 
 def create_task_order(client, parent, portfolio_id):
@@ -155,23 +168,26 @@ def create_task_order(client, parent, portfolio_id):
         },
         headers={"Referer": parent.host + upload_task_order_pdf_url},
     )
+    csrf_token = get_csrf_token(response)
 
     # get TO ID
-    task_order_id = extract_id(response.url)
+    task_order_id = extract_id(response._request.get_full_url())
 
     # set TO number
     number = "".join(choices(string.digits, k=choice(range(13, 18))))
     set_task_order_number_url = f"/task_orders/{task_order_id}/form/step_2"
-    client.post(
+    response = client.post(
         set_task_order_number_url,
         {"number": number, "csrf_token": csrf_token},
         headers={"Referer": parent.host + set_task_order_number_url},
     )
+    csrf_token = get_csrf_token(response)
 
     # set TO parameters
     clins_number = "".join(choices(string.digits, k=4))
-    client.post(
-        f"/task_orders/{task_order_id}/form/step_3",
+    task_orders_step_3 = f"/task_orders/{task_order_id}/form/step_3"
+    response = client.post(
+        task_orders_step_3,
         {
             "csrf_token": csrf_token,
             "clins-0-number": clins_number,
@@ -181,7 +197,9 @@ def create_task_order(client, parent, portfolio_id):
             "clins-0-start_date": "01/11/2020",
             "clins-0-end_date": "01/11/2021",
         },
+        headers={"Referer": parent.host + task_orders_step_3},
     )
+    csrf_token = get_csrf_token(response)
 
     # submit TO
     submit_task_order_url = f"/task_orders/{task_order_id}/submit"
@@ -230,51 +248,129 @@ def extract_id(path):
         return entity_id_match.group(1)
 
 
+def get_new_dod_id():
+    while True:
+        dod_id = "1" + "".join(choice(string.digits) for _ in range(9))
+        if dod_id not in dod_ids:
+            dod_ids.add(dod_id)
+            return dod_id
+
+
+def get_new_name():
+    return names.get_full_name().split(" ")
+
+
+def login_as(user, client):
+    result = client.get(
+        f"/dev-new-user?first_name={user.first_name}&last_name={user.last_name}&dod_id={user.dod_id}"
+    )
+
+    user.logged_in = result.status == "200" or result.status == "302"
+
+
+def log_out(user, client):
+    client.get("/logout")
+    user.logged_in = False
+
+
+def user_status(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        task_set = args[0]
+        client = task_set.client
+        user = task_set.user
+
+        if not user.logged_in:
+            result = client.get(f"/login-local?dod_id={user.dod_id}")
+            user.logged_in = result.status == "200" or result.status == "302"
+
+        f(*args, **kwargs)
+
+        if randrange(0, 100) < NEW_LOGOUT_CHANCE:
+            log_out(user, client)
+
+    return decorated_function
+
+
 class UserBehavior(SequentialTaskSet):
     def on_start(self):
         self.client.verify = not DISABLE_VERIFY
-        self.client.get("/login-local", auth=(USERNAME, PASSWORD))
+        login_as(self.user, self.client)
 
+    @user_status
     @task
     def user_profile(self):
-        update_user_profile(self.client, self.parent)
+        update_user_profile(self.user, self.client, self.parent)
 
+    @user_status
     @task
     def portfolio(self):
         client = self.client
         portfolio_links = get_portfolios(client)
 
         if not portfolio_links or randrange(0, 100) < NEW_PORTFOLIO_CHANCE:
-            self.portfolio_id = create_portfolio(client, self.parent)
+            self.user.portfolio_id = create_portfolio(client, self.parent)
         else:
-            self.portfolio_id = extract_id(choice(portfolio_links))
+            self.user.portfolio_id = extract_id(choice(portfolio_links))
 
+    @user_status
     @task
     def application(self):
         client = self.client
-        portfolio_id = self.portfolio_id
+        portfolio_id = self.user.portfolio_id
 
         application_links = get_applications(client, portfolio_id)
         if not application_links or randrange(0, 100) < NEW_APPLICATION_CHANCE:
             create_application(client, self.parent, portfolio_id)
 
+    @user_status
     @task
     def task_order(self):
         if (
-            not has_task_orders(self.client, self.portfolio_id)
+            not has_task_orders(self.client, self.user.portfolio_id)
             or randrange(0, 100) < NEW_TASK_ORDER_CHANCE
         ):
-            create_task_order(self.client, self.parent, self.portfolio_id)
+            create_task_order(self.client, self.parent, self.user.portfolio_id)
 
     def on_stop(self):
-        self.client.get("/logout")
+        log_out(self.user, self.client)
 
 
-class WebsiteUser(HttpUser):
+class ATATUser(FastHttpUser):
     tasks = [UserBehavior]
     wait_time = between(3, 9)
+
+    def on_start(self):
+        dod_id = get_new_dod_id()
+        first_name, last_name = get_new_name()
+
+        self.dod_id = dod_id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = "".join([first_name.lower(), last_name.lower(), "@loadtest.atat"])
+        self.service_branch = choice(
+            [
+                "air_force",
+                "army",
+                "marine_corps",
+                "navy",
+                "space_force",
+                "ccmd_js",
+                "dafa",
+                "osd_psas",
+                "other",
+            ]
+        )
+        self.citizenship = choice(["United States", "Foreign National", "Other"])
+        self.designation = choice(["military", "civilian", "contractor"])
+
+        self.logged_in = False
+        self.portfolio_id = None
+
+    def on_stop(self):
+        dod_ids.remove(self.dod_id)
 
 
 if __name__ == "__main__":
     # if run as the main file, will spin up a single locust
-    WebsiteUser().run()
+    ATATUser().run()

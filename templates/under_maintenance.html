@@ -2,17 +2,16 @@
 
 {% block title %}Under Maintenance{% endblock %}
 {% block header %}{% endblock %}
+
 {% block body %}
-<div id='app-root'>
-  <div class='global-layout login-layout'>
-    <div class='global-panel-container login-container'>
-      <div class='col'>
-        <div class='login-banner'>
-            <h1>Under Maintenance</h1>
-        </div>
-      </div>
+
+    <div class="um-card">
+      {{ Icon('tools') }}
+      <h1>ATAT is currently under maintenance</h1>
+      <div>We apologize for the inconvenience and we thank you for your patience.</div>
+      <div>We’ll be back online shortly!</div>
+      <div>If you have any questions, please contact <a href="mailto:info@cloud.mil">info@cloud.mil</a></div>
     </div>
-  </div>  
-</div>
+
 {% endblock %}
 {% block footer %}{% endblock %}

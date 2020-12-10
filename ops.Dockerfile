@@ -23,7 +23,12 @@ RUN yum -y update && \
 
 COPY ./ops/requirements.txt /src/ops/requirements.txt
 
-RUN pip3 install -r /src/ops/requirements.txt
+RUN pip3 install -r /src/ops/requirements.txt && \
+  pip3 install ansible==2.9 \
+  openshift \
+  pyhcl && \
+  pip3 install ansible[azure] azure-storage-common azure-common azure-storage-blob azure-storage-nspkg pydantic onelogin python3-saml
+
 
 WORKDIR /src
 

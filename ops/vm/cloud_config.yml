@@ -1,0 +1,50 @@
+#cloud-config
+package_update: true
+packages:
+  - software-properties-common
+  - apt-transport-https
+  - wget
+  - firefox
+  - xmlsec1
+  - curl
+  - vim
+  - gettext
+  - unzip
+  - libbz2-dev
+  - libssl-dev
+  - libpq-dev
+  - jq
+  - gnupg2
+  - xrdp
+  - xfce4
+  - libxml2-dev
+  - libxmlsec1-dev
+  - libxmlsec1-openssl
+apt_sources:
+  - source: "ppa:ansible/ansible"
+  - source: "ppa:deadsnakes/ppa"
+runcmd:
+  # enable rdp
+  - echo xfce4-session > /home/${username}/.xsession
+  - [systemctl, enable, xrdp]
+  - [service, xrdp, restart]
+  # install az
+  - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+  # install terraform repo
+  - sudo apt-add-repository --yes --update "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+  - curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+  # install docker
+  - wget -P /tmp https://download.docker.com/linux/ubuntu/dists/bionic/pool/stable/amd64/docker-ce-cli_19.03.13~3-0~ubuntu-bionic_amd64.deb
+  - dpkg -i /tmp/docker-ce-cli_19.03.13~3-0~ubuntu-bionic_amd64.deb
+  # install kubectl repo
+  - curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+  - echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+  # Run second round of installs
+  - sudo apt-get update
+  - sudo apt-get install -y python3.7 python3.7-dev ansible terraform kubectl
+  - sudo apt-get install -y python3-pip
+  - [update-alternatives, --install, /usr/bin/python, python, /usr/bin/python3.7, "1"]
+  - git clone https://github.com/dod-ccpo/atst.git /home/${username}/atst
+  - python -m pip install -r /home/${username}/atst/ops/requirements.txt
+  - [snap, install, code, "--classic"]
+

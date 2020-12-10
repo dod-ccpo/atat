@@ -1,5 +1,5 @@
 from wtforms.fields import FieldList, StringField, TextAreaField
-from wtforms.validators import Length, Optional, Required
+from wtforms.validators import DataRequired, Length, Optional
 
 from atat.forms.validators import AlphaNumeric, ListItemRequired, ListItemsUnique, Name
 from atat.utils.localization import translate
@@ -10,7 +10,7 @@ from .forms import BaseForm, remove_empty_string
 class EditEnvironmentForm(BaseForm):
     name = StringField(
         label=translate("forms.environments.name_label"),
-        validators=[Required(), Name(), Length(max=100)],
+        validators=[DataRequired(), Name(), Length(max=100)],
         filters=[remove_empty_string],
     )
 
@@ -18,7 +18,7 @@ class EditEnvironmentForm(BaseForm):
 class NameAndDescriptionForm(BaseForm):
     name = StringField(
         label=translate("forms.application.name_label"),
-        validators=[Required(), Name(), Length(max=100)],
+        validators=[DataRequired(), Name(), Length(max=100)],
         filters=[remove_empty_string],
     )
     description = TextAreaField(

@@ -5,11 +5,10 @@ from flask import Blueprint
 from flask import current_app as app
 from flask import g, make_response, redirect, render_template, request, session, url_for
 from jinja2.exceptions import TemplateNotFound
-from werkzeug.exceptions import MethodNotAllowed, NotFound
-from werkzeug.routing import RequestRedirect
 
 from atat.domain.auth import logout as _logout
 from atat.domain.users import Users
+from atat.routes.routes_helpers import match_url_pattern
 from atat.routes.saml_helpers import (
     get_user_from_saml_attributes,
     init_saml_auth_dev,
@@ -51,26 +50,6 @@ def redirect_after_login_url(next_param=None):
         return returl
     else:
         return url_for("atat.home")
-
-
-def match_url_pattern(url, method="GET"):
-    """Ensure a url matches a url pattern in the flask app
-    inspired by https://stackoverflow.com/questions/38488134/get-the-flask-view-function-that-matches-a-url/38488506#38488506
-    """
-    server_name = app.config.get("SERVER_NAME") or "localhost"
-    adapter = app.url_map.bind(server_name=server_name)
-
-    try:
-        match = adapter.match(url, method=method)
-    except RequestRedirect as e:
-        # recursively match redirects
-        return match_url_pattern(e.new_url, method)
-    except (MethodNotAllowed, NotFound):
-        # no match
-        return None
-
-    if match[0] in app.view_functions:
-        return url
 
 
 def current_user_setup(user):

@@ -14,7 +14,7 @@ def acquire_token():
     token = None
     try:
         token_res = requests.get(
-            "http://169.254.169.254/metadata/identity/oauth2/token",
+            "https://169.254.169.254/metadata/identity/oauth2/token",
             params=token_params,
             headers=token_headers,
             timeout=10,
