@@ -1,7 +1,7 @@
 adal~=1.2.4
 alembic~=1.4.2
 amqp~=2.6.1
-ansible[azure]==2.9
+ansible[azure]==2.10.3
 applicationinsights~=0.11.9
 argcomplete~=1.12.1
 azure-cli-core~=2.0.35
