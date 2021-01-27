@@ -89,7 +89,7 @@ def make_app(config):
     if ENV != "prod":
         app.register_blueprint(dev_routes)
         
-    if ENV == "dev":
+    if ENV == "dev" and app.config["DEV_DEBUG_TOOL"]:
         debug_tools_bar(app)
 
     if app.config.get("ALLOW_LOCAL_ACCESS"):
@@ -397,5 +397,5 @@ def debug_tools_bar(app):
     # the toolbar is only enabled in debug mode:
     app.debug = True
     # set a 'SECRET_KEY' to enable the Flask session cookies
-    app.config['SECRET_KEY'] = '$%$#%@%@#$#$@#$@#$@#$#@FRWGERG$%#$%@#$'
+    app.config['SECRET_KEY'] = app.config["DEV_DEBUG_TOOL_SECRET_KEY"]
     toolbar = DebugToolbarExtension(app)
