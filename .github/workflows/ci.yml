@@ -44,10 +44,10 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get -q -y install docker.io
+      # - name: Install dependencies
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get -q -y install docker.io
       - name: Pull RHEL UBI container
         run: |
           docker pull registry.access.redhat.com/ubi8:8.3
