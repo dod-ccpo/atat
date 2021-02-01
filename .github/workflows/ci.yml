@@ -9,18 +9,18 @@ on:
       - "release/**"
 
 jobs:
-  sonarcloud:
-    name: SonarCloud
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  # sonarcloud:
+  #   name: SonarCloud
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+  #     - name: SonarCloud Scan
+  #       uses: SonarSource/sonarcloud-github-action@master
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   build-docker-image:
     name: Build Docker image
     runs-on: ubuntu-20.04
@@ -32,8 +32,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          - 6379:6379
       postgres:
         image: postgres
         env:
@@ -43,30 +41,25 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          - 5432:5432
     steps:
       - name: Check out code
         uses: actions/checkout@v2
       - name: Install dependencies
         run: |
-          sudo apt-get -q install docker.io
+          sudo apt-get update
+          sudo apt-get -q -y install docker.io
       - name: Pull RHEL UBI container
         run: |
           docker pull registry.access.redhat.com/ubi8:8.3
           docker tag registry.access.redhat.com/ubi8:8.3 ubi/ubi8:8.3
-      - name: Prepare RHEL container secrets
-        run: |
-          echo "${{ secrets.REDHAT_USERNAME }}" > redhat_username.secret
-          echo "${{ secrets.REDHAT_PASSWORD }}" > redhat_password.secret
       - name: Build Python container
         run: |
           DOCKER_BUILDKIT=1 docker build \
               -t atat:rhel-py \
               -f python.Dockerfile \
               --build-arg IMAGE=ubi/ubi8:8.3 \
-              --secret id=redhat_username,src=redhat_username.secret \
-              --secret id=redhat_password,src=redhat_password.secret \
+              --build-arg redhat_username="${{ secrets.REDHAT_USERNAME }}" \
+              --build-arg redhat_password="${{ secrets.REDHAT_PASSWORD }}" \
               .
       - name: Build container
         run: |
@@ -75,11 +68,11 @@ jobs:
       - name: Run tests
         run: |
           docker run \
-            -e PGHOST=localhost \
-            -e REDIS_HOST=localhost:6379 \
-            --network atat \
+            -e PGHOST=postgres \
+            -e REDIS_HOST=redis:6379 \
+            --network ${{ job.services.postgres.network }}
             atat:builder \
             /bin/sh -c "poetry install --no-root &&
-                        wget https://releases.hashicorp.com/terraform/0.14.5/terraform_0.14.5_linux_amd64.zip -O /install/tf.zip &&
+                        wget https://releases.hashicorp.com/terraform/0.13.6/terraform_0.13.6_linux_amd64.zip -O /install/tf.zip &&
                         unzip /install/tf.zip -d /bin/ &&
                         /bin/sh script/cibuild"
