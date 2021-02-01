@@ -1,0 +1,83 @@
+---
+name: Simple test run
+on:
+  pull_request:
+  push:
+    branches:
+      - "master"
+      - "develop"
+      - "release/**"
+
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  build-docker-image:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt-get -q install docker.io
+      - name: Pull RHEL UBI container
+        run: |
+          docker pull registry.access.redhat.com/ubi8:8.3
+          docker tag registry.access.redhat.com/ubi8:8.3 ubi/ubi8:8.3
+      - name: Prepare RHEL container secrets
+        run: |
+          echo "${{ secrets.REDHAT_USERNAME }}" > redhat_username.secret
+          echo "${{ secrets.REDHAT_PASSWORD }}" > redhat_password.secret
+      - name: Build Python container
+        run: |
+          DOCKER_BUILDKIT=1 docker build \
+              -t atat:rhel-py \
+              -f python.Dockerfile \
+              --build-arg IMAGE=ubi/ubi8:8.3 \
+              --secret id=redhat_username,src=redhat_username.secret \
+              --secret id=redhat_password,src=redhat_password.secret \
+              .
+      - name: Build container
+        run: |
+          docker build . --build-arg GIT_SHA=${GITHUB_SHA} --build-arg IMAGE=atat:rhel-py -f ./Dockerfile -t atat:builder --target builder
+          docker build . --build-arg GIT_SHA=${GITHUB_SHA} --build-arg IMAGE=atat:rhel-py -f ./Dockerfile -t atat:latest
+      - name: Run tests
+        run: |
+          docker run \
+            -e PGHOST=localhost \
+            -e REDIS_HOST=localhost:6379 \
+            --network atat \
+            atat:builder \
+            /bin/sh -c "poetry install --no-root &&
+                        wget https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip -O /install/tf.zip &&
+                        unzip /install/tf.zip -d /bin/ &&
+                        /bin/sh script/cibuild"
