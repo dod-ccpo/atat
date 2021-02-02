@@ -64,6 +64,25 @@ jobs:
         run: |
           docker build . --build-arg GIT_SHA=${GITHUB_SHA} --build-arg IMAGE=atat:rhel-py -f ./Dockerfile -t atat:builder --target builder
           docker build . --build-arg GIT_SHA=${GITHUB_SHA} --build-arg IMAGE=atat:rhel-py -f ./Dockerfile -t atat:latest
+      - name: Create PostgreSQL database
+        run: |
+          docker exec "${{ jobs.services.postgres.id }}" createdb -U postgres atat_test
+      - name: Perform Alembic migrations
+        run: |
+          docker run \
+            -e PGDATABASE=atat_test \
+            -e PGHOST=postgres -e REDIS_HOST=redis:6379 \
+            --network atat \
+            atat:builder \
+            .venv/bin/python .venv/bin/alembic upgrade head
+      - name: Apply PostgreSQL default permission sets
+        run:
+          docker run \
+            -e PGDATABASE=atat_test \
+            -e PGHOST=postgres -e REDIS_HOST=redis:6379 \
+            --network atat \
+            atat:builder \
+            .venv/bin/python script/seed_roles.py
       - name: Run tests
         run: |
           docker run \
@@ -75,3 +94,48 @@ jobs:
                         wget https://releases.hashicorp.com/terraform/0.13.6/terraform_0.13.6_linux_amd64.zip -O /install/tf.zip &&
                         unzip /install/tf.zip -d /bin/ &&
                         /bin/sh script/cibuild"
+      # The following steps are only necessary for the Ghost Inspector tests
+      # which are not currently configured for this repository; however, the
+      # following is a transalation of the Circle CI configuration.
+      # - name: Start application container
+      #   run: |
+      #     docker run -d \
+      #       -e PGHOST=postgres \
+      #       -e REDIS_HOST=redis:6379 \
+      #       --network ${{ job.services.postgres.network }}
+      #       --name test-atat
+      #       atat:builder \
+      #       /bin/sh -c "
+      #         echo CLOUD_PROVIDER=mock > .env &&\
+      #         yarn build &&\
+      #         pip3 install uwsgi &&\
+      #         uwsgi \
+      #         --callable app \
+      #         --module app \
+      #         --plugin python3 \
+      #         --virtualenv /install/.venv \
+      #         --http-socket :8000
+      #       "
+      # - name: Wait for ATAT container to be available
+      #   run: |
+      #     docker pull curlimages/curl:latest
+      #     docker run --network ${{ job.services.postgres.network }} \
+      #       curlimages/curl:latest \
+      #       curl --connect-timeout 3 \
+      #       --max-time 5 \
+      #       --retry 120 \
+      #       --retry-connrefused \
+      #       --retry-delay 1 \
+      #       --retry-max-time 120 \
+      #       test-atat:8000
+      # - name: Execute Ghost Inspector test suite
+      #   run: |
+      #       docker pull ghostinspector/test-runner-standalone:latest
+      #       docker run \
+      #         -e NGROK_TOKEN="${{ secrets.NGROK_TOKEN }}" \
+      #         -e GI_API_KEY=${{ secrets.GI_API_KEY }} \
+      #         -e GI_SUITE=${{ secrets.GI_SUITE }} \
+      #         -e GI_PARAMS_JSON='{}' \
+      #         -e APP_PORT="test-atat:8000" \
+      #         --network atat \
+      #         ghostinspector/test-runner-standalone:latest
