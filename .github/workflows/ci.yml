@@ -21,8 +21,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  build-docker-image:
-    name: Build Docker image
+  run-ci-tests:
+    name: Run CI Tests
     runs-on: ubuntu-20.04
     services:
       redis:
