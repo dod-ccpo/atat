@@ -44,10 +44,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      # - name: Install dependencies
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get -q -y install docker.io
       - name: Pull RHEL UBI container
         run: |
           docker pull registry.access.redhat.com/ubi8:8.3
@@ -58,9 +54,12 @@ jobs:
               -t atat:rhel-py \
               -f python.Dockerfile \
               --build-arg IMAGE=ubi/ubi8:8.3 \
-              --build-arg redhat_username="${{ secrets.REDHAT_USERNAME }}" \
-              --build-arg redhat_password="${{ secrets.REDHAT_PASSWORD }}" \
+              --build-arg redhat_username \
+              --build-arg redhat_password \
               .
+        env:
+          redhat_username: "${{ secrets.REDHAT_USERNAME }}"
+          redhat_password: "${{ secrets.REDHAT_PASSWORD }}"
       - name: Build container
         run: |
           docker build . --build-arg GIT_SHA=${GITHUB_SHA} --build-arg IMAGE=atat:rhel-py -f ./Dockerfile -t atat:builder --target builder
