@@ -251,7 +251,7 @@ def build_nginx(
     cmd = [
         "az",
         "acr",
-        "build",
+        "import",
         "--name",
         atat_registry,
         "--source",
