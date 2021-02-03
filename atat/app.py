@@ -12,9 +12,9 @@ from flask_session import Session
 from flask_wtf.csrf import CSRFProtect
 from unipath import Path
 
-
 from atat.assets import environment as assets_environment
 from atat.database import db
+from atat.debug import debug_tools_bar
 from atat.domain.auth import apply_authentication
 from atat.domain.authz import Authorization
 from atat.domain.csp import make_csp_provider
@@ -38,7 +38,6 @@ from atat.utils.json import CustomJSONEncoder, sqlalchemy_dumps
 from atat.utils.logging import JsonFormatter, RequestContextFilter
 from atat.utils.notification_sender import NotificationSender
 from atat.utils.session_limiter import SessionLimiter
-from atat.debug import debug_tools_bar
 
 ENV = os.getenv("FLASK_ENV", "dev")
 
@@ -89,8 +88,10 @@ def make_app(config):
 
     if ENV != "prod":
         app.register_blueprint(dev_routes)
-        
-    if ( ENV == "dev" or ENV == "development" ) and app.config["DEV_DEBUG_TOOL"] == "True":
+
+    if (ENV == "dev" or ENV == "development") and app.config[
+        "DEV_DEBUG_TOOL"
+    ] == "True":
         debug_tools_bar(app)
 
     if app.config.get("ALLOW_LOCAL_ACCESS"):
