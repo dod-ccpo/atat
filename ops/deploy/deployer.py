@@ -77,18 +77,18 @@ logger = logging.getLogger(__name__)
 @click.option(
     "--ironbank-account",
     help="Account for grabbing images from ironbank",
-    envvar="IRONBANK_ACCOUNT"
+    envvar="IRONBANK_ACCOUNT",
 )
 @click.option(
     "--ironbank-secret",
     help="Secret for grabbing images from ironbank",
-    envvar="IRONBANK_SECRET"
+    envvar="IRONBANK_SECRET",
 )
 @click.option(
     "--ironbank-nginx-tag",
     help="nginx tag for image from ironbank",
     default="1.19.2",
-    envvar="IRONBANK_NGINX_TAG"
+    envvar="IRONBANK_NGINX_TAG",
 )
 def deploy(
     sp_client_id,
@@ -105,7 +105,7 @@ def deploy(
     git_sha,
     ironbank_account,
     ironbank_secret,
-    ironbank_nginx_tag
+    ironbank_nginx_tag,
 ):
     setup(
         sp_client_id,
@@ -117,7 +117,13 @@ def deploy(
     )
     import_images(ops_registry, atat_registry)
     build_atat(atat_registry, git_sha, atat_image_tag)
-    build_nginx(atat_registry, nginx_image_tag, ironbank_account, ironbank_secret, ironbank_nginx_tag)
+    build_nginx(
+        atat_registry,
+        nginx_image_tag,
+        ironbank_account,
+        ironbank_secret,
+        ironbank_nginx_tag,
+    )
 
     os.environ["ARM_CLIENT_ID"] = sp_client_id
     os.environ["ARM_CLIENT_SECRET"] = sp_client_secret
@@ -235,7 +241,13 @@ def build_atat(atat_registry, git_sha, atat_image_tag):
     subprocess.run(cmd).check_returncode()
 
 
-def build_nginx(atat_registry, nginx_image_tag, ironbank_account, ironbank_secret, ironbank_nginx_tag):
+def build_nginx(
+    atat_registry,
+    nginx_image_tag,
+    ironbank_account,
+    ironbank_secret,
+    ironbank_nginx_tag,
+):
     cmd = [
         "az",
         "acr",
