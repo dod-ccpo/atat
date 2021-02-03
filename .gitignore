@@ -49,6 +49,7 @@ ssl/client-certs/*.srl
 # local cert
 ssl/local.crt
 ssl/local.key
+*.crt
 
 # uploads
 /uploads
@@ -75,6 +76,7 @@ atst-overrides.ini
 
 # binary file created by celery beat
 celerybeat-schedule
+celerybeat-schedule.*
 
 # templates created for JS tests
 js/test_templates
@@ -110,3 +112,12 @@ js/test_templates
 # Terraform
 *.plan
 *.terraform.tfstate.lock.info
+
+# local workspaces
+atst2.code-workspace
+
+# file created by postgresql
+postgresql
+
+# file redis-server
+redis-server
