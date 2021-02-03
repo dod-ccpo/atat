@@ -11,7 +11,7 @@ from flask import url_for as flask_url_for
 from flask_session import Session
 from flask_wtf.csrf import CSRFProtect
 from unipath import Path
-from flask_debugtoolbar import DebugToolbarExtension
+
 
 from atat.assets import environment as assets_environment
 from atat.database import db
@@ -38,6 +38,7 @@ from atat.utils.json import CustomJSONEncoder, sqlalchemy_dumps
 from atat.utils.logging import JsonFormatter, RequestContextFilter
 from atat.utils.notification_sender import NotificationSender
 from atat.utils.session_limiter import SessionLimiter
+from atat.debug import debug_tools_bar
 
 ENV = os.getenv("FLASK_ENV", "dev")
 
@@ -90,7 +91,7 @@ def make_app(config):
         app.register_blueprint(dev_routes)
         
     if ( ENV == "dev" or ENV == "development" ) and app.config["DEV_DEBUG_TOOL"] == "True":
-        debug_tools_bar(app)
+        toolbar = debug_tools_bar(app)
 
     if app.config.get("ALLOW_LOCAL_ACCESS"):
         app.register_blueprint(local_access_bp)
@@ -390,12 +391,3 @@ def register_jinja_globals(app):
             "build_info": f"{app_version} {git_sha}",
         }
     )
-def debug_tools_bar(app):
-    """
-    Set debuger tool bar
-    """
-    # the toolbar is only enabled in debug mode:
-    app.debug = True
-    # set a 'SECRET_KEY' to enable the Flask session cookies
-    app.config['SECRET_KEY'] = app.config["DEV_DEBUG_TOOL_SECRET_KEY"] or 'jfhdfjshkjskjdjdhhe'
-    toolbar = DebugToolbarExtension(app)
