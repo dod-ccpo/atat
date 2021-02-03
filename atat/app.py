@@ -89,7 +89,7 @@ def make_app(config):
     if ENV != "prod":
         app.register_blueprint(dev_routes)
         
-    if ( ENV == "dev" or ENV == "development" ) and app.config["DEV_DEBUG_TOOL"]:
+    if ( ENV == "dev" or ENV == "development" ) and app.config["DEV_DEBUG_TOOL"] == "True":
         debug_tools_bar(app)
 
     if app.config.get("ALLOW_LOCAL_ACCESS"):
