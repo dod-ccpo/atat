@@ -49,4 +49,3 @@ data:
   SAML_DEV_ENTITY_ID: https://{{ environment }}.atat.dev/login-dev
   SAML_DEV_ACS: https://{{ environment }}.atat.dev/login-dev?acs
   SAML_DEV_SLS: https://{{ environment }}.atat.dev/login-dev?sls
-  SAML_DEV_IDP_URI: https://login.microsoftonline.com/59b2f493-ee7d-45a5-990e-be2123c97648/federationmetadata/2007-06/federationmetadata.xml?appid=f33601d8-2890-4f83-aa3e-23d9f1975d34
