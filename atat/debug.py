@@ -4,12 +4,10 @@ from flask_debugtoolbar import DebugToolbarExtension
 def debug_tools_bar(app):
     """
     Set debuger tool bar
+    toolbar factory type DebugToolbarExtension
     """
-    # the toolbar is only enabled in debug mode:
+    # The toolbar is only enabled in debug mode
     app.debug = True
-    # set a 'SECRET_KEY' to enable the Flask session cookies
-    app.config["SECRET_KEY"] = (
-        app.config["DEV_DEBUG_TOOL_SECRET_KEY"] or "jfhdfjshkjskjdjdhhe"
-    )
+    # This set the toolbar factory instance
     toolbar = DebugToolbarExtension(app)
     return toolbar
