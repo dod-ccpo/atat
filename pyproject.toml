@@ -40,7 +40,7 @@ python3-saml = "^1.9.0"
 
 [tool.poetry.dev-dependencies]
 bandit = "*"
-cryptography = "3.3.1"
+cryptography = "3.4.1"
 pytest = "*"
 ipython = "*"
 ipdb = "*"
