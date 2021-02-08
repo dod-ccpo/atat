@@ -11,11 +11,7 @@ def debug_tools_bar(app, ENV):
     # check if it is a development valid branch.
     IS_DEVELOPMENT = ["dev", "development"].__contains__(ENV)
     # is dev debug tool true
-    IS_DEV_TOOL = app.config["DEV_DEBUG_TOOL"].lower() == "true"
-
-    print(
-        f" >>>>IS_DEVELOPMENT: {IS_DEVELOPMENT}, IS_DEV_TOOL: {IS_DEV_TOOL}, ENV: {ENV}   <<<< "
-    )
+    IS_DEV_TOOL = str(app.config["DEV_DEBUG_TOOL"]).lower() == "true"
 
     if IS_DEVELOPMENT and IS_DEV_TOOL:
         # The toolbar is only enabled in debug mode
