@@ -1,22 +1,22 @@
 from flask_debugtoolbar import DebugToolbarExtension
 
 
-def debug_tools_bar(app, ENV):
+def setup_debug_toolbar(app, inviroment_name: str):
     """
-    Set debuger tool bar
-    toolbar factory type DebugToolbarExtension
+    Setup Flask debug toolbar.
+    
+    Sets application attributes and creates the debugging toolbar for
+    the application.
     """
     toolbar = None
 
-    # check if it is a development valid branch.
-    IS_DEVELOPMENT = ["dev", "development"].__contains__(ENV)
-    # is dev debug tool true
-    IS_DEV_TOOL = str(app.config["DEV_DEBUG_TOOL"]).lower() == "true"
+    is_development = inviroment_name in ["dev", "development"]
+    is_dev_tool = str(app.config["DEV_DEBUG_TOOL"]).lower() == "true"
 
-    if IS_DEVELOPMENT and IS_DEV_TOOL:
+    if is_development and is_dev_tool:
         # The toolbar is only enabled in debug mode
         app.debug = True
-        # This set the toolbar factory instance
+        # Toolbar factory instance can be use to configure functionality later
         toolbar = DebugToolbarExtension(app)
 
     return toolbar
