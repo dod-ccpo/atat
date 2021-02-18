@@ -15,7 +15,7 @@ Circle ci config was parameterized to facilitate control over images and their d
 You can use your method of choice to create POST request.  The request looks like:
 
 
-URL: `https://circleci.com/api/v2/project/github/dod-ccpo/atat/pipeline`
+URL: `https://circleci.com/api/v2/project/github/dod-ccpo/atst/pipeline`
 
 Headers: 'Circle-Token'  The Circle CI API key
 
