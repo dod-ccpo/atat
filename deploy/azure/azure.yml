@@ -9,7 +9,7 @@ kind: Deployment
 metadata:
   labels:
     app: atat
-  name: atat
+  name: atat-app
   namespace: atat
 spec:
   selector:
@@ -27,7 +27,7 @@ spec:
       securityContext:
         fsGroup: 101
       containers:
-        - name: atat
+        - name: atat-app
           imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false

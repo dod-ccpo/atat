@@ -4,13 +4,13 @@ kind: Deployment
 metadata:
   labels:
     app: atat
-  name: atat
+  name: atat-app
   namespace: atat
 spec:
   template:
     spec:
       containers:
-        - name: atat
+        - name: atat-app
           image: {{ application_container_image }}
         - name: nginx
           image: {{ nginx_container_image }}
