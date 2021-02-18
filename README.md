@@ -509,7 +509,7 @@ env CONTAINER_REGISTRY=cloudzerodryrunregistry.azurecr.io ./ops/build-docker-ima
 
 Then publish the image. Start by tagging it with the appropriate registry.
 ```
-docker tag atst:rhel-py cloudzerodryrunregistry.azurecr.io/rhel-py:latest
+docker tag atat:rhel-py cloudzerodryrunregistry.azurecr.io/rhel-py:latest
 ```
 
 Then push!
