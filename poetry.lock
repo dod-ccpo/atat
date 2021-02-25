@@ -341,7 +341,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "detect-secrets"
-version = "0.14.3"
+version = "1.0.1"
 description = "Tool for detecting secrets in the codebase"
 category = "dev"
 optional = false
@@ -1699,8 +1699,8 @@ defusedxml = [
     {file = "defusedxml-0.6.0.tar.gz", hash = "sha256:f684034d135af4c6cbb949b8a4d2ed61634515257a67299e5f940fbaa34377f5"},
 ]
 detect-secrets = [
-    {file = "detect_secrets-0.14.3-py2.py3-none-any.whl", hash = "sha256:dc56fb75ddc221eed4e998127230b59154024910121778bf38100a29da04c5cd"},
-    {file = "detect_secrets-0.14.3.tar.gz", hash = "sha256:953466e6e4a698cd6ee5bce060173889d7383a7ebf7a2cf3774ab7718bf826a3"},
+    {file = "detect_secrets-1.0.1-py2.py3-none-any.whl", hash = "sha256:0bcfa91f6c99e570d4e61a3fd322609987560874dae5995c22c4be8cf6e66393"},
+    {file = "detect_secrets-1.0.1.tar.gz", hash = "sha256:69c2ceff41fc2bbaf3beb88be21c34d74ecc0f4170cda905276e8a8791dd58a7"},
 ]
 dnspython = [
     {file = "dnspython-2.1.0-py3-none-any.whl", hash = "sha256:95d12f6ef0317118d2a1a6fc49aac65ffec7eb8087474158f42f26a639135216"},
