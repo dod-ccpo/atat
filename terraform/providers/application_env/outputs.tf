@@ -101,8 +101,11 @@ output "environment" {
   value = var.deployment_namespace
 }
 
-output "aks_subnet" {
-  value = azurerm_subnet.aks.name
+output "aks_node_subnet" {
+  value = azurerm_subnet.aks-nodepool.name
+}
+output "aks_aci_subnet" {
+  value = azurerm_subnet.aks-aci.name
 }
 
 output "aks_internal_lb_ip" {

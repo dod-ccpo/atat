@@ -67,6 +67,7 @@ resource "azurerm_network_watcher_flow_log" "vpc" {
   network_security_group_id = azurerm_network_security_group.logging_nsg.id
   storage_account_id        = azurerm_storage_account.flowlogs_storage.id
   enabled                   = true
+  version = 2
   retention_policy {
     enabled = true
     days    = 7

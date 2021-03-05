@@ -9,6 +9,11 @@ resource "azurerm_subnet" "redis" {
   ]
 }
 
+resource "azurerm_subnet_network_security_group_association" "redis_subnet" {
+  subnet_id                 = azurerm_subnet.redis.id
+  network_security_group_id = azurerm_network_security_group.logging_nsg.id
+}
+
 resource "azurerm_route_table" "redis" {
   name                = "${var.name}-redis-${var.deployment_namespace}"
   location            = azurerm_resource_group.vpc.location

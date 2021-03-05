@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: atat-main
   annotations:
-    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "{{ aks_subnet }}"
+    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "{{ aks_node_subnet }}"
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 spec:
   type: LoadBalancer

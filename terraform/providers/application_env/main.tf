@@ -34,7 +34,7 @@ module "task_order_bucket" {
   environment            = var.deployment_namespace
   region                 = var.deployment_location
   policy                 = "Allow"
-  subnet_ids             = [azurerm_subnet.aks.id]
+  subnet_ids             = [azurerm_subnet.aks-nodepool.id, azurerm_subnet.aks-aci.id]
   whitelist              = { "operator" = local.operator_ip }
   storage_container_name = var.task_order_bucket_storage_container_name
   workspace_id           = local.log_analytics_workspace_resource_id
@@ -51,7 +51,8 @@ module "container_registry" {
   whitelist     = ["${local.operator_ip}/32"]
   workspace_id  = local.log_analytics_workspace_resource_id
   subnet_list = [
-    azurerm_subnet.aks.id,
+    azurerm_subnet.aks-nodepool.id,
+    azurerm_subnet.aks-aci.id,
     azurerm_subnet.mgmt_subnet.id,
   ]
 }
