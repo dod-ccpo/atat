@@ -45,8 +45,6 @@ ENV = os.getenv("FLASK_ENV", "production")
 if not (ENV in ["development", "production", "test", "ci"]):
     ENV = "production"
 
-print(">>> Environment name set: %s", (str(ENV)))
-
 
 def make_app(config):
     if ENV == "production" or config.get("LOG_JSON"):
