@@ -42,8 +42,8 @@ from atat.utils.session_limiter import SessionLimiter
 ENV = os.getenv("FLASK_ENV", "development")
 
 # Env is development by default.
-if not (ENV in ["development", "production"]):
-    ENV = "development"
+if not (ENV in ["development", "production", "test"]):
+    ENV = "production"
 
 print(">>> Environment name set: %s", (str(ENV)))
 
