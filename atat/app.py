@@ -39,7 +39,7 @@ from atat.utils.logging import JsonFormatter, RequestContextFilter
 from atat.utils.notification_sender import NotificationSender
 from atat.utils.session_limiter import SessionLimiter
 
-ENV = os.getenv("FLASK_ENV", "development")
+ENV = os.getenv("FLASK_ENV", "production")
 
 # Env is development by default.
 if not (ENV in ["development", "production", "test"]):
