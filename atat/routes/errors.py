@@ -10,7 +10,7 @@ from atat.domain.portfolios import PortfolioError
 from atat.utils.flash import formatted_flash as flash
 from atat.utils.localization import translate
 
-NO_NOTIFY_STATUS_CODES = set([404, 401])
+NO_NOTIFY_STATUS_CODES = set([404, 401, 500])
 
 
 def log_error(e):
@@ -59,7 +59,8 @@ def make_error_pages(app):
     def exception(e):
         if current_app.debug:
             raise e
-        return handle_error(e, message="An Unexpected Error Occurred", code=500)
+        # return handle_error(e, message="An Unexpected Error Occurred", code=500)
+        flash(e, message="An Unexpected Error Occurred", code=500)
 
     @app.errorhandler(InvitationError)
     @app.errorhandler(InvitationWrongUserError)

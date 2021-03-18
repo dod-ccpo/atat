@@ -1637,7 +1637,7 @@ class AzureCloudProvider(CloudProviderInterface):
             headers=make_auth_header(token),
             timeout=30,
         )
-        result.raise_for_status()
+        # result.raise_for_status()
         return CostManagementQueryCSPResult(**result.json())
 
     def get_calculator_url(self):
