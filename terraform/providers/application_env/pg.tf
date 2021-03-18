@@ -29,11 +29,19 @@ resource "azurerm_postgresql_server" "sql" {
 
 }
 
-resource "azurerm_postgresql_virtual_network_rule" "allow_aks_subnet" {
+resource "azurerm_postgresql_virtual_network_rule" "allow_aks_node_subnet" {
   name                                 = "allow-aks-subnet-rule"
   resource_group_name                  = azurerm_resource_group.sql.name
   server_name                          = azurerm_postgresql_server.sql.name
-  subnet_id                            = azurerm_subnet.aks.id
+  subnet_id                            = azurerm_subnet.aks-nodepool.id
+  ignore_missing_vnet_service_endpoint = true
+}
+
+resource "azurerm_postgresql_virtual_network_rule" "allow_aks_aci_subnet" {
+  name                                 = "allow-aks-subnet-rule"
+  resource_group_name                  = azurerm_resource_group.sql.name
+  server_name                          = azurerm_postgresql_server.sql.name
+  subnet_id                            = azurerm_subnet.aks-aci.id
   ignore_missing_vnet_service_endpoint = true
 }
 

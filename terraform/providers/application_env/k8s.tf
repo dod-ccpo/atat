@@ -4,12 +4,12 @@ module "aks_sp" {
   deployment_namespace = var.deployment_namespace
 }
 
-resource "azurerm_subnet" "aks" {
-  name                                           = "${var.name}-aks-${var.deployment_namespace}"
+resource "azurerm_subnet" "aks-nodepool" {
+  name                                           = "${var.name}-aks-node-${var.deployment_namespace}"
   resource_group_name                            = azurerm_resource_group.vpc.name
   virtual_network_name                           = azurerm_virtual_network.vpc.name
   address_prefixes                               = ["10.1.2.0/24"]
-  enforce_private_link_endpoint_network_policies = false
+  enforce_private_link_endpoint_network_policies = true
   service_endpoints = [
     "Microsoft.Storage",
     "Microsoft.KeyVault",
@@ -18,13 +18,47 @@ resource "azurerm_subnet" "aks" {
   ]
 }
 
+resource "azurerm_subnet" "aks-aci" {
+  name = "${var.name}-aks-aci-${var.deployment_namespace}"
+  resource_group_name = azurerm_resource_group.vpc.name
+  virtual_network_name = azurerm_virtual_network.vpc.name
+  address_prefixes = ["10.1.6.0/24"]
+  enforce_private_link_endpoint_network_policies = true
+  service_endpoints = [
+    "Microsoft.Storage",
+    "Microsoft.KeyVault",
+    "Microsoft.ContainerRegistry",
+    "Microsoft.Sql"
+  ]
+
+  delegation {
+    name = "delegation"
+
+    service_delegation {
+      name    = "Microsoft.ContainerInstance/containerGroups"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+
+}
+
+resource "azurerm_subnet_network_security_group_association" "aks_node_subnet" {
+  subnet_id                 = azurerm_subnet.aks-nodepool.id
+  network_security_group_id = azurerm_network_security_group.logging_nsg.id
+}
+resource "azurerm_subnet_network_security_group_association" "aks_aci_subnet" {
+  subnet_id                 = azurerm_subnet.aks-aci.id
+  network_security_group_id = azurerm_network_security_group.logging_nsg.id
+}
+
 resource "azurerm_route_table" "aks" {
   name                = "${var.name}-aks-${var.deployment_namespace}"
   location            = azurerm_resource_group.vpc.location
   resource_group_name = azurerm_resource_group.vpc.name
 }
-resource "azurerm_subnet_route_table_association" "aks" {
-  subnet_id      = azurerm_subnet.aks.id
+
+resource "azurerm_subnet_route_table_association" "aks-nodepool" {
+  subnet_id      = azurerm_subnet.aks-nodepool.id
   route_table_id = azurerm_route_table.aks.id
 }
 
@@ -44,6 +78,7 @@ resource "azurerm_route" "aks_to_fw" {
   next_hop_type          = "VirtualAppliance"
   next_hop_in_ip_address = azurerm_firewall.fw.ip_configuration[0].private_ip_address
 }
+
 resource "azurerm_kubernetes_cluster" "k8s_private" {
   name                    = "${var.name}-private-k8s-${var.deployment_namespace}"
   location                = var.deployment_location
@@ -52,6 +87,10 @@ resource "azurerm_kubernetes_cluster" "k8s_private" {
   private_cluster_enabled = true
   node_resource_group     = "${azurerm_resource_group.vpc.name}-private-aks-node-rgs"
   addon_profile {
+    aci_connector_linux {
+      enabled = true
+      subnet_name = azurerm_subnet.aks-aci.name
+    }
     azure_policy {
       enabled = true
     }
@@ -60,7 +99,7 @@ resource "azurerm_kubernetes_cluster" "k8s_private" {
     }
     oms_agent {
       enabled                    = true
-      log_analytics_workspace_id = local.log_analytics_workspace_id
+      log_analytics_workspace_id = local.log_analytics_workspace_resource_id
     }
   }
   network_profile {
@@ -80,7 +119,7 @@ resource "azurerm_kubernetes_cluster" "k8s_private" {
     name                  = "default"
     vm_size               = "Standard_B2s"
     os_disk_size_gb       = 30
-    vnet_subnet_id        = azurerm_subnet.aks.id
+    vnet_subnet_id        = azurerm_subnet.aks-nodepool.id
     enable_node_public_ip = false
     enable_auto_scaling   = false
     node_count            = 3
