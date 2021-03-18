@@ -57,6 +57,7 @@ echo "Build Ops Dockerfile"
 export COMMIT_SHA=$(git rev-parse HEAD)
 az acr build --registry ${REGISTRY_NAME} \
   --build-arg IMAGE=${REGISTRY_NAME}/rhel-py:latest \
+  --build-arg tf_version="$(terraform version -json | jq -r '.terraform_version')"
   --image ops:${COMMIT_SHA} \
   --image ops:latest \
   --file ops.Dockerfile \
