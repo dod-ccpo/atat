@@ -39,15 +39,21 @@ from atat.utils.logging import JsonFormatter, RequestContextFilter
 from atat.utils.notification_sender import NotificationSender
 from atat.utils.session_limiter import SessionLimiter
 
-ENV = os.getenv("FLASK_ENV", "production")
 
-# Env is development by default.
-if not (ENV in ["development", "production", "test", "ci"]):
-    ENV = "production"
+def get_application_environment_name(environment_name=None):
+    valid_names = ["development", "production", "test", "ci"]
+    if not environment_name:
+        environment_name = os.getenv("FLASK_ENV", "production")
+    if environment_name in valid_names:
+        return environment_name
+    else:
+        return "production"
 
 
 def make_app(config):
-    if ENV == "production" or config.get("LOG_JSON"):
+    environment_name = config["ENV"]
+
+    if environment_name == "production" or config.get("LOG_JSON"):
         apply_json_logger()
 
     parent_dir = Path().parent
@@ -97,13 +103,13 @@ def make_app(config):
     app.register_blueprint(user_routes)
     app.register_blueprint(ccpo_routes)
 
-    if ENV != "production":
+    if environment_name != "production":
         app.register_blueprint(dev_routes)
 
     # Activate debug toolbar if it is the right env
-    setup_debug_toolbar(app, ENV)
+    setup_debug_toolbar(app, environment_name)
 
-    if app.config.get("ALLOW_LOCAL_ACCESS") and ENV != "production":
+    if app.config.get("ALLOW_LOCAL_ACCESS") and environment_name != "production":
         app.register_blueprint(local_access_bp)
 
     app.form_cache = FormCache(app.redis)
@@ -119,10 +125,12 @@ def make_app(config):
 
 
 def make_flask_callbacks(app):
+    environment_name = app.config.get("ENV")
+
     @app.before_request
     def _set_globals():
         g.current_user = None
-        g.dev = ENV == "development"
+        g.dev = environment_name == "development"
         g.matchesPath = lambda href: re.search(href, request.full_path)
         g.modal = request.args.get("modal", None)
         g.Authorization = Authorization
@@ -148,9 +156,11 @@ def make_flask_callbacks(app):
 def set_default_headers(app):  # pragma: no cover
     static_url = app.config.get("STATIC_URL")
     blob_storage_url = app.config.get("BLOB_STORAGE_URL")
+    environment_name = app.config.get("ENV")
 
     @app.after_request
     def _set_security_headers(response):
+
         response.headers[
             "Strict-Transport-Security"
         ] = "max-age=31536000; includeSubDomains; always"
@@ -162,7 +172,7 @@ def set_default_headers(app):  # pragma: no cover
         set_response_content_security_policy_headers(
             response,
             "default-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src *"
-            if ENV == "development"
+            if environment_name == "development"
             else f"default-src 'self' 'unsafe-eval' 'unsafe-inline' {blob_storage_url} {static_url}",
         )
 
@@ -180,7 +190,6 @@ def map_config(config):
     return {
         **config["default"],
         "USE_AUDIT_LOG": config["default"].getboolean("USE_AUDIT_LOG"),
-        "ENV": ENV,
         "DEBUG": config["default"].getboolean("DEBUG"),
         "DEBUG_MAILER": config["default"].getboolean("DEBUG_MAILER"),
         "DEBUG_SMTP": int(config["default"]["DEBUG_SMTP"]),
@@ -252,10 +261,15 @@ def make_config(direct_config=None):
     config = ConfigParser(allow_no_value=True, interpolation=None)
     config.optionxform = str
 
+    # Global environment name for the ATAT Application
+    environment_name = get_application_environment_name()
+
     # Read configuration values from base and environment configuration files
     BASE_CONFIG_FILENAME = os.path.join(os.path.dirname(__file__), "../config/base.ini")
     ENV_CONFIG_FILENAME = os.path.join(
-        os.path.dirname(__file__), "../config/", "{}.ini".format(ENV.lower())
+        os.path.dirname(__file__),
+        "../config/",
+        "{}.ini".format(environment_name.lower()),
     )
     config_files = [BASE_CONFIG_FILENAME, ENV_CONFIG_FILENAME]
     # ENV_CONFIG will override values in BASE_CONFIG.
@@ -304,8 +318,10 @@ def make_config(direct_config=None):
 
         redis_uri = f"{redis_uri}/?ssl_cert_reqs={ssl_mode}&ssl_check_hostname={ssl_checkhostname}"
 
+    # Pre set some additional variables as default
     config.set("default", "REDIS_URI", redis_uri)
     config.set("default", "BROKER_URL", redis_uri)
+    config.set("default", "ENV", environment_name)
 
     return map_config(config)
 
