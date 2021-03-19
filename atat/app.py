@@ -49,19 +49,19 @@ class ApplicationEnvironment(Enum):
 
     # return the value or default
     @classmethod
-    def get_valid_name(cls, environment_name):
+    def get_valid(cls, environment_name):
         try:
-            return cls(environment_name).value
+            return cls(environment_name)
         except Exception as e:
             print(e)
-            return "production"
+            return cls("production")
 
 
 def get_application_environment_name(environment_name=None):
     if not environment_name:
         environment_name = os.getenv("FLASK_ENV", "production")
 
-    return ApplicationEnvironment.get_valid_name(environment_name)
+    return ApplicationEnvironment.get_valid(environment_name).value
 
 
 def make_app(config):
