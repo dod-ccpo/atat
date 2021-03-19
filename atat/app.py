@@ -1,6 +1,7 @@
 import os
 import re
 from configparser import ConfigParser
+from enum import Enum
 from logging.config import dictConfig
 from urllib.parse import urljoin
 
@@ -38,13 +39,14 @@ from atat.utils.json import CustomJSONEncoder, sqlalchemy_dumps
 from atat.utils.logging import JsonFormatter, RequestContextFilter
 from atat.utils.notification_sender import NotificationSender
 from atat.utils.session_limiter import SessionLimiter
-from enum import Enum
+
 
 class ApplicationEnvironment(Enum):
     PRODUCTION = "production"
     DEVELOPMENT = "development"
     TEST = "test"  # for script/test
     CI = "ci"  # for continuous integration
+
 
 def get_application_environment_name(environment_name=None):
     valid_names = ["development", "production", "test", "ci"]
