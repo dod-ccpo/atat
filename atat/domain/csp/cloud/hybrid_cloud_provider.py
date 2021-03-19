@@ -291,23 +291,23 @@ class HybridCloudProvider(object):
 
     def disable_user(self, tenant_id: str, role_assignment_cloud_id: str) -> Dict:
         return self.azure.disable_user(tenant_id, role_assignment_cloud_id)
-
-    def get_reporting_data(self, payload: CostManagementQueryCSPPayload):
-        billing_account_id, billing_profile_id, invoice_section_id = itemgetter(
-            "AZURE_BILLING_ACCOUNT_NAME",
-            "AZURE_BILLING_PROFILE_ID",
-            "AZURE_INVOICE_SECTION_ID",
-        )(self.azure.config)
-
-        payload.invoice_section_id = f"/providers/Microsoft.Billing/billingAccounts/{billing_account_id}/billingProfiles/{billing_profile_id}/invoiceSections/{invoice_section_id}"
-        payload.tenant_id = self.azure.root_tenant_id
-
-        hybrid_reporting_token = self.azure._get_service_principal_token(
-            self.azure.root_tenant_id,
-            self.hybrid_reporting_client_id,
-            self.hybrid_reporting_secret_key,
-        )
-        return self.azure.get_reporting_data(payload, token=hybrid_reporting_token)
+    #
+    # def get_reporting_data(self, payload: CostManagementQueryCSPPayload):
+    #     billing_account_id, billing_profile_id, invoice_section_id = itemgetter(
+    #         "AZURE_BILLING_ACCOUNT_NAME",
+    #         "AZURE_BILLING_PROFILE_ID",
+    #         "AZURE_INVOICE_SECTION_ID",
+    #     )(self.azure.config)
+    #
+    #     payload.invoice_section_id = f"/providers/Microsoft.Billing/billingAccounts/{billing_account_id}/billingProfiles/{billing_profile_id}/invoiceSections/{invoice_section_id}"
+    #     payload.tenant_id = self.azure.root_tenant_id
+    #
+    #     hybrid_reporting_token = self.azure._get_service_principal_token(
+    #         self.azure.root_tenant_id,
+    #         self.hybrid_reporting_client_id,
+    #         self.hybrid_reporting_secret_key,
+    #     )
+    #     return self.azure.get_reporting_data(payload, token=hybrid_reporting_token)
 
     def create_subscription(self, payload: SubscriptionCreationCSPPayload):
         # TODO: This will need to be updated to use the azure function. Additionally,

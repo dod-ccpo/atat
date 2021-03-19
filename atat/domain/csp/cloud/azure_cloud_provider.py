@@ -1605,40 +1605,40 @@ class AzureCloudProvider(CloudProviderInterface):
         raw_creds = self.get_secret(hashed)
         return KeyVaultCredentials(**json.loads(raw_creds))
 
-    @log_and_raise_exceptions
-    def get_reporting_data(self, payload: CostManagementQueryCSPPayload, token=None):
-        """
-        Queries the Cost Management API for an invoice section's raw reporting data
-
-        We query at the invoiceSection scope. The full scope path is passed in
-        with the payload at the `invoice_section_id` key.
-        """
-        if token is None:
-            token = self._get_tenant_principal_token(payload.tenant_id)
-
-        request_body = {
-            "type": "Usage",
-            "timeframe": "Custom",
-            "timePeriod": {"from": payload.from_date, "to": payload.to_date,},
-            "dataset": {
-                "granularity": "Monthly",
-                "aggregation": {"totalCost": {"name": "PreTaxCost", "function": "Sum"}},
-                "grouping": [{"type": "Dimension", "name": "InvoiceId"}],
-            },
-        }
-        url = urljoin(
-            self.sdk.cloud.endpoints.resource_manager,
-            f"{payload.invoice_section_id}/providers/Microsoft.CostManagement/query",
-        )
-        result = self.sdk.requests.post(
-            url,
-            params={"api-version": "2019-11-01"},
-            json=request_body,
-            headers=make_auth_header(token),
-            timeout=30,
-        )
-        # result.raise_for_status()
-        return CostManagementQueryCSPResult(**result.json())
+    # @log_and_raise_exceptions
+    # def get_reporting_data(self, payload: CostManagementQueryCSPPayload, token=None):
+    #     """
+    #     Queries the Cost Management API for an invoice section's raw reporting data
+    #
+    #     We query at the invoiceSection scope. The full scope path is passed in
+    #     with the payload at the `invoice_section_id` key.
+    #     """
+    #     if token is None:
+    #         token = self._get_tenant_principal_token(payload.tenant_id)
+    #
+    #     request_body = {
+    #         "type": "Usage",
+    #         "timeframe": "Custom",
+    #         "timePeriod": {"from": payload.from_date, "to": payload.to_date,},
+    #         "dataset": {
+    #             "granularity": "Monthly",
+    #             "aggregation": {"totalCost": {"name": "PreTaxCost", "function": "Sum"}},
+    #             "grouping": [{"type": "Dimension", "name": "InvoiceId"}],
+    #         },
+    #     }
+    #     url = urljoin(
+    #         self.sdk.cloud.endpoints.resource_manager,
+    #         f"{payload.invoice_section_id}/providers/Microsoft.CostManagement/query",
+    #     )
+    #     result = self.sdk.requests.post(
+    #         url,
+    #         params={"api-version": "2019-11-01"},
+    #         json=request_body,
+    #         headers=make_auth_header(token),
+    #         timeout=30,
+    #     )
+    #     result.raise_for_status()
+    #     return CostManagementQueryCSPResult(**result.json())
 
     def get_calculator_url(self):
         calc_access_token = self._get_service_principal_token(
