@@ -112,7 +112,6 @@ def make_app(config):
             # active dev route that are only available on local
             app.register_blueprint(local_access_bp)
 
-
     app.form_cache = FormCache(app.redis)
 
     apply_authentication(app)
