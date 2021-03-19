@@ -40,17 +40,25 @@ from atat.utils.logging import JsonFormatter, RequestContextFilter
 from atat.utils.notification_sender import NotificationSender
 from atat.utils.session_limiter import SessionLimiter
 
+# def get_application_environment_name(environment_name=None):
+#     class ValidNames(Enum):
+#         PRODUCTION = "production"
+#         DEVELOPMENT = "development"
+#         TEST = "test"
+#         CI = "ci"
+#     if not environment_name:
+#         environment_name = os.getenv("FLASK_ENV", "production")
+#     return ValidNames(environment_name).value
+
 
 def get_application_environment_name(environment_name=None):
-    class ValidNames(Enum):
-        PRODUCTION = "production"
-        DEVELOPMENT = "development"
-        TEST = "test"
-        CI = "ci"
-
+    valid_names = ["development", "production", "test", "ci"]
     if not environment_name:
         environment_name = os.getenv("FLASK_ENV", "production")
-    return ValidNames(environment_name).value
+        if environment_name in valid_names:
+            return environment_name
+        else:
+            return "production"
 
 
 def make_app(config):
