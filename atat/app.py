@@ -104,13 +104,14 @@ def make_app(config):
     app.register_blueprint(ccpo_routes)
 
     if environment_name != "production":
+        # Activate the dev routes
         app.register_blueprint(dev_routes)
+        # Activate debug toolbar if it is the right env
+        setup_debug_toolbar(app, environment_name)
+        if app.config.get("ALLOW_LOCAL_ACCESS"):
+            # active dev route that are only available on local
+            app.register_blueprint(local_access_bp)
 
-    # Activate debug toolbar if it is the right env
-    setup_debug_toolbar(app, environment_name)
-
-    if app.config.get("ALLOW_LOCAL_ACCESS") and environment_name != "production":
-        app.register_blueprint(local_access_bp)
 
     app.form_cache = FormCache(app.redis)
 
