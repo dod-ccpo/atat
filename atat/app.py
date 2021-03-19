@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 from configparser import ConfigParser
@@ -49,25 +50,27 @@ class ApplicationEnvironment(Enum):
 
     # return the value or default
     @classmethod
-    def get_valid(cls, environment_name):
+    def get_valid(cls, environment_name=None):
         try:
             return cls(environment_name)
         except Exception as e:
-            print(e)
+            logging.warning(e)
             return cls("production")
 
 
 def get_application_environment_name(environment_name=None):
     if not environment_name:
-        environment_name = os.getenv("FLASK_ENV", "production")
+        environment_name = os.getenv(
+            "FLASK_ENV", ApplicationEnvironment.PRODUCTION.value
+        )
 
     return ApplicationEnvironment.get_valid(environment_name).value
 
 
 def make_app(config):
-    environment_name = config["ENV"]
+    environment_name = ApplicationEnvironment(config["ENV"])
 
-    if environment_name == "production" or config.get("LOG_JSON"):
+    if environment_name is ApplicationEnvironment.PRODUCTION or config.get("LOG_JSON"):
         apply_json_logger()
 
     parent_dir = Path().parent
@@ -117,11 +120,11 @@ def make_app(config):
     app.register_blueprint(user_routes)
     app.register_blueprint(ccpo_routes)
 
-    if environment_name != "production":
+    if environment_name is not ApplicationEnvironment.PRODUCTION:
         # Activate the dev routes
         app.register_blueprint(dev_routes)
         # Activate debug toolbar if it is the right env
-        setup_debug_toolbar(app, environment_name)
+        setup_debug_toolbar(app, environment_name.value)
         if app.config.get("ALLOW_LOCAL_ACCESS"):
             # active dev route that are only available on local
             app.register_blueprint(local_access_bp)
@@ -139,12 +142,12 @@ def make_app(config):
 
 
 def make_flask_callbacks(app):
-    environment_name = app.config.get("ENV")
+    environment_name = ApplicationEnvironment(app.config.get("ENV"))
 
     @app.before_request
     def _set_globals():
         g.current_user = None
-        g.dev = environment_name == "development"
+        g.dev = environment_name is ApplicationEnvironment.DEVELOPMENT
         g.matchesPath = lambda href: re.search(href, request.full_path)
         g.modal = request.args.get("modal", None)
         g.Authorization = Authorization
@@ -170,7 +173,7 @@ def make_flask_callbacks(app):
 def set_default_headers(app):  # pragma: no cover
     static_url = app.config.get("STATIC_URL")
     blob_storage_url = app.config.get("BLOB_STORAGE_URL")
-    environment_name = app.config.get("ENV")
+    environment_name = ApplicationEnvironment(app.config.get("ENV"))
 
     @app.after_request
     def _set_security_headers(response):
@@ -186,7 +189,7 @@ def set_default_headers(app):  # pragma: no cover
         set_response_content_security_policy_headers(
             response,
             "default-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src *"
-            if environment_name == "development"
+            if environment_name is ApplicationEnvironment.DEVELOPMENT
             else f"default-src 'self' 'unsafe-eval' 'unsafe-inline' {blob_storage_url} {static_url}",
         )
 
