@@ -15,7 +15,7 @@ resource "azurerm_key_vault" "app_keyvault" {
   network_acls {
     default_action             = "Deny"
     bypass                     = "AzureServices"
-    virtual_network_subnet_ids = [azurerm_subnet.aks.id, local.deployment_subnet_id]
+    virtual_network_subnet_ids = [azurerm_subnet.aks-nodepool.id, azurerm_subnet.aks-aci.id, local.deployment_subnet_id]
     ip_rules                   = values({ "operator" = local.operator_ip })
   }
 

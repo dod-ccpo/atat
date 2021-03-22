@@ -2,13 +2,18 @@ ARG IMAGE=cloudzeroopsregistry.azurecr.io/rhel-py:latest
 
 FROM $IMAGE
 
+# Terraform version should like be provided by ensuring the version matches
+# what was used in the environment where the plan file was created. This should
+# be only the version number, without a prefix, such as: 0.14.8
+ARG tf_version
+
 COPY ./azure-cli.repo /etc/yum.repos.d/azure-cli.repo
 
 RUN subscription-manager unregister && \
   yum -y update && \
   rpm --import https://packages.microsoft.com/keys/microsoft.asc &&  \
   yum install -y azure-cli bzip2-devel gettext git jq openssl-devel postgresql-devel unzip && \
-  curl https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip -o tf.zip && \
+  curl https://releases.hashicorp.com/terraform/${tf_version}/terraform_${tf_version}_linux_amd64.zip -o tf.zip && \
   unzip tf.zip && \
   sudo mv terraform /usr/local/bin && \
   ln -s /usr/local/bin/python3.8 /usr/local/bin/python && \

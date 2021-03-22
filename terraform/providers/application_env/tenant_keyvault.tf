@@ -15,7 +15,7 @@ resource "azurerm_key_vault" "tenant_keyvault" {
   network_acls {
     default_action             = "Deny"
     bypass                     = "AzureServices"
-    virtual_network_subnet_ids = [azurerm_subnet.aks.id]
+    virtual_network_subnet_ids = [azurerm_subnet.aks-nodepool.id, azurerm_subnet.aks-aci.id]
     ip_rules                   = ["${local.operator_ip}/32"]
   }
 
