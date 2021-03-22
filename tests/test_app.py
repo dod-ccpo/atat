@@ -5,9 +5,11 @@ import pytest
 from flask import Response
 
 from atat.app import (
+    ApplicationEnvironment,
     apply_config_from_directory,
     apply_config_from_environment,
     apply_hybrid_config_options,
+    get_application_environment_name,
     make_config,
     set_response_content_security_policy_headers,
 )
@@ -102,3 +104,22 @@ def test_response_content_security_policy_headers():
     set_response_content_security_policy_headers(response, "foobar")
     assert response.headers["Content-Security-Policy"] == "foobar"
     assert response.headers["X-Content-Security-Policy"] == "foobar"
+
+
+def test_get_application_environment_name():
+    assert (
+        get_application_environment_name("blue")
+        is ApplicationEnvironment.PRODUCTION.value
+    ), "If the name of the environment is not registered, would return production"
+    assert (
+        get_application_environment_name(ApplicationEnvironment.DEVELOPMENT.value)
+        is ApplicationEnvironment.DEVELOPMENT.value
+    ), "development is a valid name for the environment"
+    assert (
+        get_application_environment_name(ApplicationEnvironment.TEST.value)
+        is ApplicationEnvironment.TEST.value
+    ), "test is a valid name for the environment"
+    assert (
+        get_application_environment_name(ApplicationEnvironment.CI.value)
+        is ApplicationEnvironment.CI.value
+    ), "ci is a valid name for the environment"

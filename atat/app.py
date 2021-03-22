@@ -1,6 +1,8 @@
+import logging
 import os
 import re
 from configparser import ConfigParser
+from enum import Enum
 from logging.config import dictConfig
 from urllib.parse import urljoin
 
@@ -39,11 +41,36 @@ from atat.utils.logging import JsonFormatter, RequestContextFilter
 from atat.utils.notification_sender import NotificationSender
 from atat.utils.session_limiter import SessionLimiter
 
-ENV = os.getenv("FLASK_ENV", "dev")
+
+class ApplicationEnvironment(Enum):
+    PRODUCTION = "production"
+    DEVELOPMENT = "development"
+    TEST = "test"
+    CI = "ci"
+
+    # return the value or default
+    @classmethod
+    def get_valid(cls, environment_name=None):
+        try:
+            return cls(environment_name)
+        except Exception as e:
+            logging.warning(e)
+            return cls("production")
+
+
+def get_application_environment_name(environment_name=None):
+    if not environment_name:
+        environment_name = os.getenv(
+            "FLASK_ENV", ApplicationEnvironment.PRODUCTION.value
+        )
+
+    return ApplicationEnvironment.get_valid(environment_name).value
 
 
 def make_app(config):
-    if ENV == "prod" or config.get("LOG_JSON"):
+    environment_name = ApplicationEnvironment(config["ENV"])
+
+    if environment_name is ApplicationEnvironment.PRODUCTION or config.get("LOG_JSON"):
         apply_json_logger()
 
     parent_dir = Path().parent
@@ -93,14 +120,14 @@ def make_app(config):
     app.register_blueprint(user_routes)
     app.register_blueprint(ccpo_routes)
 
-    if ENV != "prod":
+    if environment_name is not ApplicationEnvironment.PRODUCTION:
+        # Activate the dev routes
         app.register_blueprint(dev_routes)
-
-    # Activate debug toolbar if it is the right env
-    setup_debug_toolbar(app, ENV)
-
-    if app.config.get("ALLOW_LOCAL_ACCESS"):
-        app.register_blueprint(local_access_bp)
+        # Activate debug toolbar if it is the right env
+        setup_debug_toolbar(app, environment_name.value)
+        if app.config.get("ALLOW_LOCAL_ACCESS"):
+            # active dev route that are only available on local
+            app.register_blueprint(local_access_bp)
 
     app.form_cache = FormCache(app.redis)
 
@@ -115,10 +142,12 @@ def make_app(config):
 
 
 def make_flask_callbacks(app):
+    environment_name = ApplicationEnvironment(app.config.get("ENV"))
+
     @app.before_request
     def _set_globals():
         g.current_user = None
-        g.dev = os.getenv("FLASK_ENV", "dev") == "dev"
+        g.dev = environment_name is ApplicationEnvironment.DEVELOPMENT
         g.matchesPath = lambda href: re.search(href, request.full_path)
         g.modal = request.args.get("modal", None)
         g.Authorization = Authorization
@@ -144,9 +173,11 @@ def make_flask_callbacks(app):
 def set_default_headers(app):  # pragma: no cover
     static_url = app.config.get("STATIC_URL")
     blob_storage_url = app.config.get("BLOB_STORAGE_URL")
+    environment_name = ApplicationEnvironment(app.config.get("ENV"))
 
     @app.after_request
     def _set_security_headers(response):
+
         response.headers[
             "Strict-Transport-Security"
         ] = "max-age=31536000; includeSubDomains; always"
@@ -158,7 +189,7 @@ def set_default_headers(app):  # pragma: no cover
         set_response_content_security_policy_headers(
             response,
             "default-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src *"
-            if ENV == "dev"
+            if environment_name is ApplicationEnvironment.DEVELOPMENT
             else f"default-src 'self' 'unsafe-eval' 'unsafe-inline' {blob_storage_url} {static_url}",
         )
 
@@ -176,7 +207,6 @@ def map_config(config):
     return {
         **config["default"],
         "USE_AUDIT_LOG": config["default"].getboolean("USE_AUDIT_LOG"),
-        "ENV": config["default"]["ENVIRONMENT"],
         "DEBUG": config["default"].getboolean("DEBUG"),
         "DEBUG_MAILER": config["default"].getboolean("DEBUG_MAILER"),
         "DEBUG_SMTP": int(config["default"]["DEBUG_SMTP"]),
@@ -248,10 +278,15 @@ def make_config(direct_config=None):
     config = ConfigParser(allow_no_value=True, interpolation=None)
     config.optionxform = str
 
+    # Global environment name for the ATAT Application
+    environment_name = get_application_environment_name()
+
     # Read configuration values from base and environment configuration files
     BASE_CONFIG_FILENAME = os.path.join(os.path.dirname(__file__), "../config/base.ini")
     ENV_CONFIG_FILENAME = os.path.join(
-        os.path.dirname(__file__), "../config/", "{}.ini".format(ENV.lower())
+        os.path.dirname(__file__),
+        "../config/",
+        "{}.ini".format(environment_name.lower()),
     )
     config_files = [BASE_CONFIG_FILENAME, ENV_CONFIG_FILENAME]
     # ENV_CONFIG will override values in BASE_CONFIG.
@@ -300,8 +335,10 @@ def make_config(direct_config=None):
 
         redis_uri = f"{redis_uri}/?ssl_cert_reqs={ssl_mode}&ssl_check_hostname={ssl_checkhostname}"
 
+    # Pre set some additional variables as default
     config.set("default", "REDIS_URI", redis_uri)
     config.set("default", "BROKER_URL", redis_uri)
+    config.set("default", "ENV", environment_name)
 
     return map_config(config)
 
