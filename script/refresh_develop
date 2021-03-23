@@ -103,5 +103,5 @@ echo "[javascript]"
 echo "node $(node --version)"
 echo "yarn $(yarn --version)"
 echo "$DIVIDER"; echo "-- Start Poetry Shell within Virtual Environment"; echo "$DIVIDER"
-echo; echo " ((( Ready to run 'script/test && script/create_local_certs && script/secure_server' !! )))"; echo
+echo; echo " ((( Ready to run 'script/test && script/create_local_certs && export FLASK_ENV=develop && script/secure_server' !! )))"; echo
 poetry shell
