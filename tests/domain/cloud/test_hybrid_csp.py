@@ -250,25 +250,25 @@ class TestIntegration:
 
 
 @pytest.mark.hybrid
-def test_get_reporting_data(csp, app):
-    """This test requires credentials for an app registration that has the
-    "Invoice Section Reader" role for the invoice section scope being queried.
-    """
+# def test_get_reporting_data(csp, app):
+#     """This test requires credentials for an app registration that has the
+#     "Invoice Section Reader" role for the invoice section scope being queried.
+#     """
 
-    from_date = (
-        pendulum.now(tz="UTC").subtract(years=1).add(days=1).format("YYYY-MM-DD")
-    )
-    to_date = pendulum.now(tz="UTC").format("YYYY-MM-DD")
+#     from_date = (
+#         pendulum.now(tz="UTC").subtract(years=1).add(days=1).format("YYYY-MM-DD")
+#     )
+#     to_date = pendulum.now(tz="UTC").format("YYYY-MM-DD")
 
-    payload = CostManagementQueryCSPPayload(
-        tenant_id=csp.azure.root_tenant_id,
-        from_date=from_date,
-        to_date=to_date,
-        billing_profile_properties={"invoice_sections": [{"invoice_section_id": "",}],},
-    )
+#     payload = CostManagementQueryCSPPayload(
+#         tenant_id=csp.azure.root_tenant_id,
+#         from_date=from_date,
+#         to_date=to_date,
+#         billing_profile_properties={"invoice_sections": [{"invoice_section_id": "",}],},
+#     )
 
-    result = csp.get_reporting_data(payload)
-    assert result.name
+#     result = csp.get_reporting_data(payload)
+#     assert result.name
 
 
 @pytest.mark.subscriptions

@@ -1024,96 +1024,96 @@ def test_create_subscription(mock_azure: AzureCloudProvider, mock_http_error_res
     assert result.subscription_verify_url == "https://verify.me"
 
 
-def test_get_reporting_data(mock_azure: AzureCloudProvider, mock_http_error_response):
-    mock_result = mock_requests_response(
-        json_data={
-            "eTag": None,
-            "id": "providers/Microsoft.Billing/billingAccounts/52865e4c-52e8-5a6c-da6b-c58f0814f06f:7ea5de9d-b8ce-4901-b1c5-d864320c7b03_2019-05-31/billingProfiles/XQDJ-6LB4-BG7-TGB/invoiceSections/P73M-XC7J-PJA-TGB/providers/Microsoft.CostManagement/query/e82d0cda-2ffb-4476-a98a-425c83c216f9",
-            "location": None,
-            "name": "e82d0cda-2ffb-4476-a98a-425c83c216f9",
-            "properties": {
-                "columns": [
-                    {"name": "PreTaxCost", "type": "Number"},
-                    {"name": "UsageDate", "type": "Number"},
-                    {"name": "InvoiceId", "type": "String"},
-                    {"name": "Currency", "type": "String"},
-                ],
-                "nextLink": None,
-                "rows": [],
-            },
-            "sku": None,
-            "type": "Microsoft.CostManagement/query",
-        }
-    )
+# def test_get_reporting_data(mock_azure: AzureCloudProvider, mock_http_error_response):
+#     mock_result = mock_requests_response(
+#         json_data={
+#             "eTag": None,
+#             "id": "providers/Microsoft.Billing/billingAccounts/52865e4c-52e8-5a6c-da6b-c58f0814f06f:7ea5de9d-b8ce-4901-b1c5-d864320c7b03_2019-05-31/billingProfiles/XQDJ-6LB4-BG7-TGB/invoiceSections/P73M-XC7J-PJA-TGB/providers/Microsoft.CostManagement/query/e82d0cda-2ffb-4476-a98a-425c83c216f9",
+#             "location": None,
+#             "name": "e82d0cda-2ffb-4476-a98a-425c83c216f9",
+#             "properties": {
+#                 "columns": [
+#                     {"name": "PreTaxCost", "type": "Number"},
+#                     {"name": "UsageDate", "type": "Number"},
+#                     {"name": "InvoiceId", "type": "String"},
+#                     {"name": "Currency", "type": "String"},
+#                 ],
+#                 "nextLink": None,
+#                 "rows": [],
+#             },
+#             "sku": None,
+#             "type": "Microsoft.CostManagement/query",
+#         }
+#     )
 
-    mock_azure.sdk.requests.post.side_effect = [
-        mock_azure.sdk.requests.exceptions.ConnectionError,
-        mock_azure.sdk.requests.exceptions.Timeout,
-        mock_http_error_response,
-        mock_result,
-    ]
+#     mock_azure.sdk.requests.post.side_effect = [
+#         mock_azure.sdk.requests.exceptions.ConnectionError,
+#         mock_azure.sdk.requests.exceptions.Timeout,
+#         mock_http_error_response,
+#         mock_result,
+#     ]
 
-    # Subset of a profile's CSP data that we care about for reporting
-    csp_data = {
-        "tenant_id": "6d2d2d6c-a6d6-41e1-8bb1-73d11475f8f4",
-        "billing_profile_properties": {
-            "invoice_sections": [
-                {
-                    "invoice_section_id": "providers/Microsoft.Billing/billingAccounts/52865e4c-52e8-5a6c-da6b-c58f0814f06f:7ea5de9d-b8ce-4901-b1c5-d864320c7b03_2019-05-31/billingProfiles/XQDJ-6LB4-BG7-TGB/invoiceSections/P73M-XC7J-PJA-TGB",
-                }
-            ],
-        },
-    }
-    payload = CostManagementQueryCSPPayload(
-        from_date=pendulum.now(tz="UTC")
-        .subtract(years=1)
-        .add(days=1)
-        .format("YYYY-MM-DD"),
-        to_date=pendulum.now(tz="UTC").format("YYYY-MM-DD"),
-        **csp_data,
-    )
-    with pytest.raises(ConnectionException):
-        mock_azure.get_reporting_data(payload, "token")
-    with pytest.raises(ConnectionException):
-        mock_azure.get_reporting_data(payload, "token")
-    with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
-        mock_azure.get_reporting_data(payload, "token")
+#     # Subset of a profile's CSP data that we care about for reporting
+#     csp_data = {
+#         "tenant_id": "6d2d2d6c-a6d6-41e1-8bb1-73d11475f8f4",
+#         "billing_profile_properties": {
+#             "invoice_sections": [
+#                 {
+#                     "invoice_section_id": "providers/Microsoft.Billing/billingAccounts/52865e4c-52e8-5a6c-da6b-c58f0814f06f:7ea5de9d-b8ce-4901-b1c5-d864320c7b03_2019-05-31/billingProfiles/XQDJ-6LB4-BG7-TGB/invoiceSections/P73M-XC7J-PJA-TGB",
+#                 }
+#             ],
+#         },
+#     }
+#     payload = CostManagementQueryCSPPayload(
+#         from_date=pendulum.now(tz="UTC")
+#         .subtract(years=1)
+#         .add(days=1)
+#         .format("YYYY-MM-DD"),
+#         to_date=pendulum.now(tz="UTC").format("YYYY-MM-DD"),
+#         **csp_data,
+#     )
+#     with pytest.raises(ConnectionException):
+#         mock_azure.get_reporting_data(payload, "token")
+#     with pytest.raises(ConnectionException):
+#         mock_azure.get_reporting_data(payload, "token")
+#     with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
+#         mock_azure.get_reporting_data(payload, "token")
 
-    data: CostManagementQueryCSPResult = mock_azure.get_reporting_data(payload, "token")
+#     data: CostManagementQueryCSPResult = mock_azure.get_reporting_data(payload, "token")
 
-    assert isinstance(data, CostManagementQueryCSPResult)
-    assert data.name == "e82d0cda-2ffb-4476-a98a-425c83c216f9"
-    assert len(data.properties.columns) == 4
+#     assert isinstance(data, CostManagementQueryCSPResult)
+#     assert data.name == "e82d0cda-2ffb-4476-a98a-425c83c216f9"
+#     assert len(data.properties.columns) == 4
 
 
-def test_get_reporting_data_malformed_payload(mock_azure: AzureCloudProvider):
-    mock_result = mock_requests_response()
+# def test_get_reporting_data_malformed_payload(mock_azure: AzureCloudProvider):
+#     mock_result = mock_requests_response()
 
-    mock_azure.sdk.requests.post.side_effect = [
-        mock_azure.sdk.requests.exceptions.ConnectionError,
-        mock_azure.sdk.requests.exceptions.Timeout,
-        mock_http_error_response,
-        mock_result,
-    ]
+#     mock_azure.sdk.requests.post.side_effect = [
+#         mock_azure.sdk.requests.exceptions.ConnectionError,
+#         mock_azure.sdk.requests.exceptions.Timeout,
+#         mock_http_error_response,
+#         mock_result,
+#     ]
 
-    # Malformed csp_data payloads that should throw pydantic validation errors
-    index_error = {
-        "tenant_id": "6d2d2d6c-a6d6-41e1-8bb1-73d11475f8f4",
-        "billing_profile_properties": {"invoice_sections": [],},
-    }
-    key_error = {
-        "tenant_id": "6d2d2d6c-a6d6-41e1-8bb1-73d11475f8f4",
-        "billing_profile_properties": {"invoice_sections": [{}],},
-    }
+#     # Malformed csp_data payloads that should throw pydantic validation errors
+#     index_error = {
+#         "tenant_id": "6d2d2d6c-a6d6-41e1-8bb1-73d11475f8f4",
+#         "billing_profile_properties": {"invoice_sections": [],},
+#     }
+#     key_error = {
+#         "tenant_id": "6d2d2d6c-a6d6-41e1-8bb1-73d11475f8f4",
+#         "billing_profile_properties": {"invoice_sections": [{}],},
+#     }
 
-    for malformed_payload in [key_error, index_error]:
-        with pytest.raises(pydantic.ValidationError):
-            assert mock_azure.get_reporting_data(
-                CostManagementQueryCSPPayload(
-                    from_date="foo", to_date="bar", **malformed_payload,
-                ),
-                "token",
-            )
+#     for malformed_payload in [key_error, index_error]:
+#         with pytest.raises(pydantic.ValidationError):
+#             assert mock_azure.get_reporting_data(
+#                 CostManagementQueryCSPPayload(
+#                     from_date="foo", to_date="bar", **malformed_payload,
+#                 ),
+#                 "token",
+#             )
 
 
 def test_get_keyvault_token(mock_http_error_response, unmocked_cloud_provider):
