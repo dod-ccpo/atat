@@ -26,19 +26,21 @@
           <div class="usa-input__title">
             {{ field.label | striptags }}
             {% if optional %}
-              <span class="usa-input-label-helper">{{ "common.optional" | translate }}</span>
+              <span class="usa-input-label-helper">
+                {{ "common.optional" | translate }}
+              </span>
             {% endif %}
             {% if tooltip %}{{ Tooltip(tooltip) }}{% endif %}
-            {% if not field.description %}
+            <span class="validation-icons" >
               {{ validation_icons }}
-            {% endif %}
+            </span>
+
           </div>
 
           {% if field.description %}
             <p class='usa-input__help'>
               {{ field.description | safe }}
             </p>
-            {{ validation_icons }}
           {% endif %}
         </legend>
 
