@@ -12,9 +12,7 @@ This is the user-facing web application for ATAT.
 ### System Requirements
 ATAT uses the [Scripts to Rule Them All](https://github.com/github/scripts-to-rule-them-all)
 pattern for setting up and running the project. The scripts are located in the
-`script` directory and use script fragments in the
-[scriptz](https://github.com/dod-ccpo/scriptz) repository that are shared across
-ATAT repositories.
+`script` directory.
 
 General instructions follow; however, there are
 [specific instructions](/docs/WindowsSubsystemLinux.md) available for running
