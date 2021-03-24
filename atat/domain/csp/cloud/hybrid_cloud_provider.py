@@ -1,11 +1,12 @@
 import contextlib
-from operator import itemgetter
+
+# from operator import itemgetter
 from typing import Dict, Union
 from uuid import uuid4
 
 from atat.domain.csp.cloud.azure_cloud_provider import AzureCloudProvider
 from atat.domain.csp.cloud.mock_cloud_provider import MockCloudProvider
-from atat.domain.csp.cloud.models import (
+from atat.domain.csp.cloud.models import (  # CostManagementQueryCSPPayload,
     AdminRoleDefinitionCSPPayload,
     AdminRoleDefinitionCSPResult,
     BillingInstructionCSPPayload,
@@ -18,7 +19,6 @@ from atat.domain.csp.cloud.models import (
     BillingProfileTenantAccessCSPResult,
     BillingProfileVerificationCSPPayload,
     BillingProfileVerificationCSPResult,
-    CostManagementQueryCSPPayload,
     EnvironmentCSPPayload,
     EnvironmentCSPResult,
     InitialMgmtGroupCSPPayload,

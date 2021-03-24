@@ -21,7 +21,7 @@ from .exceptions import (
     UnknownServerException,
     UserProvisioningException,
 )
-from .models import (
+from .models import (  # CostManagementQueryCSPPayload,; CostManagementQueryCSPResult,
     AdminRoleDefinitionCSPPayload,
     AdminRoleDefinitionCSPResult,
     ApplicationCSPPayload,
@@ -36,8 +36,6 @@ from .models import (
     BillingProfileTenantAccessCSPResult,
     BillingProfileVerificationCSPPayload,
     BillingProfileVerificationCSPResult,
-    CostManagementQueryCSPPayload,
-    CostManagementQueryCSPResult,
     EnvironmentCSPPayload,
     EnvironmentCSPResult,
     InitialMgmtGroupCSPPayload,
