@@ -4,7 +4,13 @@ from werkzeug.routing import RequestRedirect
 
 
 def match_url_pattern(url, method="GET"):
-    """Ensure a url matches a url pattern in the flask app
+    """
+    Sonarqube has marked vulnerabilities in the codebase where urls are passed as arguments from a request and
+    where those may be an issue, this function should alleviate those issues and can be marked as resolved.
+
+    This function will check against our routes vs the URL being passed in to ensure it is a valid URL.
+
+    Ensure a url matches a url pattern in the flask app
     inspired by https://stackoverflow.com/questions/38488134/get-the-flask-view-function-that-matches-a-url/38488506#38488506
     """
     server_name = app.config.get("SERVER_NAME") or "localhost"
