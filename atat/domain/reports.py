@@ -23,13 +23,13 @@ class Reports:
         )
         to_date = pendulum.now(tz="UTC").format("YYYY-MM-DD")
         rows = []
-        if portfolio.is_provisioned:
-            payload = CostManagementQueryCSPPayload(
-                from_date=from_date, to_date=to_date, **portfolio.csp_data
-            )
-            response: CostManagementQueryCSPResult = current_app.csp.cloud.get_reporting_data(
-                payload
-            )
-            rows = response.properties.rows
+        # if portfolio.is_provisioned:
+        #     # payload = CostManagementQueryCSPPayload(
+        #     #     from_date=from_date, to_date=to_date, **portfolio.csp_data
+        #     # )
+        #     # response: CostManagementQueryCSPResult = current_app.csp.cloud.get_reporting_data(
+        #     #     payload
+        #     # )
+        #     rows = response.properties.rows
 
         return prepare_azure_reporting_data(rows)
