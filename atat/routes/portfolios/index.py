@@ -36,7 +36,7 @@ def create_portfolio():
 @user_can(Permissions.VIEW_PORTFOLIO_REPORTS, message="view portfolio reports")
 def reports(portfolio_id):
     portfolio = Portfolios.get(g.current_user, portfolio_id)
-    spending = Reports.get_portfolio_spending(portfolio)
+    spending = {"invoiced": 0, "estimated": 0}
     obligated = portfolio.total_obligated_funds
     remaining = obligated - (spending["invoiced"] + spending["estimated"])
 
