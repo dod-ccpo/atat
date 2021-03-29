@@ -1,7 +1,7 @@
-import enum
+from enum import Enum
 
 
-class AzureApiVersion(enum):
+class AzureApiVersion(Enum):
     # This class serves as the representation of the various REST API versions that Azure uses.
     API_VERSION_2015_07_01 = "2015-07-01"
     API_VERSION_2016_07_01 = "2016-07-01"
@@ -12,5 +12,3 @@ class AzureApiVersion(enum):
     PREVIEW_API_VERSION_2020_01_01 = "2020-01-01-preview"
 
     API_VERSION_7_1 = "7.1"
-
-

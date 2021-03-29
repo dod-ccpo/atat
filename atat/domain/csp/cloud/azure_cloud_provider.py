@@ -97,7 +97,6 @@ from .utils import (
     make_auth_header,
 )
 
-
 # This needs to be a fully pathed role definition identifier, not just a UUID
 # TODO: Extract these from sdk msrestazure.azure_cloud import AZURE_PUBLIC_CLOUD
 AZURE_SKU_ID = "0001"  # probably a static sku specific to ATAT/JEDI
@@ -364,7 +363,9 @@ class AzureCloudProvider(CloudProviderInterface):
             f"providers/Microsoft.Management/managementGroups/{management_group_id}",
         )
         response = session.put(
-            url, params={"api-version": AzureApiVersion.API_VERSION_2020_02_01}, json=request_body,
+            url,
+            params={"api-version": AzureApiVersion.API_VERSION_2020_02_01},
+            json=request_body,
         )
         response.raise_for_status()
 
@@ -404,7 +405,9 @@ class AzureCloudProvider(CloudProviderInterface):
             f"providers/Microsoft.Management/managementGroups/{management_group_id}",
         )
         response = session.patch(
-            url, params={"api-version": AzureApiVersion.API_VERSION_2020_02_01}, json=request_body,
+            url,
+            params={"api-version": AzureApiVersion.API_VERSION_2020_02_01},
+            json=request_body,
         )
         response.raise_for_status()
 
