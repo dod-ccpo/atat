@@ -1492,7 +1492,7 @@ lxml = ">=3.8"
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.8.7"
-content-hash = "8ff17159840b0ddd8afe7dc35dd471b69dfb0598d6dfaf0c5cddc7b4a619a105"
+content-hash = "3a1c3e536d9b91bb2f25f23559b967b6b053fc38f168f92eb756a90ae0cf1b44"
 
 [metadata.files]
 adal = [
