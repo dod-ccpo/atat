@@ -46,7 +46,7 @@ This guide will use [`pyenv`](https://github.com/pyenv/pyenv).
     $ echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
     $ echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bashrc
     ```
-1. Install Python 3.8.7: `pyenv install 3.8.7`
+1. Install Python 3.8.8: `pyenv install 3.8.8`
 
 If you get an error that `pyenv` is not installed, re-execute your shell by
 running the following and trying again:
@@ -55,10 +55,10 @@ running the following and trying again:
 $ exec "$SHELL"
 ```
 
-Temporarily enter the `pyenv` environment for Python 3.8.7 and install Poetry:
+Temporarily enter the `pyenv` environment for Python 3.8.8 and install Poetry:
 
 ```
-$ pyenv shell 3.8.7
+$ pyenv shell 3.8.8
 $ pip install poetry 
 ```
 
@@ -111,10 +111,10 @@ have bound to port 5432.
 
 ## Proceed with setup and running
 
-Ensure you are using the Python 3.8.7 installed earlier by running
+Ensure you are using the Python 3.8.8 installed earlier by running
 
 ```
-$ pyenv shell 3.8.7
+$ pyenv shell 3.8.8
 ```
 
 From here, your local development environment should be sufficiently configured
