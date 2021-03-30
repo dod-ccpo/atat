@@ -1,7 +1,7 @@
 #!/bin/sh
 ATAT_DIR="${ATAT_DIR:-~/atat}"
 PYENV_ROOT="${PYENV_ROOT:-~/.pyenv}"
-PYTHON_VERSION="3.8.7"
+PYTHON_VERSION="3.8.8"
 DIVIDER="----------------------------------------------------------------------"
 clear
 echo "$DIVIDER"; echo "-- Update Ubuntu Linux"; echo "$DIVIDER"
