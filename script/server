@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# script/server: Launch the server
-
-source "$(dirname "${0}")"/../script/include/global_header.inc.sh
-
-# Launch the app
-run_command "honcho start"

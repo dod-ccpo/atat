@@ -130,17 +130,12 @@ ulimit -n 1024
 
 To start the app locally in the foreground and watch for changes:
 
-    script/server
-
-After running `script/server`, the application is available at
-[`http://localhost:8000`](http://localhost:8000).
-
-In some cases, you may be required to run the localhost server via https. In order to do this, you can run:
-
     script/secure_server
 
-The application will then be available  at
-[`https://localhost:8000`](https://localhost:8000). You will likely be presented with a warning about a non-secure connection at this point, most browsers have the option of bypassing this warning by checking the `advanced` or `more info` links on the error page.
+After running `script/secure_server`, the application is available at
+[`https://localhost:8000`](https://localhost:8000). You will likely be presented with a warning
+about a non-secure connection at this point, most browsers have the option of bypassing this
+warning by checking the `advanced` or `more info` links on the error page.
 
 If starting the secure server fails, you may need to generate the local certificates first:
 
