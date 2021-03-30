@@ -18,4 +18,4 @@ if __name__ == "__main__":
     app.run(
         port=port, extra_files=["translations.yaml"], ssl_context=ssl_context,
     )
-    print("Listening on http://localhost:%i" % port)
+    print(f"Listening on http{'s' if ssl_context else ''}://localhost:%i" % port)
