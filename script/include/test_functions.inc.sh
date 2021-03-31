@@ -20,7 +20,7 @@ run_python_static_analysis() {
 }
 
 run_python_unit_tests() {
-  run_command "python -m pytest -s"
+  run_command "python -m pytest -s --cov-report=xml"
   return $?
 }
 
