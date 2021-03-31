@@ -451,7 +451,7 @@ This project uses [detect-secrets](https://github.com/Yelp/detect-secrets) to he
 If you need to check in a file that raises false positives from `detect-secrets`, you can add it to the whitelist. Run:
 
 ```
-poetry run detect-secrets scan --no-aws-key-scan --no-stripe-scan --no-slack-scan --no-artifactory-scan --update .secrets.baseline
+poetry run detect-secrets scan --disable-plugin AWSKeyDetector --disable-plugin StripeDetector --disable-plugin SlackDetector --disable-plugin ArtifactoryDetector --baseline .secrets.baseline
 ```
 
 and then:
