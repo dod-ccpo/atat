@@ -306,7 +306,7 @@ forms:
       validation_message: You must select at least one defense component.
       help_text: |
           Select the DOD component(s) that will fund all Applications within this Portfolio.
-           In JEDI, multiple DoD organizations can fund the same Portfolio.<br/>
+           Multiple DoD organizations can fund the same Portfolio.<br/>
           Select all that apply.
   attachment:
     object_name:
