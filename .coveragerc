@@ -9,6 +9,7 @@ omit =
   atat/models/audit_event.py
   atat/domain/csp/cloud/hybrid_cloud_provider.py
 branch = True
+relative_files = True
 
 [report]
 exclude_lines =

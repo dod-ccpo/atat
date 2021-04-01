@@ -31,9 +31,6 @@ if [ -z "${KEEP_EXISTING_VENV+is_set}" ]; then
 fi
 
 ## Main
-# Remove any existing node modules as part of initial app setup or reset
-rm -rf ./node_modules
-
 if [ "${CREATE_VENV}" = "true" ]; then
   # Ensure poetry is installed
   if ! poetry --version >/dev/null 2>&1 ; then
