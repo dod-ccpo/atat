@@ -38,6 +38,7 @@ werkzeug = "*"
 email-validator = '*'
 python3-saml = "^1.9.0"
 Flask-DebugToolbar = "^0.11.0"
+selenium = "^3.141.0"
 
 [tool.poetry.dev-dependencies]
 bandit = "*"
