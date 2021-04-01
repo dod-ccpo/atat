@@ -669,7 +669,9 @@ class AzureCloudProvider(CloudProviderInterface):
         )
         result = self.sdk.requests.post(
             billing_account_create_url,
-            params={"api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value},
+            params={
+                "api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value
+            },
             json=create_billing_account_body,
             headers=make_auth_header(sp_token),
             timeout=30,
@@ -730,7 +732,9 @@ class AzureCloudProvider(CloudProviderInterface):
         result = self.sdk.requests.post(
             url,
             headers=make_auth_header(sp_token),
-            params={"api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value},
+            params={
+                "api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value
+            },
             json=request_body,
             timeout=30,
         )
@@ -759,7 +763,9 @@ class AzureCloudProvider(CloudProviderInterface):
         result = self.sdk.requests.patch(
             url,
             headers=make_auth_header(sp_token),
-            params={"api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value},
+            params={
+                "api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value
+            },
             json=request_body,
             timeout=30,
         )
@@ -845,7 +851,9 @@ class AzureCloudProvider(CloudProviderInterface):
         result = self.sdk.requests.put(
             url,
             headers=make_auth_header(sp_token),
-            params={"api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value},
+            params={
+                "api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value
+            },
             json=request_body,
             timeout=30,
         )
@@ -870,7 +878,9 @@ class AzureCloudProvider(CloudProviderInterface):
         result = self.sdk.requests.post(
             url,
             headers=make_auth_header(token),
-            params={"api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value},
+            params={
+                "api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value
+            },
             json=request_body,
             timeout=30,
         )
@@ -897,7 +907,9 @@ class AzureCloudProvider(CloudProviderInterface):
 
         result = self.sdk.requests.post(
             product_purchase_url,
-            params={"api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value},
+            params={
+                "api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value
+            },
             json=create_product_purchase_body,
             headers=make_auth_header(sp_token),
             timeout=30,
@@ -1660,7 +1672,9 @@ class AzureCloudProvider(CloudProviderInterface):
 
     @log_and_raise_exceptions
     def _list_role_assignments(self, token, params=None):
-        api_version_param = {"api-version": AzureApiVersion.API_VERSION_2015_07_01.value}
+        api_version_param = {
+            "api-version": AzureApiVersion.API_VERSION_2015_07_01.value
+        }
         if params is None:
             params = api_version_param
         else:
@@ -1677,7 +1691,9 @@ class AzureCloudProvider(CloudProviderInterface):
 
     @log_and_raise_exceptions
     def _list_role_definitions(self, token, params=None):
-        api_version_param = {"api-version": AzureApiVersion.API_VERSION_2015_07_01.value}
+        api_version_param = {
+            "api-version": AzureApiVersion.API_VERSION_2015_07_01.value
+        }
         if params is None:
             params = api_version_param
         else:
