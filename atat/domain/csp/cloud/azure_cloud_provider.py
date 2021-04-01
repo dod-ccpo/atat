@@ -240,7 +240,7 @@ class AzureCloudProvider(CloudProviderInterface):
         kv_token = self._get_keyvault_token()
         result = self.sdk.requests.put(
             f"{self.vault_url}secrets/{secret_key}",
-            params={"api-version": AzureApiVersion.API_VERSION_7_1},
+            params={"api-version": AzureApiVersion.API_VERSION_7_1.value},
             headers=make_auth_header(kv_token),
             timeout=30,
             json={"value": secret_value},
@@ -254,7 +254,7 @@ class AzureCloudProvider(CloudProviderInterface):
         kv_token = self._get_keyvault_token()
         result = self.sdk.requests.get(
             f"{self.vault_url}secrets/{secret_key}",
-            params={"api-version": AzureApiVersion.API_VERSION_7_1},
+            params={"api-version": AzureApiVersion.API_VERSION_7_1.value},
             headers=make_auth_header(kv_token),
             timeout=30,
         )
@@ -328,7 +328,7 @@ class AzureCloudProvider(CloudProviderInterface):
             response = self.sdk.requests.get(
                 url,
                 headers=make_auth_header(elevated_token),
-                params={"api-version": AzureApiVersion.API_VERSION_2020_02_01},
+                params={"api-version": AzureApiVersion.API_VERSION_2020_02_01.value},
             )
             response.raise_for_status()
             return InitialMgmtGroupVerificationCSPResult(**response.json())
@@ -364,7 +364,7 @@ class AzureCloudProvider(CloudProviderInterface):
         )
         response = session.put(
             url,
-            params={"api-version": AzureApiVersion.API_VERSION_2020_02_01},
+            params={"api-version": AzureApiVersion.API_VERSION_2020_02_01.value},
             json=request_body,
         )
         response.raise_for_status()
@@ -406,7 +406,7 @@ class AzureCloudProvider(CloudProviderInterface):
         )
         response = session.patch(
             url,
-            params={"api-version": AzureApiVersion.API_VERSION_2020_02_01},
+            params={"api-version": AzureApiVersion.API_VERSION_2020_02_01.value},
             json=request_body,
         )
         response.raise_for_status()
@@ -468,7 +468,7 @@ class AzureCloudProvider(CloudProviderInterface):
 
         result = session.put(
             create_policy_definition_uri,
-            params={"api-version": AzureApiVersion.API_VERSION_2019_09_01},
+            params={"api-version": AzureApiVersion.API_VERSION_2019_09_01.value},
             json=body,
             timeout=30,
         )
@@ -498,7 +498,7 @@ class AzureCloudProvider(CloudProviderInterface):
 
         result = session.put(
             create_policy_set_uri,
-            params={"api-version": AzureApiVersion.API_VERSION_2019_09_01},
+            params={"api-version": AzureApiVersion.API_VERSION_2019_09_01.value},
             json=body,
             timeout=30,
         )
@@ -523,7 +523,7 @@ class AzureCloudProvider(CloudProviderInterface):
 
         result = session.put(
             create_policy_assignment_uri,
-            params={"api-version": AzureApiVersion.API_VERSION_2019_09_01},
+            params={"api-version": AzureApiVersion.API_VERSION_2019_09_01.value},
             json=body,
             timeout=30,
         )
@@ -669,7 +669,9 @@ class AzureCloudProvider(CloudProviderInterface):
         )
         result = self.sdk.requests.post(
             billing_account_create_url,
-            params={"api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01},
+            params={
+                "api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value
+            },
             json=create_billing_account_body,
             headers=make_auth_header(sp_token),
             timeout=30,
@@ -730,7 +732,9 @@ class AzureCloudProvider(CloudProviderInterface):
         result = self.sdk.requests.post(
             url,
             headers=make_auth_header(sp_token),
-            params={"api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01},
+            params={
+                "api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value
+            },
             json=request_body,
             timeout=30,
         )
@@ -759,7 +763,9 @@ class AzureCloudProvider(CloudProviderInterface):
         result = self.sdk.requests.patch(
             url,
             headers=make_auth_header(sp_token),
-            params={"api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01},
+            params={
+                "api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value
+            },
             json=request_body,
             timeout=30,
         )
@@ -845,7 +851,9 @@ class AzureCloudProvider(CloudProviderInterface):
         result = self.sdk.requests.put(
             url,
             headers=make_auth_header(sp_token),
-            params={"api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01},
+            params={
+                "api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value
+            },
             json=request_body,
             timeout=30,
         )
@@ -870,7 +878,9 @@ class AzureCloudProvider(CloudProviderInterface):
         result = self.sdk.requests.post(
             url,
             headers=make_auth_header(token),
-            params={"api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01},
+            params={
+                "api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value
+            },
             json=request_body,
             timeout=30,
         )
@@ -897,7 +907,9 @@ class AzureCloudProvider(CloudProviderInterface):
 
         result = self.sdk.requests.post(
             product_purchase_url,
-            params={"api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01},
+            params={
+                "api-version": AzureApiVersion.PREVIEW_API_VERSION_2019_10_01.value
+            },
             json=create_product_purchase_body,
             headers=make_auth_header(sp_token),
             timeout=30,
@@ -970,7 +982,7 @@ class AzureCloudProvider(CloudProviderInterface):
         response = self.sdk.requests.put(
             url,
             headers=make_auth_header(token),
-            params={"api-version": AzureApiVersion.API_VERSION_2015_07_01},
+            params={"api-version": AzureApiVersion.API_VERSION_2015_07_01.value},
             json=request_body,
             timeout=30,
         )
@@ -1496,7 +1508,7 @@ class AzureCloudProvider(CloudProviderInterface):
         response = self.sdk.requests.put(
             url,
             headers=make_auth_header(graph_token),
-            params={"api-version": AzureApiVersion.API_VERSION_2015_07_01},
+            params={"api-version": AzureApiVersion.API_VERSION_2015_07_01.value},
             json=request_body,
         )
 
@@ -1580,7 +1592,7 @@ class AzureCloudProvider(CloudProviderInterface):
         result = self.sdk.requests.post(
             url,
             headers=make_auth_header(token),
-            params={"api-version": AzureApiVersion.API_VERSION_2016_07_01},
+            params={"api-version": AzureApiVersion.API_VERSION_2016_07_01.value},
             timeout=30,
         )
         result.raise_for_status()
@@ -1641,7 +1653,7 @@ class AzureCloudProvider(CloudProviderInterface):
         )
         result = self.sdk.requests.post(
             url,
-            params={"api-version": AzureApiVersion.API_VERSION_2019_11_01},
+            params={"api-version": AzureApiVersion.API_VERSION_2019_11_01.value},
             json=request_body,
             headers=make_auth_header(token),
             timeout=30,
@@ -1660,7 +1672,9 @@ class AzureCloudProvider(CloudProviderInterface):
 
     @log_and_raise_exceptions
     def _list_role_assignments(self, token, params=None):
-        api_version_param = {"api-version": AzureApiVersion.API_VERSION_2015_07_01}
+        api_version_param = {
+            "api-version": AzureApiVersion.API_VERSION_2015_07_01.value
+        }
         if params is None:
             params = api_version_param
         else:
@@ -1677,7 +1691,9 @@ class AzureCloudProvider(CloudProviderInterface):
 
     @log_and_raise_exceptions
     def _list_role_definitions(self, token, params=None):
-        api_version_param = {"api-version": AzureApiVersion.API_VERSION_2015_07_01}
+        api_version_param = {
+            "api-version": AzureApiVersion.API_VERSION_2015_07_01.value
+        }
         if params is None:
             params = api_version_param
         else:
@@ -1700,7 +1716,7 @@ class AzureCloudProvider(CloudProviderInterface):
         """
         response = self.sdk.requests.delete(
             url=urljoin(self.sdk.cloud.endpoints.resource_manager, role_assignment_id),
-            params={"api-version": AzureApiVersion.API_VERSION_2015_07_01},
+            params={"api-version": AzureApiVersion.API_VERSION_2015_07_01.value},
             headers=make_auth_header(token),
         )
         response.raise_for_status()
