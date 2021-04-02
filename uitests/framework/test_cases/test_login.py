@@ -12,10 +12,10 @@ class TestLogin:
 
     def test_user_login(self, setup):
         self.driver = setup
-        self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "FAILED User Login"}}'
-        )
+        # self.driver.execute_script(
+        #     'browserstack_executor: {"action": "setSessionName", '
+        #     '"arguments": {"name": "FAILED User Login"}}'
+        # )
         self.driver.get(self.url2)
         self.driver.maximize_window()
         assert "ATAT" in self.driver.page_source

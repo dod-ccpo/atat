@@ -9,11 +9,13 @@ class ReadConfig:
     @staticmethod
     def getApplicationURL():
         url = os.getenv("baseURL")
+        print(">>> URL SET: ", url)
         return url
 
     @staticmethod
     def getLoginLocalURL():
         url2 = os.getenv("loginURL")
+        print(">>> LOGIN URL SET: ", url2)
         return url2
 
     @staticmethod
