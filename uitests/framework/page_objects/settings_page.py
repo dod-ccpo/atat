@@ -1,3 +1,6 @@
+from uitests.framework.page_objects.common_methods import JediCommonMethods
+
+
 class SettingsPages:
     btn_select_portfolio_css = ".sidenav__link-label"
     btn_settings_css = "span.icon.icon--cog"

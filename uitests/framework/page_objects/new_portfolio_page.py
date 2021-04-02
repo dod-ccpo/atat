@@ -1,6 +1,11 @@
 import random
 import string
 
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium import webdriver
+from uitests.framework.page_objects.common_methods import JediCommonMethods
+
 
 class AddNewPortfolioPages:
     btn_new_portfolio_css = "a.usa-button.usa-button-primary"

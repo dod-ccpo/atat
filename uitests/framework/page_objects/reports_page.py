@@ -1,5 +1,7 @@
 import datetime
 
+from uitests.framework.page_objects.common_methods import JediCommonMethods
+
 time_now = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
 time_run = 0
 

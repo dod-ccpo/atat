@@ -1,3 +1,9 @@
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium import webdriver
+
+
 class JediCommonMethods:
     btn_home_css = "a.topbar__link.topbar__link--home"
     btn_user_css = ".topbar__link-label"

@@ -13,6 +13,7 @@ from uitests.framework.utilities.read_properties import ReadConfig
 
 current_dir_path = "../test.pdf"
 
+
 class TestCreateTaskOrder:
     url2 = ReadConfig.getLoginLocalURL()
 

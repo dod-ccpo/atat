@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from uitests.framework.page_objects.common_methods import JediCommonMethods
 import datetime
 
 time_now = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
