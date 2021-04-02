@@ -73,7 +73,7 @@ allBrowsers = [
 
 
 @pytest.fixture()
-def setup(browser):
+def setup(browser=None):
     address = os.getenv("BrowserStackAPI")
     if browser == "chrome":
         driver = webdriver.Remote(command_executor=address, desired_capabilities=chrome)

@@ -12,14 +12,14 @@ from uitests.framework.page_objects.login_page import Login
 from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
 from uitests.framework.page_objects.reports_page import ReportsPages
 from uitests.framework.page_objects.settings_page import SettingsPages
-from uitests.framework.page_objects.task_orderpage import TaskOrderPage, time_run
+from uitests.framework.page_objects.task_order_page import TaskOrderPage, time_run
 from uitests.framework.test_cases.test_create_to import current_dir_path
 from uitests.framework.utilities.read_properties import ReadConfig
 
-current_dir_path = "C://Users//test.pdf"
+current_dir_path = "../test.pdf"
 
 
-class Test_Smoke:
+class TestSmoke:
     url2 = ReadConfig.getLoginLocalURL()
 
     def test_user_login(self, setup):

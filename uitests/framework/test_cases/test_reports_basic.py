@@ -11,10 +11,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 from uitests.framework.page_objects.reports_page import ReportsPages, time_run
 from uitests.framework.utilities.read_properties import ReadConfig
 
-current_dir_path = "C://Users//test.pdf"
+current_dir_path = "../test.pdf"
 
-
-class Test_002_Create_Task_order:
+class TestCreateTaskOrder:
     url2 = ReadConfig.getLoginLocalURL()
 
     def test_reports_basic(self, setup):

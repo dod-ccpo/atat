@@ -11,7 +11,7 @@ from uitests.framework.page_objects.application_page import CreateApplicationPag
 time_now = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
 
 
-class Test_004_Create_Application:
+class TestCreateApplication:
     url2 = ReadConfig.getLoginLocalURL()
 
     def test_create_application(self, setup):
