@@ -32,6 +32,10 @@ class Test_003_Create_Portfolio:
         self.port.select_checkbox()
         self.port.click_save_portfolio_btn()
         # assert ("Add approved task orders" in self.driver.page_source)
+        #verifying the PortfolioName on the TaskOrderview
+        self.msg = self.driver.find_element_by_tag_name("h1").text
+        assert self.pName == self.msg
+        print(self.msg)
         try:
             WebDriverWait(self.driver, 5).until(EC.text_to_be_present_in_element((By.CSS_SELECTOR, 'h3'),
                                                                                  'Task Orders'))

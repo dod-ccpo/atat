@@ -1,5 +1,7 @@
 import datetime
 import time
+import string
+import random
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -7,6 +9,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from utilities.readProperties import ReadConfig
 from pageObjects.ApplicationPage import CreateApplicationPages
+import datetime
 
 time_now = datetime.datetime.now().strftime('%m%d%Y%H%M%S')
 
@@ -39,8 +42,8 @@ class Test_004_Create_Application:
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, '.sticky-cta-text'),
                                              'Name and Describe New Application'))
-        self.app.enter_app_name()
-        self.app.enter_app_description()
+        self.app.enter_app_name(time_now + "QA App")
+        self.app.enter_app_description('App description goes here')
         self.app.click_next_add_environments()
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, 'h3.usa-alert-heading'), 'Application Saved'))
@@ -51,10 +54,11 @@ class Test_004_Create_Application:
                                              'Add Members'))
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.app.click_add_member()
-        self.app.enter_first_name()
-        self.app.enter_last_name()
-        self.app.enter_email()
-        self.app.enter_dod_id()
+        self.app.enter_first_name("Brandon")
+        self.app.enter_last_name("Buchannan")
+        self.email = random_generator() + '@gmail.com'
+        self.app.enter_email(self.email)
+        self.app.enter_dod_id('1230456789')
         self.app.click_next_roles()
         self.app.click_edit_item_box()
         self.app.click_manage_env_box()
@@ -77,3 +81,7 @@ class Test_004_Create_Application:
                 '"Title not matched"}}')
         print(self.driver.title)
         self.driver.quit()
+
+
+def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
+    return ''.join(random.choice(chars) for x in range(size))

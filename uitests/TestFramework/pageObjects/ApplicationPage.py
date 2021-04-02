@@ -79,11 +79,11 @@ class CreateApplicationPages:
         self.driver.find_element_by_css(self.acc_environments_css).click()
 
     # Step 1 naming and describing the application
-    def enter_app_name(self):
-        self.driver.find_element_by_css_selector(self.txt_app_name_css).send_keys(time_now + "QA App")
+    def enter_app_name(self,appName):
+        self.driver.find_element_by_css_selector(self.txt_app_name_css).send_keys(appName)
 
-    def enter_app_description(self):
-        self.driver.find_element_by_css_selector(self.txt_app_description_css).send_keys("Description Goes Here")
+    def enter_app_description(self,description):
+        self.driver.find_element_by_css_selector(self.txt_app_description_css).send_keys(description)
 
     def click_next_add_environments(self):
         self.driver.find_element_by_css_selector(self.btn_next_add_environments_css).click()
@@ -113,23 +113,23 @@ class CreateApplicationPages:
         wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, self.btn_add_member_css))).click()
         # self.driver.find_element_by_css_selector(self.btn_add_member_css).click()
 
-    def enter_first_name(self):
-        self.driver.find_element_by_css_selector(self.txt_fname_css).send_keys("Brandon")
+    def enter_first_name(self,fName):
+        self.driver.find_element_by_css_selector(self.txt_fname_css).send_keys(fName)
 
-    def enter_last_name(self):
-        self.driver.find_element_by_css_selector(self.txt_lname_css).send_keys("Buchannan")
+    def enter_last_name(self,lName):
+        self.driver.find_element_by_css_selector(self.txt_lname_css).send_keys(lName)
 
-    def enter_email(self):
-        self.driver.find_element_by_css_selector(self.txt_email_css).send_keys("jay+brandon@promptworks.com")
+    def enter_email(self,email):
+        self.driver.find_element_by_css_selector(self.txt_email_css).send_keys(email)
 
-    def enter_phone_number(self):
+    def enter_phone_number(self,phone):
         self.driver.find_element_by_css_selector(self.txt_phone_css).send_keys()
 
     def enter_extension(self):
         self.driver.find_element_by_css(self.txt_ext_css).send_keys()
 
-    def enter_dod_id(self):
-        self.driver.find_element_by_css_selector(self.txt_dod_id_css).send_keys("1345678910")
+    def enter_dod_id(self,dodID):
+        self.driver.find_element_by_css_selector(self.txt_dod_id_css).send_keys(dodID)
 
     def click_special_cancel(self):
         self.driver.find_element_by_css(self.btn_special_cancel_css).click()
