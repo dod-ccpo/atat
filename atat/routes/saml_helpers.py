@@ -29,6 +29,7 @@ AGENCY_CODES = {
     "A": "army",
 }
 
+
 # The SAML attributes happen to have names in a URL format
 # This does not mean that there is communication via HTTP
 class EIFSAttributes:
@@ -220,7 +221,7 @@ def _prepare_flask_request(request):
     }
 
 
-def _make_dev_saml_config():
+def _make_dev_saml_config(saml_ssl_verify=True):
     config = {
         "strict": True,
         "debug": True,
@@ -238,12 +239,14 @@ def _make_dev_saml_config():
         },
     }
 
-    config["idp"] = _get_idp_config(app.config["SAML_DEV_IDP_URI"], validate_cert=False)
+    config["idp"] = _get_idp_config(
+        app.config["SAML_DEV_IDP_URI"], validate_cert=saml_ssl_verify
+    )
 
     return config
 
 
-def _make_saml_config():
+def _make_saml_config(saml_ssl_verify=True):
     config = {
         "strict": True,
         "debug": g.dev,
@@ -266,7 +269,9 @@ def _make_saml_config():
         },
     }
 
-    config["idp"] = _get_idp_config(app.config["SAML_IDP_URI"], validate_cert=False)
+    config["idp"] = _get_idp_config(
+        app.config["SAML_IDP_URI"], validate_cert=saml_ssl_verify
+    )
 
     return config
 
@@ -297,7 +302,7 @@ def get_or_create_dev_saml_user(saml_attributes):
         # same first and last name. This could possibly cause collisions
         # of two users with the exact same first and last name.
         # However, the Azure SAML token doesn't seem to currently provide
-        # more distinquishing detail than that that
+        # more distinguishing detail than that that
         user = Users.get_by_first_and_last_name(
             saml_user_details["first_name"], saml_user_details["last_name"]
         )
