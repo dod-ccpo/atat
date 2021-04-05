@@ -15,7 +15,7 @@ from uitests.framework.utilities.read_properties import ReadConfig
 current_dir_path = "../test.pdf"
 time_now = datetime.datetime.now().strftime('%m-%d-%Y_%H-%M-%S')
 
-class TestCreateTaskOrder:
+class TestReportsBasic:
     url2 = ReadConfig.getLoginLocalURL()
 
     def test_reports_basic(self, setup):
