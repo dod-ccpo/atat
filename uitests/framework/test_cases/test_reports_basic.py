@@ -7,8 +7,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-
-from uitests.framework.page_objects.reports_page import ReportsPages, time_run
+from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
+from uitests.framework.page_objects.reports_page import TaskOrderPage
+from uitests.framework.page_objects.task_order_page import ReportsPages, time_run
 from uitests.framework.utilities.read_properties import ReadConfig
 
 current_dir_path = "../test.pdf"
