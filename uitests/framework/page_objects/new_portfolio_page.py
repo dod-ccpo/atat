@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from uitests.framework.page_objects.common_methods import JediCommonMethods
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class AddNewPortfolioPages:
@@ -25,6 +26,13 @@ class AddNewPortfolioPages:
         new_portfolio_btn_text = new_portfolio_btn.text
         if new_portfolio_btn_text == "Add New Portfolio":
             new_portfolio_btn.click()
+
+    def new_portfolio_page_displayed(self):
+        WebDriverWait(self.driver, 5).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, '.portfolio-header__name > h1'),
+                                             'New Portfolio')
+                                             )
 
     def enter_portfolio_name(self, pName):
         self.driver.find_element_by_css_selector(self.btn_portfolio_name_css).send_keys(
