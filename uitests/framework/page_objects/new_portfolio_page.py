@@ -30,9 +30,13 @@ class AddNewPortfolioPages:
     def new_portfolio_page_displayed(self):
         WebDriverWait(self.driver, 5).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, '.portfolio-header__name > h1'),
-                                             'New Portfolio')
-                                             )
+                (
+                    By.CSS_SELECTOR, 
+                '.portfolio-header__name > h1'
+                ),
+                'New Portfolio'
+            )
+        )
 
     def enter_portfolio_name(self, pName):
         self.driver.find_element_by_css_selector(self.btn_portfolio_name_css).send_keys(
