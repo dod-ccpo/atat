@@ -8,8 +8,8 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
-from uitests.framework.page_objects.reports_page import TaskOrderPage
-from uitests.framework.page_objects.task_order_page import ReportsPages, time_run
+from uitests.framework.page_objects.reports_page import  ReportsPages
+from uitests.framework.page_objects.task_order_page import TaskOrderPage, time_run
 from uitests.framework.utilities.read_properties import ReadConfig
 
 current_dir_path = "../test.pdf"
@@ -63,7 +63,7 @@ class TestReportsBasic:
         absolute_file_path = os.path.abspath(current_dir_path)
         file_input = self.driver.find_element_by_id("pdf")
         file_input.send_keys(absolute_file_path)
-        self.rep.click_next_add_TO_number()
+        self.to.click_next_add_TO_number()
         time.sleep(20)
         self.to.enter_TO_number()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
