@@ -12,7 +12,7 @@ from uitests.framework.page_objects.reports_page import ReportsPages, time_run
 from uitests.framework.utilities.read_properties import ReadConfig
 
 current_dir_path = "../test.pdf"
-
+time_now = datetime.datetime.now().strftime('%m-%d-%Y_%H-%M-%S')
 
 class TestCreateTaskOrder:
     url2 = ReadConfig.getLoginLocalURL()
@@ -20,31 +20,36 @@ class TestCreateTaskOrder:
     def test_reports_basic(self, setup):
         self.driver = setup
         # self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
-        #                            '"arguments": {"name": "7. Reports - Basic"}}')
+        #                            '"arguments": {"name": "7.Verifying Reports - Basic"}}')
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         assert "ATAT" in self.driver.page_source
-        self.rep = ReportsPages(self.driver)
         assert "New Portfolio" in self.driver.page_source
-        self.rep.click_new_portfolio()
-        time.sleep(20)
+        self.port=AddNewPortfolioPages(self.driver)
+        self.port.click_new_portfolio()
+        time.sleep(5)
+        self.port.new_portfolio_page_displayed()
         assert "Name and Describe Portfolio" in self.driver.page_source
         assert "New Portfolio" in self.driver.page_source
         self.pName = "Test Portfolio" + random_generator()
-        self.rep.enter_portfolio_name(self.pName)
-        self.rep.enter_portfolio_description(
+        self.port.enter_portfolio_name(self.pName)
+        self.port.enter_portfolio_description(
             "Entering the description to verify the text"
         )
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        self.rep.select_checkbox()
-        self.rep.click_save_portfolio_btn()
-        time.sleep(20)
-        self.rep.click_task_order()
+        self.port.select_checkbox()
+        time.sleep(5)
+        self.port.click_save_portfolio_btn()
+        self.msg = self.driver.find_element_by_tag_name("h1").text
+        assert self.pName == self.msg
+        print(self.msg)
+        self.to =TaskOrderPage(self.driver)
+        self.to.click_task_order()
         time.sleep(20)
         assert "Add Task Order" in self.driver.page_source
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        self.rep.click_add_new_to()
+        self.to.click_add_new_to()
         time.sleep(20)
         assert "Upload your approved Task Order" in self.driver.page_source
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -59,30 +64,31 @@ class TestCreateTaskOrder:
         file_input.send_keys(absolute_file_path)
         self.rep.click_next_add_TO_number()
         time.sleep(20)
-        self.rep.enter_TO_number()
+        self.to.enter_TO_number()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        self.rep.click_next_add_clin_number()
-        self.rep.enter_clin_number("0001")
-        self.rep.add_clin_value("800000")
-        self.rep.add_obligated_clin_value("100000")
-        self.rep.add_start_month("01")
-        self.rep.add_start_day("01")
-        self.rep.add_start_year("2020")
-        self.rep.add_end_month("12")
-        self.rep.add_end_day("12")
-        self.rep.add_end_year("2021")
-        self.rep.click_next_review_TO()
+        self.to.click_next_add_clin_number()
+        self.to.enter_clin_number("0001")
+        self.to.add_clin_value("800000")
+        self.to.add_obligated_clin_value("100000")
+        self.to.add_start_month("01")
+        self.to.add_start_day("01")
+        self.to.add_start_year("2020")
+        self.to.add_end_month("12")
+        self.to.add_end_day("12")
+        self.to.add_end_year("2021")
+        self.to.click_next_review_TO()
         time.sleep(5)
-        self.rep.click_confirm()
+        self.to.click_confirm()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         time.sleep(20)
-        self.rep.click_checkbox_one()
-        self.rep.click_check_box_two()
-        self.rep.click_submit_TO()
+        self.to.click_checkbox_one()
+        self.to.click_check_box_two()
+        self.to.click_submit_TO()
         time.sleep(20)
         assert (
             "Your Task Order has been uploaded successfully." in self.driver.page_source
         )
+        self.rep = ReportsPages(self.driver)
         self.rep.click_reports()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         WebDriverWait(self.driver, 5).until(
@@ -122,24 +128,33 @@ class TestCreateTaskOrder:
         try:
             WebDriverWait(self.driver, 5).until(
                 EC.text_to_be_present_in_element(
-                    (By.CSS_SELECTOR, "div.jedi-clin-funding__active-task-orders > h3"),
+                    (
+                        By.CSS_SELECTOR, 
+                        "h3.h4"
+                    ),
                     "Active Task Orders",
                 )
             )
-            tmp = "Task Order #" + str(time_run)
-            print(tmp)
+            tmp = str(time_run)
             WebDriverWait(self.driver, 5).until(
-                EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#Active h4"), tmp)
+                EC.text_to_be_present_in_element(
+                    (
+                        By.CSS_SELECTOR,
+                         ".jedi-clin-funding__active-task-orders"
+                    ), 
+                    tmp
+                )
             )
+            print(tmp)
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Text value matched"}}'
+                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
+                '"Timed out due to Active TaskOrder not matching"}}'
             )
         else:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Timed out due to TaskOrder not matching"}}'
+                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
+                '"Active TaskOrder is matched"}}'
             )
         print(self.driver.title)
         self.driver.quit()
