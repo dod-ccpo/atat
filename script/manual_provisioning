@@ -1,0 +1,13 @@
+#!/bin/bash
+echo "This will run ATAT's manual provisioning scripts."
+echo "Place 'input.json' in your HOME dir. Output files will be written to your HOME dir."
+echo
+read -rp "Press enter to continue"
+python script/provision/a_create_tenant.py --csp hybrid $HOME/input.json $HOME/output_a.json
+#python script/provision/b_setup_billing.py --csp hybrid $HOME/output_a.json $HOME/output_b.json
+#python script/provision/c_billing_profile_tenant_access.py --csp hybrid $HOME/output_b.json $HOME/output_c.json
+#python script/provision/d_setup_to_billing.py --csp hybrid $HOME/output_c.json $HOME/output_d.json
+#python script/provision/e_report_clin.py --csp hybrid $HOME/output_d.json $HOME/output_e.json
+#python script/provision/f_purchase_aadp.py --csp hybrid $HOME/output_e.json $HOME/output_f.json
+#python script/provision/g_tenant_principal_app.py --csp hybrid $HOME/output_f.json $HOME/output_g.json
+echo Finished.
