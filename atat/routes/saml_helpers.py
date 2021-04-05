@@ -240,13 +240,13 @@ def _make_dev_saml_config(saml_ssl_verify=True):
     }
 
     config["idp"] = _get_idp_config(
-        app.config["SAML_DEV_IDP_URI"], validate_cert=saml_ssl_verify
+        app.config["SAML_DEV_IDP_URI"], validate_cert=app.config["SAML_SSL_VERIFY"]
     )
 
     return config
 
 
-def _make_saml_config(saml_ssl_verify=True):
+def _make_saml_config():
     config = {
         "strict": True,
         "debug": g.dev,
@@ -270,7 +270,7 @@ def _make_saml_config(saml_ssl_verify=True):
     }
 
     config["idp"] = _get_idp_config(
-        app.config["SAML_IDP_URI"], validate_cert=saml_ssl_verify
+        app.config["SAML_IDP_URI"], validate_cert=app.config["SAML_SSL_VERIFY"]
     )
 
     return config
