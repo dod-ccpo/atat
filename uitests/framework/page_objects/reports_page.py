@@ -1,8 +1,8 @@
 import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from uitests.framework.page_objects.common_methods import JediCommonMethods
-from uitests.framework.page_objects.TaskOrderPage,time_run
+from selenium.webdriver.support.wait import WebDriverWait
+from uitests.framework.page_objects.task_order_page import time_run
 
 time_now = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
 time_run = 0
