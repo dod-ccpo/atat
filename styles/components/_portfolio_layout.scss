@@ -239,7 +239,7 @@
       font-size: $small-font-size;
 
       &.environment-list__item__members {
-        float: unset;
+        float: none;
         margin-left: -$gap;
       }
     }

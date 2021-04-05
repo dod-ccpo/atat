@@ -34,40 +34,43 @@
                 <li class="accordion-table__item">
                   <div class="accordion-table__item-content">
                     <div class="environment-list__item">
-                      {% if not env["pending"] -%}
-                        <span>
-                          <a
-                            href='{{ url_for("applications.access_environment", environment_id=env.id)}}'
-                            target='_blank'
-                            rel='noopener noreferrer'>
-                            {{ env['name'] }} {{ Icon('link', classes='icon--medium icon--primary') }}
-                          </a>
-                        </span>
-                      {% else -%}
-                        <span>
-                          {{ env['name'] }}
-                        </span>
-                        {{ Label(type="pending_creation")}}
-                      {%- endif %}
-                      {% if user_can(permissions.EDIT_ENVIRONMENT) -%}
+                      <div class="environment-list__item-line">
+                        {% if not env["pending"] -%}
+                          <span>
+                            <a
+                              href='{{ url_for("applications.access_environment", environment_id=env.id)}}'
+                              target='_blank'
+                              rel='noopener noreferrer'>
+                              {{ env['name'] }} {{ Icon('link', classes='icon--medium icon--primary') }}
+                            </a>
+                          </span>
+                        {% else -%}
+                          <span>
+                            {{ env['name'] }}
+                          </span>
+                          {{ Label(type="pending_creation")}}
+                        {%- endif %}
+                        {% if user_can(permissions.EDIT_ENVIRONMENT) -%}
+                          {{
+                          ToggleButton(
+                            open_html="common.edit"|translate,
+                            close_html="common.close"|translate,
+                            section_name="edit"
+                            )
+                          }}
+                        {%- endif %}
+                      </div>
+                      <div class="environment-list__item-line">
+                        {% set members_button = "portfolios.applications.member_count" | translate({'count': env['member_count']}) %}
                         {{
-                        ToggleButton(
-                          open_html="common.edit"|translate,
-                          close_html="common.close"|translate,
-                          section_name="edit"
+                          ToggleButton(
+                            open_html=members_button,
+                            close_html=members_button,
+                            section_name="members",
+                            classes="environment-list__item__members"
                           )
                         }}
-                      {%- endif %}
-                      <br>
-                      {% set members_button = "portfolios.applications.member_count" | translate({'count': env['member_count']}) %}
-                      {{
-                        ToggleButton(
-                          open_html=members_button,
-                          close_html=members_button,
-                          section_name="members",
-                          classes="environment-list__item__members"
-                        )
-                      }}
+                      </div>
                     </div>
                   </div>
 
