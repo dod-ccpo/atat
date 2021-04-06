@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from uitests.framework.page_objects.common_methods import JediCommonMethods
+from uitests.framework.page_objects import PageObjectMethods
 from uitests.framework.page_objects.login_page import Login
 from uitests.framework.utilities.read_properties import ReadConfig
 
@@ -28,7 +28,7 @@ class TestLogin:
         )
         self.login = Login(self.driver)
         self.login.userName()
-        self.cm = JediCommonMethods(self.driver)
+        self.cm = PageObjectMethods(self.driver)
         self.cm.click_Home()
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(

@@ -1,11 +1,6 @@
 import datetime
-import time
 
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium import webdriver
-
-from uitests.framework.page_objects.common_methods import JediCommonMethods
+from . import PageObjectMethods
 
 
 time_now2 = datetime.datetime.now().strftime("%m%d%Y%H%M%S" + "1")

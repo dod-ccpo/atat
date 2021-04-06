@@ -1,7 +1,7 @@
 import datetime
 import os
-from warnings import filterwarnings
 import pytest
+
 from selenium import webdriver
 
 # buildName = datetime.datetime.now().strftime('Smoke Test: ' + '%m/%d/%y')
