@@ -1,4 +1,5 @@
 import time
+import pytest
 
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
@@ -7,6 +8,7 @@ from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects.settings_page import SettingsPages
 
 
+@pytest.mark.smoke
 class TestSettings:
     url2 = ReadConfig.getLoginLocalURL()
 

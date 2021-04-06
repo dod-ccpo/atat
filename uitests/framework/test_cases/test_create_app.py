@@ -2,6 +2,7 @@ import datetime
 import time
 import string
 import random
+import pytest
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,6 +14,7 @@ from uitests.framework.page_objects.application_page import CreateApplicationPag
 time_now = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
 
 
+@pytest.mark.smoke
 class TestCreateApplication:
     url2 = ReadConfig.getLoginLocalURL()
 

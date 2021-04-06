@@ -1,6 +1,8 @@
 import random
 import string
 import time
+import pytest
+
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -9,6 +11,7 @@ from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
 
 
+@pytest.mark.smoke
 class TestCreatePortfolio:
     url2 = ReadConfig.getLoginLocalURL()
 

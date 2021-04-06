@@ -1,6 +1,8 @@
 import datetime
 import os
 import time
+import pytest
+
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
@@ -11,6 +13,7 @@ from uitests.framework.utilities.read_properties import ReadConfig
 current_dir_path = "./static/img/test.pdf"
 
 
+@pytest.mark.smoke
 class TestCreateTaskOrder:
     url2 = ReadConfig.getLoginLocalURL()
 

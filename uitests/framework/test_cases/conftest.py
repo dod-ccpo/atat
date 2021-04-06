@@ -74,6 +74,9 @@ allBrowsers = [
 
 @pytest.fixture()
 def setup(browser):
+    if browser is None:
+        browser = "chrome-local"
+
     address = os.getenv("BrowserStackAPI")
     if browser == "chrome":
         driver = webdriver.Remote(command_executor=address, desired_capabilities=chrome)

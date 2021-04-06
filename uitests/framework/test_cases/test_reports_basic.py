@@ -3,6 +3,8 @@ import os
 import random
 import string
 import time
+import pytest
+
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
@@ -16,6 +18,7 @@ current_dir_path = "./static/img/test.pdf"
 time_now = datetime.datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
 
 
+@pytest.mark.smoke
 class TestReportsBasic:
     url2 = ReadConfig.getLoginLocalURL()
 
