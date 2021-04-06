@@ -4,6 +4,8 @@ import string
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium import webdriver
+from selenium.webdriver.support.wait import WebDriverWait
+
 from uitests.framework.page_objects.common_methods import JediCommonMethods
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -30,11 +32,7 @@ class AddNewPortfolioPages:
     def new_portfolio_page_displayed(self):
         WebDriverWait(self.driver, 5).until(
             EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR, 
-                '.portfolio-header__name > h1'
-                ),
-                'New Portfolio'
+                (By.CSS_SELECTOR, ".portfolio-header__name > h1"), "New Portfolio"
             )
         )
 

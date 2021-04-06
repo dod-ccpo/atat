@@ -8,7 +8,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from uitests.framework.page_objects.task_order_page import TaskOrderPage, time_run
 from uitests.framework.utilities.read_properties import ReadConfig
 
-current_dir_path = "../test.pdf"
+current_dir_path = "./static/img/test.pdf"
 
 
 class TestCreateTaskOrder:
@@ -78,7 +78,7 @@ class TestCreateTaskOrder:
                     "Your Task Order has been uploaded successfully.",
                 )
             )
-            tmp = "Task Order #" + str(time_run)
+            tmp = str(time_run)
             print(tmp)
             WebDriverWait(self.driver, 5).until(
                 EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#Active h4"), tmp)

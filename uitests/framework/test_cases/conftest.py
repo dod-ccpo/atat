@@ -73,7 +73,7 @@ allBrowsers = [
 
 
 @pytest.fixture()
-def setup(browser=None):
+def setup(browser):
     address = os.getenv("BrowserStackAPI")
     if browser == "chrome":
         driver = webdriver.Remote(command_executor=address, desired_capabilities=chrome)
@@ -94,10 +94,11 @@ def setup(browser=None):
     #         command_executor=address,
     #         desired_capabilities=firefox)
     #     print("Launching Firefox Browser.....")
-    else:
-        browser = "chrome"
+    elif browser == "chrome-local":
         driver = webdriver.Chrome()
         print("Launching in default browser: Chrome")
+    else:
+        print("Please select a browser, Example: --browser chrome-local")
     return driver
 
 

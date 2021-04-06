@@ -87,11 +87,15 @@ class CreateApplicationPages:
         self.driver.find_element_by_css(self.acc_environments_css).click()
 
     # Step 1 naming and describing the application
-    def enter_app_name(self,appName):
-        self.driver.find_element_by_css_selector(self.txt_app_name_css).send_keys(appName)
+    def enter_app_name(self, appName):
+        self.driver.find_element_by_css_selector(self.txt_app_name_css).send_keys(
+            appName
+        )
 
-    def enter_app_description(self,description):
-        self.driver.find_element_by_css_selector(self.txt_app_description_css).send_keys(description)
+    def enter_app_description(self, description):
+        self.driver.find_element_by_css_selector(
+            self.txt_app_description_css
+        ).send_keys(description)
 
     def click_next_add_environments(self):
         self.driver.find_element_by_css_selector(
@@ -125,22 +129,22 @@ class CreateApplicationPages:
         ).click()
         # self.driver.find_element_by_css_selector(self.btn_add_member_css).click()
 
-    def enter_first_name(self,fName):
+    def enter_first_name(self, fName):
         self.driver.find_element_by_css_selector(self.txt_fname_css).send_keys(fName)
 
-    def enter_last_name(self,lName):
+    def enter_last_name(self, lName):
         self.driver.find_element_by_css_selector(self.txt_lname_css).send_keys(lName)
 
-    def enter_email(self,email):
+    def enter_email(self, email):
         self.driver.find_element_by_css_selector(self.txt_email_css).send_keys(email)
 
-    def enter_phone_number(self,phone):
+    def enter_phone_number(self, phone):
         self.driver.find_element_by_css_selector(self.txt_phone_css).send_keys()
 
     def enter_extension(self):
         self.driver.find_element_by_css(self.txt_ext_css).send_keys()
 
-    def enter_dod_id(self,dodID):
+    def enter_dod_id(self, dodID):
         self.driver.find_element_by_css_selector(self.txt_dod_id_css).send_keys(dodID)
 
     def click_special_cancel(self):

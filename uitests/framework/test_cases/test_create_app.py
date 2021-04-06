@@ -1,5 +1,7 @@
 import datetime
 import time
+import string
+import random
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -75,9 +77,9 @@ class TestCreateApplication:
         self.app.click_add_member()
         self.app.enter_first_name("Brandon")
         self.app.enter_last_name("Buchannan")
-        self.email = random_generator() + '@gmail.com'
+        self.email = random_generator() + "@gmail.com"
         self.app.enter_email(self.email)
-        self.app.enter_dod_id('1230456789')
+        self.app.enter_dod_id("1230456789")
         self.app.click_next_roles()
         self.app.click_edit_item_box()
         self.app.click_manage_env_box()
@@ -111,4 +113,4 @@ class TestCreateApplication:
 
 
 def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
-    return ''.join(random.choice(chars) for x in range(size))
+    return "".join(random.choice(chars) for x in range(size))

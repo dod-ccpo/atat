@@ -8,26 +8,29 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
-from uitests.framework.page_objects.reports_page import  ReportsPages
+from uitests.framework.page_objects.reports_page import ReportsPages
 from uitests.framework.page_objects.task_order_page import TaskOrderPage, time_run
 from uitests.framework.utilities.read_properties import ReadConfig
 
-current_dir_path = "../test.pdf"
-time_now = datetime.datetime.now().strftime('%m-%d-%Y_%H-%M-%S')
+current_dir_path = "./static/img/test.pdf"
+time_now = datetime.datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
+
 
 class TestReportsBasic:
     url2 = ReadConfig.getLoginLocalURL()
 
     def test_reports_basic(self, setup):
         self.driver = setup
-        # self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
-        #                            '"arguments": {"name": "7.Verifying Reports - Basic"}}')
+        self.driver.execute_script(
+            'browserstack_executor: {"action": "setSessionName", '
+            '"arguments": {"name": "7.Verifying Reports - Basic"}}'
+        )
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         assert "ATAT" in self.driver.page_source
         assert "New Portfolio" in self.driver.page_source
-        self.port=AddNewPortfolioPages(self.driver)
+        self.port = AddNewPortfolioPages(self.driver)
         self.port.click_new_portfolio()
         time.sleep(5)
         self.port.new_portfolio_page_displayed()
@@ -45,7 +48,7 @@ class TestReportsBasic:
         self.msg = self.driver.find_element_by_tag_name("h1").text
         assert self.pName == self.msg
         print(self.msg)
-        self.to =TaskOrderPage(self.driver)
+        self.to = TaskOrderPage(self.driver)
         self.to.click_task_order()
         time.sleep(20)
         assert "Add Task Order" in self.driver.page_source
@@ -129,21 +132,13 @@ class TestReportsBasic:
         try:
             WebDriverWait(self.driver, 5).until(
                 EC.text_to_be_present_in_element(
-                    (
-                        By.CSS_SELECTOR, 
-                        "h3.h4"
-                    ),
-                    "Active Task Orders",
+                    (By.CSS_SELECTOR, "h3.h4"), "Active Task Orders",
                 )
             )
             tmp = str(time_run)
             WebDriverWait(self.driver, 5).until(
                 EC.text_to_be_present_in_element(
-                    (
-                        By.CSS_SELECTOR,
-                         ".jedi-clin-funding__active-task-orders"
-                    ), 
-                    tmp
+                    (By.CSS_SELECTOR, ".jedi-clin-funding__active-task-orders"), tmp
                 )
             )
             print(tmp)
