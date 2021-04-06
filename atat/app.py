@@ -247,6 +247,7 @@ def map_config(config):
         ).date(),
         "SESSION_COOKIE_SECURE": config.getboolean("default", "SESSION_COOKIE_SECURE"),
         "ALLOW_LOCAL_ACCESS": config.getboolean("default", "ALLOW_LOCAL_ACCESS"),
+        "SAML_SSL_VERIFY": config.getboolean("default", "SAML_SSL_VERIFY"),
     }
 
 
@@ -360,7 +361,7 @@ def apply_config_from_directory(config_dir, config, section="default"):
 
 def apply_config_from_environment(config, section="default"):
     """
-    Loops all the configuration settins in a given section of a
+    Loops all the configuration settings in a given section of a
     config object and checks whether those settings also exist as
     environment variables. If so, it applies the environment
     variables value as the new configuration setting value.

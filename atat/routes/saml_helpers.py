@@ -221,7 +221,7 @@ def _prepare_flask_request(request):
     }
 
 
-def _make_dev_saml_config(saml_ssl_verify=True):
+def _make_dev_saml_config():
     config = {
         "strict": True,
         "debug": True,

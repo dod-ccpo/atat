@@ -13,6 +13,7 @@ from atat.routes.saml_helpers import (
     _get_idp_config,
     _prepare_login_url,
     _validate_saml_assertion,
+    _make_dev_saml_config,
     init_saml_auth,
     init_saml_auth_dev,
     unique_dod_id,
@@ -34,7 +35,7 @@ def test_prepare_login_url_success():
 
 def test_qp_cache_success():
     request = Mock(
-        args={"next": "/home", "username": "Amanda", "dod_id": "1234567890",}
+        args={"next": "/home", "username": "Amanda", "dod_id": "1234567890", }
     )
 
     _cache_params_in_session(request)
@@ -150,6 +151,12 @@ def test_dev_saml_init_errors(mock_make_config, mock_prepare_request, mock_saml_
         init_saml_auth_dev(request)
 
 
+@patch("atat.routes.saml_helpers._get_idp_config")
+def test_called_with_saml_ssl_verify(mock_idp_config, app):
+    _make_dev_saml_config()
+    mock_idp_config.assert_called_with(None, validate_cert=app.config["SAML_SSL_VERIFY"])
+
+
 @patch("atat.routes.saml_helpers.OneLogin_Saml2_IdPMetadataParser")
 class TestGetIdPConfig:
     @pytest.fixture(autouse=True)
@@ -236,7 +243,7 @@ class TestSamlAttributes:
     def test_get_user_from_saml_invalid_sam_format(self, mock_attributes):
         saml_attributes = {
             **mock_attributes,
-            **{EIFSAttributes.SAM_ACCOUNT_NAME: "sam account name format changed",},
+            **{EIFSAttributes.SAM_ACCOUNT_NAME: "sam account name format changed", },
         }
         with pytest.raises(Exception):
             get_user_from_saml_attributes(saml_attributes)
@@ -245,7 +252,7 @@ class TestSamlAttributes:
         expected_dod_id = "1234567890"
         saml_attributes = {
             **mock_attributes,
-            **{EIFSAttributes.SAM_ACCOUNT_NAME: f"{expected_dod_id}.MIL",},
+            **{EIFSAttributes.SAM_ACCOUNT_NAME: f"{expected_dod_id}.MIL", },
         }
         expected_user = UserFactory.create(dod_id=expected_dod_id)
 
