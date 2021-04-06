@@ -36,7 +36,7 @@ class TestLogin:
         try:
             WebDriverWait(self.driver, 5).until(
                 EC.text_to_be_present_in_element(
-                    (By.CSS_SELECTOR, "h3.usa-alert-heading"), "Logged out"
+                    (By.CSS_SELECTOR, "div > div > div:nth-child(2)"), "Logged out"
                 )
             )
             self.driver.execute_script(

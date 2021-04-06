@@ -47,7 +47,7 @@ SETTING YOUR ENVIRONMENT VARIABLES
     - Name: loginURL
     - Value: ngrok/endpoint or localhost/endpoint
     - Name: browserStackApi
-    - Value: browserstackusername:accesskey@hub-cloud.browserstack.com/wd/hub
+    - Value: https://username:accesskey@hub-cloud.browserstack.com/wd/hub
 
 IN VISUAL STUDIO CODE
 Dependencies needed
@@ -56,10 +56,10 @@ Dependencies needed
     pip install selenium
     pip install pytest-xdist
 
-Commands to run the tests on the individual browsers via BrowserStack
+Commands to run the tests on the individual browsers via BrowserStack and locally
 
     pytest -s -v -n=2 testCases/test_smoke.py --browser edge
     pytest -s -v -n=2 testCases/test_smoke.py --browser ie
     pytest -s -v -n=2 testCases/test_smoke.py --browser chrome
-This command will run on your local machine with chrome as the default browser
-- `pytest testCases/test_smoke.py`
+    pytest -s -v -n=2 testCases/test_smoke.py --browser chome-local *for local testing
+
