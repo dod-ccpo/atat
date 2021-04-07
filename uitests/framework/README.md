@@ -46,7 +46,7 @@ SETTING YOUR ENVIRONMENT VARIABLES
     - Value: The URL to the test target page Ex.: ngrok or localhost
     - Name: loginUrl
     - Value: The URL to the test target page for auto login.
-    - Name: BrowserStackAPI
+    - Name: browserStackApi
     - Value: Look into your browser stack credential for your <user>
              and <password> then replace as in the example:
              https://<username>:<accesskey>@hub-cloud.browserstack.com/wd/hub
