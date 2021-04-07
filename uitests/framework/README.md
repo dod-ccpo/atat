@@ -10,9 +10,6 @@ These tests do not run locally as part of the regular test suite.
 Tests are created using PyTest and Python and then executed from the command line interface through BrowserStack.
 We update these tests/steps regularly, and they can be found within the `uitests` directory.
 
-For further information about BrowserStack and its use in ATAT, check out [its README](./uitests/README.md)
-in the `uitests` directory.
-
 
 ## Testing philosophy
 
