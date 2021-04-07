@@ -117,4 +117,5 @@ js/test_templates
 # npm lock file; using yarn
 package-lock.json
 
+# Redis Save a spanshot of the database into a dump.rdb this is a local dependecy.
 dump.rdb
