@@ -65,6 +65,12 @@ SETTING YOUR ENVIRONMENT VARIABLES
  (.venv) $ pytest -s -v uitests/framework/test_cases/test_login.py --browser chrome-local
  ```
 
+NOTE: for be able to run this test local we need to install the drivers in our system,  
+and it required to be the same version that the browser we have on it.
+
+to install the drivers follow the [Selenium Documentation](https://www.selenium.dev/documentation/en/webdriver/driver_requirements/#quick-reference),
+
+
 *Running test with browserstack*:
 
  ```
