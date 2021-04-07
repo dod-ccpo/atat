@@ -42,9 +42,9 @@ From the ngrok application you will need to key your ngrok token: `ngrok authtok
 
 SETTING YOUR ENVIRONMENT VARIABLES
 - User Variables:
-    - Name: baseURL
+    - Name: baseUrl
     - Value: The URL to the test target page Ex.: ngrok or localhost
-    - Name: loginURL
+    - Name: loginUrl
     - Value: The URL to the test target page for auto login.
     - Name: BrowserStackAPI
     - Value: Look into your browser stack credential for your <user>

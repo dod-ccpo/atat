@@ -85,7 +85,7 @@ def setup(browser):
     if browser is None:
         browser = "chrome-local"
 
-    address = os.getenv("BrowserStackAPI")
+    address = os.getenv("browserStackApi")
     if browser == "chrome":
         driver = webdriver.Remote(command_executor=address, desired_capabilities=chrome)
         print("Launching Chrome Browser.....")
