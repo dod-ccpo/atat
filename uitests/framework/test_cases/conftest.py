@@ -108,6 +108,9 @@ def setup(browser):
     elif browser == "chrome-local":
         driver = webdriver.Chrome()
         print("Launching in default browser: Chrome")
+    elif browser == "safari-local":
+        driver = webdriver.Safari()
+        print("Launching in default browser: Safari")
     else:
         print("Please select a browser, Example: --browser chrome-local")
     return driver
