@@ -74,6 +74,14 @@ allBrowsers = [
 
 @pytest.fixture()
 def setup(browser):
+    """
+    Setup the browser compatibility and drivers to use for each
+
+    TODO: replace browser == "chrome" with enum class for types.
+
+    :param browser: string
+    :return: SeleniumWebDriverType
+    """
     if browser is None:
         browser = "chrome-local"
 
