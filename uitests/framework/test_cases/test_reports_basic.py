@@ -15,7 +15,7 @@ from uitests.framework.page_objects.task_order_page import TaskOrderPage, time_r
 from uitests.framework.utilities.read_properties import ReadConfig
 
 current_dir_path = "./static/img/test.pdf"
-time_now = datetime.datetime.now().strftime("%m-%d-%Y_%H-%M-%S")
+tnumber = datetime.datetime.now().strftime("%m%d%Y%H%M%S%f")[:-3]
 
 
 @pytest.mark.smoke
@@ -72,7 +72,7 @@ class TestReportsBasic:
         file_input.send_keys(absolute_file_path)
         self.to.click_next_add_TO_number()
         time.sleep(20)
-        self.rep.enter_TO_number()
+        self.rep.enter_TO_number(tnumber)
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_next_add_clin_number()
         self.to.enter_clin_number("0001")

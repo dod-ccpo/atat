@@ -12,7 +12,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 from uitests.framework.page_objects.task_order_page import TaskOrderPage, time_run
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
+
 current_dir_path = "./static/img/test.pdf"
+tnumber = datetime.datetime.now().strftime("%m%d%Y%H%M%S%f")[:-3]
+
 
 @pytest.mark.smoke
 class TestCreateTaskOrder:
@@ -64,7 +67,7 @@ class TestCreateTaskOrder:
         file_input.send_keys(absolute_file_path)
         self.to.click_next_add_TO_number()
         time.sleep(20)
-        self.to.enter_TO_number()
+        self.to.enter_TO_number(tnumber)
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_next_add_clin_number()
         self.to.enter_clin_number("0001")
@@ -112,6 +115,7 @@ class TestCreateTaskOrder:
             )
         print(self.driver.title)
         self.driver.quit()
+
 
 def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
     return "".join(random.choice(chars) for x in range(size))

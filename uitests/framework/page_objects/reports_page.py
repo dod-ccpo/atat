@@ -4,7 +4,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from uitests.framework.page_objects.task_order_page import time_run
 
-time_now = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
 time_run = 0
 
 
@@ -42,6 +41,5 @@ class ReportsPages:
     def expired_funding(self):
         self.driver.find_element_by_css_selector(self.btn_expired_funding_css).click()
 
-    def enter_TO_number(self):
-        self.driver.find_element_by_css_selector(self.txt_TO_number).send_keys(
-            time_now)
+    def enter_TO_number(self, tnumber):
+        self.driver.find_element_by_css_selector(self.txt_TO_number).send_keys(tnumber)

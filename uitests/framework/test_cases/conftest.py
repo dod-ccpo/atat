@@ -10,7 +10,7 @@ buildName = "Work in Progress"
 chrome = {
     "os_version": "10",
     "os": "Windows",
-    "browser": "chrome",        # Edge  Chrome  IE
+    "browser": "chrome",  # Edge  Chrome  IE
     "browser_version": "89.0",  # 88.0  89.0    11.0
     "resolution": "1920x1080",
     "browserstack.sendKeys": "true",
@@ -20,7 +20,7 @@ chrome = {
 edge = {
     "os_version": "10",
     "os": "Windows",
-    "browser": "edge",          # Edge  Chrome  IE
+    "browser": "edge",  # Edge  Chrome  IE
     "browser_version": "88.0",  # 88.0  89.0    11.0
     "resolution": "1920x1080",
     "browserstack.sendKeys": "true",
@@ -30,13 +30,15 @@ edge = {
 ie = {
     "os_version": "10",
     "os": "Windows",
-    "browser": "ie",            # Edge  Chrome  IE
+    "browser": "ie",  # Edge  Chrome  IE
     "browser_version": "11.0",  # 88.0  89.0    11.0
     "resolution": "1920x1080",
     "browserstack.sendKeys": "true",
     "browserstack.debug": "true",
     "build": buildName,  # Your tests will be organized within this build
 }
+
+
 @pytest.fixture()
 def setup(browser):
     """
