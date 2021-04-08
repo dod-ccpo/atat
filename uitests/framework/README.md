@@ -24,7 +24,9 @@ To run BrowserStack tests against a local instance of ATAT, you will need the fo
 - Download [ngrok](https://ngrok.com/)
 - NGROK_TOKEN - personal ngrok token.
 - BROWSERSTACK_API_KEY - personal BrowserStack token
-- On Develop branch:
+- In terminal:
+    - `scripts/create_local_certs`
+    - `poetry shell`
     - `git pull`
     - `service redis-server start`
     - `service postgresql start`
@@ -41,15 +43,10 @@ From the ngrok application you will need to key your ngrok token: `ngrok authtok
 - Your ngrok forwarding addresses are listed in the ngrok terminal
 
 SETTING YOUR ENVIRONMENT VARIABLES
-- User Variables:
-    - Name: baseUrl
-    - Value: The URL to the test target page Ex.: ngrok or localhost
-    - Name: loginUrl
-    - Value: The URL to the test target page for auto login.
-    - Name: browserStackApi
-    - Value: Look into your browser stack credential for your <user>
-             and <password> then replace as in the example:
-             https://<username>:<accesskey>@hub-cloud.browserstack.com/wd/hub
+- In terminal:
+    - `export baseUrl="<target url to test>"`
+    - `export loginUrl="<target url to test for auto login>"`
+    - `export browserStackApi="https://<username>:<accesskey>@hub-cloud.browserstack.com/wd/hub"`
 
 ## Running a test
 
@@ -74,11 +71,11 @@ to install the drivers follow the [Selenium Documentation](https://www.selenium.
 *Running test with browserstack*:
 
  ```
- # running a test script alone with the BrowserStack's Edge driver. 
+ # running a single test script with the BrowserStack's Edge driver. 
  (.venv) $ pytest -s -v uitests/framework/test_cases/test_login.py --browser edge
- # running a test script alone with the BrowserStack's ie driver. 
+ # running a single test script alone the BrowserStack's ie driver. 
  (.venv) $ pytest -s -v uitests/framework/test_cases/test_login.py --browser ie
-  # running a test script alone with the BrowserStack's chrome driver. 
+  # running a single test script alone the BrowserStack's chrome driver. 
  (.venv) $ pytest -s -v uitests/framework/test_cases/test_login.py --browser chrome
  ```
 *Running multiples script on one command*:
@@ -99,7 +96,7 @@ BrowserStack that can change on time so verify with your provider. Ex.:
 
 ```
 # Running a test with the BrowserStack's chrome drivers in parallel. 
- (.venv) $ pytest -s -v -n=2 uitests/framework/test_cases/test_login.py --browser chrome
+ (.venv) $ pytest -n=2 -s -v -m smoke uitests/* --browser chrome
 ```
 
 Note: might no work on mac
