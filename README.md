@@ -325,6 +325,7 @@ All config settings must be declared in "config/base.ini", even if they are null
 - `SAML_DEV_SLS`: Fully qualified URI that ATAT will invoke developer SAML logout from (only used if `FLASK_ENV` isn't `prod`)
 - `SAML_DEV_IDP_URI`: URI of the developer SAML IdP Metadata, will be fetched and used to configure SAML calls (only used if `FLASK_ENV` isn't `prod`)
 - `SAMl_LOGIN_DEV`: Boolean that defines if Azure Fed Auth will be required to log in using the developer login route. Defaults to `False`  (only used if `FLASK_ENV` isn't `prod`)
+  `SAML_SSL_VERIFY`: Boolean that says whether to fetch the IDP metadata to validate the cert or not.
 - `SECRET_KEY`: String key which will be used to sign the session cookie. Should be a long string of random bytes. https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY
 - `SERVER_NAME`: Hostname for ATAT. Only needs to be specified in contexts where the hostname cannot be inferred from the request, such as Celery workers. https://flask.palletsprojects.com/en/1.1.x/config/#SERVER_NAME
 - `SERVICE_DESK_URL`: The URL for the service desk.  This is the site that will be displayed when the Support button is pressed.

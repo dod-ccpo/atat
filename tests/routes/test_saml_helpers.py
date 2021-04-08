@@ -11,6 +11,8 @@ from atat.routes.saml_helpers import (
     EIFSAttributes,
     _cache_params_in_session,
     _get_idp_config,
+    _make_dev_saml_config,
+    _make_saml_config,
     _prepare_login_url,
     _validate_saml_assertion,
     init_saml_auth,
@@ -18,6 +20,17 @@ from atat.routes.saml_helpers import (
     unique_dod_id,
 )
 from tests.factories import UserFactory
+
+
+@pytest.fixture
+def set_g(monkeypatch):
+    _g = Mock()
+    monkeypatch.setattr("atat.routes.saml_helpers.g", _g)
+
+    def _set_g(attr, val):
+        setattr(_g, attr, val)
+
+    yield _set_g
 
 
 def test_prepare_login_url_success():
@@ -148,6 +161,23 @@ def test_dev_saml_init_errors(mock_make_config, mock_prepare_request, mock_saml_
     )
     with pytest.raises(UnauthenticatedError):
         init_saml_auth_dev(request)
+
+
+@patch("atat.routes.saml_helpers._get_idp_config")
+def test_make_dev_saml_called_with_saml_ssl_verify(mock_idp_config, app):
+    _make_dev_saml_config()
+    mock_idp_config.assert_called_with(
+        None, validate_cert=app.config["SAML_SSL_VERIFY"]
+    )
+
+
+@patch("atat.routes.saml_helpers._get_idp_config")
+def test_make_saml_called_with_saml_ssl_verify(mock_idp_config, app, set_g):
+    _make_saml_config()
+    set_g("dev", True)
+    mock_idp_config.assert_called_with(
+        None, validate_cert=app.config["SAML_SSL_VERIFY"]
+    )
 
 
 @patch("atat.routes.saml_helpers.OneLogin_Saml2_IdPMetadataParser")
