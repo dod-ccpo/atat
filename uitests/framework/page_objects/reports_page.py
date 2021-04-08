@@ -16,6 +16,7 @@ class ReportsPages:
     btn_reports_css = ".icon.icon--chart-pie"
     btn_reports = "div.portfolio-header.row > div:nth-child(2) > div > a:nth-child(4)"
     btn_task_order = "div.portfolio-funding > div > div > a"
+    txt_TO_number = "#number"
 
     def click_reports(self):
         self.driver.find_element_by_css_selector(self.btn_reports).click()
@@ -40,3 +41,7 @@ class ReportsPages:
     # click on Expired Funding
     def expired_funding(self):
         self.driver.find_element_by_css_selector(self.btn_expired_funding_css).click()
+
+    def enter_TO_number(self):
+        self.driver.find_element_by_css_selector(self.txt_TO_number).send_keys(
+            time_now)

@@ -17,8 +17,8 @@ class TestCreatePortfolio:
 
     def test_create_portfolio(self, setup):
         self.driver = setup
-        # self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
-        #                            '"arguments": {"name": "Create Portfolio"}}')
+        self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
+                                   '"arguments": {"name": "3. Create Portfolio"}}')
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -36,8 +36,6 @@ class TestCreatePortfolio:
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.port.select_checkbox()
         self.port.click_save_portfolio_btn()
-        # assert ("Add approved task orders" in self.driver.page_source)
-        # verifying the PortfolioName on the TaskOrderview
         self.msg = self.driver.find_element_by_tag_name("h1").text
         assert self.pName == self.msg
         print(self.msg)

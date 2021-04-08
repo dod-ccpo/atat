@@ -26,7 +26,7 @@ class TestReportsBasic:
         self.driver = setup
         self.driver.execute_script(
             'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "7.Verifying Reports - Basic"}}'
+            '"arguments": {"name": "7. Verifying Reports - Active TO"}}'
         )
         self.driver.get(self.url2)
         self.driver.maximize_window()
@@ -40,6 +40,7 @@ class TestReportsBasic:
         assert "Name and Describe Portfolio" in self.driver.page_source
         assert "New Portfolio" in self.driver.page_source
         self.pName = "Test Portfolio" + random_generator()
+        self.rep = ReportsPages(self.driver)
         self.port.enter_portfolio_name(self.pName)
         self.port.enter_portfolio_description(
             "Entering the description to verify the text"
@@ -71,7 +72,7 @@ class TestReportsBasic:
         file_input.send_keys(absolute_file_path)
         self.to.click_next_add_TO_number()
         time.sleep(20)
-        self.to.enter_TO_number()
+        self.rep.enter_TO_number()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_next_add_clin_number()
         self.to.enter_clin_number("0001")
@@ -95,7 +96,6 @@ class TestReportsBasic:
         assert (
             "Your Task Order has been uploaded successfully." in self.driver.page_source
         )
-        self.rep = ReportsPages(self.driver)
         self.rep.click_reports()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         WebDriverWait(self.driver, 5).until(

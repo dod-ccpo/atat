@@ -2,6 +2,8 @@ import datetime
 import os
 import time
 import pytest
+import random
+import string
 
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
@@ -9,9 +11,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from uitests.framework.page_objects.task_order_page import TaskOrderPage, time_run
 from uitests.framework.utilities.read_properties import ReadConfig
-
+from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
 current_dir_path = "./static/img/test.pdf"
-
 
 @pytest.mark.smoke
 class TestCreateTaskOrder:
@@ -27,13 +28,27 @@ class TestCreateTaskOrder:
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         assert "ATAT" in self.driver.page_source
-        self.to = TaskOrderPage(self.driver)
+        self.port = AddNewPortfolioPages(self.driver)
+        self.port.click_new_portfolio()
+        time.sleep(20)
+        assert "Name and Describe Portfolio" in self.driver.page_source
         assert "New Portfolio" in self.driver.page_source
-        self.to.select_portfolio()
+        self.pName = "Test Portfolio" + random_generator()
+        self.port.enter_portfolio_name(self.pName)
+        self.port.enter_portfolio_description(
+            "Entering the description to verify the text"
+        )
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+        self.port.select_checkbox()
+        self.port.click_save_portfolio_btn()
+        self.msg = self.driver.find_element_by_tag_name("h1").text
+        assert self.pName == self.msg
+        print(self.msg)
+        self.to = TaskOrderPage(self.driver)
         time.sleep(20)
         self.to.click_task_order()
         time.sleep(20)
-        assert "Add New Task Order" in self.driver.page_source
+        assert "Add approved task orders" in self.driver.page_source
         self.to.click_add_new_to()
         time.sleep(20)
         assert "Upload your approved Task Order" in self.driver.page_source
@@ -52,7 +67,6 @@ class TestCreateTaskOrder:
         self.to.enter_TO_number()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_next_add_clin_number()
-        # self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.enter_clin_number("0001")
         self.to.add_clin_value("800000")
         self.to.add_obligated_clin_value("100000")
@@ -98,3 +112,6 @@ class TestCreateTaskOrder:
             )
         print(self.driver.title)
         self.driver.quit()
+
+def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
+    return "".join(random.choice(chars) for x in range(size))

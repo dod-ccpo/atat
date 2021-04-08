@@ -3,7 +3,7 @@ import datetime
 from . import PageObjectMethods
 
 
-time_now2 = datetime.datetime.now().strftime("%m%d%Y%H%M%S" + "1")
+time_now2 = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
 time_run = 0
 
 
@@ -28,9 +28,7 @@ class TaskOrderPage:
     click_TO_number_css = ".action-group-footer--container input"
     txt_TO_number = "#number"
     btn_previous_css = "#to_form > div.action-group-footer.action-group-footer--expand-offset > div > button"
-    btn_next_add_clin_css = (
-        "div.action-group-footer.action-group-footer--expand-offset > div > input"
-    )
+    btn_next_add_clin_css = "div.action-group-footer.action-group-footer--expand-offset > div > input"
 
     # Step 3 adding task order details: clin number, idiq type, value, obligated value, start date, end date
     txt_add_clin_number_css = "#clins-0-number"
@@ -47,9 +45,7 @@ class TaskOrderPage:
     btn_next_review_TO_css = ".action-group-footer--container input[type=submit]"
 
     # Step 4 review changes and view TO summary
-    btn_next_confirm_css = (
-        ".action-group-footer--expand-offset > div > a.usa-button.usa-button-primary"
-    )
+    btn_next_confirm_css = ".action-group-footer--expand-offset > div > a.usa-button.usa-button-primary"
 
     # Step 5 agree and confirm page
     box_sign_one_css = "div:nth-child(1) > div > fieldset > legend > label"

@@ -15,7 +15,6 @@ class TestLogin:
 
     def test_user_login(self, setup):
         self.driver = setup
-        # TODO: replace with not dependency solution that can be run locally also.
         self.driver.execute_script(
             'browserstack_executor: {"action": "setSessionName", '
             '"arguments": {"name": "1. Verification of User Login"}}'

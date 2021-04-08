@@ -10,7 +10,7 @@ buildName = "Work in Progress"
 chrome = {
     "os_version": "10",
     "os": "Windows",
-    "browser": "chrome",  # Edge  Chrome  IE
+    "browser": "chrome",        # Edge  Chrome  IE
     "browser_version": "89.0",  # 88.0  89.0    11.0
     "resolution": "1920x1080",
     "browserstack.sendKeys": "true",
@@ -20,7 +20,7 @@ chrome = {
 edge = {
     "os_version": "10",
     "os": "Windows",
-    "browser": "edge",  # Edge  Chrome  IE
+    "browser": "edge",          # Edge  Chrome  IE
     "browser_version": "88.0",  # 88.0  89.0    11.0
     "resolution": "1920x1080",
     "browserstack.sendKeys": "true",
@@ -30,48 +30,13 @@ edge = {
 ie = {
     "os_version": "10",
     "os": "Windows",
-    "browser": "ie",  # Edge  Chrome  IE
+    "browser": "ie",            # Edge  Chrome  IE
     "browser_version": "11.0",  # 88.0  89.0    11.0
     "resolution": "1920x1080",
     "browserstack.sendKeys": "true",
     "browserstack.debug": "true",
     "build": buildName,  # Your tests will be organized within this build
 }
-
-allBrowsers = [
-    {
-        "os_version": "10",
-        "os": "Windows",
-        "browser": "ie",  # Edge  Chrome  IE
-        "browser_version": "11.0",  # 88.0  89.0    11.0
-        "resolution": "1920x1080",
-        "browserstack.sendKeys": "true",
-        "browserstack.debug": "true",
-        "build": "parallel test #4",  # Your tests will be organized within this build
-    },
-    {
-        "os_version": "10",
-        "os": "Windows",
-        "browser": "edge",  # Edge  Chrome  IE
-        "browser_version": "88.0",  # 88.0  89.0    11.0
-        "resolution": "1920x1080",
-        "browserstack.sendKeys": "true",
-        "browserstack.debug": "true",
-        "build": "parallel test #4",  # Your tests will be organized within this build
-    },
-    {
-        "os_version": "10",
-        "os": "Windows",
-        "browser": "chrome",  # Edge  Chrome  IE
-        "browser_version": "89.0",  # 88.0  89.0    11.0
-        "resolution": "1920x1080",
-        "browserstack.sendKeys": "true",
-        "browserstack.debug": "true",
-        "build": "parallel test #4",  # Your tests will be organized within this build
-    },
-]
-
-
 @pytest.fixture()
 def setup(browser):
     """
@@ -95,16 +60,6 @@ def setup(browser):
     elif browser == "ie":
         driver = webdriver.Remote(command_executor=address, desired_capabilities=ie)
         print("Launching IE 11 Browser.....")
-    elif browser == "all":
-        driver = webdriver.Remote(
-            command_executor=address, desired_capabilities=allBrowsers
-        )
-        print("Launching IE 11 Browser.....")
-    # elif browser == 'firefox':
-    #     driver = webdriver.Remote(
-    #         command_executor=address,
-    #         desired_capabilities=firefox)
-    #     print("Launching Firefox Browser.....")
     elif browser == "chrome-local":
         driver = webdriver.Chrome()
         print("Launching in default browser: Chrome")

@@ -16,7 +16,7 @@ class TestSettings:
         self.driver = setup
         self.driver.execute_script(
             'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "Settings"}}'
+            '"arguments": {"name": "2. Validating Settings"}}'
         )
         self.driver.get(self.url2)
         self.driver.maximize_window()
