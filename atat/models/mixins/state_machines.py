@@ -38,7 +38,7 @@ class AzureStages(Enum):
     INITIAL_MGMT_GROUP = "initial management group"
     INITIAL_MGMT_GROUP_VERIFICATION = "initial management group verification"
     TENANT_ADMIN_OWNERSHIP = "tenant admin ownership"
-    TENANT_PRINCIPAL_OWNERSHIP = "tenant principial ownership"
+    TENANT_PRINCIPAL_OWNERSHIP = "tenant principal ownership"
     BILLING_OWNER = "billing owner"
     TENANT_ADMIN_CREDENTIAL_RESET = "tenant admin credential reset"
     POLICIES = "policies"
