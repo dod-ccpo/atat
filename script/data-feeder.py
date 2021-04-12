@@ -31,32 +31,6 @@ def hello(name: str = "you"):
     """
     print(f'Hello {name}')
 
-
-@cli_app.command()
-def bay(name: str = None):
-    """
-    testing typer and questionary bay function
-    :param name: the name of the user
-    :return: farewell
-    """
-    if name is None:
-        name = questionary.text("Please give me your name?").ask()
-    bar = Bar('Processing', max=20)
-    for i in range(20):
-        time.sleep(.3)
-        bar.next()
-    bar.finish()
-    state = 0
-    spinner = Spinner('Loading ')
-    while state < 10:
-        # Do some work
-        time.sleep(.3)
-        state = state + 1
-        spinner.next()
-    print()
-    print(f'Good bay {name}')
-
-
 @cli_app.command()
 def add_new_portfolio(name: str = None,  desc: str = None, comp = None):
     """
@@ -82,6 +56,20 @@ Select all that apply.
                                              "Defense Agency and Field Activity (DAFA)",
                                              "Office of the Secretary of Defense (OSD) / Principal Staff Assistants (PSAs)",
                                              "Other"]).ask()
+
+    bar = Bar('Processing', max=20)
+    for i in range(20):
+        time.sleep(.3)
+        bar.next()
+    bar.finish()
+
+    state = 0
+    spinner = Spinner('Loading ')
+    while state < 10:
+        # Do some work
+        time.sleep(.3)
+        state = state + 1
+        spinner.next()
 
     print()
     print('Name %s', name)
