@@ -57,6 +57,40 @@ def bay(name: str = None):
     print(f'Good bay {name}')
 
 
+@cli_app.command()
+def add_new_portfolio(name: str = None,  desc: str = None, comp = None):
+    """
+    Add A New Portfolio like form on ATAT
+    :param name: A name that is descriptive enough for users to identify the Portfolio. You may consider naming based on.
+    :param desc: Add a brief one to two sentence description of your portfolio. Consider this your statement of work.
+    :param comp: Select the DOD component(s) that will fund all Applications within this Portfolio. Multiple DoD organizations can fund the same Portfolio.
+Select all that apply.
+    :return: create a portfolio on the DB of ATAT
+    """
+    if name is None:
+        name = questionary.text("Portfolio name?").ask()
+    if desc is None:
+        desc = questionary.text("Portfolio Description?").ask()
+    if comp is None:
+        comp = questionary.checkbox("Select DoD component(s) funding your Portfolio:",
+                                    choices=["Air Force",
+                                             "Army",
+                                             "Marine Corps",
+                                             "Navy",
+                                             "Space Force",
+                                             "Combatant Command / Joint Staff (CCMD/JS)",
+                                             "Defense Agency and Field Activity (DAFA)",
+                                             "Office of the Secretary of Defense (OSD) / Principal Staff Assistants (PSAs)",
+                                             "Other"]).ask()
+
+    print()
+    print('Name %s', name)
+    print('Desc %s', desc)
+    print('Comp', comp)
+
+    pass
+
+
 # Run CLI Tool app
 if __name__ == "__main__":
     cli_app()
