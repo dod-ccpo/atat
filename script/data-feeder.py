@@ -2,6 +2,8 @@
 Tool set for seed data into the ATAT application
 """
 import os
+from typing import Optional
+
 import pendulum
 import json
 from uuid import uuid4
@@ -29,12 +31,14 @@ def hello(name: str = "you"):
     :param name: the name of the user
     :return: salutation
     """
-    print(f'Hello {name}')
+    print(f"Hello {name}")
+
 
 @cli_app.command()
-def add_new_portfolio(name: str = None,  desc: str = None, comp = None):
+def add_new_portfolio(name: str = None, desc: str = None, comp: Optional[str] = None, feed_json: bool = False):
     """
     Add A New Portfolio like form on ATAT
+    :param feed_json:
     :param name: A name that is descriptive enough for users to identify the Portfolio. You may consider naming based on.
     :param desc: Add a brief one to two sentence description of your portfolio. Consider this your statement of work.
     :param comp: Select the DOD component(s) that will fund all Applications within this Portfolio. Multiple DoD organizations can fund the same Portfolio.
@@ -46,36 +50,42 @@ Select all that apply.
     if desc is None:
         desc = questionary.text("Portfolio Description?").ask()
     if comp is None:
-        comp = questionary.checkbox("Select DoD component(s) funding your Portfolio:",
-                                    choices=["Air Force",
-                                             "Army",
-                                             "Marine Corps",
-                                             "Navy",
-                                             "Space Force",
-                                             "Combatant Command / Joint Staff (CCMD/JS)",
-                                             "Defense Agency and Field Activity (DAFA)",
-                                             "Office of the Secretary of Defense (OSD) / Principal Staff Assistants (PSAs)",
-                                             "Other"]).ask()
+        comp = questionary.checkbox(
+            "Select DoD component(s) funding your Portfolio:",
+            choices=[
+                "Air Force",
+                "Army",
+                "Marine Corps",
+                "Navy",
+                "Space Force",
+                "Combatant Command / Joint Staff (CCMD/JS)",
+                "Defense Agency and Field Activity (DAFA)",
+                "Office of the Secretary of Defense (OSD) / Principal Staff Assistants (PSAs)",
+                "Other",
+            ],
+        ).ask()
 
-    bar = Bar('Processing', max=20)
+    bar = Bar("Processing", max=20)
     for i in range(20):
-        time.sleep(.3)
+        time.sleep(0.3)
         bar.next()
     bar.finish()
 
     state = 0
-    spinner = Spinner('Loading ')
+    spinner = Spinner("Loading ")
     while state < 10:
         # Do some work
-        time.sleep(.3)
+        time.sleep(0.3)
         state = state + 1
         spinner.next()
 
     print()
-    print('Name %s', name)
-    print('Desc %s', desc)
-    print('Comp', comp)
+    print("Name %s", name)
+    print("Desc %s", desc)
+    print("Comp", comp)
 
+    ending = typer.style("good", fg=typer.colors.GREEN, bold=True)
+    typer.echo(ending)
     pass
 
 
