@@ -30,7 +30,6 @@ from atat.routes.dev import _DEV_USERS
 cli_app = typer.Typer()
 CHOICE_SERVICE_BRANCHES = []
 for branch in SERVICE_BRANCHES:
-    print(branch[1])
     CHOICE_SERVICE_BRANCHES.append(Choice(title=branch[1], value=branch[0]))
 
 
@@ -42,9 +41,9 @@ def get_a_user(dod_id: str = None, atat_id: str = None, name: str = "amanda"):
     """
     Get a user from ATAT when by, atat_id, dod_id or name from the testing data.
     or return None in case it does not found one.
-    :param dod_id:
-    :param atat_id:
-    :param name:
+    :param dod_id: DOD ID of the user you want - must be on ATAT
+    :param atat_id: ATAT ID of the user on the DB of the application
+    :param name: dev tester users (only available on test mode)
     :return: User Object or None
     """
 
@@ -81,13 +80,20 @@ def get_a_user(dod_id: str = None, atat_id: str = None, name: str = "amanda"):
 
 # Commands
 @cli_app.command()
-def hello(name: str = "you"):
+def get_user(name: str = None):
     """
     testing typer hello function
     :param name: the name of the user
     :return: salutation
     """
-    print(f"Hello {name}")
+    if name is None:
+        name = questionary.select("Please write the selected",
+                                  choices=list(_DEV_USERS.keys()),
+                                  ).ask()
+
+    # user = get_a_user("amanda")
+
+    print(name)
 
 
 @cli_app.command()
