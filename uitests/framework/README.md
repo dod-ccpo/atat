@@ -88,15 +88,6 @@ Ex.:
  # Running multiple tests marks as smoke with the BrowserStack's chrome drivers. 
  (.venv) $ pytest -s -v -m smoke uitests/* --browser chrome
  ```
-
-*Running in parallel*
-
-We do this with the flag "-n" or limit will be 7 on our current contract with
-BrowserStack that can change on time so verify with your provider. Ex.:
-
-```
-# Running a test with the BrowserStack's chrome drivers in parallel. 
- (.venv) $ pytest -n=2 -s -v -m smoke uitests/* --browser chrome
 ```
 
 Note: might no work on mac
