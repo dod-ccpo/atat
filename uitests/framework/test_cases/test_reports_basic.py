@@ -14,7 +14,7 @@ from uitests.framework.page_objects.reports_page import ReportsPages
 from uitests.framework.page_objects.task_order_page import TaskOrderPage, time_run
 from uitests.framework.utilities.read_properties import ReadConfig
 
-current_dir_path = "./static/img/test.pdf"
+current_dir_path = "./uitests/framework/resources/test.pdf"
 tnumber = datetime.datetime.now().strftime("%m%d%Y%H%M%S%f")[:-3]
 
 
