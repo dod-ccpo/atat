@@ -47,7 +47,6 @@ def get_a_user(dod_id: str = None, atat_id: str = None, name: str = "amanda"):
     :param name: dev tester users (only available on test mode and the seed_sample set).
     :return: User Object or None
     """
-
     # TODO: 'name' is for use on the test user only contain on _DEV_USERS so only
     #       available on the development environment
     # TODO: Method to find the user like using dod_id would be more likely for a external source
@@ -55,7 +54,7 @@ def get_a_user(dod_id: str = None, atat_id: str = None, name: str = "amanda"):
     #       of ATAT and is not portable.
     try:
         portfolio_owner = Users.get_or_create_by_dod_id(
-            "2345678901",
+            _DEV_USERS[name]["dod_id"],
             **pick(
                 [
                     "permission_sets",
@@ -79,13 +78,11 @@ def get_a_user(dod_id: str = None, atat_id: str = None, name: str = "amanda"):
         return None
 
 
-# Commands
-@cli_app.command()
-def get_user(name: str = None):
+def get_cli_dev_name(name: str = None):
     """
-    testing typer hello function
-    :param name: the name of the user
-    :return: salutation
+    if the name is not pass then it show the list of dev user to the user to chose one and return the selected one.
+    :param name:
+    :return:
     """
     with web_app.app_context():
         if name is None:
@@ -93,10 +90,25 @@ def get_user(name: str = None):
                                       choices=list(_DEV_USERS.keys()),
                                       ).ask()
 
-        user = get_a_user("amanda")
+        user = get_a_user(name=name)
+        return user
 
-        print(name)
+
+# CLI Commands
+
+@cli_app.command()
+def get_user(name: str = None):
+    """
+    testing typer hello function
+    :param name: the name of the user
+    :return: salutation
+    """
+    user = get_cli_dev_name(name=name)
+    if user is not None:
+        print("user is: ", user.first_name)
         print(user)
+    else:
+        print("user not found")
 
 
 @cli_app.command()
@@ -143,7 +155,6 @@ Select all that apply.
 
     ending = typer.style("good", fg=typer.colors.GREEN, bold=True)
     typer.echo(ending)
-    pass
 
 
 # Run CLI Tool app
