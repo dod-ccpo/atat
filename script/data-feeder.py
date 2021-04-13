@@ -100,7 +100,7 @@ def create_atat_portfolio(
         except NotFoundError:
             print(
                 "Could not find demo users; will not create demo portfolio {}".format(
-                    name
+                    portfolio_name
                 )
             )
             return None
@@ -209,7 +209,6 @@ Select all that apply.
     print("Desc %s", desc)
     print("Comp", comp)
     print("owner_user", owner_user)
-    print("portfolio", portfolio)
 
     is_good(True)
 
