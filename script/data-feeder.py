@@ -1,6 +1,9 @@
 """
 Tool set for seed data into the ATAT application
 """
+
+# TODO: This operation required to be log but like this is out of atat the standard log would not work.
+
 import os
 from typing import Optional
 
@@ -12,16 +15,69 @@ import time
 # main libraries
 import typer
 import questionary
+from questionary import Choice
 from progress.spinner import PieSpinner as Spinner
 from progress.bar import FillingCirclesBar as Bar
 
 # app modules imports
+from atat.domain import NotFoundError
+from atat.domain.users import Users
+from atat.forms.data import SERVICE_BRANCHES, JEDI_CLIN_TYPES
+from atat.utils import pick
+from atat.routes.dev import _DEV_USERS
 
-# module contents and variables
+# this module constants and variables
 cli_app = typer.Typer()
+CHOICE_SERVICE_BRANCHES = []
+for branch in SERVICE_BRANCHES:
+    print(branch[1])
+    CHOICE_SERVICE_BRANCHES.append(Choice(title=branch[1], value=branch[0]))
 
 
 # Methods and classes
+
+
+# get a valid user
+def get_a_user(dod_id: str = None, atat_id: str = None, name: str = "amanda"):
+    """
+    Get a user from ATAT when by, atat_id, dod_id or name from the testing data.
+    or return None in case it does not found one.
+    :param dod_id:
+    :param atat_id:
+    :param name:
+    :return: User Object or None
+    """
+
+    # TODO: 'name' is for use on the test user only contain on _DEV_USERS so only
+    #       available on the development environment
+    # TODO: Method to find the user like using dod_id would be more likely for a external source
+    #       looking for ATAT id is very unlikely because is only percent on the specific installation
+    #       of ATAT and is not portable.
+    try:
+        portfolio_owner = Users.get_or_create_by_dod_id(
+            "2345678901",
+            **pick(
+                [
+                    "permission_sets",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "service_branch",
+                    "phone_number",
+                    "citizenship",
+                    "designation",
+                ],
+                _DEV_USERS[name],
+            ),
+        )  # Amanda
+
+        return portfolio_owner
+    except NotFoundError:
+        print(
+            "Could not find demo users; will not create demo portfolio {}".format(name)
+        )
+        return None
+
 
 # Commands
 @cli_app.command()
@@ -45,6 +101,7 @@ def add_new_portfolio(name: str = None, desc: str = None, comp: Optional[str] = 
 Select all that apply.
     :return: create a portfolio on the DB of ATAT
     """
+
     if name is None:
         name = questionary.text("Portfolio name?").ask()
     if desc is None:
@@ -52,17 +109,8 @@ Select all that apply.
     if comp is None:
         comp = questionary.checkbox(
             "Select DoD component(s) funding your Portfolio:",
-            choices=[
-                "Air Force",
-                "Army",
-                "Marine Corps",
-                "Navy",
-                "Space Force",
-                "Combatant Command / Joint Staff (CCMD/JS)",
-                "Defense Agency and Field Activity (DAFA)",
-                "Office of the Secretary of Defense (OSD) / Principal Staff Assistants (PSAs)",
-                "Other",
-            ],
+            # choices=SERVICE_BRANCHES,
+            choices=CHOICE_SERVICE_BRANCHES,
         ).ask()
 
     bar = Bar("Processing", max=20)
