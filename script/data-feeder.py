@@ -20,6 +20,7 @@ from progress.spinner import PieSpinner as Spinner
 from progress.bar import FillingCirclesBar as Bar
 
 # app modules imports
+from atat.app import make_config, make_app
 from atat.domain import NotFoundError
 from atat.domain.users import Users
 from atat.forms.data import SERVICE_BRANCHES, JEDI_CLIN_TYPES
@@ -43,7 +44,7 @@ def get_a_user(dod_id: str = None, atat_id: str = None, name: str = "amanda"):
     or return None in case it does not found one.
     :param dod_id: DOD ID of the user you want - must be on ATAT
     :param atat_id: ATAT ID of the user on the DB of the application
-    :param name: dev tester users (only available on test mode)
+    :param name: dev tester users (only available on test mode and the seed_sample set).
     :return: User Object or None
     """
 
@@ -86,14 +87,16 @@ def get_user(name: str = None):
     :param name: the name of the user
     :return: salutation
     """
-    if name is None:
-        name = questionary.select("Please write the selected",
-                                  choices=list(_DEV_USERS.keys()),
-                                  ).ask()
+    with web_app.app_context():
+        if name is None:
+            name = questionary.select("Please write the selected",
+                                      choices=list(_DEV_USERS.keys()),
+                                      ).ask()
 
-    # user = get_a_user("amanda")
+        user = get_a_user("amanda")
 
-    print(name)
+        print(name)
+        print(user)
 
 
 @cli_app.command()
@@ -145,4 +148,8 @@ Select all that apply.
 
 # Run CLI Tool app
 if __name__ == "__main__":
+    config = make_config({"default": {"DEBUG": False}})
+    web_app = make_app(config)
+
+    # Cli tool on
     cli_app()
