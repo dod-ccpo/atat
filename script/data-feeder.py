@@ -43,11 +43,13 @@ def get_atat_user(dod_id: str = None, atat_id: str = None, name: str = "amanda")
     """
     Get a user from ATAT when by, atat_id, dod_id or name from the testing data.
     or return None in case it does not found one.
+
     :param dod_id: DOD ID of the user you want - must be on ATAT
     :param atat_id: ATAT ID of the user on the DB of the application
     :param name: dev tester users (only available on test mode and the seed_sample set).
     :return: User Object or None
     """
+
     # TODO: 'name' is for use on the test user only contain on _DEV_USERS so only
     #       available on the development environment
     # TODO: Method to find the user like using dod_id would be more likely for a external source
@@ -112,6 +114,7 @@ def create_atat_portfolio(
 def is_good(good: bool = False):
     """
     An indicator of completion with a messages.
+
     :param good:
     :return:
     """
@@ -125,8 +128,9 @@ def is_good(good: bool = False):
 
 def get_cli_dev_name(name: str = None):
     """
-    if the name is not pass then it show the list of dev user to the user to chose one and return the selected one.
-    :param name:
+    If the name is not pass then it show the list of dev user to the user to chose one and return the selected one.
+
+    :param name: the name of the dev user
     :return:
     """
     if name is None:
@@ -144,9 +148,11 @@ def get_cli_dev_name(name: str = None):
 @cli_app.command()
 def get_user(name: str = None):
     """
-    testing typer hello function
-    :param name: the name of the user
-    :return: salutation
+    Select one of the test profile users and get the user object.
+
+    :param name: the name of the dev user
+
+    :return: User Object print out
     """
     user = get_cli_dev_name(name=name)
     if user is not None:
@@ -158,19 +164,30 @@ def get_user(name: str = None):
 
 @cli_app.command()
 def add_portfolio(
-    owner_name: str =  None,
+    owner_name: str = None,
     name: str = None,
     desc: str = None,
     comp: Optional[str] = None,
+    file_json: str = None,
     feed_json: bool = False,
+
 ):
     """
     Add A New Portfolio like form on ATAT
-    :param feed_json:
+
+    :param owner_name: portfolio owner user
+    .
+    :param feed_json: pass a file on json format to add one or more portfolios (if this flag is true all other flags would be ingnore exept file_json).
+
+    :param file_json: portfolio jason file.
+
     :param name: A name that is descriptive enough for users to identify the Portfolio. You may consider naming based on.
+
     :param desc: Add a brief one to two sentence description of your portfolio. Consider this your statement of work.
+
     :param comp: Select the DOD component(s) that will fund all Applications within this Portfolio. Multiple DoD organizations can fund the same Portfolio.
 Select all that apply.
+
     :return: create a portfolio on the DB of ATAT
     """
     # get user owner object
