@@ -2,9 +2,10 @@
 Tool set for seed data into the ATAT application
 """
 
-# TODO: This operation required to be log but like this is out of atat the standard log would not work.
+# TODO: This operation required to be logs.
 
 import os
+import re
 from typing import Optional, List
 
 import pendulum
@@ -15,7 +16,7 @@ import time
 # main libraries
 import typer
 import questionary
-from questionary import Choice
+from questionary import Choice, Validator, ValidationError, prompt
 from progress.spinner import PieSpinner as Spinner
 from progress.bar import FillingCirclesBar as Bar
 
@@ -87,14 +88,18 @@ def get_atat_dev_user(name: str = "amanda"):
 
 def get_atat_user_by_dod_id(dod_id: str = None):
     with web_app.app_context():
-        if dod_id is None:
+        try:
+            if dod_id is None:
+                return None
+            else:
+                return Users.get_by_dod_id(dod_id)
+        except NotFoundError:
+            print(NotFoundError("user"))
             return None
-        else:
-            return Users.get_by_dod_id(dod_id)
 
 
 def create_atat_portfolio(
-        owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
+    owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
 ):
     with web_app.app_context():
         try:
@@ -146,7 +151,8 @@ def get_cli_user(dod_id: str = None, name: str = None, title=None):
     # Collecting requirements
     if None in [name, dod_id]:
         get_user_by = questionary.select(
-            "Find a user by?", choices=[
+            "Find a user by?",
+            choices=[
                 Choice(title="DOD ID", value="id"),
                 Choice(title="Developer list of users", value="user"),
             ],
@@ -157,7 +163,7 @@ def get_cli_user(dod_id: str = None, name: str = None, title=None):
         ).ask()
     elif get_user_by == "id":
         dod_id = questionary.text(
-            "Please write the DOD_ID of the user?"
+            "Please write the DOD_ID of the user?", validate=CliValidatorDodId,
         ).ask()
 
     # Get User object:
@@ -167,6 +173,45 @@ def get_cli_user(dod_id: str = None, name: str = None, title=None):
         user = get_atat_user_by_dod_id(dod_id)
 
     return user
+
+
+# CLI input validations
+
+
+def is_valid_dod_id(dod_id: str = None):
+    if dod_id is None:
+        return True
+    else:
+        return False if re.match("^\d{10}$", dod_id) else True
+
+
+def is_valid_portfolio_name(portfolio_name: str = None):
+    if portfolio_name is None:
+        return True
+    else:
+        return (
+            False
+            if re.match("^[A-Za-z0-9\-_,'\".\s]{4,100}$$", portfolio_name)
+            else True
+        )
+
+
+class CliValidatorDodId(Validator):
+    def validate(self, document):
+        if is_valid_dod_id(document.text):
+            raise ValidationError(
+                message="Please enter a 10-digit DoD ID number.",
+                cursor_position=len(document.text),
+            )
+
+
+class CliValidatorPortfolioName(Validator):
+    def validate(self, document):
+        if is_valid_portfolio_name(document.text):
+            raise ValidationError(
+                message="Portfolio names can be between 4-100 characters.",
+                cursor_position=len(document.text),
+            )
 
 
 # CLI Commands
@@ -193,13 +238,12 @@ def get_user(name: str = None, dod_id: str = None):
 
 @cli_app.command()
 def add_portfolio(
-        owner_name: str = None,
-        name: str = None,
-        desc: str = None,
-        comp: Optional[str] = None,
-        file_json: str = None,
-        feed_json: bool = False,
-
+    owner_name: str = None,
+    name: str = None,
+    desc: str = None,
+    comp: Optional[str] = None,
+    file_json: str = None,
+    feed_json: bool = False,
 ):
     """
     Add A New Portfolio like form on ATAT
@@ -223,7 +267,9 @@ Select all that apply.
     owner_user = get_cli_user(owner_name)
 
     if name is None:
-        name = questionary.text("Portfolio name?").ask()
+        name = questionary.text(
+            "Portfolio name?", validate=CliValidatorPortfolioName
+        ).ask()
     if desc is None:
         desc = questionary.text("Portfolio Description?").ask()
     if comp is None:
