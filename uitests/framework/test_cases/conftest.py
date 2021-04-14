@@ -6,6 +6,7 @@ from selenium import webdriver
 
 # buildName = datetime.datetime.now().strftime('Smoke Test: ' + '%m/%d/%y')
 buildName = "Work in Progress"
+#buildName = datetime.datetime.now().strftime('Regression Test: ' + '%m/%d/%y')
 
 chrome = {
     "os_version": "10",
