@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Edit Portfolio Member</title>
+<meta name="ghost-inspector-details" content="" />
+<meta name="ghost-inspector-browser" content="chrome" />
+<meta name="ghost-inspector-userAgent" content="" />
+<meta name="ghost-inspector-region" content="us-east-1" />
+<meta name="ghost-inspector-globalStepDelay" content="250" />
+<meta name="ghost-inspector-maxWaitDelay" content="15000" />
+<meta name="ghost-inspector-maxAjaxDelay" content="10000" />
+<meta name="ghost-inspector-viewportSize" content="1920x1080" />
+<meta name="ghost-inspector-screenshotTarget" content="" />
+<meta name="ghost-inspector-screenshotExclusions" content="div.global-navigation, time" />
+<meta name="ghost-inspector-screenshotCompareEnabled" content="true" />
+<meta name="ghost-inspector-screenshotCompareThreshold" content="0.04" />
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr>
+<td rowspan="1" colspan="3">Edit Portfolio Member</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Login Brandon
+-->
+<tr>
+<td>open</td>
+<td>/login-local?username=brandon</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Login Brandon
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=a[href="/user"] > .topbar__link-label</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=a[href="/user"] > .topbar__link-label</td>
+<td>*Brandon Buchannan*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Login Brandon
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=a[href="/logout"] > .topbar__link-label</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=a[href="/logout"] > .topbar__link-label</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Login Brandon
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.col > .usa-alert.usa-alert-info:nth-of-type(2) > .usa-alert-body > h3.usa-alert-heading</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=.col > .usa-alert.usa-alert-info:nth-of-type(2) > .usa-alert-body > h3.usa-alert-heading</td>
+<td>*Logged out*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+Imported from: AT-AT CI - New Portfolio
+Imported from: AT-AT CI - login
+-->
+<tr>
+<td>open</td>
+<td>/login-local</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+Imported from: AT-AT CI - New Portfolio
+Imported from: AT-AT CI - login
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.home__content > h1</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=.home__content > h1</td>
+<td>JEDI Cloud Services</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+Imported from: AT-AT CI - New Portfolio
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=a[href="/portfolios/new"]</td>
+<td></td>
+</tr>
+<tr original-target="a[href=&quot;/portfolios/new&quot;],xpath=//a[contains(text(), &quot;Add New Portfolio&quot;)]">
+<td>click</td>
+<td>css=a[href="/portfolios/new"]</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+Imported from: AT-AT CI - New Portfolio
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.portfolio-header__name > h1</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=.portfolio-header__name > h1</td>
+<td>*New Portfolio*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+Imported from: AT-AT CI - New Portfolio
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.sticky-cta-text > h3</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=.sticky-cta-text > h3</td>
+<td>*Name and Describe Portfolio*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+Imported from: AT-AT CI - New Portfolio
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=#name</td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>css=#name</td>
+<td>Tatooine Energy Maintenance Systems ${alphanumeric}</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+Imported from: AT-AT CI - New Portfolio
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=fieldset.usa-input__choices > ul > li:nth-of-type(5) > label</td>
+<td></td>
+</tr>
+<tr original-target="fieldset.usa-input__choices > ul > li:nth-of-type(5) > label,xpath=//label[contains(text(), &quot;Other&quot;)]">
+<td>click</td>
+<td>css=fieldset.usa-input__choices > ul > li:nth-of-type(5) > label</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+Imported from: AT-AT CI - New Portfolio
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=input[type="submit"]</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=input[type="submit"]</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+Imported from: AT-AT CI - New Portfolio
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.empty-state > h3</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=.empty-state > h3</td>
+<td>*You don’t have any Applications yet*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.icon.icon--cog > svg</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=.icon.icon--cog > svg</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.portfolio-header__name > h1</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=.portfolio-header__name > h1</td>
+<td>*Tatooine Energy Maintenance Systems*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=th.table-cell--third</td>
+<td></td>
+</tr>
+<tr>
+<td>assertElementPresent</td>
+<td>css=th.table-cell--third</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+Imported from: AT-AT CI - Portfolio Settings
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=button.usa-button.usa-button-primary</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=button.usa-button.usa-button-primary</td>
+<td>Save Changes</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=a.usa-button.usa-button-secondary.add-new-button</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=a.usa-button.usa-button-secondary.add-new-button</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=#add-portfolio-manager > div > div > div.member-form > h2</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=#add-portfolio-manager > div > div > div.member-form > h2</td>
+<td>*Add Manager*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=#user_data-first_name</td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>css=#user_data-first_name</td>
+<td>Brandon</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=#user_data-last_name</td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>css=#user_data-last_name</td>
+<td>Buchannan</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=#user_data-email</td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>css=#user_data-email</td>
+<td>jay+brandon@promptworks.com</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=#user_data-dod_id</td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>css=#user_data-dod_id</td>
+<td>3456789012</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=input[type="button"]</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=input[type="button"]</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=#add-portfolio-manager > div > div > div.member-form > h2</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=#add-portfolio-manager > div > div > div.member-form > h2</td>
+<td>*Set Portfolio Permissions*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=#perms_app_mgmt-None</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=#perms_app_mgmt-None</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=#perms_funding-None</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=#perms_funding-None</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=#perms_reporting-None</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=#perms_reporting-None</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=#perms_portfolio_mgmt-None</td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>css=#perms_portfolio_mgmt-None</td>
+<td>edit_portfolio_admin</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=input[type="submit"].action-group__action</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=input[type="submit"].action-group__action</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=table.atat-table > tbody > tr > td > span.label.label--success.label--below</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=table.atat-table > tbody > tr > td > span.label.label--success.label--below</td>
+<td>*invite pending*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - New Portfolio Member
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.usa-alert-body</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=.usa-alert-body</td>
+<td>*Brandon Buchannan's invitation has been sent
+
+Brandon Buchannan's access to this Portfolio is pending until they sign in for the first time.*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=table.atat-table > tbody > tr:nth-of-type(2) > td.toggle-menu__container > .toggle-menu > .accordion-table__item__toggler > .icon.icon--ellipsis > svg.svg-inline--fa.fa-ellipsis-h.fa-w-16</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=table.atat-table > tbody > tr:nth-of-type(2) > td.toggle-menu__container > .toggle-menu > .accordion-table__item__toggler > .icon.icon--ellipsis > svg.svg-inline--fa.fa-ellipsis-h.fa-w-16</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=table.atat-table > tbody > tr:nth-of-type(2) > td.toggle-menu__container > .toggle-menu > .accordion-table__item-toggle-content.toggle-menu__toggle > a:nth-of-type(1)</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=table.atat-table > tbody > tr:nth-of-type(2) > td.toggle-menu__container > .toggle-menu > .accordion-table__item-toggle-content.toggle-menu__toggle > a:nth-of-type(1)</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.portfolio-admin > div:nth-of-type(2) > .modal.form-content--member-form > .modal__container > .modal__dialog > .modal__body > .modal__form--header > h1</td>
+<td></td>
+</tr>
+<tr>
+<td>assertElementPresent</td>
+<td>css=.portfolio-admin > div:nth-of-type(2) > .modal.form-content--member-form > .modal__container > .modal__dialog > .modal__body > .modal__form--header > h1</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.portfolio-perms > div:nth-of-type(2) > .usa-input.input__inline-fields.checked > fieldset.usa-input__choices > legend > label</td>
+<td></td>
+</tr>
+<tr original-target=".portfolio-perms > div:nth-of-type(2) > .usa-input.input__inline-fields.checked > fieldset.usa-input__choices > legend > label,xpath=//label[contains(text(), &quot;Edit Funding&quot;)]">
+<td>click</td>
+<td>css=.portfolio-perms > div:nth-of-type(2) > .usa-input.input__inline-fields.checked > fieldset.usa-input__choices > legend > label</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.portfolio-perms > div:nth-of-type(4) > .usa-input.input__inline-fields > fieldset.usa-input__choices > legend > label</td>
+<td></td>
+</tr>
+<tr original-target=".portfolio-perms > div:nth-of-type(4) > .usa-input.input__inline-fields > fieldset.usa-input__choices > legend > label,xpath=//label[contains(text(), &quot;Edit Portfolio&quot;)]">
+<td>click</td>
+<td>css=.portfolio-perms > div:nth-of-type(4) > .usa-input.input__inline-fields > fieldset.usa-input__choices > legend > label</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.action-group__action.usa-button</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=.action-group__action.usa-button</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=h3.usa-alert-heading</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=h3.usa-alert-heading</td>
+<td>*Success!*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.usa-alert-text</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=.usa-alert-text</td>
+<td>*You have successfully updated access permissions for*</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
