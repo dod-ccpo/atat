@@ -84,6 +84,12 @@ class CreateApplicationPages:
         ).click()
         # self.driver.find_element_by_css_selector(self.btn_create_app_css).click()
 
+    def click_applications(self):
+        wait = WebDriverWait(self.driver, 20)
+        wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_application))
+        ).click()
+        
     def click_collapse(self):
         self.driver.find_element_by_css(self.btn_collapse_css).click()
 
