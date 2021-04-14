@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from uitests.framework.page_objects.application_page import CreateApplicationPages
-from . import PageObjectMethods 
+from uitests.framework.page_objects import PageObjectMethods 
 from uitests.framework.page_objects.settings_page import SettingsPages
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages

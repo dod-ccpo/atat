@@ -9,7 +9,7 @@ class PageObjectMethods:
     btn_logout_css = "a:nth-child(3) span.topbar__link-label"
     btn_settings_css = "a:nth-child(1) > div > div.icon-link--icon"
     btn_task_orders_css = "a[href$='orders']"
-    btn_applications_css = "a.usa-button.usa-button-primary"
+    btn_applications_css = "a:nth-child(3) > div > div.icon-link--icon"
 
     def __init__(self, driver):
         self.driver = driver
@@ -33,7 +33,11 @@ class PageObjectMethods:
         self.driver.find_element_by_css_selector(self.btn_task_orders_css).click()
 
     def click_application(self):
-        self.driver.find_element_by_css_selector(self.btn_applications_css).click()
+        wait = WebDriverWait(self.driver, 20)
+        wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_applications_css))
+        ).click()
+        # self.driver.find_element_by_css_selector(self.btn_applications_css).click()
     
     # Validating ATAT is displayed
     def validate_atat(self):

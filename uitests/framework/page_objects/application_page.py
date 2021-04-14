@@ -11,7 +11,7 @@ class CreateApplicationPages:
     # Main Application overview page
     # btn_new_portfolio_css = "a.usa-button.usa-button-primary"
     btn_select_portfolio_css = "span.sidenav__link-label"
-    btn_create_app_css = "usa-button usa-button-primary"
+    btn_create_app_css = "div.portfolio-applications > div > div > a"
     btn_collapse_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div.portfolio-applications > div > div.action-group > a"
     acc_environments_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div.portfolio-applications > div > div.accordion > div:nth-child(2) > h4 > button"
     btn_application = "a:nth-child(3) > div > div.icon-link--icon"
@@ -126,6 +126,10 @@ class CreateApplicationPages:
     def click_save_app(self):
         self.driver.find_element_by_css_selector(self.btn_save_application_css).click()
 
+    def click_save_app_next(self):
+        wait = WebDriverWait(self.driver, 20)
+        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, self.btn_save_application_next_css))).click()
+
     def click_add_member(self):
         wait = WebDriverWait(self.driver, 20)
         wait.until(
@@ -202,8 +206,9 @@ class CreateApplicationPages:
 
     def select_revoke_invite(self):
         self.driver.find_element_by_css(self.acc_revoke_invite_css).click()
-        def click_toggle_menu(self):
-            self.driver.find_element_by_css_selector(self.btn_toggle_menu_css).click()
+    
+    def click_toggle_menu(self):
+        self.driver.find_element_by_css_selector(self.btn_toggle_menu_css).click()
 
     def click_toggle_menu_b(self):
         self.driver.find_element_by_css_selector(self.btn_toggle_menu_b_css).click()
