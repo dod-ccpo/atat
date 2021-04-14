@@ -5,10 +5,7 @@ import string
 import time
 import pytest
 
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
 from uitests.framework.page_objects.reports_page import ReportsPages
 from uitests.framework.page_objects.task_order_page import TaskOrderPage, time_run
@@ -26,19 +23,16 @@ class TestReportsBasic:
         self.driver = setup
         self.driver.execute_script(
             'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "7. Verifying Reports - Active TO"}}'
+            '"arguments": {"name": "6. Verifying Reports - Active TO"}}'
         )
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         assert "ATAT" in self.driver.page_source
-        assert "New Portfolio" in self.driver.page_source
         self.port = AddNewPortfolioPages(self.driver)
         self.port.click_new_portfolio()
-        time.sleep(5)
-        self.port.new_portfolio_page_displayed()
-        assert "Name and Describe Portfolio" in self.driver.page_source
-        assert "New Portfolio" in self.driver.page_source
+        self.port.validate_new_portfolio()
+        self.port.validate_name_desc()
         self.pName = "Test Portfolio" + random_generator()
         self.rep = ReportsPages(self.driver)
         self.port.enter_portfolio_name(self.pName)
@@ -54,12 +48,9 @@ class TestReportsBasic:
         print(self.msg)
         self.to = TaskOrderPage(self.driver)
         self.to.click_task_order()
-        time.sleep(20)
-        assert "Add Task Order" in self.driver.page_source
+        self.to.validate_add_to()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_add_new_to()
-        time.sleep(20)
-        assert "Upload your approved Task Order" in self.driver.page_source
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.driver.execute_script(
             "document.querySelector('#pdf').style.visibility = 'visible'"
@@ -71,8 +62,10 @@ class TestReportsBasic:
         file_input = self.driver.find_element_by_id("pdf")
         file_input.send_keys(absolute_file_path)
         self.to.click_next_add_TO_number()
-        time.sleep(20)
-        self.rep.enter_TO_number(tnumber)
+        time.sleep(10)
+        #calling from wrong PO's file
+        #self.rep.enter_TO_number(tnumber)
+        self.to.enter_TO_number(tnumber)
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_next_add_clin_number()
         self.to.enter_clin_number("0001")
@@ -88,63 +81,24 @@ class TestReportsBasic:
         time.sleep(5)
         self.to.click_confirm()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        time.sleep(20)
+        time.sleep(10)
         self.to.click_checkbox_one()
         self.to.click_check_box_two()
         self.to.click_submit_TO()
-        time.sleep(20)
-        assert (
-            "Your Task Order has been uploaded successfully." in self.driver.page_source
-        )
+        self.to.success_msg()
         self.rep.click_reports()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        WebDriverWait(self.driver, 5).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.jedi-clin-funding__clin-wrapper > h3"),
-                "$100,000.00",
-            )
-        )
-        WebDriverWait(self.driver, 5).until(
-            EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR,
-                    "div:nth-child(1) > p.h3.jedi-clin-funding__meta-value",
-                ),
-                "$1.00",
-            )
-        )
-        WebDriverWait(self.driver, 5).until(
-            EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR,
-                    "div:nth-child(2) > p.h3.jedi-clin-funding__meta-value",
-                ),
-                "$1.00",
-            )
-        )
-        WebDriverWait(self.driver, 5).until(
-            EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR,
-                    "div:nth-child(3) > p.h3.jedi-clin-funding__meta-value",
-                ),
-                "$99,998.00",
-            )
-        )
-        assert "Current Obligated funds" in self.driver.page_source
+        ofunds = "$100,000.00"
+        self.rep.ob_funds(ofunds)
+        self.rep.invoiced_exp_funds()
+        self.rep.estimated_funds()
+        rfunds = "$99,998.00"
+        self.rep.remaining_funds(rfunds)
         try:
-            WebDriverWait(self.driver, 5).until(
-                EC.text_to_be_present_in_element(
-                    (By.CSS_SELECTOR, "h3.h4"), "Active Task Orders",
-                )
-            )
-            tmp = str(time_run)
-            WebDriverWait(self.driver, 5).until(
-                EC.text_to_be_present_in_element(
-                    (By.CSS_SELECTOR, ".jedi-clin-funding__active-task-orders"), tmp
-                )
-            )
-            print(tmp)
+            self.rep.active_to_text()
+            tno = str(time_run)
+            self.rep.active_task_order_number(tno)
+            print(tno)
         except TimeoutException:
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
