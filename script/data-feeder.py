@@ -39,7 +39,7 @@ for branch in SERVICE_BRANCHES:
 
 
 # get a valid user
-def get_atat_user(dod_id: str = None, atat_id: str = None, name: str = "amanda"):
+def get_atat_dev_user(name: str = "amanda"):
     """
     Get a user from ATAT when by, atat_id, dod_id or name from the testing data.
     or return None in case it does not found one.
@@ -85,8 +85,16 @@ def get_atat_user(dod_id: str = None, atat_id: str = None, name: str = "amanda")
             return None
 
 
+def get_atat_user_by_dod_id(dod_id: str = None):
+    with web_app.app_context():
+        if dod_id is None:
+            return None
+        else:
+            return Users.get_by_dod_id(dod_id)
+
+
 def create_atat_portfolio(
-    owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
+        owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
 ):
     with web_app.app_context():
         try:
@@ -126,19 +134,38 @@ def is_good(good: bool = False):
         typer.echo(ending)
 
 
-def get_cli_dev_name(name: str = None):
+def get_cli_user(dod_id: str = None, name: str = None, title=None):
     """
     If the name is not pass then it show the list of dev user to the user to chose one and return the selected one.
 
-    :param name: the name of the dev user
+    :param dod_id: the DOD Id of the user.
+    :param name: the name of the dev user.
     :return:
     """
-    if name is None:
+
+    # Collecting requirements
+    if None in [name, dod_id]:
+        get_user_by = questionary.select(
+            "Find a user by?", choices=[
+                Choice(title="DOD ID", value="id"),
+                Choice(title="Developer list of users", value="user"),
+            ],
+        ).ask()
+    if get_user_by == "user":
         name = questionary.select(
             "Please write the selected", choices=list(_DEV_USERS.keys()),
         ).ask()
+    elif get_user_by == "id":
+        dod_id = questionary.text(
+            "Please write the DOD_ID of the user?"
+        ).ask()
 
-    user = get_atat_user(name=name)
+    # Get User object:
+    if name is not None:
+        user = get_atat_dev_user(name=name)
+    elif dod_id is not None:
+        user = get_atat_user_by_dod_id(dod_id)
+
     return user
 
 
@@ -146,15 +173,17 @@ def get_cli_dev_name(name: str = None):
 
 
 @cli_app.command()
-def get_user(name: str = None):
+def get_user(name: str = None, dod_id: str = None):
     """
     Select one of the test profile users and get the user object.
+
+    :param dod_id: DOD ID of the user
 
     :param name: the name of the dev user
 
     :return: User Object print out
     """
-    user = get_cli_dev_name(name=name)
+    user = get_cli_user(name=name, dod_id=dod_id)
     if user is not None:
         print("user is: ", user.first_name)
         print(user)
@@ -164,12 +193,12 @@ def get_user(name: str = None):
 
 @cli_app.command()
 def add_portfolio(
-    owner_name: str = None,
-    name: str = None,
-    desc: str = None,
-    comp: Optional[str] = None,
-    file_json: str = None,
-    feed_json: bool = False,
+        owner_name: str = None,
+        name: str = None,
+        desc: str = None,
+        comp: Optional[str] = None,
+        file_json: str = None,
+        feed_json: bool = False,
 
 ):
     """
@@ -191,7 +220,7 @@ Select all that apply.
     :return: create a portfolio on the DB of ATAT
     """
     # get user owner object
-    owner_user = get_cli_dev_name(owner_name)
+    owner_user = get_cli_user(owner_name)
 
     if name is None:
         name = questionary.text("Portfolio name?").ask()
@@ -225,7 +254,6 @@ Select all that apply.
     print("Name %s", name)
     print("Desc %s", desc)
     print("Comp", comp)
-    print("owner_user", owner_user)
 
     is_good(True)
 
