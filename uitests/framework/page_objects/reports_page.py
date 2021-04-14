@@ -1,11 +1,11 @@
 import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait
 from uitests.framework.page_objects.task_order_page import time_run
 
 time_run = 0
-
+time_now = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
 
 class ReportsPages:
     def __init__(self, driver):

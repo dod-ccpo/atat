@@ -1,9 +1,13 @@
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
 class PageObjectMethods:
     btn_home_css = "a.topbar__link.topbar__link--home"
     btn_user_css = ".topbar__link-label"
     btn_support_css = "a:nth-child(2) .topbar__link-label"
     btn_logout_css = "a:nth-child(3) span.topbar__link-label"
-    btn_settings_css = "span.icon.icon--cog"
+    btn_settings_css = "a:nth-child(1) > div > div.icon-link--icon"
     btn_task_orders_css = "a[href$='orders']"
     btn_applications_css = "a.usa-button.usa-button-primary"
 
@@ -30,3 +34,51 @@ class PageObjectMethods:
 
     def click_application(self):
         self.driver.find_element_by_css_selector(self.btn_applications_css).click()
+    
+    # Validating ATAT is displayed
+    def validate_atat(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "a.topbar__link span.topbar__link-label"), "ATAT"
+            )
+        )
+
+    # Validating JEDI Cloud Services is displayed
+    def validate_jedi(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div.home__content"), "JEDI Cloud Services"
+            )
+        )
+
+    # Validating "Name and Describe Portfolio" is displayed
+    def validate_name_desc(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div.sticky-cta > div > div"), "Name and Describe Portfolio"
+            )
+        )
+
+    # Validating New Portfolio is displayed
+    def validate_new_portfolio(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div.portfolio-header-new > div > h1"), "New Portfolio"
+            )
+        )
+
+    # Validating "Add approved task orders" is displayed
+    def validate_add_to(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div.portfolio-funding > div > h3"), "Add approved task orders"
+            )
+        )
+
+    # Validating "Settings" tab is displayed
+    def validate_settings_tab(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div:nth-child(2) > div > a:nth-child(1) > div > div.icon-link--name"), "Settings"
+            )
+        )

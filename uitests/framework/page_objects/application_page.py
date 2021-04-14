@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from . import PageObjectMethods
 import datetime
@@ -14,21 +14,24 @@ class CreateApplicationPages:
     btn_create_app_css = "usa-button usa-button-primary"
     btn_collapse_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div.portfolio-applications > div > div.action-group > a"
     acc_environments_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div.portfolio-applications > div > div.accordion > div:nth-child(2) > h4 > button"
+    btn_application = "a:nth-child(3) > div > div.icon-link--icon"
 
     # Step 1 naming and describing the application
     txt_app_name_css = "#name"
     txt_app_description_css = "#description"
     btn_next_add_environments_css = "button.usa-button.usa-button-primary"
     btn_cancel_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div > form > div.action-group-footer.action-group-footer--expand-offset > div > a"
+    btn_add_team_member = "div.panel.form > a"
 
     # Step 2 adding and editing environments
     btn_previous_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div > form > div.action-group-footer.action-group-footer--expand-offset > div > a.usa-button.usa-button-secondary"
     btn_next_add_members_css = "button.usa-button.usa-button-primary"
     btn_add_other_environments_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div > form > div.panel > div > div.application-list-item > div > button"
-    btn_remove_env_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div > form > div.panel > div > div.application-list-item > ul > li:nth-child(1) > div.application-edit__env-list-item-block > button > span.icon.icon--trash > svg > path"
+    btn_remove_env_css = "div.form-col.form-col--third > label"
 
     # Step 3 add members to environments
     btn_save_application_css = "input[type='submit']"
+    btn_save_application_next_css = "div.action-group-footer.action-group-footer--expand-offset > div > a:nth-child(1)"
     btn_add_member_css = "div.portfolio-content > div > div.panel.form > a"
     txt_fname_css = "#user_data-first_name"
     txt_lname_css = "#user_data-last_name"
@@ -60,7 +63,10 @@ class CreateApplicationPages:
     acc_roles_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div > div.panel.form > section > div > table > tbody > tr > td.toggle-menu__container > div > div > a:nth-child(1)"
     acc_resend_invite_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div > div.panel.form > section > div > table > tbody > tr > td.toggle-menu__container > div > div > a:nth-child(1)"
     acc_revoke_invite_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div > div.panel.form > section > div > table > tbody > tr > td.toggle-menu__container > div > div > a:nth-child(1)"
-
+    btn_toggle_menu_css = "div.toggle-menu > span"
+    btn_toggle_menu_b_css = "tr:nth-child(2) > td.toggle-menu__container > div.toggle-menu > span"
+    btn_role_perm = "div.toggle-menu > div > a:nth-child(1)"
+    btn_save_revoke_css = "input[type='submit']"
     def __init__(self, driver):
         self.driver = driver
 
@@ -69,8 +75,6 @@ class CreateApplicationPages:
     # self.driver.find_element_by_css_selector(self.btn_new_portfolio_css).click()
 
     def select_portfolio(self):
-        # wait = WebDriverWait(self.driver, 20)
-        # wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_select_portfolio_css))).click()
         self.driver.find_element_by_css_selector(self.btn_select_portfolio_css).click()
 
     def click_create_app(self):
@@ -128,6 +132,9 @@ class CreateApplicationPages:
             EC.element_to_be_clickable((By.CSS_SELECTOR, self.btn_add_member_css))
         ).click()
         # self.driver.find_element_by_css_selector(self.btn_add_member_css).click()
+
+    def click_add_team_member(self):
+        self.driver.find_element_by_css_selector(self.btn_add_team_member).click()
 
     def enter_first_name(self, fName):
         self.driver.find_element_by_css_selector(self.txt_fname_css).send_keys(fName)
@@ -195,3 +202,61 @@ class CreateApplicationPages:
 
     def select_revoke_invite(self):
         self.driver.find_element_by_css(self.acc_revoke_invite_css).click()
+        def click_toggle_menu(self):
+            self.driver.find_element_by_css_selector(self.btn_toggle_menu_css).click()
+
+    def click_toggle_menu_b(self):
+        self.driver.find_element_by_css_selector(self.btn_toggle_menu_b_css).click()
+
+    def click_edit_roles_perm(self):
+        self.driver.find_element_by_css_selector(self.btn_role_perm).click()
+
+    def click_revoke_env(self):
+        self.driver.find_element_by_css_selector(self.btn_remove_env_css).click()
+
+    def click_save_revoke_env(self):
+        self.driver.find_element_by_css_selector(self.btn_save_revoke_css).click()
+
+    def validate_app_save(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "h3.usa-alert-heading"), "Application Saved"
+            )
+        )
+        
+    def validate_env_access(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "#members-env-access-role"), "Environment Access"
+            )
+        )
+
+    def validate_invite_pending(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "tr:nth-child(2) > td:nth-child(1) > span"), "INVITE PENDING"
+            )
+        )
+
+    def validate_port_invite_revoke(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div.usa-alert.usa-alert-success > div > h3"), "Portfolio invitation revoked"
+            )
+        )
+
+    def validate_name_desc(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, ".sticky-cta-text"),
+                "Name and Describe New Application",
+            )
+        )
+
+    def validate_revoke_warning(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div.form-col.form-col--two-thirds > p"),
+                "Save changes to revoke access, this can not be undone.",
+            )
+        )
