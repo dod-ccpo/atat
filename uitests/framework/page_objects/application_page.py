@@ -280,3 +280,31 @@ class CreateApplicationPages:
                 "Save changes to revoke access, this can not be undone.",
             )
         )
+
+    def validate_name_brandon(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "header > nav > div > a:nth-child(1)"),
+                "Brandon Buchannan",
+            )
+        )
+
+    def validate_add_members(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div.sticky-cta-text"), "Add Members"
+            )
+        )
+    
+    def validate_invite_sent(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "h3.usa-alert-heading"), "invitation has been sent"
+            )
+        )
+
+    def click_create_application(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, "a.usa-button.usa-button-primary"))).click()
+
