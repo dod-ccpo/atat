@@ -82,7 +82,10 @@ class AddNewPortfolioPages:
         self.driver.find_element_by_css_selector(self.select_checkbox_css).click()
 
     def click_save_portfolio_btn(self):
-        self.driver.find_element_by_css_selector(self.save_portfolio_btn_css).click()
+        # self.driver.find_element_by_css_selector(self.save_portfolio_btn_css).click()
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, self.save_portfolio_btn_css))).click()
         # saveBtn = self.driver.find_element_by_css_selector(self.save_portfolio_btn_css)
         # saveBtn_text = saveBtn.text
         # if saveBtn_text == 'Save Portfolio':
