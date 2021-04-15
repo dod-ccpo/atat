@@ -180,25 +180,25 @@ def get_cli_user(dod_id: str = None, name: str = None, title=None):
 
 def is_valid_dod_id(dod_id: str = None):
     if dod_id is None:
-        return True
+        return False
     else:
-        return False if re.match("^\d{10}$", dod_id) else True
+        return True if re.match("^\d{10}$", dod_id) else False
 
 
 def is_valid_portfolio_name(portfolio_name: str = None):
     if portfolio_name is None:
-        return True
+        return False
     else:
         return (
-            False
+            True
             if re.match("^[A-Za-z0-9\-_,'\".\s]{4,100}$$", portfolio_name)
-            else True
+            else False
         )
 
 
 class CliValidatorDodId(Validator):
     def validate(self, document):
-        if is_valid_dod_id(document.text):
+        if not is_valid_dod_id(document.text):
             raise ValidationError(
                 message="Please enter a 10-digit DoD ID number.",
                 cursor_position=len(document.text),
@@ -207,7 +207,7 @@ class CliValidatorDodId(Validator):
 
 class CliValidatorPortfolioName(Validator):
     def validate(self, document):
-        if is_valid_portfolio_name(document.text):
+        if not is_valid_portfolio_name(document.text):
             raise ValidationError(
                 message="Portfolio names can be between 4-100 characters.",
                 cursor_position=len(document.text),
