@@ -55,30 +55,6 @@ class PageObjectMethods:
             )
         )
 
-    # Validating "Name and Describe Portfolio" is displayed
-    def validate_name_desc(self):
-        WebDriverWait(self.driver, 30).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.sticky-cta > div > div"), "Name and Describe Portfolio"
-            )
-        )
-
-    # Validating New Portfolio is displayed
-    def validate_new_portfolio(self):
-        WebDriverWait(self.driver, 30).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.portfolio-header-new > div > h1"), "New Portfolio"
-            )
-        )
-
-    # Validating "Add approved task orders" is displayed
-    def validate_add_to(self):
-        WebDriverWait(self.driver, 30).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.portfolio-funding > div > h3"), "Add approved task orders"
-            )
-        )
-
     # Validating "Settings" tab is displayed
     def validate_settings_tab(self):
         WebDriverWait(self.driver, 30).until(

@@ -36,8 +36,8 @@ class Test_010_revoke_app_mem_invite:
         self.cm.validate_atat()
         self.cm.validate_jedi()
         self.port.click_new_portfolio()
-        self.cm.validate_name_desc()
-        self.cm.validate_new_portfolio()
+        self.port.validate_name_desc()
+        self.port.validate_new_portfolio()
 
         # Entering portfolio name from generator
         self.port.enter_portfolio_name(self.pName)

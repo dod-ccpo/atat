@@ -1,7 +1,7 @@
 import random
 import string
-
 import pytest
+
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -36,8 +36,8 @@ class Test_Resend_Portfolio_Member_Invite:
         self.cm.validate_atat()
         self.cm.validate_jedi()
         self.port.click_new_portfolio()
-        self.cm.validate_name_desc()
-        self.cm.validate_new_portfolio()
+        self.port.validate_name_desc()
+        self.port.validate_new_portfolio()
 
         # Entering portfolio name from generator
         self.port.enter_portfolio_name(self.pName)

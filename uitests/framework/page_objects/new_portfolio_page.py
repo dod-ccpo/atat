@@ -46,7 +46,7 @@ class AddNewPortfolioPages:
 
     # Validating New Portfolio is displayed
     def validate_new_portfolio(self):
-        WebDriverWait(self.driver, 5).until(
+        WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, ".portfolio-header__name > h1"), "New Portfolio"
             )

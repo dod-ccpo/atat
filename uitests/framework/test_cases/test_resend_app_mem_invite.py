@@ -40,8 +40,8 @@ class Test_Resend_Application_Member_Invite:
         self.cm.validate_atat()
         self.cm.validate_jedi()
         self.port.click_new_portfolio()
-        self.cm.validate_name_desc()
-        self.cm.validate_new_portfolio()
+        self.port.validate_name_desc()
+        self.port.validate_new_portfolio()
 
         # Entering portfolio name from generator
         self.port.enter_portfolio_name(self.pName)
@@ -50,7 +50,7 @@ class Test_Resend_Application_Member_Invite:
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.port.select_checkbox()
         self.port.click_save_portfolio_btn()
-        self.cm.validate_add_to()
+        self.to.validate_add_to()
         self.app.click_applications()
         self.app.click_create_app()
 

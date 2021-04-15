@@ -8,6 +8,7 @@ from selenium.common.exceptions import TimeoutException
 from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
 from uitests.framework.page_objects.task_order_page import TaskOrderPage
 from uitests.framework.utilities.read_properties import ReadConfig
+from uitests.framework.page_objects import PageObjectMethods
 
 current_dir_path = "./uitests/framework/resources/test.pdf"
 
@@ -19,11 +20,12 @@ class TestCreateExpiredTaskOrder:
     def test_create_expired_task_order(self, setup):
         self.driver = setup
         self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
-                                   '"arguments": {"name": "8.Create expired TO"}}')
+                                   '"arguments": {"name": "8. Create Expired TO"}}')
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        assert "ATAT" in self.driver.page_source
+        self.cm = PageObjectMethods(self.driver)
+        self.cm.validate_atat()        
         self.port = AddNewPortfolioPages(self.driver)
         self.port.click_new_portfolio()
         self.port.validate_new_portfolio()
