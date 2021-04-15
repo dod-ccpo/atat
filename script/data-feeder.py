@@ -224,7 +224,8 @@ def add_cli_portfolio_interactive(
 
 
 def add_cli_portfolio_json(feed_json: str = None):
-    pass
+    if feed_json is None:
+        name = questionary.path("please choice an PDF file?").ask()
 
 
 # CLI input validations
@@ -246,6 +247,13 @@ def is_valid_portfolio_name(portfolio_name: str = None):
             if re.match("^[A-Za-z0-9\-_,'\".\s]{4,100}$$", portfolio_name)
             else False
         )
+
+
+def is_valid_component_branches_list(component_branches: list = []):
+    if isinstance(component_branches, list):
+        if len(component_branches) > 0:
+            return True
+    return False
 
 
 class CliValidatorDodId(Validator):
