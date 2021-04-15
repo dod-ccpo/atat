@@ -139,7 +139,7 @@ def is_good(good: bool = False):
         typer.echo(ending)
 
 
-def get_cli_user(dod_id: str = None, name: str = None, title=None):
+def get_cli_user(dod_id: str = None, name: str = None):
     """
     If the name is not pass then it show the list of dev user to the user to chose one and return the selected one.
 
@@ -173,6 +173,58 @@ def get_cli_user(dod_id: str = None, name: str = None, title=None):
         user = get_atat_user_by_dod_id(dod_id)
 
     return user
+
+
+def add_cli_portfolio_interactive(
+    owner_name: str = None,
+    owner_dod_id: str = None,
+    name: str = None,
+    desc: str = None,
+    comp: Optional[str] = None,
+):
+    # get user owner object
+    owner_user = get_cli_user(name=owner_name, dod_id=owner_dod_id)
+
+    if name is None:
+        name = questionary.text(
+            "Portfolio name?", validate=CliValidatorPortfolioName
+        ).ask()
+    if desc is None:
+        desc = questionary.text("Portfolio Description?").ask()
+    if comp is None:
+        comp = questionary.checkbox(
+            "Select DoD component(s) funding your Portfolio:",
+            choices=CHOICE_SERVICE_BRANCHES,
+        ).ask()
+
+    # testing progress bar
+    bar = Bar("Processing", max=20)
+    for i in range(20):
+        time.sleep(0.3)
+        bar.next()
+    bar.finish()
+
+    # adding the portfolio
+    portfolio = create_atat_portfolio(owner_user, name, desc, comp)
+
+    state = 0
+    spinner = Spinner("Loading ")
+    while state < 10:
+        # Do some work
+        time.sleep(0.3)
+        state = state + 1
+        spinner.next()
+
+    print()
+    print("Name %s", name)
+    print("Desc %s", desc)
+    print("Comp", comp)
+
+    is_good(True)
+
+
+def add_cli_portfolio_json(feed_json: str = None):
+    pass
 
 
 # CLI input validations
@@ -239,20 +291,20 @@ def get_user(name: str = None, dod_id: str = None):
 @cli_app.command()
 def add_portfolio(
     owner_name: str = None,
+    owner_dod_id: str = None,
     name: str = None,
     desc: str = None,
     comp: Optional[str] = None,
-    file_json: str = None,
-    feed_json: bool = False,
+    feed_json: str = None,
 ):
     """
     Add A New Portfolio like form on ATAT
 
-    :param owner_name: portfolio owner user
-    .
-    :param feed_json: pass a file on json format to add one or more portfolios (if this flag is true all other flags would be ingnore exept file_json).
+    :param owner_dod_id: portfolio owner user dod id.
 
-    :param file_json: portfolio jason file.
+    :param owner_name: portfolio owner username form the dev list (test mode only).
+
+    :param feed_json: pass a file on json format to add one or more portfolios.
 
     :param name: A name that is descriptive enough for users to identify the Portfolio. You may consider naming based on.
 
@@ -263,45 +315,23 @@ Select all that apply.
 
     :return: create a portfolio on the DB of ATAT
     """
-    # get user owner object
-    owner_user = get_cli_user(owner_name)
-
-    if name is None:
-        name = questionary.text(
-            "Portfolio name?", validate=CliValidatorPortfolioName
-        ).ask()
-    if desc is None:
-        desc = questionary.text("Portfolio Description?").ask()
-    if comp is None:
-        comp = questionary.checkbox(
-            "Select DoD component(s) funding your Portfolio:",
-            choices=CHOICE_SERVICE_BRANCHES,
+    # select type of interaction
+    if None in [owner_name, owner_dod_id, feed_json]:
+        get_user_by = questionary.select(
+            "Find a user by?",
+            choices=[
+                Choice(title="Interactive console", value="cli"),
+                Choice(title="load json", value="json"),
+            ],
         ).ask()
 
-    # testing progress bar
-    bar = Bar("Processing", max=20)
-    for i in range(20):
-        time.sleep(0.3)
-        bar.next()
-    bar.finish()
-
-    # adding the portfolio
-    portfolio = create_atat_portfolio(owner_user, name, desc, comp)
-
-    state = 0
-    spinner = Spinner("Loading ")
-    while state < 10:
-        # Do some work
-        time.sleep(0.3)
-        state = state + 1
-        spinner.next()
-
-    print()
-    print("Name %s", name)
-    print("Desc %s", desc)
-    print("Comp", comp)
-
-    is_good(True)
+    add_cli_portfolio_interactive(
+        owner_name=owner_name,
+        owner_dod_id=owner_dod_id,
+        name=name,
+        desc=desc,
+        comp=comp,
+    )
 
 
 # Run CLI Tool app

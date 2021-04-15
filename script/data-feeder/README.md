@@ -110,3 +110,18 @@ SELECT portfolios.time_created AS portfolios_time_created, portfolios.time_updat
 FROM portfolios 
 WHERE portfolios.id = %(param_1)s
 ```
+
+
+add-portfolio json
+```
+[
+    {
+        "owner-dod-id": "01234567890",
+        "portfolio":{
+            "name":"example-json name portfolio",
+            "desc":"example-json description portfolio",
+            "branch":  ['air_force', 'army', 'marine_corps', 'navy', 'space_force', 'ccmd_js', 'dafa', 'osd_psas', 'other']
+        } 
+    }
+]
+```
