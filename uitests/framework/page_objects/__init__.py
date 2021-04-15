@@ -67,3 +67,11 @@ class PageObjectMethods:
                 "Settings",
             )
         )
+    
+    def validate_brandon(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "header > nav > div > a:nth-child(1)"),
+                "Brandon Buchannan",
+            )
+        )
