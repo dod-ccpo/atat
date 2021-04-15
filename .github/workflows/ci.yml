@@ -1,5 +1,5 @@
 ---
-name: SonarCloud Scan Jobs
+name: Full CI Build
 on:
   pull_request:
   push:
@@ -9,8 +9,8 @@ on:
       - "release/**"
 
 jobs:
-  sonarcloudScan:
-    name: SonarCloud Scan
+  cibuildscript:
+    name: Pre-merge Checks / Unit Tests / Sonar Scan
     runs-on: ubuntu-20.04
     env:
       PYTHON_VERSION: "3.8.8"
@@ -83,7 +83,7 @@ jobs:
           PGHOST: localhost
           PGPORT: 5432
           REDIS_HOST: localhost:6379
-      - name: Run cibuild script
+      - name: Run cibuild script (formatting and unit tests)
         run: |
           script/cibuild
         shell: bash
