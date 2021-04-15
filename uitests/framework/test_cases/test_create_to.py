@@ -5,10 +5,7 @@ import pytest
 import random
 import string
 
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 from uitests.framework.page_objects.task_order_page import TaskOrderPage, time_run
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
@@ -33,9 +30,8 @@ class TestCreateTaskOrder:
         assert "ATAT" in self.driver.page_source
         self.port = AddNewPortfolioPages(self.driver)
         self.port.click_new_portfolio()
-        time.sleep(20)
-        assert "Name and Describe Portfolio" in self.driver.page_source
-        assert "New Portfolio" in self.driver.page_source
+        self.port.validate_new_portfolio()
+        self.port.validate_name_desc()
         self.pName = "Test Portfolio" + random_generator()
         self.port.enter_portfolio_name(self.pName)
         self.port.enter_portfolio_description(
@@ -48,13 +44,9 @@ class TestCreateTaskOrder:
         assert self.pName == self.msg
         print(self.msg)
         self.to = TaskOrderPage(self.driver)
-        time.sleep(20)
         self.to.click_task_order()
-        time.sleep(20)
-        assert "Add approved task orders" in self.driver.page_source
+        self.to.validate_add_to()
         self.to.click_add_new_to()
-        time.sleep(20)
-        assert "Upload your approved Task Order" in self.driver.page_source
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.driver.execute_script(
             "document.querySelector('#pdf').style.visibility = 'visible'"
@@ -66,7 +58,7 @@ class TestCreateTaskOrder:
         file_input = self.driver.find_element_by_id("pdf")
         file_input.send_keys(absolute_file_path)
         self.to.click_next_add_TO_number()
-        time.sleep(20)
+        time.sleep(10)
         self.to.enter_TO_number(tnumber)
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_next_add_clin_number()
@@ -83,26 +75,14 @@ class TestCreateTaskOrder:
         time.sleep(5)
         self.to.click_confirm()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        time.sleep(20)
+        time.sleep(10)
         self.to.click_checkbox_one()
         self.to.click_check_box_two()
         self.to.click_submit_TO()
-        time.sleep(20)
-        assert (
-            "Your Task Order has been uploaded successfully." in self.driver.page_source
-        )
         try:
-            WebDriverWait(self.driver, 5).until(
-                EC.text_to_be_present_in_element(
-                    (By.CSS_SELECTOR, "h3.usa-alert-heading"),
-                    "Your Task Order has been uploaded successfully.",
-                )
-            )
-            tmp = str(time_run)
-            print(tmp)
-            WebDriverWait(self.driver, 5).until(
-                EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#Active h4"), tmp)
-            )
+            self.to.success_msg()
+            activeto = str(time_run)
+            self.to.active_to(activeto)
         except TimeoutException:
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '

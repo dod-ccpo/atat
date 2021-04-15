@@ -27,9 +27,8 @@ class TestCreatePortfolio:
         assert "ATAT" in self.driver.page_source
         self.port = AddNewPortfolioPages(self.driver)
         self.port.click_new_portfolio()
-        time.sleep(20)
-        assert "Name and Describe Portfolio" in self.driver.page_source
-        assert "New Portfolio" in self.driver.page_source
+        self.port.validate_new_portfolio()
+        self.port.validate_name_desc()
         self.pName = "Test Portfolio" + random_generator()
         self.port.enter_portfolio_name(self.pName)
         self.port.enter_portfolio_description(

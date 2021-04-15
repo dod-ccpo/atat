@@ -1,17 +1,15 @@
-import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from uitests.framework.page_objects.task_order_page import time_run
-
-time_run = 0
 
 
 class ReportsPages:
     def __init__(self, driver):
         self.driver = driver
 
-    btn_expired_funding_css = "#expired_funding"
+    btn_expired_funding_css = (
+        "button.usa-accordion-button"  # changed due to css selector not working
+    )
     btn_reports_css = ".icon.icon--chart-pie"
     btn_reports = "div.portfolio-header.row > div:nth-child(2) > div > a:nth-child(4)"
     btn_task_order = "div.portfolio-funding > div > div > a"
@@ -28,18 +26,139 @@ class ReportsPages:
             )
         )
 
-    # verifying the Active TaskOrder details
-    def active_task_order(self):
-        tmp = str(time_run)
+    # verify this messages shows only if there is no Active TaskOrder for the Portfolio
+    def msg_insuf_funds(self):
+        msg = "Insufficient Funds"
         WebDriverWait(self.driver, 5).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.jedi-clin-funding__active-task-orders > a",), tmp
+                (By.CSS_SELECTOR, "h3.usa-alert-heading"), msg,
+            )
+        )
+
+    # Verifying the total Portfolio Value
+    def total_portfolio_value(self, tpv):
+        WebDriverWait(self.driver, 5).until(
+            EC.text_to_be_present_in_element(
+                (
+                    By.CSS_SELECTOR,
+                    ".row > .col.col--grow.summary-item:nth-of-type(1) > .summary-item__value",
+                ),
+                tpv,
+            )
+        )
+
+    # verify the Days Remaining
+    def days_remaining(self, days):
+        WebDriverWait(self.driver, 5).until(
+            EC.text_to_be_present_in_element(
+                (
+                    By.CSS_SELECTOR,
+                    ".row > .col.col--grow.summary-item:nth-of-type(3) > .summary-item__value",
+                ),
+                days,
+            )
+        )
+
+    # verifying the Obligated funds
+    def ob_funds(self, ofunds):
+        WebDriverWait(self.driver, 5).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div.jedi-clin-funding__clin-wrapper > h3"), ofunds,
+            )
+        )
+
+    # verifying the Invoiced Expended funds
+    def invoiced_exp_funds(self):
+        WebDriverWait(self.driver, 5).until(
+            EC.text_to_be_present_in_element(
+                (
+                    By.CSS_SELECTOR,
+                    "div:nth-child(1) > p.h3.jedi-clin-funding__meta-value",
+                ),
+                "$1.00",
+            )
+        )
+
+    # Verifying the Estimated funds
+    def estimated_funds(self):
+        WebDriverWait(self.driver, 5).until(
+            EC.text_to_be_present_in_element(
+                (
+                    By.CSS_SELECTOR,
+                    "div:nth-child(2) > p.h3.jedi-clin-funding__meta-value",
+                ),
+                "$1.00",
+            )
+        )
+
+    # Remaining funds
+    def remaining_funds(self, rfunds):
+        WebDriverWait(self.driver, 5).until(
+            EC.text_to_be_present_in_element(
+                (
+                    By.CSS_SELECTOR,
+                    "div:nth-child(3) > p.h3.jedi-clin-funding__meta-value",
+                ),
+                rfunds,
+            )
+        )
+
+    # verifying the Active TO title
+    def active_to_text(self):
+        WebDriverWait(self.driver, 5).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "h3.h4"), "Active Task Orders",
+            )
+        )
+
+    # verifying the Active TaskOrder details
+    def active_task_order_number(self, tno):
+        WebDriverWait(self.driver, 5).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div.jedi-clin-funding__active-task-orders > a",), tno
             )
         )
 
     # click on Expired Funding
-    def expired_funding(self):
-        self.driver.find_element_by_css_selector(self.btn_expired_funding_css).click()
+    def expired_funding_click(self):
+        element = self.driver.find_element_by_css_selector(self.btn_expired_funding_css)
+        self.driver.execute_script("arguments[0].click();", element)
+        # commenting the below code since it is not working on IE added JS executor
+        # self.driver.find_element_by_css_selector(self.btn_expired_funding_css).click()
 
-    def enter_TO_number(self, tnumber):
-        self.driver.find_element_by_css_selector(self.txt_TO_number).send_keys(tnumber)
+    # verify the TO# number under expired funding
+    def expired_to_details(self, extonumber):
+        WebDriverWait(self.driver, 10).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "#expired_funding > tbody > tr:nth-of-type(1) > td"),
+                extonumber,
+            )
+        )
+
+    # verifying PoP under Expired funding
+    def pop(self, periodofperformance):
+        WebDriverWait(self.driver, 5).until(
+            EC.text_to_be_present_in_element(
+                (
+                    By.CSS_SELECTOR,
+                    "#expired_funding > tbody > tr:nth-of-type(2) > td:nth-of-type(2)",
+                ),
+                periodofperformance,
+            )
+        )
+
+    # verifying Amount Obligated under Expired funding
+    def amount_obligated(self, amountOb):
+        WebDriverWait(self.driver, 5).until(
+            EC.text_to_be_present_in_element(
+                (
+                    By.CSS_SELECTOR,
+                    "#expired_funding > tbody > tr:nth-of-type(2) > td.table-cell--align-right:nth-of-type(4)",
+                ),
+                amountOb,
+            )
+        )
+
+    # Below should not be included here it should be in the TaskOrder pageObjects
+    # def enter_TO_number(self, tnumber):
+    # self.driver.find_element_by_css_selector(self.txt_TO_number).send_keys(tnumber)
