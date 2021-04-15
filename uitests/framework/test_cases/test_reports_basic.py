@@ -63,8 +63,8 @@ class TestReportsBasic:
         file_input.send_keys(absolute_file_path)
         self.to.click_next_add_TO_number()
         time.sleep(10)
-        #calling from wrong PO's file
-        #self.rep.enter_TO_number(tnumber)
+        # calling from wrong PO's file
+        # self.rep.enter_TO_number(tnumber)
         self.to.enter_TO_number(tnumber)
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_next_add_clin_number()

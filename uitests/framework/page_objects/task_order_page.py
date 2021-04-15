@@ -69,14 +69,11 @@ class TaskOrderPage:
 
     # Validating "Add approved task orders" is displayed in step1 workflow:
     def validate_add_to(self):
-            WebDriverWait(self.driver, 5).until(
-                EC.text_to_be_present_in_element(
-                    (
-                        By.CSS_SELECTOR, ".empty-state > h3"
-                    ),
-                    "Add approved task orders"
-                )
+        WebDriverWait(self.driver, 5).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, ".empty-state > h3"), "Add approved task orders"
             )
+        )
 
     def click_task_order(self):
         self.driver.find_element_by_css_selector(self.btn_task_order_css).click()
@@ -193,50 +190,34 @@ class TaskOrderPage:
 
     def click_submit_TO(self):
         self.driver.find_element_by_css_selector(self.btn_submit_css).click()
+
     # verifying the Success message that TO has been Successfully Uploaded
 
     def success_msg(self):
         WebDriverWait(self.driver, 5).until(
             EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR, 'h3.usa-alert-heading'
-                ),
-                "Your Task Order has been uploaded successfully."
+                (By.CSS_SELECTOR, "h3.usa-alert-heading"),
+                "Your Task Order has been uploaded successfully.",
             )
         )
 
     # Verifying the Active TO details
     def active_to(self, activeto):
         WebDriverWait(self.driver, 5).until(
-            EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR, "#Active h4"
-                ),
-                activeto
-            )
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#Active h4"), activeto)
         )
 
     # Verifying the TO# under Upcoming section
     def upcoming_to(self, tmp):
         WebDriverWait(self.driver, 5).until(
-            EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR, '#Upcoming h4'
-                ),
-                tmp
-            )
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#Upcoming h4"), tmp)
         )
 
     # verifying the Draft section and the Task Order displays as New TaskOrder
     def draft_to(self):
         temp = "New Task Order"
         WebDriverWait(self.driver, 5).until(
-            EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR, "#Draft h4"
-                ),
-                temp
-            )
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#Draft h4"), temp)
         )
 
     # TotalValue for the Draft Task Order
@@ -245,9 +226,9 @@ class TaskOrderPage:
             EC.text_to_be_present_in_element(
                 (
                     By.CSS_SELECTOR,
-                    "#Draft > .accordion__content--list-item > .usa-grid > .usa-width-one-fourth:nth-of-type(2) > p"
+                    "#Draft > .accordion__content--list-item > .usa-grid > .usa-width-one-fourth:nth-of-type(2) > p",
                 ),
-                "$0.00"
+                "$0.00",
             )
         )
 
@@ -257,19 +238,14 @@ class TaskOrderPage:
             EC.text_to_be_present_in_element(
                 (
                     By.CSS_SELECTOR,
-                    "#Draft > .accordion__content--list-item > .usa-grid > .usa-width-one-fourth:nth-of-type(3) > p"
+                    "#Draft > .accordion__content--list-item > .usa-grid > .usa-width-one-fourth:nth-of-type(3) > p",
                 ),
-                "$0.00"
+                "$0.00",
             )
         )
 
     # Verify the Expired TO details
     def expired_to(self, tmp):
         WebDriverWait(self.driver, 5).until(
-            EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR, "#Expired h4"
-                ),
-                tmp
-            )
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#Expired h4"), tmp)
         )

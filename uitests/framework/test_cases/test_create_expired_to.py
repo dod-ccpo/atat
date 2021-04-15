@@ -19,13 +19,15 @@ class TestCreateExpiredTaskOrder:
 
     def test_create_expired_task_order(self, setup):
         self.driver = setup
-        self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
-                                   '"arguments": {"name": "8. Create Expired TO"}}')
+        self.driver.execute_script(
+            'browserstack_executor: {"action": "setSessionName", '
+            '"arguments": {"name": "8. Create Expired TO"}}'
+        )
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.cm = PageObjectMethods(self.driver)
-        self.cm.validate_atat()        
+        self.cm.validate_atat()
         self.port = AddNewPortfolioPages(self.driver)
         self.port.click_new_portfolio()
         self.port.validate_new_portfolio()
@@ -84,16 +86,18 @@ class TestCreateExpiredTaskOrder:
             # verifying the Message & Expired TO#
             self.to.success_msg()
             # verifying the Expired TO details
-            tmp = 'Task Order #' + self.tnumber
+            tmp = "Task Order #" + self.tnumber
             self.to.expired_to(tmp)
         except TimeoutException:
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Timed out due to Expired TaskOrderNumber not matching"}}')
+                '"Timed out due to Expired TaskOrderNumber not matching"}}'
+            )
         else:
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Expired TaskOrderNumber matched"}}')
+                '"Expired TaskOrderNumber matched"}}'
+            )
 
             self.driver.quit()
 
@@ -103,4 +107,4 @@ def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
 
 
 def random_no_generator(size=17, chars=string.digits):
-    return ''.join(random.choice(chars) for x in range(size))
+    return "".join(random.choice(chars) for x in range(size))

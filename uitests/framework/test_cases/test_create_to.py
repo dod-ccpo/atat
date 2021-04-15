@@ -81,7 +81,7 @@ class TestCreateTaskOrder:
         self.to.click_submit_TO()
         try:
             self.to.success_msg()
-            activeto=str(time_run)
+            activeto = str(time_run)
             self.to.active_to(activeto)
         except TimeoutException:
             self.driver.execute_script(

@@ -22,8 +22,10 @@ class Test_Resend_Portfolio_Member_Invite:
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
-                                   '"arguments": {"name": "16. Resend Portfolio Member Invite"}}')
+        self.driver.execute_script(
+            'browserstack_executor: {"action": "setSessionName", '
+            '"arguments": {"name": "16. Resend Portfolio Member Invite"}}'
+        )
 
         # Initializing Page Objects
         self.cm = PageObjectMethods(self.driver)
@@ -42,7 +44,9 @@ class Test_Resend_Portfolio_Member_Invite:
         # Entering portfolio name from generator
         self.port.enter_portfolio_name(self.pName)
 
-        self.port.enter_portfolio_description("Entering the description to verify the text")
+        self.port.enter_portfolio_description(
+            "Entering the description to verify the text"
+        )
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.port.select_checkbox()
         self.port.click_save_portfolio_btn()
@@ -66,18 +70,24 @@ class Test_Resend_Portfolio_Member_Invite:
         self.port.click_resend_invite()
         self.port.click_resend_invite_confirm()
         try:
-            WebDriverWait(self.driver, 5).until(EC.text_to_be_present_in_element((By.CSS_SELECTOR, 'div.usa-alert.usa-alert-success > div > p'),
-                                                                                 'has been sent an invitation to access this Portfolio'))
+            WebDriverWait(self.driver, 5).until(
+                EC.text_to_be_present_in_element(
+                    (By.CSS_SELECTOR, "div.usa-alert.usa-alert-success > div > p"),
+                    "has been sent an invitation to access this Portfolio",
+                )
+            )
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Text is Matched"}}')
+                '"Text is Matched"}}'
+            )
         except TimeoutException:
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Text is NOT Matched"}}')
-        print('Test: Resend Portfolio Member Invite')
+                '"Text is NOT Matched"}}'
+            )
+        print("Test: Resend Portfolio Member Invite")
         self.driver.quit()
 
 
 def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
-    return ''.join(random.choice(chars) for x in range(size))
+    return "".join(random.choice(chars) for x in range(size))

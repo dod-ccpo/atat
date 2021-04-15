@@ -25,8 +25,10 @@ class Test_010_revoke_environment:
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
-                                   '"arguments": {"name": "13. Revoke Environment Access"}}')
+        self.driver.execute_script(
+            'browserstack_executor: {"action": "setSessionName", '
+            '"arguments": {"name": "13. Revoke Environment Access"}}'
+        )
 
         # Initializing Page Objects
         self.cm = PageObjectMethods(self.driver)
@@ -42,7 +44,9 @@ class Test_010_revoke_environment:
         self.port.validate_name_desc()
         self.port.validate_new_portfolio()
         self.port.enter_portfolio_name(self.pName)
-        self.port.enter_portfolio_description("Entering the description to verify the text")
+        self.port.enter_portfolio_description(
+            "Entering the description to verify the text"
+        )
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.port.select_checkbox()
         self.port.click_save_portfolio_btn()
@@ -52,7 +56,7 @@ class Test_010_revoke_environment:
 
         # Entering the application name using time stamp
         self.app.enter_app_name(time_now)
-        
+
         self.app.enter_app_description("App description goes here")
         self.app.click_next_add_environments()
         self.app.validate_app_save()
@@ -79,7 +83,10 @@ class Test_010_revoke_environment:
         self.app.click_save_app_next()
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "li:nth-child(1) > div.accordion-table__item-content > div > div:nth-child(1) > span.label.label--default"),
+                (
+                    By.CSS_SELECTOR,
+                    "li:nth-child(1) > div.accordion-table__item-content > div > div:nth-child(1) > span.label.label--default",
+                ),
                 "PENDING CREATION",
             )
         )
@@ -90,16 +97,22 @@ class Test_010_revoke_environment:
         self.app.validate_revoke_warning()
         self.app.click_save_revoke_env()
         try:
-            WebDriverWait(self.driver, 5).until(EC.text_to_be_present_in_element((By.CSS_SELECTOR, 'div.usa-alert.usa-alert-success > div > h3'),
-                                                                                 'Team member updated'))
+            WebDriverWait(self.driver, 5).until(
+                EC.text_to_be_present_in_element(
+                    (By.CSS_SELECTOR, "div.usa-alert.usa-alert-success > div > h3"),
+                    "Team member updated",
+                )
+            )
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Environment has been revoked"}}')
+                '"Environment has been revoked"}}'
+            )
         except TimeoutException:
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Environment has NOT been revoked"}}')
-        print('Test: Revoke Environment')
+                '"Environment has NOT been revoked"}}'
+            )
+        print("Test: Revoke Environment")
         self.driver.quit()
 
 

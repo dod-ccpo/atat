@@ -14,8 +14,10 @@ class TestReportsEmptyState:
 
     def test_reports_empty_state(self, setup):
         self.driver = setup
-        self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
-                                   '"arguments": {"name": "10.Verifying the Reports with no Task Orders"}}')
+        self.driver.execute_script(
+            'browserstack_executor: {"action": "setSessionName", '
+            '"arguments": {"name": "10.Verifying the Reports with no Task Orders"}}'
+        )
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -26,7 +28,9 @@ class TestReportsEmptyState:
         self.port.validate_name_desc()
         self.pName = "Test Portfolio" + random_generator()
         self.port.enter_portfolio_name(self.pName)
-        self.port.enter_portfolio_description("Entering the description to verify the text")
+        self.port.enter_portfolio_description(
+            "Entering the description to verify the text"
+        )
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.port.select_checkbox()
         self.port.click_save_portfolio_btn()
@@ -66,4 +70,4 @@ class TestReportsEmptyState:
 
 
 def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
-    return ''.join(random.choice(chars) for x in range(size))
+    return "".join(random.choice(chars) for x in range(size))

@@ -5,7 +5,7 @@ import time
 import pytest
 
 from selenium.common.exceptions import TimeoutException
-from uitests.framework. page_objects.new_portfolio_page import AddNewPortfolioPages
+from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
 from uitests.framework.page_objects.reports_page import ReportsPages
 from uitests.framework.page_objects.task_order_page import TaskOrderPage
 from uitests.framework.utilities.read_properties import ReadConfig
@@ -20,8 +20,10 @@ class TestActiveToReports:
 
     def test_active_to_reports(self, setup):
         self.driver = setup
-        self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
-                                   '"arguments": {"name": "13. Reports-with Active TO"}}')
+        self.driver.execute_script(
+            'browserstack_executor: {"action": "setSessionName", '
+            '"arguments": {"name": "13. Reports-with Active TO"}}'
+        )
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -121,4 +123,4 @@ def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
 
 
 def random_no_generator(size=17, chars=string.digits):
-    return ''.join(random.choice(chars) for x in range(size))
+    return "".join(random.choice(chars) for x in range(size))

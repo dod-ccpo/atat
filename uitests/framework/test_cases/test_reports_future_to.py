@@ -20,8 +20,10 @@ class TestCreateFutureToReports:
 
     def test_future_to_report(self, setup):
         self.driver = setup
-        self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
-                                   '"arguments": {"name": "11. Reports-with Future TO"}}')
+        self.driver.execute_script(
+            'browserstack_executor: {"action": "setSessionName", '
+            '"arguments": {"name": "11. Reports-with Future TO"}}'
+        )
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -84,7 +86,7 @@ class TestCreateFutureToReports:
         self.to.click_submit_TO()
         # verify the Task Order Message
         self.to.success_msg()
-        tmp = 'Task Order #' + self.tnumber
+        tmp = "Task Order #" + self.tnumber
         # Verify the TaskOrder showing under Upcoming section
         self.to.upcoming_to(tmp)
         print(tmp)
@@ -122,8 +124,8 @@ class TestCreateFutureToReports:
 
 
 def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
-    return ''.join(random.choice(chars) for x in range(size))
+    return "".join(random.choice(chars) for x in range(size))
 
 
 def random_no_generator(size=17, chars=string.digits):
-    return ''.join(random.choice(chars) for x in range(size))
+    return "".join(random.choice(chars) for x in range(size))

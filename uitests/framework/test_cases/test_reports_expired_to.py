@@ -20,8 +20,10 @@ class TestExpiredToReports:
 
     def test_expired_to_reports(self, setup):
         self.driver = setup
-        self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
-                                   '"arguments": {"name": "12. Reports-with Expired TO"}}')
+        self.driver.execute_script(
+            'browserstack_executor: {"action": "setSessionName", '
+            '"arguments": {"name": "12. Reports-with Expired TO"}}'
+        )
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -83,7 +85,7 @@ class TestExpiredToReports:
         self.to.click_check_box_two()
         self.to.click_submit_TO()
         self.to.success_msg()
-        tmp = 'Task Order #' + self.tnumber
+        tmp = "Task Order #" + self.tnumber
         self.to.expired_to(tmp)
         # Navigate to the Reports page
         self.rep = ReportsPages(self.driver)
@@ -133,4 +135,4 @@ def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
 
 
 def random_no_generator(size=17, chars=string.digits):
-    return ''.join(random.choice(chars) for x in range(size))
+    return "".join(random.choice(chars) for x in range(size))

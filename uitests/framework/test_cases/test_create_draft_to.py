@@ -19,8 +19,10 @@ class TestCreateDraftTaskOrder:
 
     def test_create_draft_task_order(self, setup):
         self.driver = setup
-        self.driver.execute_script('browserstack_executor: {"action": "setSessionName", '
-                                   '"arguments": {"name": "9. Create Draft TO"}}')
+        self.driver.execute_script(
+            'browserstack_executor: {"action": "setSessionName", '
+            '"arguments": {"name": "9. Create Draft TO"}}'
+        )
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -48,8 +50,12 @@ class TestCreateDraftTaskOrder:
         self.to.click_add_new_to()
         assert "Upload your approved Task Order" in self.driver.page_source
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        self.driver.execute_script("document.querySelector('#pdf').style.visibility = 'visible'")
-        self.driver.execute_script("document.querySelector('#pdf').style.display = 'block'")
+        self.driver.execute_script(
+            "document.querySelector('#pdf').style.visibility = 'visible'"
+        )
+        self.driver.execute_script(
+            "document.querySelector('#pdf').style.display = 'block'"
+        )
         absolute_file_path = os.path.abspath(current_dir_path)
         file_input = self.driver.find_element_by_id("pdf")
         file_input.send_keys(absolute_file_path)
@@ -65,11 +71,13 @@ class TestCreateDraftTaskOrder:
         except TimeoutException:
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Timed out due to TotalValue & Total Obligated for the Draft TaskOrder values are not matching"}}')
+                '"Timed out due to TotalValue & Total Obligated for the Draft TaskOrder values are not matching"}}'
+            )
         else:
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"TotalValue for the Draft Task Order& Total Obligated for the Draft TaskOrder values are matching"}}')
+                '"TotalValue for the Draft Task Order& Total Obligated for the Draft TaskOrder values are matching"}}'
+            )
         self.driver.quit()
 
 

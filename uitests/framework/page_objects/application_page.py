@@ -64,9 +64,12 @@ class CreateApplicationPages:
     acc_resend_invite_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div > div.panel.form > section > div > table > tbody > tr > td.toggle-menu__container > div > div > a:nth-child(1)"
     acc_revoke_invite_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div > div.panel.form > section > div > table > tbody > tr > td.toggle-menu__container > div > div > a:nth-child(1)"
     btn_toggle_menu_css = "div.toggle-menu > span"
-    btn_toggle_menu_b_css = "tr:nth-child(2) > td.toggle-menu__container > div.toggle-menu > span"
+    btn_toggle_menu_b_css = (
+        "tr:nth-child(2) > td.toggle-menu__container > div.toggle-menu > span"
+    )
     btn_role_perm = "div.toggle-menu > div > a:nth-child(1)"
     btn_save_revoke_css = "input[type='submit']"
+
     def __init__(self, driver):
         self.driver = driver
 
@@ -89,7 +92,7 @@ class CreateApplicationPages:
         wait.until(
             EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_application))
         ).click()
-        
+
     def click_collapse(self):
         self.driver.find_element_by_css(self.btn_collapse_css).click()
 
@@ -134,7 +137,11 @@ class CreateApplicationPages:
 
     def click_save_app_next(self):
         wait = WebDriverWait(self.driver, 20)
-        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, self.btn_save_application_next_css))).click()
+        wait.until(
+            EC.element_to_be_clickable(
+                (By.CSS_SELECTOR, self.btn_save_application_next_css)
+            )
+        ).click()
 
     def click_add_member(self):
         wait = WebDriverWait(self.driver, 20)
@@ -212,7 +219,7 @@ class CreateApplicationPages:
 
     def select_revoke_invite(self):
         self.driver.find_element_by_css(self.acc_revoke_invite_css).click()
-    
+
     def click_toggle_menu(self):
         self.driver.find_element_by_css_selector(self.btn_toggle_menu_css).click()
 
@@ -234,7 +241,7 @@ class CreateApplicationPages:
                 (By.CSS_SELECTOR, "h3.usa-alert-heading"), "Application Saved"
             )
         )
-        
+
     def validate_env_access(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
@@ -245,14 +252,16 @@ class CreateApplicationPages:
     def validate_invite_pending(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "tr:nth-child(2) > td:nth-child(1) > span"), "INVITE PENDING"
+                (By.CSS_SELECTOR, "tr:nth-child(2) > td:nth-child(1) > span"),
+                "INVITE PENDING",
             )
         )
 
     def validate_port_invite_revoke(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.usa-alert.usa-alert-success > div > h3"), "Portfolio invitation revoked"
+                (By.CSS_SELECTOR, "div.usa-alert.usa-alert-success > div > h3"),
+                "Portfolio invitation revoked",
             )
         )
 
