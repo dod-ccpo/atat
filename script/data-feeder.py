@@ -147,9 +147,9 @@ def get_cli_user(dod_id: str = None, name: str = None):
     :param name: the name of the dev user.
     :return:
     """
-
+    get_user_by = None
     # Collecting requirements
-    if None in [name, dod_id]:
+    if name is None and dod_id is None:
         get_user_by = questionary.select(
             "Find a user by?",
             choices=[
@@ -167,10 +167,11 @@ def get_cli_user(dod_id: str = None, name: str = None):
         ).ask()
 
     # Get User object:
-    if name is not None:
-        user = get_atat_dev_user(name=name)
-    elif dod_id is not None:
+    if dod_id is not None:
         user = get_atat_user_by_dod_id(dod_id)
+    elif name is not None:
+        user = get_atat_dev_user(name=name)
+
 
     return user
 
@@ -237,7 +238,7 @@ def add_cli_portfolio_json(feed_json: str = None):
             for index, portfolio in enumerate(portfolios_request, start=1):
                 # TODO: replace the print with logs
                 bar.next()
-                portfolio = None
+                portfolio_response = None
                 print(" Evaluating portfolio number {} ".format(index))
                 # happy path values
                 dod_id = portfolio["user_owner"]["dod_id"]
@@ -256,11 +257,11 @@ def add_cli_portfolio_json(feed_json: str = None):
                     continue
 
                 # get user owner object
-                # owner_user = get_cli_user(dod_id=dod_id)
+                owner_user = get_cli_user(dod_id=dod_id)
                 # adding the portfolio
-                # portfolio = create_atat_portfolio(owner_user, portfolio_name, portfolio_desc, portfolio_branch)
+                portfolio_response = create_atat_portfolio(owner_user, portfolio_name, portfolio_desc, portfolio_branch)
                 # Success indicator
-                if portfolio is not None:
+                if portfolio_response is not None:
                     is_good(True)
                 else:
                     is_good(False)
@@ -274,6 +275,11 @@ def add_cli_portfolio_json(feed_json: str = None):
 
 
 def is_valid_dod_id(dod_id: str = None):
+    """
+    validation of dod id is base on "js/lib/input_validations.js"
+    :param dod_id: str
+    :return:
+    """
     if dod_id is None:
         return False
     else:
@@ -281,6 +287,11 @@ def is_valid_dod_id(dod_id: str = None):
 
 
 def is_valid_portfolio_name(portfolio_name: str = None):
+    """
+    validation of portfolio name is base on "js/lib/input_validations.js"
+    :param portfolio_name: str
+    :return:
+    """
     if portfolio_name is None:
         return False
     else:
@@ -292,12 +303,18 @@ def is_valid_portfolio_name(portfolio_name: str = None):
 
 
 def is_valid_uri_json_file(file_json: str = None):
+    """
+    json file route must contain alphanumerics characters and end on ".json".
+    The only special character accepted are "/", "-" and "_".
+    :param file_json: str
+    :return:
+    """
     if file_json is None:
         return False
     else:
         return (
             True
-            if re.match("^[a-zA-Z\/\-\_]+.json$", file_json)
+            if re.match("^[a-zA-Z0-9\/\-\_]+.json$", file_json)
             else False
         )
 
@@ -322,7 +339,7 @@ class CliValidatorFileJSON(Validator):
     def validate(self, document):
         if not is_valid_uri_json_file(document.text):
             raise ValidationError(
-                message="This is not a valid json File.",
+                message="This is not a valid json file route.",
                 cursor_position=len(document.text),
             )
 
@@ -388,7 +405,7 @@ Select all that apply.
 
     # select type of interaction
     if None in [owner_name, owner_dod_id, feed_json]:
-        get_user_by = questionary.select(
+        get_portfolio_by = questionary.select(
             "Add a portfolio by:",
             choices=[
                 Choice(title="Interactive console", value="cli"),
@@ -396,10 +413,10 @@ Select all that apply.
             ],
         ).ask()
 
-    if get_user_by == "json":
-        add_cli_portfolio_json(feed_json=feed_json)
-
-
+    if get_portfolio_by == "json":
+        add_cli_portfolio_json(
+            feed_json=feed_json
+        )
     else:
         add_cli_portfolio_interactive(
             owner_name=owner_name,
