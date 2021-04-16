@@ -19,7 +19,7 @@ from wtforms.validators import (
     ValidationError,
 )
 
-from atat.forms.validators import alpha_numeric, number
+from atat.forms.validators import alpha_file_pdf, alpha_numeric, number
 from atat.utils.localization import translate
 
 from .data import JEDI_CLIN_TYPES
@@ -140,6 +140,7 @@ class AttachmentForm(BaseForm):
                 max=100, message=translate("forms.attachment.filename.length_error")
             ),
             alpha_numeric(),
+            alpha_file_pdf(),
         ],
     )
     object_name = HiddenField(
