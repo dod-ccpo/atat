@@ -152,7 +152,7 @@ class AttachmentForm(BaseForm):
             alpha_numeric(),
         ],
     )
-    accept = ".pdf,application/pdf"
+    accept = "application/pdf"
 
     def validate(self, *args, **kwargs):
         return super().validate(*args, **{**kwargs, "flash_invalid": False})
