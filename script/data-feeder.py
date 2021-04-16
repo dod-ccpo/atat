@@ -199,6 +199,7 @@ def add_cli_portfolio_interactive(
 
     # spinner set
     spinner = Spinner("Loading.. ")
+
     # spinner spin one step
     spinner.next()
 
@@ -229,21 +230,44 @@ def add_cli_portfolio_json(feed_json: str = None):
 
     if feed_json is not None:
         with open(feed_json) as json_file:
-            portfolio_request = json.load(json_file)
-            print("portfolio_request", portfolio_request)
-            print("portfolio_request len", len(portfolio_request))
-            time.sleep(1)
+            portfolios_request = json.load(json_file)
+            print("portfolios_request", portfolios_request)
+            print("portfolios_request len", len(portfolios_request))
+            bar = Bar("Processing...", max=len(portfolios_request)+1)
+            for index, portfolio in enumerate(portfolios_request, start=1):
+                # TODO: replace the print with logs
+                bar.next()
+                portfolio = None
+                print(" Evaluating portfolio number {} ".format(index))
+                # happy path values
+                dod_id = portfolio["user_owner"]["dod_id"]
+                portfolio_name = portfolio["portfolio"]["name"]
+                portfolio_desc = portfolio["portfolio"]["desc"]
+                portfolio_branch = portfolio["portfolio"]["branch"]
 
+                # required fields validations
+                if not is_valid_dod_id(dod_id):
+                    print(" Not valid dod_id on portfolio number {} ".format(index))
+                    is_good(False)
+                    continue
+                if not is_valid_portfolio_name(portfolio_name):
+                    print(" Not valid Portfolio name on portfolio number {} ".format(index))
+                    is_good(False)
+                    continue
 
+                # get user owner object
+                # owner_user = get_cli_user(dod_id=dod_id)
+                # adding the portfolio
+                # portfolio = create_atat_portfolio(owner_user, portfolio_name, portfolio_desc, portfolio_branch)
+                # Success indicator
+                if portfolio is not None:
+                    is_good(True)
+                else:
+                    is_good(False)
 
-    # testing progress bar
-    bar = Bar("Processing", max=20)
-    for i in range(20):
-        time.sleep(0.3)
-        bar.next()
-    bar.finish()
-
-    is_good(True)
+            # bar process completed.
+            bar.next()
+            bar.finish()
 
 
 # CLI input validations
