@@ -38,7 +38,9 @@ class TestCreatePortfolio:
         self.port.validate_new_portfolio()
         self.port.validate_name_desc()
         self.port.enter_portfolio_name(self.pName)
-        self.port.enter_portfolio_description("Entering the description to verify the text")
+        self.port.enter_portfolio_description(
+            "Entering the description to verify the text"
+        )
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.port.select_checkbox()
         self.port.click_save_portfolio_btn()

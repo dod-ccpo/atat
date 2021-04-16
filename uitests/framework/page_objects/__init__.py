@@ -36,7 +36,8 @@ class PageObjectMethods:
     def click_application(self):
         wait = WebDriverWait(self.driver, 30)
         wait.until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_applications_css))).click()
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_applications_css))
+        ).click()
 
     # Validating ATAT is displayed
     def validate_atat(self):
@@ -65,7 +66,7 @@ class PageObjectMethods:
                 "Settings",
             )
         )
-    
+
     def validate_brandon(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(

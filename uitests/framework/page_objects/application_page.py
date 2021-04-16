@@ -82,7 +82,8 @@ class CreateApplicationPages:
     def click_create_app(self):
         wait = WebDriverWait(self.driver, 30)
         wait.until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_create_app_css))).click()
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_create_app_css))
+        ).click()
 
     def click_applications(self):
         wait = WebDriverWait(self.driver, 30)
@@ -292,7 +293,7 @@ class CreateApplicationPages:
                 (By.CSS_SELECTOR, "div.sticky-cta-text"), "Add Members"
             )
         )
-    
+
     def validate_invite_sent(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
@@ -303,5 +304,6 @@ class CreateApplicationPages:
     def click_create_application(self):
         WebDriverWait(self.driver, 30).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, "a.usa-button.usa-button-primary"))).click()
-
+                (By.CSS_SELECTOR, "a.usa-button.usa-button-primary")
+            )
+        ).click()

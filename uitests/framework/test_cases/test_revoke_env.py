@@ -1,4 +1,3 @@
-import datetime
 import random
 import string
 
@@ -11,8 +10,6 @@ from uitests.framework.page_objects.application_page import CreateApplicationPag
 from uitests.framework.page_objects import PageObjectMethods
 from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
 from uitests.framework.utilities.read_properties import ReadConfig
-
-time_now = datetime.datetime.now().strftime("%m%d%Y%H%M%S%f")[:-3]
 
 
 @pytest.mark.regression
@@ -35,8 +32,14 @@ class Test_010_revoke_environment:
         self.port = AddNewPortfolioPages(self.driver)
         self.app = CreateApplicationPages(self.driver)
 
-        # Generator to create random Test Portfolio name
+        # Generator to create unique Portfolio name
         self.pName = "Test Portfolio" + random_generator()
+
+        # Generator to create unique Application name
+        self.appName = "App Name" + random_no_generator()
+
+        # Generator to create unique email address
+        self.email = random_generator() + "@gmail.com"
 
         self.cm.validate_atat()
         self.cm.validate_jedi()
@@ -53,10 +56,7 @@ class Test_010_revoke_environment:
         self.cm.click_application()
         self.app.click_create_app()
         self.app.validate_name_desc()
-
-        # Entering the application name using time stamp
-        self.app.enter_app_name(time_now)
-
+        self.app.enter_app_name(self.appName)
         self.app.enter_app_description("App description goes here")
         self.app.click_next_add_environments()
         self.app.validate_app_save()
@@ -65,7 +65,6 @@ class Test_010_revoke_environment:
         self.app.click_add_team_member()
         self.app.enter_first_name("Brandon")
         self.app.enter_last_name("Buchannan")
-        self.email = random_generator() + "@gmail.com"
         self.app.enter_email(self.email)
         self.app.enter_dod_id("1230456789")
         self.app.click_next_roles()
@@ -117,4 +116,8 @@ class Test_010_revoke_environment:
 
 
 def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
+    return "".join(random.choice(chars) for x in range(size))
+
+
+def random_no_generator(size=17, chars=string.digits):
     return "".join(random.choice(chars) for x in range(size))

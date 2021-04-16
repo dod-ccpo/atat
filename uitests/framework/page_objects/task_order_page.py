@@ -105,7 +105,9 @@ class TaskOrderPage:
     def click_next_add_TO_number(self):
         WebDriverWait(self.driver, 30).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, self.btn_next_add_to_number_css))).click()
+                (By.CSS_SELECTOR, self.btn_next_add_to_number_css)
+            )
+        ).click()
         # self.driver.find_element_by_css_selector(self.btn_next_add_to_number_css).click()
 
     # Step 2 adding the task order number

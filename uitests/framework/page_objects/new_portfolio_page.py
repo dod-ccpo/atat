@@ -39,7 +39,7 @@ class AddNewPortfolioPages:
     btn_confirm_revoke = "button.action-group__action.usa-button.usa-button-primary"
     btn_resend_invite = "tr:nth-child(2) > td.toggle-menu__container > div.toggle-menu > div > a:nth-child(2)"
     btn_resend_invite_b = "td.toggle-menu__container > div > div > a:nth-child(2)"
-    btn_resend_invite_confirm = "//html/body/div/div[3]/div[2]/div/div/div[2]/div[2]/div[3]/div/div/div/div/form/div[2]/input"
+    btn_resend_invite_confirm = "input[value='Resend Invite']"
     btn_resend_invite_confirm_b = "/html/body/div/div[3]/div[2]/div/div/div[3]/div/div[1]/div[2]/div/div/div/div/form/div[2]/input"
 
     def __init__(self, driver):
@@ -85,7 +85,9 @@ class AddNewPortfolioPages:
         # self.driver.find_element_by_css_selector(self.save_portfolio_btn_css).click()
         WebDriverWait(self.driver, 30).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, self.save_portfolio_btn_css))).click()
+                (By.CSS_SELECTOR, self.save_portfolio_btn_css)
+            )
+        ).click()
         # saveBtn = self.driver.find_element_by_css_selector(self.save_portfolio_btn_css)
         # saveBtn_text = saveBtn.text
         # if saveBtn_text == 'Save Portfolio':
@@ -95,7 +97,10 @@ class AddNewPortfolioPages:
         self.driver.find_element_by_css(self.cancel_portfolio_btn_css).click()
 
     def click_add_portfolio_manager(self):
-        self.driver.find_element_by_css_selector(self.btn_add_port_manager).click()
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_add_port_manager))
+        ).click()
+        # self.driver.find_element_by_css_selector(self.btn_add_port_manager).click()
 
     def click_box_permissions_one(self):
         self.driver.find_element_by_css_selector(
@@ -127,7 +132,11 @@ class AddNewPortfolioPages:
         self.driver.find_element_by_css_selector(self.btn_revoke).click()
 
     def click_revoke_invite(self):
-        self.driver.find_element_by_css_selector(self.btn_revoke_invite).click()
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_revoke_invite))
+        ).click()
+
+    # self.driver.find_element_by_css_selector(self.btn_revoke_invite).click()
 
     def click_revoke_invite_confirm(self):
         self.driver.find_element_by_css_selector(self.btn_revoke_invite_confirm).click()
@@ -144,7 +153,9 @@ class AddNewPortfolioPages:
     def click_resend_invite_confirm(self):
         wait = WebDriverWait(self.driver, 20)
         wait.until(
-            EC.element_to_be_clickable((By.XPATH, self.btn_resend_invite_confirm))
+            EC.element_to_be_clickable(
+                (By.CSS_SELECTOR, self.btn_resend_invite_confirm)
+            )
         ).click()
         # self.driver.find_element(By.XPATH, self.btn_resend_invite_confirm).click()
 

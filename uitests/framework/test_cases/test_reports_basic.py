@@ -1,4 +1,3 @@
-import datetime
 import os
 import random
 import string
@@ -12,7 +11,6 @@ from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects import PageObjectMethods
 
 current_dir_path = "./uitests/framework/resources/test.pdf"
-tnumber = datetime.datetime.now().strftime("%m%d%Y%H%M%S%f")[:-3]
 
 
 @pytest.mark.smoke
@@ -35,12 +33,17 @@ class TestReportsBasic:
         self.to = TaskOrderPage(self.driver)
         self.rep = ReportsPages(self.driver)
 
+        # Generator to create unique Test Portfolio name
+        self.pName = "Test Portfolio" + random_generator()
+
+        # Generator to create task order number
+        self.toNumber = random_no_generator()
+
         self.cm.validate_atat()
         self.cm.validate_jedi()
         self.port.click_new_portfolio()
         self.port.validate_new_portfolio()
         self.port.validate_name_desc()
-        self.pName = "Test Portfolio" + random_generator()
         self.port.enter_portfolio_name(self.pName)
         self.port.enter_portfolio_description(
             "Entering the description to verify the text"
@@ -65,7 +68,7 @@ class TestReportsBasic:
         file_input = self.driver.find_element_by_id("pdf")
         file_input.send_keys(absolute_file_path)
         self.to.click_next_add_TO_number()
-        self.to.enter_TO_number(tnumber)
+        self.to.enter_TO_number(self.toNumber)
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_next_add_clin_number()
         self.to.enter_clin_number("0001")
@@ -111,4 +114,8 @@ class TestReportsBasic:
 
 
 def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
+    return "".join(random.choice(chars) for x in range(size))
+
+
+def random_no_generator(size=17, chars=string.digits):
     return "".join(random.choice(chars) for x in range(size))
