@@ -197,6 +197,33 @@ def add_cli_portfolio_interactive(
             choices=CHOICE_SERVICE_BRANCHES,
         ).ask()
 
+    # spinner set
+    spinner = Spinner("Loading.. ")
+    # spinner spin one step
+    spinner.next()
+
+    # adding the portfolio
+    portfolio = create_atat_portfolio(owner_user, name, desc, comp)
+
+    # spinner spin second step
+    spinner.next()
+
+    print()
+    print("Name %s", name)
+    print("Desc %s", desc)
+    print("Comp", comp)
+
+    # Success indicator
+    if portfolio is not None:
+        is_good(True)
+    else:
+        is_good(False)
+
+
+def add_cli_portfolio_json(feed_json: str = None):
+    if feed_json is None:
+        name = questionary.path("please choice an PDF file?").ask()
+
     # testing progress bar
     bar = Bar("Processing", max=20)
     for i in range(20):
@@ -204,28 +231,7 @@ def add_cli_portfolio_interactive(
         bar.next()
     bar.finish()
 
-    # adding the portfolio
-    portfolio = create_atat_portfolio(owner_user, name, desc, comp)
-
-    state = 0
-    spinner = Spinner("Loading ")
-    while state < 10:
-        # Do some work
-        time.sleep(0.3)
-        state = state + 1
-        spinner.next()
-
-    print()
-    print("Name %s", name)
-    print("Desc %s", desc)
-    print("Comp", comp)
-
     is_good(True)
-
-
-def add_cli_portfolio_json(feed_json: str = None):
-    if feed_json is None:
-        name = questionary.path("please choice an PDF file?").ask()
 
 
 # CLI input validations
@@ -323,23 +329,27 @@ Select all that apply.
 
     :return: create a portfolio on the DB of ATAT
     """
+
     # select type of interaction
     if None in [owner_name, owner_dod_id, feed_json]:
         get_user_by = questionary.select(
             "Find a user by?",
             choices=[
                 Choice(title="Interactive console", value="cli"),
-                Choice(title="load json", value="json"),
+                Choice(title="Load a json file", value="json"),
             ],
         ).ask()
 
-    add_cli_portfolio_interactive(
-        owner_name=owner_name,
-        owner_dod_id=owner_dod_id,
-        name=name,
-        desc=desc,
-        comp=comp,
-    )
+    if get_user_by == "json":
+        add_cli_portfolio_json(feed_json=feed_json)
+    else:
+        add_cli_portfolio_interactive(
+            owner_name=owner_name,
+            owner_dod_id=owner_dod_id,
+            name=name,
+            desc=desc,
+            comp=comp,
+        )
 
 
 # Run CLI Tool app
