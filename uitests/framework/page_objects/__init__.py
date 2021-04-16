@@ -34,11 +34,9 @@ class PageObjectMethods:
         self.driver.find_element_by_css_selector(self.btn_task_orders_css).click()
 
     def click_application(self):
-        wait = WebDriverWait(self.driver, 20)
+        wait = WebDriverWait(self.driver, 30)
         wait.until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_applications_css))
-        ).click()
-        # self.driver.find_element_by_css_selector(self.btn_applications_css).click()
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_applications_css))).click()
 
     # Validating ATAT is displayed
     def validate_atat(self):

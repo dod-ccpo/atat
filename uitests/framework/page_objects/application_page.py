@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from . import PageObjectMethods
 import datetime
 
 time_now = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
@@ -81,14 +80,12 @@ class CreateApplicationPages:
         self.driver.find_element_by_css_selector(self.btn_select_portfolio_css).click()
 
     def click_create_app(self):
-        wait = WebDriverWait(self.driver, 20)
+        wait = WebDriverWait(self.driver, 30)
         wait.until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_create_app_css))
-        ).click()
-        # self.driver.find_element_by_css_selector(self.btn_create_app_css).click()
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_create_app_css))).click()
 
     def click_applications(self):
-        wait = WebDriverWait(self.driver, 20)
+        wait = WebDriverWait(self.driver, 30)
         wait.until(
             EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_application))
         ).click()

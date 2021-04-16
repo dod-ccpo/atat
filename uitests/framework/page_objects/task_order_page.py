@@ -1,6 +1,5 @@
 import datetime
 
-from . import PageObjectMethods
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -104,9 +103,10 @@ class TaskOrderPage:
         self.driver.find_element_by_css(self.lnk_dummy_file_css).click()
 
     def click_next_add_TO_number(self):
-        self.driver.find_element_by_css_selector(
-            self.btn_next_add_to_number_css
-        ).click()
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, self.btn_next_add_to_number_css))).click()
+        # self.driver.find_element_by_css_selector(self.btn_next_add_to_number_css).click()
 
     # Step 2 adding the task order number
     def cancel_btn_on_add_to(self):
