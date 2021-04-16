@@ -222,10 +222,19 @@ def add_cli_portfolio_interactive(
 
 def add_cli_portfolio_json(feed_json: str = None):
     if feed_json is None:
-        name = questionary.path(
+        feed_json = questionary.path(
             "please choice an PDF file?",
             validate=CliValidatorFileJSON
         ).ask()
+
+    if feed_json is not None:
+        with open(feed_json) as json_file:
+            portfolio_request = json.load(json_file)
+            print("portfolio_request", portfolio_request)
+            print("portfolio_request len", len(portfolio_request))
+            time.sleep(1)
+
+
 
     # testing progress bar
     bar = Bar("Processing", max=20)
@@ -365,6 +374,8 @@ Select all that apply.
 
     if get_user_by == "json":
         add_cli_portfolio_json(feed_json=feed_json)
+
+
     else:
         add_cli_portfolio_interactive(
             owner_name=owner_name,
