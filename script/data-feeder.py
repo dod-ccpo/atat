@@ -99,7 +99,7 @@ def get_atat_user_by_dod_id(dod_id: str = None):
 
 
 def create_atat_portfolio(
-    owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
+        owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
 ):
     with web_app.app_context():
         try:
@@ -176,11 +176,11 @@ def get_cli_user(dod_id: str = None, name: str = None):
 
 
 def add_cli_portfolio_interactive(
-    owner_name: str = None,
-    owner_dod_id: str = None,
-    name: str = None,
-    desc: str = None,
-    comp: Optional[str] = None,
+        owner_name: str = None,
+        owner_dod_id: str = None,
+        name: str = None,
+        desc: str = None,
+        comp: Optional[str] = None,
 ):
     # get user owner object
     owner_user = get_cli_user(name=owner_name, dod_id=owner_dod_id)
@@ -222,7 +222,10 @@ def add_cli_portfolio_interactive(
 
 def add_cli_portfolio_json(feed_json: str = None):
     if feed_json is None:
-        name = questionary.path("please choice an PDF file?").ask()
+        name = questionary.path(
+            "please choice an PDF file?",
+            validate=CliValidatorFileJSON
+        ).ask()
 
     # testing progress bar
     bar = Bar("Processing", max=20)
@@ -255,6 +258,17 @@ def is_valid_portfolio_name(portfolio_name: str = None):
         )
 
 
+def is_valid_uri_json_file(file_json: str = None):
+    if file_json is None:
+        return False
+    else:
+        return (
+            True
+            if re.match("^[a-zA-Z\/\-\_]+.json$", file_json)
+            else False
+        )
+
+
 def is_valid_component_branches_list(component_branches: list = []):
     if isinstance(component_branches, list):
         if len(component_branches) > 0:
@@ -267,6 +281,15 @@ class CliValidatorDodId(Validator):
         if not is_valid_dod_id(document.text):
             raise ValidationError(
                 message="Please enter a 10-digit DoD ID number.",
+                cursor_position=len(document.text),
+            )
+
+
+class CliValidatorFileJSON(Validator):
+    def validate(self, document):
+        if not is_valid_uri_json_file(document.text):
+            raise ValidationError(
+                message="This is not a valid json File.",
                 cursor_position=len(document.text),
             )
 
@@ -304,12 +327,12 @@ def get_user(name: str = None, dod_id: str = None):
 
 @cli_app.command()
 def add_portfolio(
-    owner_name: str = None,
-    owner_dod_id: str = None,
-    name: str = None,
-    desc: str = None,
-    comp: Optional[str] = None,
-    feed_json: str = None,
+        owner_name: str = None,
+        owner_dod_id: str = None,
+        name: str = None,
+        desc: str = None,
+        comp: Optional[str] = None,
+        feed_json: str = None,
 ):
     """
     Add A New Portfolio like form on ATAT
@@ -333,7 +356,7 @@ Select all that apply.
     # select type of interaction
     if None in [owner_name, owner_dod_id, feed_json]:
         get_user_by = questionary.select(
-            "Find a user by?",
+            "Add a portfolio by:",
             choices=[
                 Choice(title="Interactive console", value="cli"),
                 Choice(title="Load a json file", value="json"),
