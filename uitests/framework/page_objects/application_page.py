@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from . import PageObjectMethods
 import datetime
 
 time_now = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
@@ -81,14 +80,13 @@ class CreateApplicationPages:
         self.driver.find_element_by_css_selector(self.btn_select_portfolio_css).click()
 
     def click_create_app(self):
-        wait = WebDriverWait(self.driver, 20)
+        wait = WebDriverWait(self.driver, 30)
         wait.until(
             EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_create_app_css))
         ).click()
-        # self.driver.find_element_by_css_selector(self.btn_create_app_css).click()
 
     def click_applications(self):
-        wait = WebDriverWait(self.driver, 20)
+        wait = WebDriverWait(self.driver, 30)
         wait.until(
             EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_application))
         ).click()
@@ -280,3 +278,32 @@ class CreateApplicationPages:
                 "Save changes to revoke access, this can not be undone.",
             )
         )
+
+    def validate_name_brandon(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "header > nav > div > a:nth-child(1)"),
+                "Brandon Buchannan",
+            )
+        )
+
+    def validate_add_members(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div.sticky-cta-text"), "Add Members"
+            )
+        )
+
+    def validate_invite_sent(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "h3.usa-alert-heading"), "invitation has been sent"
+            )
+        )
+
+    def click_create_application(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, "a.usa-button.usa-button-primary")
+            )
+        ).click()
