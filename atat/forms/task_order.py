@@ -139,7 +139,6 @@ class AttachmentForm(BaseForm):
             Length(
                 max=100, message=translate("forms.attachment.filename.length_error")
             ),
-            alpha_numeric(),
             alpha_file_pdf(),
         ],
     )

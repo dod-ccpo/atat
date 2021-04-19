@@ -98,8 +98,13 @@ def file_length(max_length=50000000, message=None):
     return _file_length
 
 
-def alpha_file_pdf(message="File name must end on '.pdf'. and content only valid characters."):
-    return Regexp(regex=r"^[A-Za-z0-9\-_ \.\/\\]*.pdf$", message=message, flags=re.IGNORECASE)
+def alpha_file_pdf(
+    message=translate("forms.validators.alpha_numeric_message")
+    + " and File name must end on '.pdf'.",
+):
+    return Regexp(
+        regex=r"^[A-Za-z0-9\-_ \.\/\\]*.pdf$", message=message, flags=re.IGNORECASE
+    )
 
 
 def alpha_numeric(message=translate("forms.validators.alpha_numeric_message")):
