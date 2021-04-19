@@ -25,7 +25,7 @@ class TestAddNewCcpoUser:
         self.driver.get(self.url + "/ccpo-users")
         self.driver.execute_script(
             'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "18. Verification of New CCPO User"}}'
+            '"arguments": {"name": "29. Verification of New CCPO User"}}'
         )
 
         # Initializing Page Objects

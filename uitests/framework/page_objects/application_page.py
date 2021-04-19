@@ -1,14 +1,12 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import datetime
 
-time_now = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
+# time_now = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
 
 
 class CreateApplicationPages:
     # Main Application overview page
-    # btn_new_portfolio_css = "a.usa-button.usa-button-primary"
     btn_select_portfolio_css = "span.sidenav__link-label"
     btn_create_app_css = "div.portfolio-applications > div > div > a"
     btn_collapse_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div.portfolio-applications > div > div.action-group > a"
@@ -72,10 +70,6 @@ class CreateApplicationPages:
     def __init__(self, driver):
         self.driver = driver
 
-    # Main page viewing status application and creating an application
-    # def click_new_portfolio(self):
-    # self.driver.find_element_by_css_selector(self.btn_new_portfolio_css).click()
-
     def select_portfolio(self):
         self.driver.find_element_by_css_selector(self.btn_select_portfolio_css).click()
 
@@ -131,10 +125,15 @@ class CreateApplicationPages:
 
     # Step 3 add members to environments
     def click_save_app(self):
-        self.driver.find_element_by_css_selector(self.btn_save_application_css).click()
+        wait = WebDriverWait(self.driver, 30)
+        wait.until(
+            EC.element_to_be_clickable(
+                (By.CSS_SELECTOR, self.btn_save_application_css)
+            )
+        ).click()
 
     def click_save_app_next(self):
-        wait = WebDriverWait(self.driver, 20)
+        wait = WebDriverWait(self.driver, 30)
         wait.until(
             EC.element_to_be_clickable(
                 (By.CSS_SELECTOR, self.btn_save_application_next_css)
@@ -142,7 +141,7 @@ class CreateApplicationPages:
         ).click()
 
     def click_add_member(self):
-        wait = WebDriverWait(self.driver, 20)
+        wait = WebDriverWait(self.driver, 30)
         wait.until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, self.btn_add_member_css))
         ).click()
@@ -297,7 +296,7 @@ class CreateApplicationPages:
     def validate_invite_sent(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "h3.usa-alert-heading"), "invitation has been sent"
+                (By.CSS_SELECTOR, "div.portfolio-content > div > div.usa-alert.usa-alert-success"), "Brandon's invitation has been sent"
             )
         )
 
@@ -307,3 +306,40 @@ class CreateApplicationPages:
                 (By.CSS_SELECTOR, "a.usa-button.usa-button-primary")
             )
         ).click()
+
+    def click_acc(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, "div:nth-child(2) > h4 > button")
+            )
+        ).click()
+    
+    def validate_acc_dev(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, ".usa-accordion-content > .accordion__content--list-item:nth-of-type(1) > .row > .col.col--grow")
+            )
+        )
+
+    def validate_acc_prod(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, ".usa-accordion-content > .accordion__content--list-item:nth-of-type(2) > .row > .col.col--grow")
+            )
+        )
+
+    def validate_acc_stage(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, ".usa-accordion-content > .accordion__content--list-item:nth-of-type(3) > .row > .col.col--grow")
+            )
+        )
+    
+    def validate_acc_test(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, ".usa-accordion-content > .accordion__content--list-item:nth-of-type(4) > .row > .col.col--grow")
+            )
+        )
+
+    
