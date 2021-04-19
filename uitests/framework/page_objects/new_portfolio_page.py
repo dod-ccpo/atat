@@ -46,9 +46,7 @@ class AddNewPortfolioPages:
         self.driver = driver
 
     def click_new_portfolio(self):
-        new_portfolio_btn = self.driver.find_element_by_css_selector(
-            self.btn_new_portfolio_css
-        )
+        new_portfolio_btn = self.driver.find_element_by_css_selector(self.btn_new_portfolio_css)
         new_portfolio_btn_text = new_portfolio_btn.text
         if new_portfolio_btn_text == "Add New Portfolio":
             new_portfolio_btn.click()

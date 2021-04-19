@@ -14,7 +14,7 @@ from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPag
 
 
 @pytest.mark.regression
-class Test_Revoke_Portfolio_Member_Invite:
+class TestRevokePortfolioMemberInvite:
     url2 = ReadConfig.getLoginLocalURL()
 
     def test_revoke_port_mem_invite(self, setup):

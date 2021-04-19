@@ -10,7 +10,7 @@ from uitests.framework.utilities.read_properties import ReadConfig
 
 
 @pytest.mark.smoke
-class Test_Login:
+class TestLogin:
     url2 = ReadConfig.getLoginLocalURL()
 
     def test_user_login(self, setup):

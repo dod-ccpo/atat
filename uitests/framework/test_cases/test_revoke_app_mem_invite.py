@@ -13,7 +13,7 @@ from uitests.framework.utilities.read_properties import ReadConfig
 
 
 @pytest.mark.regression
-class Test_010_revoke_app_mem_invite:
+class TestRevokeAppMemInvite:
     url2 = ReadConfig.getLoginLocalURL()
 
     def test_revoke_app_mem_invite(self, setup):

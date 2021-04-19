@@ -13,7 +13,7 @@ from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPag
 
 
 @pytest.mark.regression
-class Test_Resend_Portfolio_Member_Invite:
+class TestResendPortfolioMemberInvite:
     url2 = ReadConfig.getLoginLocalURL()
 
     def test_resend_port_mem_invite(self, setup):
