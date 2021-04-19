@@ -105,7 +105,7 @@ class ReportsPages:
 
     # verifying the Active TO title
     def active_to_text(self):
-        WebDriverWait(self.driver, 5).until(
+        WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, "h3.h4"), "Active Task Orders",
             )
@@ -113,7 +113,7 @@ class ReportsPages:
 
     # verifying the Active TaskOrder details
     def active_task_order_number(self, tno):
-        WebDriverWait(self.driver, 5).until(
+        WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, "div.jedi-clin-funding__active-task-orders > a",), tno
             )
