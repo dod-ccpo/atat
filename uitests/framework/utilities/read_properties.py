@@ -14,3 +14,4 @@ class ReadConfig:
     def getLoginLocalURL():
         url2 = os.getenv("loginUrl")
         return url2
+    
