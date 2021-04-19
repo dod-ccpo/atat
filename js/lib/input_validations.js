@@ -142,6 +142,6 @@ export default {
     match: /^[A-Za-z0-9\-_ \.\/\\]*.pdf$/i,
     unmask: [],
     validationError:
-      'File names can only contain the characters A-Z, 0-9, space, hyphen, underscore, and period. And must end on .pdf.',
+      'File names can only contain the characters A-Z, 0-9, space, hyphen, underscore, and period.',
   },
 }
