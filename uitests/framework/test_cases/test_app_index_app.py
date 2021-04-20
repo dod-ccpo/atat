@@ -23,7 +23,7 @@ class TestApplicationWithIndex:
         self.driver.maximize_window()
         self.driver.execute_script(
             'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "28. Application index"}}'
+            '"arguments": {"name": "28. Application Index"}}'
         )
 
         # Initializing Page Objects
@@ -74,7 +74,7 @@ class TestApplicationWithIndex:
             "document.querySelector('#environment_roles-0-role-None').value='ADMIN'"
         )
         self.driver.execute_script(
-            "document.querySelector('#environment_roles-0-role-None').value='BILLING_READ'"
+            "document.querySelector('#environment_roles-1-role-None').value='BILLING_READ'"
         )
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.app.click_save_app()

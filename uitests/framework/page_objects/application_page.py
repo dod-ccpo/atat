@@ -342,4 +342,11 @@ class CreateApplicationPages:
             )
         )
 
+    def validate_name_access(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div.member-form > h2"), "Application Permissions"
+            )
+        )
+
     
