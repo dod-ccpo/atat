@@ -86,7 +86,7 @@
 
 {% macro PermsFields(form, new=False, member_role_id=None) %}
   <h2>{{ "portfolios.applications.members.form.app_perms.title" | translate }}</h2>
-  <p class='usa-input__help subtitle'>{{ "portfolios.applications.members.form.app_perms.description" | translate | safe}}</p>
+  <p class='usa-input__help subtitle'>{{ "portfolios.applications.members.form.app_perms.description" | translate({"learn_more_url": "https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles"}) | safe}}</p>
   <div class="application-perms">
     {% if new %}
       {% set team_mgmt = form.perms_team_mgmt.name %}
@@ -106,7 +106,7 @@
       {% if not new -%}
         {{ "portfolios.applications.members.form.env_access.edit_description" | translate }}
       {%- endif %}
-      {{ "portfolios.applications.members.form.env_access.description" | translate | safe }}
+      {{ "portfolios.applications.members.form.env_access.description" | translate({"learn_more_url": "https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles"}) | safe }}
     </p>
     <hr>
     {% for environment_data in form.environment_roles %}
