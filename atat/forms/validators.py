@@ -100,7 +100,7 @@ def file_length(max_length=50000000, message=None):
 
 def alpha_numeric_name_pdf(message=translate("forms.task_order.filename_error"),):
     return Regexp(
-        regex=r"^([A-Za-z0-9\-_ \.\/\\]*(\.pdf))?$",
+        regex=r"^([A-Za-z0-9\-_ \.\/\\]+\.pdf)?$",
         message=message,
         flags=re.IGNORECASE,
     )
