@@ -19,7 +19,7 @@ from wtforms.validators import (
     ValidationError,
 )
 
-from atat.forms.validators import alpha_numeric_name_pdf, alpha_numeric, number
+from atat.forms.validators import alpha_numeric, alpha_numeric_name_pdf, number
 from atat.utils.localization import translate
 
 from .data import JEDI_CLIN_TYPES
