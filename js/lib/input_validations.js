@@ -139,7 +139,7 @@ export default {
   },
   restrictedFileName: {
     mask: false,
-    match: /^[A-Za-z0-9\-_ \.\/\\]*\.pdf$/i,
+    match: /^[A-Za-z0-9\-_ \.\/\\]+\.pdf$/i,
     unmask: [],
     validationError:
       'File names must end in .pdf and can only contain the characters A-Z, 0-9, space, hyphen, underscore, and period.',
