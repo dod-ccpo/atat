@@ -27,11 +27,6 @@
         <span class="topbar__link-label">Logout</span>
         {{ Icon('logout', classes='topbar__link-icon') }}
       </a>
-      {% else %}
-      <a href="{{ url_for('atat.home') }}" class="topbar__link" title='Login'>
-        <span class="topbar__link-label">{{ "base_public.login" | translate }}</span>
-        {{ Icon('avatar', classes='topbar__link-icon') }}
-      </a>
       {% endif %}
     </div>
   </nav>
