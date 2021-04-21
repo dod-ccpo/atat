@@ -47,9 +47,7 @@ class CreateApplicationPages:
     drpdn_stage_css = "#environment_roles-2-role-None"
     drpdn_test_css = "#environment_roles-3-role-None"
     btn_special_previous_css = "#add-app-mem > div > div:nth-child(2) > div.action-group > input.action-group__action.usa-button.usa-button-secondary"
-    btn_save_css = (
-        "#add-app-mem > div > div:nth-child(2) > div.action-group > input:nth-child(1)"
-    )
+    btn_save_css = "div:nth-child(2) > div.action-group > input:nth-child(1)"
 
     # Step 4 review, save, and add/or more team members
     btn_save_app_css = (
@@ -61,11 +59,15 @@ class CreateApplicationPages:
     acc_resend_invite_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div > div.panel.form > section > div > table > tbody > tr > td.toggle-menu__container > div > div > a:nth-child(1)"
     acc_revoke_invite_css = "#app-root > div.global-layout > div.global-panel-container > div > div > div.portfolio-content > div > div.panel.form > section > div > table > tbody > tr > td.toggle-menu__container > div > div > a:nth-child(1)"
     btn_toggle_menu_css = "div.toggle-menu > span"
-    btn_toggle_menu_b_css = (
-        "tr:nth-child(2) > td.toggle-menu__container > div.toggle-menu > span"
-    )
+    btn_toggle_menu_b_css = "tr:nth-child(2) > td.toggle-menu__container > div.toggle-menu > span"
     btn_role_perm = "div.toggle-menu > div > a:nth-child(1)"
+    btn_role_perm_b = "tr:nth-of-type(2) > td.toggle-menu__container > .toggle-menu > .accordion-table__item-toggle-content.toggle-menu__toggle > a:nth-of-type(1)"
     btn_save_revoke_css = "input[type='submit']"
+    box_edit_app = "div:nth-child(2) > div.member-form > div > div:nth-child(1) > div > fieldset > legend > label"
+    box_edit_fund = "div:nth-child(2) > div.member-form > div > div:nth-child(2) > div > fieldset > legend > label"
+    box_edit_port = "div:nth-child(2) > div.member-form > div > div:nth-child(3) > div > fieldset > legend > label"
+    box_edit_rep = "div:nth-child(2) > div.member-form > div > div:nth-child(4) > div > fieldset > legend > label"
+    box_edit_fund_remove = ".portfolio-perms > div:nth-of-type(2) > .usa-input.input__inline-fields.checked > fieldset.usa-input__choices > legend > label"
 
     def __init__(self, driver):
         self.driver = driver
@@ -196,7 +198,7 @@ class CreateApplicationPages:
         self.driver.find_element_by_css(self.btn_special_previous_css).click()
 
     def click_save(self):
-        self.driver.find_element_by_css(self.btn_save_css).click()
+        self.driver.find_element_by_css_selector(self.btn_save_css).click()
 
     # Step 4 review, save, and add/or more team members
     def click_save_application(self):
@@ -225,6 +227,9 @@ class CreateApplicationPages:
 
     def click_edit_roles_perm(self):
         self.driver.find_element_by_css_selector(self.btn_role_perm).click()
+    
+    def click_edit_roles_perm_b(self):
+        self.driver.find_element_by_css_selector(self.btn_role_perm_b).click()
 
     def click_revoke_env(self):
         self.driver.find_element_by_css_selector(self.btn_remove_env_css).click()
@@ -296,7 +301,7 @@ class CreateApplicationPages:
     def validate_invite_sent(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.portfolio-content > div > div.usa-alert.usa-alert-success"), "Brandon's invitation has been sent"
+                (By.CSS_SELECTOR, "h3.usa-alert-heading"), "invitation has been sent"
             )
         )
 
@@ -348,5 +353,32 @@ class CreateApplicationPages:
                 (By.CSS_SELECTOR, "div.member-form > h2"), "Application Permissions"
             )
         )
-
     
+    def validate_port_permission(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div > div:nth-child(2) > div.member-form > h2"), "Set Portfolio Permissions"
+            )
+        )
+    
+    def click_next_role(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, self.btn_next_roles_css)
+            )
+        )
+
+    def click_box_app(self):
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_app))).click()
+
+    def click_box_port(self):
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_port))).click()
+
+    def click_box_rep(self):
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_rep))).click()
+
+    def click_box_fund(self):
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_fund))).click()    
+    
+    def click_box_fund_remove(self):
+        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_fund_remove))).click()    
