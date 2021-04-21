@@ -8,7 +8,7 @@ from onelogin.saml2.errors import OneLogin_Saml2_ValidationError
 from atat.domain.exceptions import UnauthenticatedError
 from atat.routes import get_user_from_saml_attributes
 from atat.routes.saml_helpers import (
-    EIFSAttributes,
+    GlobalDirectoryAttributes,
     _cache_params_in_session,
     _get_idp_config,
     _make_dev_saml_config,
@@ -234,13 +234,13 @@ class TestSamlAttributes:
     @pytest.fixture(scope="function")
     def mock_attributes(self):
         return {
-            EIFSAttributes.GIVEN_NAME: "",
-            EIFSAttributes.LAST_NAME: "",
-            EIFSAttributes.EMAIL: "",
-            EIFSAttributes.SAM_ACCOUNT_NAME: "",
-            EIFSAttributes.US_CITIZEN: "",
-            EIFSAttributes.AGENCY_CODE: "",
-            EIFSAttributes.MOBILE: "",
+            GlobalDirectoryAttributes.GIVEN_NAME: "",
+            GlobalDirectoryAttributes.LAST_NAME: "",
+            GlobalDirectoryAttributes.EMAIL: "",
+            GlobalDirectoryAttributes.SAM_ACCOUNT_NAME: "",
+            GlobalDirectoryAttributes.US_CITIZEN: "",
+            GlobalDirectoryAttributes.AGENCY_CODE: "",
+            GlobalDirectoryAttributes.MOBILE: "",
         }
 
     def test_get_user_from_saml_attributes(self, mock_attributes):
@@ -248,9 +248,9 @@ class TestSamlAttributes:
         saml_attributes = {
             **mock_attributes,
             **{
-                EIFSAttributes.SAM_ACCOUNT_NAME: f"{expected_dod_id}.MIL",
-                EIFSAttributes.US_CITIZEN: "Y",
-                EIFSAttributes.AGENCY_CODE: "F",
+                GlobalDirectoryAttributes.SAM_ACCOUNT_NAME: f"{expected_dod_id}.MIL",
+                GlobalDirectoryAttributes.US_CITIZEN: "Y",
+                GlobalDirectoryAttributes.AGENCY_CODE: "F",
             },
         }
         user = get_user_from_saml_attributes(saml_attributes)
@@ -266,7 +266,9 @@ class TestSamlAttributes:
     def test_get_user_from_saml_invalid_sam_format(self, mock_attributes):
         saml_attributes = {
             **mock_attributes,
-            **{EIFSAttributes.SAM_ACCOUNT_NAME: "sam account name format changed",},
+            **{
+                GlobalDirectoryAttributes.SAM_ACCOUNT_NAME: "sam account name format changed",
+            },
         }
         with pytest.raises(Exception):
             get_user_from_saml_attributes(saml_attributes)
@@ -275,7 +277,7 @@ class TestSamlAttributes:
         expected_dod_id = "1234567890"
         saml_attributes = {
             **mock_attributes,
-            **{EIFSAttributes.SAM_ACCOUNT_NAME: f"{expected_dod_id}.MIL",},
+            **{GlobalDirectoryAttributes.SAM_ACCOUNT_NAME: f"{expected_dod_id}.MIL",},
         }
         expected_user = UserFactory.create(dod_id=expected_dod_id)
 
@@ -286,9 +288,9 @@ class TestSamlAttributes:
         saml_attributes = {
             **mock_attributes,
             **{
-                EIFSAttributes.SAM_ACCOUNT_NAME: f"{expected_dod_id}.MIL",
-                EIFSAttributes.MOBILE: "1234",
-                EIFSAttributes.TELEPHONE: "5678",
+                GlobalDirectoryAttributes.SAM_ACCOUNT_NAME: f"{expected_dod_id}.MIL",
+                GlobalDirectoryAttributes.MOBILE: "1234",
+                GlobalDirectoryAttributes.TELEPHONE: "5678",
             },
         }
 
@@ -301,8 +303,8 @@ class TestSamlAttributes:
         saml_attributes = {
             **mock_attributes,
             **{
-                EIFSAttributes.SAM_ACCOUNT_NAME: f"{expected_dod_id}.MIL",
-                EIFSAttributes.MOBILE: "1234",
+                GlobalDirectoryAttributes.SAM_ACCOUNT_NAME: f"{expected_dod_id}.MIL",
+                GlobalDirectoryAttributes.MOBILE: "1234",
             },
         }
 

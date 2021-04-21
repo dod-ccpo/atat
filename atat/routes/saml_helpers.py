@@ -169,7 +169,9 @@ def get_user_from_saml_attributes(saml_attributes):
     with the info if one isn't found.
     """
     try:
-        sam_account_name = saml_attributes.get(EIFSAttributes.SAM_ACCOUNT_NAME)
+        sam_account_name = saml_attributes.get(
+            GlobalDirectoryAttributes.SAM_ACCOUNT_NAME
+        )
         dod_id, short_designation = SAM_ACCOUNT_FORMAT.match(sam_account_name).groups()
         return Users.get_by_dod_id(dod_id)
     except TypeError:
@@ -182,21 +184,21 @@ def get_user_from_saml_attributes(saml_attributes):
         app.logger.info("No user found for DoD ID %s, creating...", dod_id)
 
     saml_user_details = {
-        "first_name": saml_attributes.get(EIFSAttributes.GIVEN_NAME),
-        "last_name": saml_attributes.get(EIFSAttributes.LAST_NAME),
-        "email": saml_attributes.get(EIFSAttributes.EMAIL),
+        "first_name": saml_attributes.get(GlobalDirectoryAttributes.GIVEN_NAME),
+        "last_name": saml_attributes.get(GlobalDirectoryAttributes.LAST_NAME),
+        "email": saml_attributes.get(GlobalDirectoryAttributes.EMAIL),
         "designation": DESIGNATIONS.get(short_designation),
     }
 
-    is_us_citizen = saml_attributes.get(EIFSAttributes.US_CITIZEN)
+    is_us_citizen = saml_attributes.get(GlobalDirectoryAttributes.US_CITIZEN)
     if is_us_citizen == "Y":
         saml_user_details["citizenship"] = "United States"
 
-    agency_code = saml_attributes.get(EIFSAttributes.AGENCY_CODE)
+    agency_code = saml_attributes.get(GlobalDirectoryAttributes.AGENCY_CODE)
     saml_user_details["service_branch"] = AGENCY_CODES.get(agency_code)
 
-    telephone_number = saml_attributes.get(EIFSAttributes.TELEPHONE)
-    mobile = saml_attributes.get(EIFSAttributes.MOBILE)
+    telephone_number = saml_attributes.get(GlobalDirectoryAttributes.TELEPHONE)
+    mobile = saml_attributes.get(GlobalDirectoryAttributes.MOBILE)
 
     saml_user_details["phone_number"] = telephone_number or mobile
 
