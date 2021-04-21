@@ -7,8 +7,6 @@ from flask import Response, url_for
 import atat
 from atat.app import make_app, make_config
 from atat.domain.auth import UNPROTECTED_ROUTES as _NO_LOGIN_REQUIRED
-from atat.domain.permission_sets import PermissionSets
-from atat.models import ApplicationRoleStatus, CSPRole, PortfolioRoleStatus
 from tests.factories import *
 
 _NO_ACCESS_CHECK_REQUIRED = _NO_LOGIN_REQUIRED + [
@@ -16,7 +14,6 @@ _NO_ACCESS_CHECK_REQUIRED = _NO_LOGIN_REQUIRED + [
     "atat.catch_all",  # available to all users
     "atat.home",  # available to all users
     "dev.messages",  # dev tool
-    "dev.test_email",  # dev tool
     "portfolios.accept_invitation",  # available to all users; access control is built into invitation logic
     "portfolios.create_portfolio",  # create a portfolio
     "portfolios.new_portfolio_step_1",  # all users can create a portfolio
