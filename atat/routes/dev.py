@@ -10,7 +10,6 @@ from atat.domain.permission_sets import PermissionSets
 from atat.domain.users import Users
 from atat.forms.data import SERVICE_BRANCHES
 from atat.forms.validators import name, number
-from atat.jobs import send_mail
 from atat.routes.saml_helpers import (
     get_or_create_dev_saml_user,
     load_attributes_from_dev_assertion,
@@ -232,15 +231,6 @@ def local_access():
     current_user_setup(user)
 
     return redirect(redirect_after_login_url())
-
-
-@dev_bp.route("/test-email")
-def test_email():
-    send_mail.delay(
-        [request.args.get("to")], request.args.get("subject"), request.args.get("body")
-    )
-
-    return redirect(url_for("dev.messages"))
 
 
 @dev_bp.route("/messages")
