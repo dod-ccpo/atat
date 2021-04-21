@@ -341,7 +341,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "detect-secrets"
-version = "1.0.3"
+version = "1.1.0"
 description = "Tool for detecting secrets in the codebase"
 category = "dev"
 optional = false
@@ -352,6 +352,7 @@ pyyaml = "*"
 requests = "*"
 
 [package.extras]
+gibberish = ["gibberish-detector"]
 word_list = ["pyahocorasick"]
 
 [[package]]
@@ -1506,7 +1507,7 @@ lxml = ">=3.8"
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.8.7"
-content-hash = "239585934502c09eb6ae215143b7e51decaf2880299fa743553070d153cff709"
+content-hash = "fe9d8704d25b8cfe85e39b95e322ca976b1cd8cd7361b54b2ef9078ba151c661"
 
 [metadata.files]
 adal = [
@@ -1717,8 +1718,8 @@ defusedxml = [
     {file = "defusedxml-0.6.0.tar.gz", hash = "sha256:f684034d135af4c6cbb949b8a4d2ed61634515257a67299e5f940fbaa34377f5"},
 ]
 detect-secrets = [
-    {file = "detect_secrets-1.0.3-py2.py3-none-any.whl", hash = "sha256:715d2351d1f0f18cf4e7861e74b4135af909652c07a79501abac86400c9d2164"},
-    {file = "detect_secrets-1.0.3.tar.gz", hash = "sha256:e2ea3f6b687a4d6ed4321f93ea7314ceceb383c643c85864ee38c0591ec42112"},
+    {file = "detect_secrets-1.1.0-py2.py3-none-any.whl", hash = "sha256:be8cca3dc65f6fd637f5dec9f583f1cf4a680dc1a580b3d2e65a5ac7a277456a"},
+    {file = "detect_secrets-1.1.0.tar.gz", hash = "sha256:68250b31bc108f665f05f0ecfb34f92423280e48e65adbb887fdf721ed909627"},
 ]
 dnspython = [
     {file = "dnspython-2.1.0-py3-none-any.whl", hash = "sha256:95d12f6ef0317118d2a1a6fc49aac65ffec7eb8087474158f42f26a639135216"},
