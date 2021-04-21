@@ -10,6 +10,7 @@ from uitests.framework.page_objects import PageObjectMethods
 current_dir_path = "./uitests/framework/resources/test.pdf"
 
 
+@pytest.mark.daily
 @pytest.mark.regression
 class TestTOIndexFutureTO:
     url2 = ReadConfig.getLoginLocalURL()
