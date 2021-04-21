@@ -182,6 +182,23 @@ class AddNewPortfolioPages:
             )
         )
 
+    def validate_add_manager(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div:nth-child(1) > div.member-form > h2"),
+                "Add Manager",
+            )
+        )
+    
+    def validating_invite_sent(self):
+        WebDriverWait(self.driver, 30).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, "div.usa-alert.usa-alert-success > div > h3"),
+                "Brandon Buchannan's invitation has been sent",
+            )
+        )
+
+
 
 def random_generator(size=8, chars=string.ascii_lowercase + string.digits):
     return "".join(random.choice(chars) for x in range(size))
