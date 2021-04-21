@@ -134,24 +134,34 @@ export default {
     },
 
     daysMaxCalculation: function () {
-      switch (parseInt(this.month)) {
-        case 2: // February
-          if (this.year) {
-            return getDaysInMonth(new Date(this.year, this.month - 1))
-          } else {
-            return 29
-          }
+      // The goal here is calculate an upper bound for the number of days in
+      // a given month in a given year; however, the month and year may not
+      // have been set yet. In that case, we want to pick the loosest upper
+      // bound that is still reasonable for a given combination.
 
-        case 4: // April
-        case 6: // June
-        case 9: // September
-        case 11: // November
-          return 30
-
-        default:
-          // All other months, or null, go with 31
-          return 31
+      // When a month is not provided, 31 days is the tightest upper bound
+      // that can be enforced; no month will have more than 31 days so this
+      // is a reasonable limit.
+      if (!this.month) {
+        return 31
       }
+
+      // When the month is provided and is February but the year is unknown,
+      // it is impossible to know whether it has 29 or 28 days. Since it
+      // would be a bad user experience to show an error message when the
+      // user legitimately enters 29 but hasn't yet provided a year, 29 is
+      // a reasonable upper bound. Anything larger is invalid for February
+      // no matter what year.
+      if (!this.year && parseInt(this.month) === 2) {
+        return 29
+      }
+
+      // For any other month, whether the year is known or not is largely
+      // irrelevant to the number of days in that month. A specific upper
+      // bound can be calculated since the special cases for February or
+      // not knowing the month have been handled. This will provide the
+      // most specific possible upper bound on days for the given month.
+      return getDaysInMonth(new Date(this.year, this.month - 1))
     },
 
     minError: function () {
