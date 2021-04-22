@@ -1,12 +1,9 @@
 import random
 import string
 
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from . import PageObjectMethods
 
 
 class AddNewPortfolioPages:
@@ -14,7 +11,6 @@ class AddNewPortfolioPages:
     btn_portfolio_name_css = "#name"
     portfolio_description_css = "#description"
     save_portfolio_btn_css = "input.usa-button.usa-button-primary"
-    cancel_portfolio_btn_css = "usa-button usa-button-secondary"
     select_checkbox_css = ".usa-input li:nth-child(4) label"
     select_checkbox_permissions_one = (
         "div:nth-child(1) > div > fieldset > legend > label"
@@ -24,9 +20,6 @@ class AddNewPortfolioPages:
     )
     select_checkbox_permissions_three = (
         "div:nth-child(3) > div > fieldset > legend > label"
-    )
-    select_checkbox_permissions_four = (
-        "div:nth-child(4) > div > fieldset > legend > label"
     )
     btn_add_port_manager = "div.portfolio-admin > div > a"
     btn_add_member_next = "div:nth-child(2) > div.action-group > input:nth-child(1)"
@@ -53,7 +46,6 @@ class AddNewPortfolioPages:
         if new_portfolio_btn_text == "Add New Portfolio":
             new_portfolio_btn.click()
 
-    # Validating New Portfolio is displayed
     def validate_new_portfolio(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
@@ -61,7 +53,6 @@ class AddNewPortfolioPages:
             )
         )
 
-    # Validating "Name and Describe Portfolio" is displayed
     def validate_name_desc(self):
         page_label_exists = self.driver.find_element_by_css_selector(
             ".sticky-cta-text > h3"
@@ -82,25 +73,16 @@ class AddNewPortfolioPages:
         self.driver.find_element_by_css_selector(self.select_checkbox_css).click()
 
     def click_save_portfolio_btn(self):
-        # self.driver.find_element_by_css_selector(self.save_portfolio_btn_css).click()
         WebDriverWait(self.driver, 30).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, self.save_portfolio_btn_css)
             )
         ).click()
-        # saveBtn = self.driver.find_element_by_css_selector(self.save_portfolio_btn_css)
-        # saveBtn_text = saveBtn.text
-        # if saveBtn_text == 'Save Portfolio':
-        #     saveBtn.click()
-
-    def click_cancel_portfolio_btn(self):
-        self.driver.find_element_by_css(self.cancel_portfolio_btn_css).click()
 
     def click_add_portfolio_manager(self):
         WebDriverWait(self.driver, 30).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_add_port_manager))
         ).click()
-        # self.driver.find_element_by_css_selector(self.btn_add_port_manager).click()
 
     def click_box_permissions_one(self):
         self.driver.find_element_by_css_selector(
@@ -117,11 +99,6 @@ class AddNewPortfolioPages:
             self.select_checkbox_permissions_three
         ).click()
 
-    def click_box_permissions_four(self):
-        self.driver.find_element_by_css_selector(
-            self.select_checkbox_permissions_four
-        ).click()
-
     def click_next_add_mem(self):
         self.driver.find_element_by_css_selector(self.btn_add_member_next).click()
 
@@ -135,8 +112,6 @@ class AddNewPortfolioPages:
         WebDriverWait(self.driver, 30).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, self.btn_revoke_invite))
         ).click()
-
-    # self.driver.find_element_by_css_selector(self.btn_revoke_invite).click()
 
     def click_revoke_invite_confirm(self):
         self.driver.find_element_by_css_selector(self.btn_revoke_invite_confirm).click()
@@ -157,7 +132,6 @@ class AddNewPortfolioPages:
                 (By.CSS_SELECTOR, self.btn_resend_invite_confirm)
             )
         ).click()
-        # self.driver.find_element(By.XPATH, self.btn_resend_invite_confirm).click()
 
     def click_resend_invite_confirm_b(self):
         wait = WebDriverWait(self.driver, 20)
