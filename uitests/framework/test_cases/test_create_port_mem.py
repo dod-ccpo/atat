@@ -71,7 +71,8 @@ class TestNewPortMem:
         try:
             WebDriverWait(self.driver, 30).until(
                 EC.text_to_be_present_in_element(
-                    (By.CSS_SELECTOR, "div.usa-alert.usa-alert-success > div > h3"), "Brandon Buchannan's invitation has been sent"
+                    (By.CSS_SELECTOR, "div.usa-alert.usa-alert-success > div > h3"),
+                    "Brandon Buchannan's invitation has been sent",
                 )
             )
             self.driver.execute_script(
@@ -86,6 +87,7 @@ class TestNewPortMem:
 
         print("Test: Create New Portfolio Member")
         self.driver.quit()
+
 
 def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
     return "".join(random.choice(chars) for x in range(size))

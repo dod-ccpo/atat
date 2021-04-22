@@ -19,7 +19,6 @@ class Login:
     drpdn_air_force = "#service_branch > option:nth-child(2)"
     txt_email = "#email"
     txt_phone = "#phone_number"
-    
 
     def __init__(self, driver):
         self.driver = driver
@@ -38,7 +37,7 @@ class Login:
         wait.until(
             EC.presence_of_element_located((By.CSS_SELECTOR, self.link_logout_css))
         ).click()
-    
+
     # New CCPO User functions
     def click_add_new_user(self):
         wait = WebDriverWait(self.driver, 30)
@@ -49,10 +48,11 @@ class Login:
     def validate_ccpo_user_displayed(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.global-panel-container > div > div.col > div"), "CCPO Users",
+                (By.CSS_SELECTOR, "div.global-panel-container > div > div.col > div"),
+                "CCPO Users",
             )
         )
-    
+
     def enter_new_dod_id(self, dodid):
         self.driver.find_element_by_css_selector(self.txt_dod_id).send_keys(dodid)
 
@@ -65,14 +65,16 @@ class Login:
     def validate_confirm_displayed(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.global-panel-container > div > h3"), "Confirm new CCPO user",
+                (By.CSS_SELECTOR, "div.global-panel-container > div > h3"),
+                "Confirm new CCPO user",
             )
         )
-    
+
     def validate_confirm_page(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.usa-alert.usa-alert-success > div > p"), "You have successfully given Brandon Buchannan CCPO permissions.",
+                (By.CSS_SELECTOR, "div.usa-alert.usa-alert-success > div > p"),
+                "You have successfully given Brandon Buchannan CCPO permissions.",
             )
         )
 
@@ -86,17 +88,18 @@ class Login:
     def validate_new_profile_notice(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "h3.usa-alert-heading"), "You must complete your profile",
+                (By.CSS_SELECTOR, "h3.usa-alert-heading"),
+                "You must complete your profile",
             )
         )
-    
+
     def validate_user_info_update(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, "h3.usa-alert-heading"), "User information updated.",
             )
         )
-    
+
     def click_foreign(self):
         self.driver.find_element_by_css_selector(self.btn_foreign).click()
 

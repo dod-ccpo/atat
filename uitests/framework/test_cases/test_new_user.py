@@ -31,14 +31,18 @@ class TestAddNewUser:
         self.login = Login(self.driver)
         self.cm = PageObjectMethods(self.driver)
         self.app = CreateApplicationPages(self.driver)
-        
+
         # Generator to create unique DOD ID number
         self.dodid = random_no_generator()
 
         # Generator to create unique email address
         self.email = random_generator() + "@gmail.com"
 
-        self.driver.get(self.url + "/dev-new-user?first_name=Jimmy&last_name=Valentine&dod_id=" + self.dodid)
+        self.driver.get(
+            self.url
+            + "/dev-new-user?first_name=Jimmy&last_name=Valentine&dod_id="
+            + self.dodid
+        )
         self.login.validate_new_user_name()
         self.login.validate_new_profile_notice()
         self.login.enter_email(self.email)
@@ -70,6 +74,7 @@ class TestAddNewUser:
 
 def random_generator(size=10, chars=string.ascii_lowercase + string.digits):
     return "".join(random.choice(chars) for x in range(size))
+
 
 def random_no_generator(size=10, chars=string.digits):
     return "".join(random.choice(chars) for x in range(size))

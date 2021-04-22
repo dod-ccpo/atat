@@ -3,7 +3,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-
 class CreateApplicationPages:
     btn_select_portfolio_css = "span.sidenav__link-label"
     btn_create_app_css = "div.portfolio-applications > div > div > a"
@@ -21,12 +20,14 @@ class CreateApplicationPages:
     txt_lname_css = "#user_data-last_name"
     txt_email_css = "#user_data-email"
     txt_dod_id_css = "#user_data-dod_id"
-    btn_next_roles_css = "input.action-group__action.usa-button"  #used 2x 
+    btn_next_roles_css = "input.action-group__action.usa-button"  # used 2x
     box_edit_team_css = "div:nth-child(1) > div > fieldset > legend > label"
     box_manage_env_css = "div:nth-child(2) > div > fieldset > legend > label"
     btn_save_css = "div:nth-child(2) > div.action-group > input:nth-child(1)"
     btn_toggle_menu_css = "div.toggle-menu > span"
-    btn_toggle_menu_b_css = "tr:nth-child(2) > td.toggle-menu__container > div.toggle-menu > span"
+    btn_toggle_menu_b_css = (
+        "tr:nth-child(2) > td.toggle-menu__container > div.toggle-menu > span"
+    )
     btn_role_perm = "div.toggle-menu > div > a:nth-child(1)"
     btn_role_perm_b = "tr:nth-of-type(2) > td.toggle-menu__container > .toggle-menu > .accordion-table__item-toggle-content.toggle-menu__toggle > a:nth-of-type(1)"
     btn_save_revoke_css = "input[type='submit']"
@@ -38,7 +39,7 @@ class CreateApplicationPages:
     def __init__(self, driver):
         self.driver = driver
 
-    def select_portfolio(self): ###Needs to be moved to new portfolio page objects
+    def select_portfolio(self):  ###Needs to be moved to new portfolio page objects
         self.driver.find_element_by_css_selector(self.btn_select_portfolio_css).click()
 
     def click_create_app(self):
@@ -74,9 +75,7 @@ class CreateApplicationPages:
     def click_save_app(self):
         wait = WebDriverWait(self.driver, 30)
         wait.until(
-            EC.element_to_be_clickable(
-                (By.CSS_SELECTOR, self.btn_save_application_css)
-            )
+            EC.element_to_be_clickable((By.CSS_SELECTOR, self.btn_save_application_css))
         ).click()
 
     def click_save_app_next(self):
@@ -128,7 +127,7 @@ class CreateApplicationPages:
 
     def click_edit_roles_perm(self):
         self.driver.find_element_by_css_selector(self.btn_role_perm).click()
-    
+
     def click_edit_roles_perm_b(self):
         self.driver.find_element_by_css_selector(self.btn_role_perm_b).click()
 
@@ -139,16 +138,24 @@ class CreateApplicationPages:
         self.driver.find_element_by_css_selector(self.btn_save_revoke_css).click()
 
     def click_box_app(self):
-        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_app))).click()
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_app))
+        ).click()
 
     def click_box_port(self):
-        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_port))).click()
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_port))
+        ).click()
 
     def click_box_fund(self):
-        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_fund))).click()    
-    
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_fund))
+        ).click()
+
     def click_box_fund_remove(self):
-        WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_fund_remove))).click()   
+        WebDriverWait(self.driver, 30).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, self.box_edit_fund_remove))
+        ).click()
 
     def click_create_application(self):
         WebDriverWait(self.driver, 30).until(
@@ -162,7 +169,7 @@ class CreateApplicationPages:
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, "div:nth-child(2) > h4 > button")
             )
-        ).click() 
+        ).click()
 
     def validate_app_save(self):
         WebDriverWait(self.driver, 30).until(
@@ -231,32 +238,44 @@ class CreateApplicationPages:
                 (By.CSS_SELECTOR, "h3.usa-alert-heading"), "invitation has been sent"
             )
         )
-    
+
     def validate_acc_dev(self):
         WebDriverWait(self.driver, 30).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, ".usa-accordion-content > .accordion__content--list-item:nth-of-type(1) > .row > .col.col--grow")
+                (
+                    By.CSS_SELECTOR,
+                    ".usa-accordion-content > .accordion__content--list-item:nth-of-type(1) > .row > .col.col--grow",
+                )
             )
         )
 
     def validate_acc_prod(self):
         WebDriverWait(self.driver, 30).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, ".usa-accordion-content > .accordion__content--list-item:nth-of-type(2) > .row > .col.col--grow")
+                (
+                    By.CSS_SELECTOR,
+                    ".usa-accordion-content > .accordion__content--list-item:nth-of-type(2) > .row > .col.col--grow",
+                )
             )
         )
 
     def validate_acc_stage(self):
         WebDriverWait(self.driver, 30).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, ".usa-accordion-content > .accordion__content--list-item:nth-of-type(3) > .row > .col.col--grow")
+                (
+                    By.CSS_SELECTOR,
+                    ".usa-accordion-content > .accordion__content--list-item:nth-of-type(3) > .row > .col.col--grow",
+                )
             )
         )
-    
+
     def validate_acc_test(self):
         WebDriverWait(self.driver, 30).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, ".usa-accordion-content > .accordion__content--list-item:nth-of-type(4) > .row > .col.col--grow")
+                (
+                    By.CSS_SELECTOR,
+                    ".usa-accordion-content > .accordion__content--list-item:nth-of-type(4) > .row > .col.col--grow",
+                )
             )
         )
 
@@ -266,11 +285,11 @@ class CreateApplicationPages:
                 (By.CSS_SELECTOR, "div.member-form > h2"), "Application Permissions"
             )
         )
-    
+
     def validate_port_permission(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div > div:nth-child(2) > div.member-form > h2"), "Set Portfolio Permissions"
+                (By.CSS_SELECTOR, "div > div:nth-child(2) > div.member-form > h2"),
+                "Set Portfolio Permissions",
             )
         )
-

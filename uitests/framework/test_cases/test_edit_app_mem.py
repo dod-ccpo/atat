@@ -88,7 +88,11 @@ class TestEditAppMem:
         try:
             WebDriverWait(self.driver, 30).until(
                 EC.text_to_be_present_in_element(
-                    (By.CSS_SELECTOR, ".usa-alert.usa-alert-success > .usa-alert-body > h3.usa-alert-heading"), "Team member updated"
+                    (
+                        By.CSS_SELECTOR,
+                        ".usa-alert.usa-alert-success > .usa-alert-body > h3.usa-alert-heading",
+                    ),
+                    "Team member updated",
                 )
             )
             self.driver.execute_script(

@@ -88,7 +88,11 @@ class TestApplicationWithIndex:
         try:
             WebDriverWait(self.driver, 30).until(
                 EC.text_to_be_present_in_element(
-                    (By.CSS_SELECTOR, "div.portfolio-applications > div > div.action-group > a"), "Collapse All"
+                    (
+                        By.CSS_SELECTOR,
+                        "div.portfolio-applications > div > div.action-group > a",
+                    ),
+                    "Collapse All",
                 )
             )
             self.driver.execute_script(
@@ -102,8 +106,6 @@ class TestApplicationWithIndex:
             )
         print("Test: Verification of Application Indexing")
         self.driver.quit()
-
-
 
 
 def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
