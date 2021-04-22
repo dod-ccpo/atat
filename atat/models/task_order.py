@@ -36,7 +36,7 @@ class TaskOrder(Base, mixins.TimestampsMixin):
     portfolio_id = Column(ForeignKey("portfolios.id"), nullable=False)
     portfolio = relationship("Portfolio")
 
-    pdf_attachment_id = Column(ForeignKey("attachments.id"))
+    pdf_attachment_id = Column(ForeignKey("attachments.id"), unique=True)
     _pdf = relationship("Attachment", foreign_keys=[pdf_attachment_id])
     pdf_last_sent_at = Column(DateTime)
     number = Column(String, unique=True,)  # Task Order Number
