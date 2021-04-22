@@ -14,7 +14,7 @@ from selenium.webdriver.common.by import By
 current_dir_path = "./uitests/framework/resources/test.pdf"
 
 
-@pytest.mark.regression
+@pytest.mark.AT6163
 class TestNewPortMem:
     url2 = ReadConfig.getLoginLocalURL()
 

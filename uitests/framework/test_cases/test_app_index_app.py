@@ -12,7 +12,7 @@ from uitests.framework.page_objects.application_page import CreateApplicationPag
 from uitests.framework.page_objects import PageObjectMethods
 
 
-@pytest.mark.regression
+@pytest.mark.AT6163
 class TestApplicationWithIndex:
     url2 = ReadConfig.getLoginLocalURL()
 
@@ -23,7 +23,7 @@ class TestApplicationWithIndex:
         self.driver.maximize_window()
         self.driver.execute_script(
             'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "28. Application Index"}}'
+            '"arguments": {"name": "33. Application Index"}}'
         )
 
         # Initializing Page Objects
