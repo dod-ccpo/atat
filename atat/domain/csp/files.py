@@ -67,9 +67,6 @@ class AzureFileService(FileService):
             expiry=pendulum.now(tz="UTC").add(self.timeout),
             protocol="https",
         )
-        # TODO: remove object name from this tuple -- generate in js
-        # We generate a UUID here only for it to be passed through to the frontend where it's used as the name of the
-        # blob that's uploaded. We should just generate the object name there.
         return {"token": sas_token}, self.generate_object_name()
 
     def generate_download_link(self, object_name, filename):
