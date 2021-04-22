@@ -1,3 +1,4 @@
+from typing import Tuple
 from uuid import uuid4
 
 import pendulum
@@ -7,7 +8,7 @@ class FileService:
     def generate_token(self):
         raise NotImplementedError()
 
-    def generate_download_link(self, object_name, filename) -> (dict, str):
+    def generate_download_link(self, object_name, filename) -> Tuple[dict, str]:
         raise NotImplementedError()
 
     def generate_object_name(self) -> str:
@@ -107,3 +108,25 @@ class AzureFileService(FileService):
             "content": blob.readall(),
             "filename": self.get_filename_from_blob(blob),
         }
+
+    def generate_object_name(self) -> str:
+        # This is a basic attempt at ensuring that an _existing_ file won't be
+        # overwritten; however, it is still potentially susceptible to TOCTOU
+        # bugs since clients may not have uploaded. While imperfect at
+        # preventing two clients from getting issued the same "new" blob name,
+        # it will prevent overwriting a file that already exists. Paired with
+        # the utilization of UUID4s, the risk of collision between two clients
+        # prior to actually writing the file should be extremely small. A WORM
+        # solution in the storage provider configuration is necessary for full
+        # mitigation of all potential overwrite scenarios.
+        valid = False
+        while not valid:
+            blob_name = super().generate_object_name()
+            blob_client = self.blob.BlobClient(
+                account_url=f"https://{self.account_name}.blob.core.windows.net",
+                container_name=self.container_name,
+                blob_name=blob_name,
+                credential=self.storage_key,
+            )
+            valid = not blob_client.exists()
+        return blob_name
