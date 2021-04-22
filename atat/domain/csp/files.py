@@ -1,26 +1,37 @@
-from typing import Tuple
+from typing import Dict, Tuple
 from uuid import uuid4
 
 import pendulum
 
 
 class FileService:
-    def generate_token(self):
+    def service_name(self) -> str:  # pragma: no cover
         raise NotImplementedError()
 
-    def generate_download_link(self, object_name, filename) -> Tuple[dict, str]:
+    def generate_token(self):  # pragma: no cover
+        raise NotImplementedError()
+
+    def generate_download_link(
+        self, object_name, filename
+    ) -> Tuple[dict, str]:  # pragma: no cover
         raise NotImplementedError()
 
     def generate_object_name(self) -> str:
         return str(uuid4())
 
-    def download_task_order(self, object_name):
+    def download_task_order(self, object_name):  # pragma: no cover
         raise NotImplementedError()
+
+    def client_upload_config(self) -> Dict[str, str]:
+        return {}
 
 
 class MockFileService(FileService):
     def __init__(self, config):
         self.config = config
+
+    def service_name(self) -> str:
+        return "mock"
 
     def get_token(self):
         return {}, self.generate_object_name()
@@ -49,6 +60,9 @@ class AzureFileService(FileService):
         import azure.storage.blob
 
         self.blob = azure.storage.blob
+
+    def service_name(self) -> str:
+        return "azure"
 
     def get_token(self):
         """
@@ -127,3 +141,9 @@ class AzureFileService(FileService):
             )
             valid = not blob_client.exists()
         return blob_name
+
+    def client_upload_config(self) -> Dict[str, str]:
+        return {
+            "azureAccountName": self.account_name,
+            "azureContainerName": self.container_name,
+        }

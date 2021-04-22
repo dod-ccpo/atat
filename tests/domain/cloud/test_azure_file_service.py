@@ -10,6 +10,10 @@ def file_service(app):
     return file_service
 
 
+def test_service_name(file_service):
+    assert file_service.service_name() == "azure"
+
+
 def test_get_token(file_service, mocker):
     mocker.patch.object(
         azure.storage.blob, "generate_container_sas", return_value="container_sas_token"
@@ -56,6 +60,14 @@ def test_generate_download_link(file_service, mocker, app):
         download_link
         == f"https://{file_service.account_name}.blob.core.windows.net/{file_service.container_name}/{object_name}?blob_sas_token"
     )
+
+
+def test_client_upload_config(file_service):
+    client_config = file_service.client_upload_config()
+    assert "azureAccountName" in client_config
+    assert "azureContainerName" in client_config
+    assert client_config["azureAccountName"] == file_service.account_name
+    assert client_config["azureContainerName"] == file_service.container_name
 
 
 @pytest.fixture
