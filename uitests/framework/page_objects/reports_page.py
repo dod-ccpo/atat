@@ -122,7 +122,8 @@ class ReportsPages:
     # Click on the Active TO Link
     def active_to_link(self):
         to_link = self.driver.find_element_by_css_selector(
-            "div.jedi-clin-funding__active-task-orders > a")
+            "div.jedi-clin-funding__active-task-orders > a"
+        )
         self.driver.execute_script("arguments[0].click();", to_link)
 
     # By clicking on the link,Verify on TaskOrder #-TO Follow Link
@@ -137,7 +138,11 @@ class ReportsPages:
     def total_value(self, totalvalue):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".usa-grid > .summary-item:nth-of-type(1) > .summary-item__value--large"), totalvalue,
+                (
+                    By.CSS_SELECTOR,
+                    ".usa-grid > .summary-item:nth-of-type(1) > .summary-item__value--large",
+                ),
+                totalvalue,
             )
         )
 
@@ -145,14 +150,17 @@ class ReportsPages:
     def total_ob(self, totalob):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".usa-grid > .summary-item:nth-of-type(2) > .summary-item__value--large"), totalob,
+                (
+                    By.CSS_SELECTOR,
+                    ".usa-grid > .summary-item:nth-of-type(2) > .summary-item__value--large",
+                ),
+                totalob,
             )
         )
 
     # click on Expired Funding
     def expired_funding_click(self):
-        element = self.driver.find_element_by_css_selector(
-            self.btn_expired_funding_css)
+        element = self.driver.find_element_by_css_selector(self.btn_expired_funding_css)
         self.driver.execute_script("arguments[0].click();", element)
         # commenting the below code since it is not working on IE added JS executor
         # self.driver.find_element_by_css_selector(self.btn_expired_funding_css).click()

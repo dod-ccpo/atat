@@ -6,7 +6,10 @@ import pytest
 
 from selenium.common.exceptions import TimeoutException
 from uitests.framework.page_objects.task_order_page import TaskOrderPage
-from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages, random_generator
+from uitests.framework.page_objects.new_portfolio_page import (
+    AddNewPortfolioPages,
+    random_generator,
+)
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects import PageObjectMethods
 
@@ -25,8 +28,7 @@ class TestCreateDraftTaskOrder:
         )
         self.driver.get(self.url2)
         self.driver.maximize_window()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.cm = PageObjectMethods(self.driver)
         self.cm.validate_atat()
         self.port = AddNewPortfolioPages(self.driver)
@@ -38,8 +40,7 @@ class TestCreateDraftTaskOrder:
         self.port.enter_portfolio_description(
             "Entering the description to verify the text"
         )
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.port.select_checkbox()
         time.sleep(5)
         self.port.click_save_portfolio_btn()
@@ -51,8 +52,7 @@ class TestCreateDraftTaskOrder:
         self.to.validate_add_to()
         self.to.click_add_new_to()
         assert "Upload your approved Task Order" in self.driver.page_source
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.driver.execute_script(
             "document.querySelector('#pdf').style.visibility = 'visible'"
         )

@@ -3,9 +3,15 @@ import time
 import pytest
 
 from selenium.common.exceptions import TimeoutException
-from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages, random_generator
+from uitests.framework.page_objects.new_portfolio_page import (
+    AddNewPortfolioPages,
+    random_generator,
+)
 from uitests.framework.page_objects.reports_page import ReportsPages
-from uitests.framework.page_objects.task_order_page import TaskOrderPage, random_no_generator
+from uitests.framework.page_objects.task_order_page import (
+    TaskOrderPage,
+    random_no_generator,
+)
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects import PageObjectMethods
 
@@ -26,8 +32,7 @@ class TestReportsFollowLink:
         )
         self.driver.get(self.url2)
         self.driver.maximize_window()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         # Initializing Common Methods
         self.cm = PageObjectMethods(self.driver)
         self.cm.validate_atat()
@@ -41,8 +46,7 @@ class TestReportsFollowLink:
         self.port.enter_portfolio_description(
             "Entering the description to verify the text"
         )
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.port.select_checkbox()
         self.port.click_save_portfolio_btn()
         self.msg = self.driver.find_element_by_tag_name("h1").text
@@ -52,11 +56,9 @@ class TestReportsFollowLink:
         self.to = TaskOrderPage(self.driver)
         self.to.click_task_order()
         self.to.validate_add_to()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_add_new_to()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.driver.execute_script(
             "document.querySelector('#pdf').style.visibility = 'visible'"
         )
@@ -69,8 +71,7 @@ class TestReportsFollowLink:
         self.to.click_next_add_TO_number()
         self.tnumber = random_no_generator()
         self.to.enter_TO_number(self.tnumber)
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_next_add_clin_number()
         self.to.enter_clin_number("0001")
         self.to.add_clin_value("800000")
@@ -83,8 +84,7 @@ class TestReportsFollowLink:
         self.to.add_end_year("2021")
         self.to.click_next_review_TO()
         self.to.click_confirm()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_checkbox_one()
         self.to.click_check_box_two()
         self.to.click_submit_TO()
@@ -94,8 +94,7 @@ class TestReportsFollowLink:
         # Initializing Reports page
         self.rep = ReportsPages(self.driver)
         self.rep.click_reports()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         tpv = "$100,000.00"
         self.rep.total_portfolio_value(tpv)
         ofunds = "$100,000.00"

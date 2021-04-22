@@ -2,8 +2,14 @@ import os
 import pytest
 
 from selenium.common.exceptions import TimeoutException
-from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages, random_generator
-from uitests.framework.page_objects.task_order_page import TaskOrderPage, random_no_generator
+from uitests.framework.page_objects.new_portfolio_page import (
+    AddNewPortfolioPages,
+    random_generator,
+)
+from uitests.framework.page_objects.task_order_page import (
+    TaskOrderPage,
+    random_no_generator,
+)
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects import PageObjectMethods
 
@@ -23,8 +29,7 @@ class TestTOStep4AddClin:
         )
         self.driver.get(self.url2)
         self.driver.maximize_window()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         # Initializing the CommonMethods
         self.cm = PageObjectMethods(self.driver)
         self.cm.validate_atat()
@@ -38,8 +43,7 @@ class TestTOStep4AddClin:
         self.port.enter_portfolio_description(
             "Entering the description to verify the text"
         )
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.port.select_checkbox()
         self.port.click_save_portfolio_btn()
         self.msg = self.driver.find_element_by_tag_name("h1").text
@@ -49,11 +53,9 @@ class TestTOStep4AddClin:
         self.to = TaskOrderPage(self.driver)
         self.to.click_task_order()
         self.to.validate_add_to()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_add_new_to()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.driver.execute_script(
             "document.querySelector('#pdf').style.visibility = 'visible'"
         )
@@ -66,11 +68,9 @@ class TestTOStep4AddClin:
         self.to.click_next_add_TO_number()
         self.tnumber = random_no_generator()
         self.to.enter_TO_number(self.tnumber)
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_next_add_clin_number()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.enter_clin_number("0033")
         clinNumber = "CLIN 0033"
         self.to.clin_card_title(clinNumber)

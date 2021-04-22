@@ -80,8 +80,7 @@ class TaskOrderPage:
 
     # Click on the TaskOrder Tab
     def click_task_order(self):
-        self.driver.find_element_by_css_selector(
-            self.btn_task_order_css).click()
+        self.driver.find_element_by_css_selector(self.btn_task_order_css).click()
 
     # Click on the Add New TaskOrder Button
     def click_add_new_to(self):
@@ -92,8 +91,7 @@ class TaskOrderPage:
         self.driver.find_element_by_css(self.btn_cancel_css).click()
 
     def click_browse(self):
-        self.driver.find_element_by_css_selector(
-            self.btn_file_browse_css).click()
+        self.driver.find_element_by_css_selector(self.btn_file_browse_css).click()
 
     def validate_dummy_file(self):
         self.driver.find_element_by_css(self.lnk_dummy_file_css).click()
@@ -108,23 +106,19 @@ class TaskOrderPage:
 
     # Step 2 adding the task order number
     def cancel_btn_on_add_to(self):
-        self.driver.find_element_by_css_selector(
-            "a.action-group__action").click()
+        self.driver.find_element_by_css_selector("a.action-group__action").click()
 
     def save_later_yes_btn(self):
-        self.driver.find_element_by_css_selector(
-            self.btn_save_later_css).click()
+        self.driver.find_element_by_css_selector(self.btn_save_later_css).click()
 
     def enter_TO_number(self, tnumber):
-        self.driver.find_element_by_css_selector(
-            self.txt_TO_number).send_keys(tnumber)
+        self.driver.find_element_by_css_selector(self.txt_TO_number).send_keys(tnumber)
 
     def click_previous(self):
         self.driver.find_element_by_css(self.btn_previous_css).click()
 
     def click_next_add_clin_number(self):
-        self.driver.find_element_by_css_selector(
-            self.btn_next_add_clin_css).click()
+        self.driver.find_element_by_css_selector(self.btn_next_add_clin_css).click()
 
     # Step 3 adding task order details: clin number, idiq type, value, obligated value, start date, end date
     def enter_clin_number(self, clinNumber):
@@ -136,8 +130,7 @@ class TaskOrderPage:
     def clin_card_title(self, clinNumber):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".card__title > .h4"),
-                clinNumber,
+                (By.CSS_SELECTOR, ".card__title > .h4"), clinNumber,
             )
         )
 
@@ -157,8 +150,7 @@ class TaskOrderPage:
     def percent_obligated(self, percentObligated):
         WebDriverWait(self.driver, 5).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "#percent-obligated"),
-                percentObligated,
+                (By.CSS_SELECTOR, "#percent-obligated"), percentObligated,
             )
         )
 
@@ -183,8 +175,7 @@ class TaskOrderPage:
         )
 
     def add_end_day(self, endDay):
-        self.driver.find_element_by_css_selector(
-            self.txt_end_day_css).send_keys(endDay)
+        self.driver.find_element_by_css_selector(self.txt_end_day_css).send_keys(endDay)
 
     def add_end_year(self, endYear):
         self.driver.find_element_by_css_selector(self.txt_end_year_css).send_keys(
@@ -192,28 +183,27 @@ class TaskOrderPage:
         )
 
     # Step3 addingTO:Adding another clin:clin number, idiq type, value, obligated value, start date, end date
-     # Validate Click Add Another Clin btn exists
+    # Validate Click Add Another Clin btn exists
     def validate_add_clin_btn(self):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "#add-clin"),
-                "Add Another CLIN",
+                (By.CSS_SELECTOR, "#add-clin"), "Add Another CLIN",
             )
         )
 
     # Adding another clin by clicking on the ADD Another CLIN link
     def click_add_another_clin(self):
-        self.driver.find_element_by_css_selector(
-            self.btn_add_another_clin_css).click()
+        self.driver.find_element_by_css_selector(self.btn_add_another_clin_css).click()
 
     def enter_clin_number2(self, clinNumber1):
-        self.driver.find_element_by_css_selector(
-            "#clins-1-number"
-        ).send_keys(clinNumber1)
+        self.driver.find_element_by_css_selector("#clins-1-number").send_keys(
+            clinNumber1
+        )
 
     def select_idiq_number2(self):
         self.driver.find_element_by_css_selector(
-            "#clins-1-jedi_clin_type [value='JEDI_CLIN_2']").click()
+            "#clins-1-jedi_clin_type [value='JEDI_CLIN_2']"
+        ).click()
 
     def add_total_clin2_value(self, clinValue2):
         self.driver.find_element_by_css_selector("#clins-1-total_amount").send_keys(
@@ -227,48 +217,43 @@ class TaskOrderPage:
 
     def add_start_month_clin2(self, startMonth1):
         self.driver.find_element_by_css_selector(
-            "fieldset[name='clins-1-start_date'] input[name='date-month']").send_keys(
-            startMonth1
-        )
+            "fieldset[name='clins-1-start_date'] input[name='date-month']"
+        ).send_keys(startMonth1)
 
     def add_start_day_clin2(self, startDay1):
         self.driver.find_element_by_css_selector(
-            "fieldset[name='clins-1-start_date'] input[name='date-day']").send_keys(
-            startDay1
-        )
+            "fieldset[name='clins-1-start_date'] input[name='date-day']"
+        ).send_keys(startDay1)
 
     def add_start_year_clin2(self, startYear1):
         self.driver.find_element_by_css_selector(
-            "fieldset[name='clins-1-start_date'] input[name='date-year']").send_keys(
-            startYear1
-        )
+            "fieldset[name='clins-1-start_date'] input[name='date-year']"
+        ).send_keys(startYear1)
 
     def add_end_month_clin2(self, endMonth1):
         self.driver.find_element_by_css_selector(
-            "fieldset[name='clins-1-end_date'] input[name='date-month']").send_keys(
-            endMonth1
-        )
+            "fieldset[name='clins-1-end_date'] input[name='date-month']"
+        ).send_keys(endMonth1)
 
     def add_end_day_clin2(self, endDay1):
         self.driver.find_element_by_css_selector(
-            "fieldset[name='clins-1-end_date'] input[name='date-day']").send_keys(endDay1)
+            "fieldset[name='clins-1-end_date'] input[name='date-day']"
+        ).send_keys(endDay1)
 
     def add_end_year_clin2(self, endYear1):
-        self.driver.find_element_by_css_selector("fieldset[name='clins-1-end_date'] input[name='date-year']").send_keys(
-            endYear1
-        )
+        self.driver.find_element_by_css_selector(
+            "fieldset[name='clins-1-end_date'] input[name='date-year']"
+        ).send_keys(endYear1)
 
     def click_next_review_TO(self):
-        self.driver.find_element_by_css_selector(
-            self.btn_next_review_TO_css).click()
+        self.driver.find_element_by_css_selector(self.btn_next_review_TO_css).click()
 
     # Step 4 review changes and view TO summary
     # Step4 Validate header
     def validate_step4_header(self):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".sticky-cta-context"),
-                "Step 4 of 5",
+                (By.CSS_SELECTOR, ".sticky-cta-context"), "Step 4 of 5",
             )
         )
 
@@ -276,8 +261,7 @@ class TaskOrderPage:
     def validate_to_no_step4(self, toNumber):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".task-order__header > p"),
-                toNumber,
+                (By.CSS_SELECTOR, ".task-order__header > p"), toNumber,
             )
         )
 
@@ -285,7 +269,10 @@ class TaskOrderPage:
     def validate_step4_total_value(self, step4_total_value):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".usa-grid > .summary-item:nth-of-type(1) > .summary-item__value--large"),
+                (
+                    By.CSS_SELECTOR,
+                    ".usa-grid > .summary-item:nth-of-type(1) > .summary-item__value--large",
+                ),
                 step4_total_value,
             )
         )
@@ -294,7 +281,10 @@ class TaskOrderPage:
     def validate_step4_total_ob_value(self, step4_total_ob_value):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".usa-grid > .summary-item:nth-of-type(2) > .summary-item__value--large"),
+                (
+                    By.CSS_SELECTOR,
+                    ".usa-grid > .summary-item:nth-of-type(2) > .summary-item__value--large",
+                ),
                 step4_total_ob_value,
             )
         )
@@ -304,7 +294,10 @@ class TaskOrderPage:
     def clin_one(self, clin1):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "table.fixed-table-wrapper > tbody > tr:nth-of-type(1) > td:nth-of-type(1)"),
+                (
+                    By.CSS_SELECTOR,
+                    "table.fixed-table-wrapper > tbody > tr:nth-of-type(1) > td:nth-of-type(1)",
+                ),
                 clin1,
             )
         )
@@ -313,7 +306,10 @@ class TaskOrderPage:
     def clin_one_pop(self, dates):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "table.fixed-table-wrapper > tbody > tr:nth-of-type(1) > td:nth-of-type(4)"),
+                (
+                    By.CSS_SELECTOR,
+                    "table.fixed-table-wrapper > tbody > tr:nth-of-type(1) > td:nth-of-type(4)",
+                ),
                 dates,
             )
         )
@@ -322,8 +318,10 @@ class TaskOrderPage:
     def clin_one_value(self, clinOneValue):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR,
-                 "table.fixed-table-wrapper > tbody > tr:nth-of-type(1) > td.task-order__amount:nth-of-type(5)"),
+                (
+                    By.CSS_SELECTOR,
+                    "table.fixed-table-wrapper > tbody > tr:nth-of-type(1) > td.task-order__amount:nth-of-type(5)",
+                ),
                 clinOneValue,
             )
         )
@@ -332,8 +330,10 @@ class TaskOrderPage:
     def clin_one_amount_obligated(self, clinOneAmountObligated):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR,
-                 "table.fixed-table-wrapper > tbody > tr:nth-of-type(1) > td.task-order__amount:nth-of-type(6)"),
+                (
+                    By.CSS_SELECTOR,
+                    "table.fixed-table-wrapper > tbody > tr:nth-of-type(1) > td.task-order__amount:nth-of-type(6)",
+                ),
                 clinOneAmountObligated,
             )
         )
@@ -342,7 +342,10 @@ class TaskOrderPage:
     def clin_two(self, clin2):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "table.fixed-table-wrapper > tbody > tr:nth-of-type(2) > td:nth-of-type(1)"),
+                (
+                    By.CSS_SELECTOR,
+                    "table.fixed-table-wrapper > tbody > tr:nth-of-type(2) > td:nth-of-type(1)",
+                ),
                 clin2,
             )
         )
@@ -351,7 +354,10 @@ class TaskOrderPage:
     def clin_two_pop(self, datesForClin2):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "table.fixed-table-wrapper > tbody > tr:nth-of-type(2) > td:nth-of-type(4)"),
+                (
+                    By.CSS_SELECTOR,
+                    "table.fixed-table-wrapper > tbody > tr:nth-of-type(2) > td:nth-of-type(4)",
+                ),
                 datesForClin2,
             )
         )
@@ -360,8 +366,10 @@ class TaskOrderPage:
     def clin_two_value(self, clinTwoValue):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR,
-                 "table.fixed-table-wrapper > tbody > tr:nth-of-type(2) > td.task-order__amount:nth-of-type(5)"),
+                (
+                    By.CSS_SELECTOR,
+                    "table.fixed-table-wrapper > tbody > tr:nth-of-type(2) > td.task-order__amount:nth-of-type(5)",
+                ),
                 clinTwoValue,
             )
         )
@@ -370,23 +378,24 @@ class TaskOrderPage:
     def clin_two_amount_obligated(self, clinTwoAmountObligated):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR,
-                 "table.fixed-table-wrapper > tbody > tr:nth-of-type(2) > td.task-order__amount:nth-of-type(6)"),
+                (
+                    By.CSS_SELECTOR,
+                    "table.fixed-table-wrapper > tbody > tr:nth-of-type(2) > td.task-order__amount:nth-of-type(6)",
+                ),
                 clinTwoAmountObligated,
             )
         )
 
     def click_confirm(self):
-        self.driver.find_element_by_css_selector(
-            self.btn_next_confirm_css).click()
+        self.driver.find_element_by_css_selector(self.btn_next_confirm_css).click()
 
     def step4_cancel_button(self):
-        self.driver.find_element_by_xpath(
-            "//a[contains(text(),'Cancel')]").click()
+        self.driver.find_element_by_xpath("//a[contains(text(),'Cancel')]").click()
 
     def yes_later_btn(self):
         self.driver.find_element_by_css_selector(
-            ".action-group > button[type='submit'].usa-button.usa-button-primary:nth-of-type(2)").click()
+            ".action-group > button[type='submit'].usa-button.usa-button-primary:nth-of-type(2)"
+        ).click()
 
     # Step 5 agree and confirm page
     def click_checkbox_one(self):
@@ -410,35 +419,36 @@ class TaskOrderPage:
     # Click on AddNewTaskOrder Button:
     def add_new_to_button(self):
         btn = self.driver.find_element_by_xpath(
-            "//a[contains(text(),'Add New Task Order')]")
+            "//a[contains(text(),'Add New Task Order')]"
+        )
         self.driver.execute_script("arguments[0].click();", btn)
 
     # Click on the collapse all button on the top corner
     def collapse_all(self):
         collapse = self.driver.find_element_by_css_selector(
-            "a.accordion-list__collapse")
+            "a.accordion-list__collapse"
+        )
         self.driver.execute_script("arguments[0].click();", collapse)
 
     # Active Section
     # Click on Active TO-added javascript exector for this click to ensure it is working on IE as well
     def click_active_to(self):
-        active_btn = self.driver.find_element_by_css_selector(
-            self.acc_active_to_css)
+        active_btn = self.driver.find_element_by_css_selector(self.acc_active_to_css)
         self.driver.execute_script("arguments[0].click();", active_btn)
 
     # Verifying the Active TO details
     def active_to(self, activeto):
         WebDriverWait(self.driver, 15).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "#Active h4"), activeto)
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#Active h4"), activeto)
         )
 
     # Display message if no Active TO
     def active_blank_msg(self):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "#Active > .accordion__content--empty"
-                 ), "This Portfolio has no Active Task Orders.")
+                (By.CSS_SELECTOR, "#Active > .accordion__content--empty"),
+                "This Portfolio has no Active Task Orders.",
+            )
         )
 
     # Verifying the TotalValue for Active TaskOrder
@@ -448,7 +458,8 @@ class TaskOrderPage:
                 (
                     By.CSS_SELECTOR,
                     "#Active > .accordion__content--list-item > .usa-grid > .usa-width-one-fourth:nth-of-type(2) > p",
-                ), activeTvalue,
+                ),
+                activeTvalue,
             )
         )
 
@@ -459,22 +470,21 @@ class TaskOrderPage:
                 (
                     By.CSS_SELECTOR,
                     "#Active > .accordion__content--list-item > .usa-grid > .usa-width-one-fourth:nth-of-type(3) > p",
-                ), activetObvalue,
+                ),
+                activetObvalue,
             )
         )
 
     # Upcoming Section:
     # Click on Upcoming TO
     def click_future_to(self):
-        future_btn = self.driver.find_element_by_css_selector(
-            self.acc_future_to_css)
+        future_btn = self.driver.find_element_by_css_selector(self.acc_future_to_css)
         self.driver.execute_script("arguments[0].click();", future_btn)
 
     # Verifying the TO# under Upcoming section
     def upcoming_to(self, tmp):
         WebDriverWait(self.driver, 15).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "#Upcoming h4"), tmp)
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#Upcoming h4"), tmp)
         )
 
     # Verifying the TotalValue for Upcoming TaskOrder
@@ -484,7 +494,8 @@ class TaskOrderPage:
                 (
                     By.CSS_SELECTOR,
                     "#Upcoming > .accordion__content--list-item > .usa-grid > .usa-width-one-fourth:nth-of-type(2) > p",
-                ), tvalue,
+                ),
+                tvalue,
             )
         )
 
@@ -495,7 +506,8 @@ class TaskOrderPage:
                 (
                     By.CSS_SELECTOR,
                     "#Upcoming > .accordion__content--list-item > .usa-grid > .usa-width-one-fourth:nth-of-type(3) > p",
-                ), tObvalue,
+                ),
+                tObvalue,
             )
         )
 
@@ -503,34 +515,30 @@ class TaskOrderPage:
     def upcoming_blank_msg(self):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR, "#Upcoming > .accordion__content--empty"
-                ), "This Portfolio has no Upcoming Task Orders."
+                (By.CSS_SELECTOR, "#Upcoming > .accordion__content--empty"),
+                "This Portfolio has no Upcoming Task Orders.",
             )
         )
 
     # Draft section
     # Click on Draft TO
     def click_draft_to(self):
-        draft_btn = self.driver.find_element_by_css_selector(
-            self.acc_draft_to_css)
+        draft_btn = self.driver.find_element_by_css_selector(self.acc_draft_to_css)
         self.driver.execute_script("arguments[0].click();", draft_btn)
 
     # Display message in Draft section if no Draft TaskOrder
     def draft_blank_msg(self):
         WebDriverWait(self.driver, 15).until(
             EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR, "#Draft > .accordion__content--empty"
-                ), "This Portfolio has no Draft Task Orders."
+                (By.CSS_SELECTOR, "#Draft > .accordion__content--empty"),
+                "This Portfolio has no Draft Task Orders.",
             )
         )
 
     # Verifying the Draft section and the Task Order displays as New TaskOrder
     def draft_to(self, temp):
         WebDriverWait(self.driver, 10).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "#Draft h4"), temp)
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#Draft h4"), temp)
         )
 
     # Verifying the TotalValue for the Draft Task Order
@@ -560,25 +568,22 @@ class TaskOrderPage:
     # Expired TaskOrder Section
     # click on Expired TO
     def click_expired_to(self):
-        expired_btn = self.driver.find_element_by_css_selector(
-            self.acc_expired_to_css)
+        expired_btn = self.driver.find_element_by_css_selector(self.acc_expired_to_css)
         self.driver.execute_script("arguments[0].click();", expired_btn)
 
     # Display message in Expired section if no ExpiredTaskOrder
     def expired_blank_msg(self):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR, "#Expired > .accordion__content--empty"
-                ), "This Portfolio has no Expired Task Orders."
+                (By.CSS_SELECTOR, "#Expired > .accordion__content--empty"),
+                "This Portfolio has no Expired Task Orders.",
             )
         )
 
     # Verify the Expired TO details
     def expired_to(self, tmp):
         WebDriverWait(self.driver, 10).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "#Expired h4"), tmp)
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#Expired h4"), tmp)
         )
 
 
