@@ -9,6 +9,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects.application_page import CreateApplicationPages
 from uitests.framework.page_objects import PageObjectMethods
+from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
 
 
 @pytest.mark.smoke
@@ -28,6 +29,7 @@ class TestCreateApplication:
         # Initializing Page Objects
         self.app = CreateApplicationPages(self.driver)
         self.cm = PageObjectMethods(self.driver)
+        self.port = AddNewPortfolioPages(self.driver)
 
         # Generator to create unique Application name
         self.appName = "App Name" + random_no_generator()
