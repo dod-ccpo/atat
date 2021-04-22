@@ -31,7 +31,7 @@ class TestAddNewCcpoUser:
         # Initializing Page Objects
         self.login = Login(self.driver)
         self.cm = PageObjectMethods(self.driver)
-        
+
         # Generator to create unique DOD ID number
         self.dodid = random_no_generator()
 
@@ -45,7 +45,8 @@ class TestAddNewCcpoUser:
         try:
             WebDriverWait(self.driver, 30).until(
                 EC.text_to_be_present_in_element(
-                    (By.CSS_SELECTOR, "tr:nth-child(1) > td:nth-child(1)"), "Brandon Buchannan"
+                    (By.CSS_SELECTOR, "tr:nth-child(1) > td:nth-child(1)"),
+                    "Brandon Buchannan",
                 )
             )
             self.driver.execute_script(
@@ -61,8 +62,5 @@ class TestAddNewCcpoUser:
         self.driver.quit()
 
 
-
 def random_no_generator(size=10, chars=string.digits):
     return "".join(random.choice(chars) for x in range(size))
-
-        
