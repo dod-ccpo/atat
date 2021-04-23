@@ -70,14 +70,6 @@ class Login:
                 "You have successfully given Brandon Buchannan CCPO permissions.",
             )
         )
-    
-    def validate_confirm_page_sam(self):
-        WebDriverWait(self.driver, 30).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.usa-alert.usa-alert-success > div > p"),
-                "You have successfully given Sam Stevenson CCPO permissions.",
-            )
-        )
 
     def validate_new_user_name(self):
         WebDriverWait(self.driver, 30).until(

@@ -42,12 +42,12 @@ class TestAddNewCcpoUser:
         self.login.click_confirm_add_user()
         self.login.validate_confirm_displayed()
         self.login.click_confirm_add_user()
-        self.login.validate_confirm_page_sam()
+        self.login.validate_confirm_page()
         try:
             WebDriverWait(self.driver, 30).until(
                 EC.text_to_be_present_in_element(
                     (By.CSS_SELECTOR, "tr:nth-child(1) > td:nth-child(1)"),
-                    "Sam Stevenson",
+                    "Brandon Buchannan",
                 )
             )
             self.driver.execute_script(
