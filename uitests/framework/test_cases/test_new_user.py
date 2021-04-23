@@ -13,6 +13,7 @@ from uitests.framework.utilities.read_properties import ReadConfig
 
 
 @pytest.mark.AT6163
+@pytest.mark.regression
 class TestAddNewUser:
     url2 = ReadConfig.getLoginLocalURL()
     url = ReadConfig.getApplicationURL()

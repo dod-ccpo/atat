@@ -12,6 +12,7 @@ from uitests.framework.utilities.read_properties import ReadConfig
 
 
 @pytest.mark.AT6163
+@pytest.mark.regression
 class TestAddNewCcpoUser:
     url2 = ReadConfig.getLoginLocalURL()
     url = ReadConfig.getApplicationURL()
@@ -20,7 +21,7 @@ class TestAddNewCcpoUser:
         # Setting up driver, session/test name, maximizing window
         self.driver = setup
         self.driver.get(self.url)
-        self.driver.get(self.url2)
+        self.driver.get(self.url + "/login-local?username=sam")
         self.driver.maximize_window()
         self.driver.get(self.url + "/ccpo-users")
         self.driver.execute_script(
@@ -46,7 +47,7 @@ class TestAddNewCcpoUser:
             WebDriverWait(self.driver, 30).until(
                 EC.text_to_be_present_in_element(
                     (By.CSS_SELECTOR, "tr:nth-child(1) > td:nth-child(1)"),
-                    "Brandon Buchannan",
+                    "Sam Stevenson",
                 )
             )
             self.driver.execute_script(

@@ -13,6 +13,7 @@ from uitests.framework.page_objects import PageObjectMethods
 
 
 @pytest.mark.AT6163
+@pytest.mark.regression
 class TestEditAppMem:
     url2 = ReadConfig.getLoginLocalURL()
 

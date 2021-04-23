@@ -15,6 +15,7 @@ current_dir_path = "./uitests/framework/resources/test.pdf"
 
 
 @pytest.mark.AT6163
+@pytest.mark.regression
 class TestEditPortMem:
     url2 = ReadConfig.getLoginLocalURL()
 
