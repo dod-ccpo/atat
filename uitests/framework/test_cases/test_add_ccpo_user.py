@@ -42,7 +42,7 @@ class TestAddNewCcpoUser:
         self.login.click_confirm_add_user()
         self.login.validate_confirm_displayed()
         self.login.click_confirm_add_user()
-        self.login.validate_confirm_page()
+        self.login.validate_confirm_page_sam()
         try:
             WebDriverWait(self.driver, 30).until(
                 EC.text_to_be_present_in_element(
