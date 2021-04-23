@@ -26,7 +26,7 @@ class ReportsPages:
             )
         )
 
-    # verify this messages shows only if there is no Active TaskOrder for the Portfolio
+    # Verify this messages shows only if there is no Active TaskOrder for the Portfolio
     def msg_insuf_funds(self):
         msg = "Insufficient Funds"
         WebDriverWait(self.driver, 5).until(
@@ -116,6 +116,45 @@ class ReportsPages:
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, "div.jedi-clin-funding__active-task-orders > a",), tno
+            )
+        )
+
+    # Click on the Active TO Link
+    def active_to_link(self):
+        to_link = self.driver.find_element_by_css_selector(
+            "div.jedi-clin-funding__active-task-orders > a"
+        )
+        self.driver.execute_script("arguments[0].click();", to_link)
+
+    # By clicking on the link,Verify on TaskOrder #-TO Follow Link
+    def valid_to_no_display(self, taskorderno):
+        WebDriverWait(self.driver, 15).until(
+            EC.text_to_be_present_in_element(
+                (By.CSS_SELECTOR, ".sticky-cta-text > h3"), taskorderno,
+            )
+        )
+
+    # Validation on TO Follow Link-TotalValue
+    def total_value(self, totalvalue):
+        WebDriverWait(self.driver, 10).until(
+            EC.text_to_be_present_in_element(
+                (
+                    By.CSS_SELECTOR,
+                    ".usa-grid > .summary-item:nth-of-type(1) > .summary-item__value--large",
+                ),
+                totalvalue,
+            )
+        )
+
+    # Validation on TO Follow Link-TotalObligated value
+    def total_ob(self, totalob):
+        WebDriverWait(self.driver, 10).until(
+            EC.text_to_be_present_in_element(
+                (
+                    By.CSS_SELECTOR,
+                    ".usa-grid > .summary-item:nth-of-type(2) > .summary-item__value--large",
+                ),
+                totalob,
             )
         )
 
