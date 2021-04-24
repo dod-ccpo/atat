@@ -534,7 +534,7 @@ def test_upload_token(app, client, user_session, portfolio):
     )
     assert response.status_code == 200
     token_resp = response.get_json()
-    assert token_resp["cloudProvider"] == app.config["CSP"]
+    assert token_resp["cloudProvider"] == app.csp.files.service_name()
     assert isinstance(token_resp["token"], dict)
     assert isinstance(token_resp["objectName"], str)
     assert isinstance(token_resp["config"], dict)

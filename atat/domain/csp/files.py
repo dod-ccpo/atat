@@ -1,25 +1,37 @@
+from typing import Dict, Tuple
 from uuid import uuid4
 
 import pendulum
 
 
 class FileService:
-    def generate_token(self):
+    def service_name(self) -> str:  # pragma: no cover
         raise NotImplementedError()
 
-    def generate_download_link(self, object_name, filename) -> (dict, str):
+    def generate_token(self):  # pragma: no cover
+        raise NotImplementedError()
+
+    def generate_download_link(
+        self, object_name, filename
+    ) -> Tuple[dict, str]:  # pragma: no cover
         raise NotImplementedError()
 
     def generate_object_name(self) -> str:
         return str(uuid4())
 
-    def download_task_order(self, object_name):
+    def download_task_order(self, object_name):  # pragma: no cover
         raise NotImplementedError()
+
+    def client_upload_config(self) -> Dict[str, str]:
+        return {}
 
 
 class MockFileService(FileService):
     def __init__(self, config):
         self.config = config
+
+    def service_name(self) -> str:
+        return "mock"
 
     def get_token(self):
         return {}, self.generate_object_name()
@@ -49,6 +61,9 @@ class AzureFileService(FileService):
 
         self.blob = azure.storage.blob
 
+    def service_name(self) -> str:
+        return "azure"
+
     def get_token(self):
         """
         Generates an Azure SAS token for pre-authorizing a file upload.
@@ -66,9 +81,6 @@ class AzureFileService(FileService):
             expiry=pendulum.now(tz="UTC").add(self.timeout),
             protocol="https",
         )
-        # TODO: remove object name from this tuple -- generate in js
-        # We generate a UUID here only for it to be passed through to the frontend where it's used as the name of the
-        # blob that's uploaded. We should just generate the object name there.
         return {"token": sas_token}, self.generate_object_name()
 
     def generate_download_link(self, object_name, filename):
@@ -106,4 +118,32 @@ class AzureFileService(FileService):
             "name": blob.name,
             "content": blob.readall(),
             "filename": self.get_filename_from_blob(blob),
+        }
+
+    def generate_object_name(self) -> str:
+        # This is a basic attempt at ensuring that an _existing_ file won't be
+        # overwritten; however, it is still potentially susceptible to TOCTOU
+        # bugs since clients may not have uploaded. While imperfect at
+        # preventing two clients from getting issued the same "new" blob name,
+        # it will prevent overwriting a file that already exists. Paired with
+        # the utilization of UUID4s, the risk of collision between two clients
+        # prior to actually writing the file should be extremely small. A WORM
+        # solution in the storage provider configuration is necessary for full
+        # mitigation of all potential overwrite scenarios.
+        valid = False
+        while not valid:
+            blob_name = super().generate_object_name()
+            blob_client = self.blob.BlobClient(
+                account_url=f"https://{self.account_name}.blob.core.windows.net",
+                container_name=self.container_name,
+                blob_name=blob_name,
+                credential=self.storage_key,
+            )
+            valid = not blob_client.exists()
+        return blob_name
+
+    def client_upload_config(self) -> Dict[str, str]:
+        return {
+            "azureAccountName": self.account_name,
+            "azureContainerName": self.container_name,
         }
