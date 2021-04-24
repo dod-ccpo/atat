@@ -4,15 +4,19 @@ config = make_config()
 app = make_app(config)
 app.app_context().push()
 
+"""
+    As of now, the celery tests require a running separate instance of the celery worker in order
+    to remote in and inspect and validate against the tasks.
+"""
+
 
 def test_verify_celery_tasks():
     i = celery.control.inspect()
     tasks = i.registered()
     registered_tasks = []
+
     if tasks:
-        for key in dict.keys(tasks):
-            for task in tasks[key]:
-                registered_tasks.append(task)
+        registered_tasks = [item for lst_tasks in list(tasks.values()) for item in lst_tasks]
 
     assert registered_tasks == [
         "atat.jobs.create_application",
