@@ -6,10 +6,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from uitests.framework.page_objects.application_page import (
-    CreateApplicationPages,
-    time_now,
-)
+from uitests.framework.page_objects.application_page import CreateApplicationPages
 from uitests.framework.page_objects import PageObjectMethods
 from uitests.framework.page_objects.settings_page import SettingsPages
 from uitests.framework.page_objects.task_order_page import TaskOrderPage
@@ -18,7 +15,7 @@ from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPag
 
 
 @pytest.mark.regression
-class Test_Resend_Application_Member_Invite:
+class TestResendAppMemInvite:
     url2 = ReadConfig.getLoginLocalURL()
 
     def test_resend_app_mem_invite(self, setup):
@@ -42,6 +39,9 @@ class Test_Resend_Application_Member_Invite:
         # Generator to create random Test Portfolio name
         self.pName = "Test Portfolio" + random_generator()
 
+        # Generator to create unique Application name
+        self.appName = "App Name" + random_no_generator()
+
         self.cm.validate_atat()
         self.cm.validate_jedi()
         self.port.click_new_portfolio()
@@ -60,10 +60,7 @@ class Test_Resend_Application_Member_Invite:
         self.to.validate_add_to()
         self.app.click_applications()
         self.app.click_create_app()
-
-        # Entering application name with timestamp
-        self.app.enter_app_name(time_now)
-
+        self.app.enter_app_name(self.appName)
         self.app.enter_app_description("App description goes here")
         self.app.click_next_add_environments()
         self.app.validate_app_save()
@@ -108,4 +105,8 @@ class Test_Resend_Application_Member_Invite:
 
 
 def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
+    return "".join(random.choice(chars) for x in range(size))
+
+
+def random_no_generator(size=15, chars=string.digits):
     return "".join(random.choice(chars) for x in range(size))

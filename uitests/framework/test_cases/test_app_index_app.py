@@ -1,36 +1,36 @@
-import random
 import string
-
+import random
 import pytest
-from selenium.common.exceptions import TimeoutException
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.wait import WebDriverWait
+from uitests.framework.utilities.read_properties import ReadConfig
+from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
 from uitests.framework.page_objects.application_page import CreateApplicationPages
 from uitests.framework.page_objects import PageObjectMethods
-from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
-from uitests.framework.utilities.read_properties import ReadConfig
 
 
+@pytest.mark.AT6163
 @pytest.mark.regression
-class TestRevokeEnvironment:
+class TestApplicationWithIndex:
     url2 = ReadConfig.getLoginLocalURL()
 
-    def test_revoke_environment(self, setup):
+    def test_app_index_app(self, setup):
         # Setting up driver, session/test name, maximizing window
         self.driver = setup
         self.driver.get(self.url2)
         self.driver.maximize_window()
-        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.driver.execute_script(
             'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "13. Revoke Environment Access"}}'
+            '"arguments": {"name": "33. Application Index"}}'
         )
 
         # Initializing Page Objects
+        self.app = CreateApplicationPages(self.driver)
         self.cm = PageObjectMethods(self.driver)
         self.port = AddNewPortfolioPages(self.driver)
-        self.app = CreateApplicationPages(self.driver)
 
         # Generator to create unique Portfolio name
         self.pName = "Test Portfolio" + random_generator()
@@ -44,8 +44,8 @@ class TestRevokeEnvironment:
         self.cm.validate_atat()
         self.cm.validate_jedi()
         self.port.click_new_portfolio()
-        self.port.validate_name_desc()
         self.port.validate_new_portfolio()
+        self.port.validate_name_desc()
         self.port.enter_portfolio_name(self.pName)
         self.port.enter_portfolio_description(
             "Entering the description to verify the text"
@@ -53,16 +53,17 @@ class TestRevokeEnvironment:
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.port.select_checkbox()
         self.port.click_save_portfolio_btn()
-        self.cm.click_application()
-        self.app.click_create_app()
+        self.app.click_applications()
+        self.app.click_create_application()
         self.app.validate_name_desc()
         self.app.enter_app_name(self.appName)
         self.app.enter_app_description("App description goes here")
         self.app.click_next_add_environments()
         self.app.validate_app_save()
         self.app.click_next_add_members()
+        self.app.validate_add_members()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        self.app.click_add_team_member()
+        self.app.click_add_member()
         self.app.enter_first_name("Brandon")
         self.app.enter_last_name("Buchannan")
         self.app.enter_email(self.email)
@@ -73,45 +74,38 @@ class TestRevokeEnvironment:
         self.driver.execute_script(
             "document.querySelector('#environment_roles-0-role-None').value='ADMIN'"
         )
+        self.driver.execute_script(
+            "document.querySelector('#environment_roles-1-role-None').value='BILLING_READ'"
+        )
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.app.click_save_app()
-        WebDriverWait(self.driver, 30).until(
-            EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "h3.usa-alert-heading"), "invitation has been sent"
-            )
-        )
         self.app.click_save_app_next()
-        WebDriverWait(self.driver, 30).until(
-            EC.text_to_be_present_in_element(
-                (
-                    By.CSS_SELECTOR,
-                    "li:nth-child(1) > div.accordion-table__item-content > div > div:nth-child(1) > span.label.label--default",
-                ),
-                "PENDING CREATION",
-            )
-        )
-        self.app.click_toggle_menu()
-        self.app.click_edit_roles_perm()
-        assert "Manage Brandon Buchannan's Access" in self.driver.page_source
-        self.app.click_revoke_env()
-        self.app.validate_revoke_warning()
-        self.app.click_save_revoke_env()
+        self.app.click_applications()
+        self.app.click_acc()
+        self.app.validate_acc_dev()
+        self.app.validate_acc_prod()
+        self.app.validate_acc_stage()
+        self.app.validate_acc_test()
         try:
-            WebDriverWait(self.driver, 5).until(
+            WebDriverWait(self.driver, 30).until(
                 EC.text_to_be_present_in_element(
-                    (By.CSS_SELECTOR, "div.usa-alert.usa-alert-success > div > h3"),
-                    "Team member updated",
+                    (
+                        By.CSS_SELECTOR,
+                        "div.portfolio-applications > div > div.action-group > a",
+                    ),
+                    "Collapse All",
                 )
             )
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Environment has been revoked"}}'
+                '"Application Indexing Verified"}}'
             )
         except TimeoutException:
             self.driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Environment has NOT been revoked"}}'
+                '"Indexing Not Verified"}}'
             )
-        print("Test: Revoke Environment")
+        print("Test: Verification of Application Indexing")
         self.driver.quit()
 
 
