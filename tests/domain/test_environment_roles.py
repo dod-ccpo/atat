@@ -33,6 +33,7 @@ def test_create(application_role, environment, monkeypatch):
     assert environment_role.application_role == application_role
     assert environment_role.environment == environment
     assert environment_role.role == "network admin"
+    assert repr(environment_role)
 
 
 def test_get(application_role, environment):
