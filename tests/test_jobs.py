@@ -238,7 +238,14 @@ def test_dispatch_create_environment(session, monkeypatch):
     portfolio = PortfolioFactory.create(
         applications=[{"environments": [{}, {}], "cloud_id": uuid4().hex}],
         task_orders=[
-            {"create_clins": [{"start_date": YESTERDAY, "end_date": TOMORROW,}]}
+            {
+                "create_clins": [
+                    {
+                        "start_date": YESTERDAY,
+                        "end_date": TOMORROW,
+                    }
+                ]
+            }
         ],
     )
     [e1, e2] = portfolio.applications[0].environments
@@ -299,7 +306,14 @@ def test_create_environment_no_dupes(session):
     portfolio = PortfolioFactory.create(
         applications=[{"environments": [{"cloud_id": uuid4().hex}]}],
         task_orders=[
-            {"create_clins": [{"start_date": YESTERDAY, "end_date": TOMORROW,}]}
+            {
+                "create_clins": [
+                    {
+                        "start_date": YESTERDAY,
+                        "end_date": TOMORROW,
+                    }
+                ]
+            }
         ],
     )
     environment = portfolio.applications[0].environments[0]
@@ -324,7 +338,12 @@ def test_dispatch_provision_portfolio(csp, monkeypatch):
     portfolio = PortfolioFactory.create(
         task_orders=[
             {
-                "create_clins": [{"start_date": YESTERDAY, "end_date": TOMORROW,}],
+                "create_clins": [
+                    {
+                        "start_date": YESTERDAY,
+                        "end_date": TOMORROW,
+                    }
+                ],
                 "signed_at": NOW,
             }
         ],
@@ -422,7 +441,9 @@ class TestCreateEnvironmentRole:
         portfolio = PortfolioFactory.create(csp_data={"tenant_id": "123"})
         app = ApplicationFactory.create(portfolio=portfolio)
         app_role = ApplicationRoleFactory.create(
-            application=app, status=ApplicationRoleStatus.ACTIVE, cloud_id="123",
+            application=app,
+            status=ApplicationRoleStatus.ACTIVE,
+            cloud_id="123",
         )
         env = EnvironmentFactory.create(application=app, cloud_id="123")
         return EnvironmentRoleFactory.create(

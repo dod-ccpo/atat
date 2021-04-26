@@ -16,6 +16,8 @@ if __name__ == "__main__":
         ssl_context = (cert_path, key_path)
 
     app.run(
-        port=port, extra_files=["translations.yaml"], ssl_context=ssl_context,
+        port=port,
+        extra_files=["translations.yaml"],
+        ssl_context=ssl_context,
     )
     print(f"Listening on http{'s' if ssl_context else ''}://localhost:%i" % port)

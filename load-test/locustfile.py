@@ -205,7 +205,11 @@ def create_task_order(client, parent, portfolio_id):
     submit_task_order_url = f"/task_orders/{task_order_id}/submit"
     client.post(
         submit_task_order_url,
-        {"csrf_token": csrf_token, "signature": "y", "confirm": "y",},
+        {
+            "csrf_token": csrf_token,
+            "signature": "y",
+            "confirm": "y",
+        },
         headers={"Referer": parent.host + submit_task_order_url},
     )
 

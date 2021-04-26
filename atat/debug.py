@@ -1,7 +1,7 @@
 def setup_debug_toolbar(app, environment_name: str):
     """
     Setup Flask debug toolbar.
-    
+
     Sets application attributes and creates the debugging toolbar for
     the application.
     """

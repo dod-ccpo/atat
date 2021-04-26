@@ -27,8 +27,8 @@ class Reports:
             payload = CostManagementQueryCSPPayload(
                 from_date=from_date, to_date=to_date, **portfolio.csp_data
             )
-            response: CostManagementQueryCSPResult = current_app.csp.cloud.get_reporting_data(
-                payload
+            response: CostManagementQueryCSPResult = (
+                current_app.csp.cloud.get_reporting_data(payload)
             )
             rows = response.properties.rows
 

@@ -71,7 +71,9 @@ class TestIntegration:
     @pytest.fixture(scope="session")
     def portfolio(self, csp, app):
         owner = UserFactory.create()
-        portfolio = PortfolioFactory.create(owner=owner,)
+        portfolio = PortfolioFactory.create(
+            owner=owner,
+        )
 
         _create_active_taskorder(TaskOrderFactory, portfolio)
 
@@ -172,7 +174,7 @@ class TestIntegration:
     def test_context_manager_removes_access(self, csp, tenant_id, user_object_id):
         """Specifically test the behavior of the access manager. Elevating
         access allows a call to an API function that requires it, and trying the
-        same function again without the context manager raises an exception """
+        same function again without the context manager raises an exception"""
 
         with csp.azure._get_elevated_access_token(
             tenant_id, user_object_id
@@ -264,7 +266,13 @@ def test_get_reporting_data(csp, app):
         tenant_id=csp.azure.root_tenant_id,
         from_date=from_date,
         to_date=to_date,
-        billing_profile_properties={"invoice_sections": [{"invoice_section_id": "",}],},
+        billing_profile_properties={
+            "invoice_sections": [
+                {
+                    "invoice_section_id": "",
+                }
+            ],
+        },
     )
 
     result = csp.get_reporting_data(payload)
