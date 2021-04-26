@@ -43,3 +43,8 @@ if [ "${RUN_JS_TESTS}" = "true" ]; then
   output_divider "Run JavaScript unit test suite"
   run_javascript_tests
 fi
+
+if [ "${RUN_CELERY_TESTS}" = "true" ]; then
+    output_divider "Executing Celery Unit Tests"
+    run_celery_tests
+fi
