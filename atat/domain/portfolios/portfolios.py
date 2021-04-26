@@ -149,13 +149,13 @@ class Portfolios(object):
     @classmethod
     def get_portfolios_pending_provisioning(cls, now: pendulum.DateTime) -> List[UUID]:
         """Retrieve UUIDs for any portfolio with the following properties:
-            - Active CLINs (within the period of performance)
-            - Not soft-deleted
-            - No state machine attached OR
-            - An attached state machine with a state of
-              - UNSTARTED
-              - any that string-match /*CREATED$/
-            - A signed task order
+        - Active CLINs (within the period of performance)
+        - Not soft-deleted
+        - No state machine attached OR
+        - An attached state machine with a state of
+          - UNSTARTED
+          - any that string-match /*CREATED$/
+        - A signed task order
         """
 
         results = (

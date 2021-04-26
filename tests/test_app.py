@@ -27,7 +27,9 @@ DEFAULT_CONFIG = {"default": {"FOO": "BALONEY"}}
 
 
 @pytest.mark.parametrize(
-    "config_object", [DEFAULT_CONFIG], indirect=["config_object"],
+    "config_object",
+    [DEFAULT_CONFIG],
+    indirect=["config_object"],
 )
 def test_apply_config_from_directory(config_object, tmpdir):
     config_setting = tmpdir.join("FOO")
@@ -39,7 +41,9 @@ def test_apply_config_from_directory(config_object, tmpdir):
 
 
 @pytest.mark.parametrize(
-    "config_object", [DEFAULT_CONFIG], indirect=["config_object"],
+    "config_object",
+    [DEFAULT_CONFIG],
+    indirect=["config_object"],
 )
 def test_apply_config_from_directory_skips_unknown_settings(config_object, tmpdir):
     config_setting = tmpdir.join("FLARF")
@@ -51,7 +55,9 @@ def test_apply_config_from_directory_skips_unknown_settings(config_object, tmpdi
 
 
 @pytest.mark.parametrize(
-    "config_object", [DEFAULT_CONFIG], indirect=["config_object"],
+    "config_object",
+    [DEFAULT_CONFIG],
+    indirect=["config_object"],
 )
 def test_apply_config_from_environment(config_object, monkeypatch):
     monkeypatch.setenv("FOO", "MAYO")
@@ -60,7 +66,9 @@ def test_apply_config_from_environment(config_object, monkeypatch):
 
 
 @pytest.mark.parametrize(
-    "config_object", [DEFAULT_CONFIG], indirect=["config_object"],
+    "config_object",
+    [DEFAULT_CONFIG],
+    indirect=["config_object"],
 )
 def test_apply_config_from_environment_skips_unknown_settings(
     config_object, monkeypatch

@@ -157,7 +157,8 @@ class TestLogAndRaiseExceptions:
         @log_and_raise_exceptions
         def some_func(mock_azure):
             raise mock_azure.sdk.requests.exceptions.HTTPError(
-                "500 Error oh no.", response=mock_requests_response(status=500),
+                "500 Error oh no.",
+                response=mock_requests_response(status=500),
             )
 
         with pytest.raises(UnknownServerException):
@@ -258,8 +259,8 @@ def test_create_initial_mgmt_group_verification(
     with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
         mock_azure.create_initial_mgmt_group_verification(payload)
 
-    result: InitialMgmtGroupVerificationCSPResult = mock_azure.create_initial_mgmt_group_verification(
-        payload
+    result: InitialMgmtGroupVerificationCSPResult = (
+        mock_azure.create_initial_mgmt_group_verification(payload)
     )
 
     assert result.id == mock_id
@@ -314,7 +315,11 @@ def test_create_billing_profile_creation(
     mock_azure: AzureCloudProvider, mock_http_error_response
 ):
     mock_result = mock_requests_response(
-        headers={"Location": "http://retry-url", "Retry-After": "10",}, status=202
+        headers={
+            "Location": "http://retry-url",
+            "Retry-After": "10",
+        },
+        status=202,
     )
 
     mock_azure.sdk.requests.post.side_effect = [
@@ -411,8 +416,8 @@ def test_validate_billing_profile_creation(
     with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
         mock_azure.create_billing_profile_verification(payload)
 
-    body: BillingProfileVerificationCSPResult = mock_azure.create_billing_profile_verification(
-        payload
+    body: BillingProfileVerificationCSPResult = (
+        mock_azure.create_billing_profile_verification(payload)
     )
     assert body.billing_profile_name == "KQWI-W2SU-BG7-TGB"
     assert (
@@ -464,8 +469,8 @@ def test_create_billing_profile_tenant_access(
     with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
         mock_azure.create_billing_profile_tenant_access(payload)
 
-    body: BillingProfileTenantAccessCSPResult = mock_azure.create_billing_profile_tenant_access(
-        payload
+    body: BillingProfileTenantAccessCSPResult = (
+        mock_azure.create_billing_profile_tenant_access(payload)
     )
     assert (
         body.billing_role_assignment_name
@@ -506,8 +511,8 @@ def test_create_task_order_billing_creation(
     with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
         mock_azure.create_task_order_billing_creation(payload)
 
-    body: TaskOrderBillingCreationCSPResult = mock_azure.create_task_order_billing_creation(
-        payload
+    body: TaskOrderBillingCreationCSPResult = (
+        mock_azure.create_task_order_billing_creation(payload)
     )
 
     assert (
@@ -609,7 +614,10 @@ class Test_create_task_order_billing_verification:
     def test_async_operation_in_progress(self, mock_azure, payload):
         mock_result = mock_requests_response(
             json_data={"status": "In Progress"},
-            headers={"Location": "https://retry-url.com", "Retry-After": "0",},
+            headers={
+                "Location": "https://retry-url.com",
+                "Retry-After": "0",
+            },
         )
         mock_azure.sdk.requests.get.side_effect = [
             mock_result,
@@ -750,8 +758,8 @@ def test_create_product_purchase_verification(mock_azure, mock_http_error_respon
     with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
         mock_azure.create_product_purchase_verification(payload)
 
-    body: ProductPurchaseVerificationCSPResult = mock_azure.create_product_purchase_verification(
-        payload
+    body: ProductPurchaseVerificationCSPResult = (
+        mock_azure.create_product_purchase_verification(payload)
     )
     assert body.premium_purchase_date == "01/31/2020"
 
@@ -844,8 +852,8 @@ def test_create_tenant_principal_credential(
     with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
         mock_azure.create_tenant_principal_credential(payload)
 
-    result: TenantPrincipalCredentialCSPResult = mock_azure.create_tenant_principal_credential(
-        payload
+    result: TenantPrincipalCredentialCSPResult = (
+        mock_azure.create_tenant_principal_credential(payload)
     )
 
     assert result.principal_creds_established == True
@@ -948,8 +956,8 @@ def test_create_tenant_principal_ownership(
     with pytest.raises(UnknownServerException, match=r".*500 Server Error.*"):
         mock_azure.create_tenant_principal_ownership(payload)
 
-    result: TenantPrincipalOwnershipCSPResult = mock_azure.create_tenant_principal_ownership(
-        payload
+    result: TenantPrincipalOwnershipCSPResult = (
+        mock_azure.create_tenant_principal_ownership(payload)
     )
 
     assert result.principal_owner_assignment_id == "id"
@@ -1099,18 +1107,24 @@ def test_get_reporting_data_malformed_payload(mock_azure: AzureCloudProvider):
     # Malformed csp_data payloads that should throw pydantic validation errors
     index_error = {
         "tenant_id": "6d2d2d6c-a6d6-41e1-8bb1-73d11475f8f4",
-        "billing_profile_properties": {"invoice_sections": [],},
+        "billing_profile_properties": {
+            "invoice_sections": [],
+        },
     }
     key_error = {
         "tenant_id": "6d2d2d6c-a6d6-41e1-8bb1-73d11475f8f4",
-        "billing_profile_properties": {"invoice_sections": [{}],},
+        "billing_profile_properties": {
+            "invoice_sections": [{}],
+        },
     }
 
     for malformed_payload in [key_error, index_error]:
         with pytest.raises(pydantic.ValidationError):
             assert mock_azure.get_reporting_data(
                 CostManagementQueryCSPPayload(
-                    from_date="foo", to_date="bar", **malformed_payload,
+                    from_date="foo",
+                    to_date="bar",
+                    **malformed_payload,
                 ),
                 "token",
             )
@@ -1425,7 +1439,9 @@ def test_update_tenant_creds(mock_azure: AzureCloudProvider, monkeypatch):
         "tenant_sp_key": "1234",
     }
     monkeypatch.setattr(
-        mock_azure, "get_secret", Mock(return_value=json.dumps(existing_secrets)),
+        mock_azure,
+        "get_secret",
+        Mock(return_value=json.dumps(existing_secrets)),
     )
 
     mock_new_secrets = KeyVaultCredentials(**new_secrets)
@@ -1436,7 +1452,8 @@ def test_update_tenant_creds(mock_azure: AzureCloudProvider, monkeypatch):
 
 def test_get_calculator_url(mock_azure: AzureCloudProvider):
     mock_result = mock_requests_response(
-        status=200, json_data={"access_token": MOCK_ACCESS_TOKEN},
+        status=200,
+        json_data={"access_token": MOCK_ACCESS_TOKEN},
     )
     mock_azure.sdk.requests.get.return_value = mock_result
     assert (
@@ -1503,7 +1520,8 @@ def test_create_policies(mock_azure: AzureCloudProvider, monkeypatch):
     monkeypatch.setattr("requests.Session", mock_session)
 
     payload = PoliciesCSPPayload(
-        tenant_id="1234", root_management_group_name=str(uuid4()),
+        tenant_id="1234",
+        root_management_group_name=str(uuid4()),
     )
     result: PoliciesCSPResult = mock_azure.create_policies(payload)
     assert result.policy_assignment_id == final_assignment_id
@@ -1754,7 +1772,9 @@ def test_activate_and_return_billing_admin_role_id(mock_azure, monkeypatch):
         mock_get_billing_admin_role_template_id,
     )
     monkeypatch.setattr(
-        mock_azure, "_activate_billing_admin_role", mock_activate_billing_admin_role,
+        mock_azure,
+        "_activate_billing_admin_role",
+        mock_activate_billing_admin_role,
     )
 
     mock_azure._activate_and_return_billing_admin_role_id(token)
@@ -2058,7 +2078,8 @@ class Test_remove_tenant_admin_elevated_access:
         mock_azure.sdk.requests.get.side_effect = [
             mock_requests_response(
                 raise_for_status=mock_azure.sdk.requests.exceptions.HTTPError(
-                    "500 Server Error", response=mock_requests_response(status=500),
+                    "500 Server Error",
+                    response=mock_requests_response(status=500),
                 ),
             )
         ]
@@ -2076,10 +2097,14 @@ class Test_remove_tenant_admin_elevated_access:
                 Mock(side_effect=["MOCK_TOKEN", "MOCK_ELEVATED_TOKEN"]),
             )
             monkeypatch.setattr(
-                mock_azure, "_elevate_tenant_admin_access", Mock(),
+                mock_azure,
+                "_elevate_tenant_admin_access",
+                Mock(),
             )
             monkeypatch.setattr(
-                mock_azure, "_remove_tenant_admin_elevated_access", Mock(),
+                mock_azure,
+                "_remove_tenant_admin_elevated_access",
+                Mock(),
             )
 
         def test_token_elevation_fails(self, mock_azure):
