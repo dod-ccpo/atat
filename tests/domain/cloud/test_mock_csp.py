@@ -1,4 +1,5 @@
 import unittest
+from uuid import uuid4
 
 import pytest
 
@@ -10,6 +11,7 @@ from atat.domain.csp.cloud.models import (
     EnvironmentCSPResult,
     TenantCSPPayload,
     TenantCSPResult,
+    UserRoleCSPPayload,
 )
 from tests.factories import EnvironmentFactory, EnvironmentRoleFactory, UserFactory
 
@@ -83,6 +85,16 @@ def test_create_or_update_user(mock_csp: MockCloudProvider):
 
 def test_disable_user(mock_csp: MockCloudProvider):
     assert mock_csp.disable_user("tenant_id", "role_assignment_cloud_id")
+
+
+def test_create_user_role(mock_csp: MockCloudProvider):
+    payload = UserRoleCSPPayload(
+        tenant_id=uuid4().hex,
+        user_object_id=str(uuid4()),
+        management_group_id=str(uuid4()),
+        role="owner",
+    )
+    assert mock_csp.create_user_role(payload)
 
 
 class CspTestError(unittest.TestCase):
