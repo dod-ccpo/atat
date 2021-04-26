@@ -2,3 +2,5 @@
 4da73ac463615f1c0696b7ca0482317bace2c7e0
 # Run prettier on ansible yml
 8f32c7701be0c03b2ad78cb6220b0242202d1e24 
+# Update to black 21.4b0
+27117c45a9dc87416af0198000c5c9b86abc7527
