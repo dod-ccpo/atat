@@ -38,11 +38,11 @@
                         {% if not env["pending"] -%}
                           <span>
                             <a
-                              href='https://portal.azure.com/'
+                              href='{{ url_for("applications.access_environment", environment_id=env.id)}}'
                               target='_blank'
                               rel='noopener noreferrer'>
                               {{ env['name'] }} {{ Icon('link', classes='icon--medium icon--primary') }}
-                              {{applications}}
+                              {{ applications }}
                             </a>
                           </span>
                         {% else -%}
