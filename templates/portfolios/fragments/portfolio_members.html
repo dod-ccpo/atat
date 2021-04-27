@@ -138,8 +138,8 @@
 
             <tr>
               <td>
+                current_user {{current_user}}<br>
                 <strong>{{ member.user_name }}{% if member.role_id == current_member_id %} (You){% endif %}</strong>
-                <br>
                 {% if member.ppoc %}
                   {{ Label(type="ppoc", classes='label--below label--purple')}}
                 {% endif %}
@@ -151,7 +151,7 @@
                     {{ ("portfolios.admin.members.{}.{}".format(perm, value)) | translate }}
                   </div>
                 {%- endfor %}
-                {% if user_can(permissions.EDIT_PORTFOLIO_USERS) -%}
+                {% if user_can(permissions.EDIT_PORTFOLIO_USERS) and (not member.ppoc) -%}
                   {% call ToggleMenu() %}
                       <a
                         {% if not member.ppoc %} v-on:click="openModal('{{ perms_modal }}')"{% endif %}
