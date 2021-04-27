@@ -118,24 +118,32 @@ def admin(portfolio_id):
 @portfolios_bp.route("/portfolios/<portfolio_id>/update_ppoc", methods=["POST"])
 @user_can(Permissions.EDIT_PORTFOLIO_POC, message="update portfolio ppoc")
 def update_ppoc(portfolio_id):  # pragma: no cover
-    role_id = http_request.form.get("role_id")
-    # portfolio_id = http_request.form.get("portfolio_id")
-
+    role_id = http_request.args.get("role_id")
     portfolio = Portfolios.get(g.current_user, portfolio_id)
-    new_ppoc_role = PortfolioRoles.get_by_id(role_id)
 
-    PortfolioRoles.make_ppoc(portfolio_role=new_ppoc_role)
+    if role_id:
+        new_ppoc_role = PortfolioRoles.get_by_id(role_id)
+        PortfolioRoles.make_ppoc(portfolio_role=new_ppoc_role)
 
-    flash("primary_point_of_contact_changed", ppoc_name=new_ppoc_role.full_name)
+        flash("primary_point_of_contact_changed", ppoc_name=new_ppoc_role.full_name)
+
+        return redirect(
+            url_for(
+                "portfolios.admin",
+                portfolio_id=portfolio.id,
+                fragment="primary-point-of-contact",
+                _anchor="primary-point-of-contact",
+            )
+        )
 
     return redirect(
-        url_for(
-            "portfolios.admin",
-            portfolio_id=portfolio.id,
-            fragment="primary-point-of-contact",
-            _anchor="primary-point-of-contact",
+            url_for(
+                "portfolios/admin.html",
+                portfolio_id=portfolio.id,
+                fragment="primary-point-of-contact-fail",
+                _anchor="primary-point-of-contact-fail",
+            )
         )
-    )
 
 
 @portfolios_bp.route("/portfolios/<portfolio_id>/edit", methods=["POST"])
