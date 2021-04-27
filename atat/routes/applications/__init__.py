@@ -12,7 +12,6 @@ from .blueprint import applications_bp
 
 def wrap_environment_role_lookup(user, environment_id=None, **kwargs):
     env_role = EnvironmentRoles.get_by_user_and_environment(user.id, environment_id)
-    return bool(env_role)
     if not env_role:
         raise UnauthorizedError(user, "access environment {}".format(environment_id))
 
@@ -21,7 +20,7 @@ def wrap_environment_role_lookup(user, environment_id=None, **kwargs):
 
 @applications_bp.route("/environments/<environment_id>/access")
 @user_can(
-    Permissions.EDIT_ENVIRONMENT,
+    None,
     override=wrap_environment_role_lookup,
     message="access environment",
 )
