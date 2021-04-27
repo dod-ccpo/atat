@@ -33,3 +33,20 @@ run_javascript_tests() {
   run_command "yarn test:coverage"
   return $?
 }
+
+run_celery_tests() {
+  run_celery
+  run_command "python -m pytest celery_tests/test_celery_check.py --no-cov"
+  stop_celery
+  return $?
+}
+
+run_celery() {
+  ../dev_queue
+  return $?
+}
+
+stop_celery() {
+  pkill -9 -f 'celery worker'
+  return $?
+}
