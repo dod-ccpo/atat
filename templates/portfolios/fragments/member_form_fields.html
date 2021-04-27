@@ -7,7 +7,6 @@
 {% macro PermsFields(form, member_role_id=None) %}
   <h2>Set Portfolio Permissions</h2>
   <div class="portfolio-perms">
-    portfolio-perms {{ member_role_id }}
     {% if new %}
       {% set app_mgmt = form.perms_app_mgmt.name %}
       {% set funding = form.perms_funding.name %}
@@ -29,7 +28,6 @@
 
 {% macro InfoFields(member_form) %}
   <div class="user-info">
-    user-info
     {{ TextInput(member_form.first_name, validation='name', optional=False) }}
     {{ TextInput(member_form.last_name, validation='name', optional=False) }}
     {{ TextInput(member_form.email, validation='email', optional=False) }}
@@ -40,17 +38,12 @@
 {% endmacro %}
 
 {% macro confirmPOC(form, member_role_id=None, current_member_id=None ) %}
-
-    {% if new %}
-      {% set portfolio_poc = "perms_portfolio_mgmt-poc" %}
-    {% else %}
-      {% set portfolio_poc = "perms_portfolio_mgmt-poc-{}".format(member_role_id) %}
-    {% endif %}
+  {% if new %}
+    {% set portfolio_poc = "perms_portfolio_mgmt-poc" %}
+  {% else %}
+    {% set portfolio_poc = "perms_portfolio_mgmt-poc-{}".format(member_role_id) %}
+  {% endif %}
   <h2>Assign Primary PoC</h2>
-  <br/>
-  {{ member_role_id }}
-  <br/>
-  {{ current_member_id }}
 
  {{ CheckboxInput(form.perms_portfolio_poc, classes="input__inline-fields", key=portfolio_poc, id=portfolio_poc, optional=True) }}
 {% endmacro %}

@@ -149,7 +149,7 @@ def edit(portfolio_id):
             url_for("applications.portfolio_applications", portfolio_id=portfolio.id)
         )
     else:
-        # rerender portfolio admin page
+        # re-render portfolio admin page
         return render_admin_page(portfolio, form)
 
 
