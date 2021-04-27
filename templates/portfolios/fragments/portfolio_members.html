@@ -35,6 +35,24 @@
           </form>
         </base-form>
       {% endcall %}
+      {% set modal_name = "make_poc_member-{}".format(loop.index) %}
+      {% call Modal(modal_name, classes="form-content--member-form") %}
+        <div class="modal__form--header">
+          <h1>Make POC {{ Icon('avatar') }} {{ "portfolios.applications.members.form.edit_access_header" | translate({ "user": member.user_name }) }}</h1>
+        </div>
+        <base-form inline-template>
+          <form id='{{ modal_name }}' method="POST" action="{{ url_for('portfolios.update_member', portfolio_id=portfolio.id, portfolio_role_id=member.role_id) }}">
+            {{ member.form.csrf_token }}
+            {{ member_form.SubmitStep(
+              name=modal_name,
+              form=member_form_fields.confirmPOC(member.form, member_role_id=member.role_id, current_member_id=current_member_id),
+              submit_text="Save Changes",
+              previous=False,
+              modal=modal_name,
+            ) }}
+          </form>
+        </base-form>
+      {% endcall %}
 
       {% if invite_pending or invite_expired -%}
         {% set resend_invite_modal = "resend_invite-{}".format(member.role_id) %}
@@ -113,6 +131,7 @@
             {% set invite_expired = member.status == 'invite_expired' %}
             {% set current_user = current_member_id == member.user_id %}
             {% set perms_modal = "edit_member-{}".format(loop.index) %}
+            {% set make_poc_modal = "make_poc_member-{}".format(loop.index) %}
             {% set resend_invite_modal = "resend_invite-{}".format(member.role_id) %}
             {% set revoke_invite_modal = "revoke_invite-{}".format(member.role_id) %}
             {% set remove_manager_modal = "remove_manager-{}".format(member.role_id) %}
@@ -150,7 +169,7 @@
                       </a>
                       {% if current_user_is_POC %}
                       <a
-                        {% if not current_user %} v-on:click="openModal('{{ perms_modal }}')"{% endif %}
+                        {% if not current_user %} v-on:click="openModal('{{ make_poc_modal }}')"{% endif %}
                         class="{% if current_user %}disabled{% endif %}">
                         Make owner POC
                       </a>

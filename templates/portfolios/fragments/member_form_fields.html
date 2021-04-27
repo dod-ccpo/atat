@@ -7,6 +7,7 @@
 {% macro PermsFields(form, member_role_id=None) %}
   <h2>Set Portfolio Permissions</h2>
   <div class="portfolio-perms">
+    portfolio-perms {{ member_role_id }}
     {% if new %}
       {% set app_mgmt = form.perms_app_mgmt.name %}
       {% set funding = form.perms_funding.name %}
@@ -28,6 +29,7 @@
 
 {% macro InfoFields(member_form) %}
   <div class="user-info">
+    user-info
     {{ TextInput(member_form.first_name, validation='name', optional=False) }}
     {{ TextInput(member_form.last_name, validation='name', optional=False) }}
     {{ TextInput(member_form.email, validation='email', optional=False) }}
@@ -35,4 +37,12 @@
     {{ TextInput(member_form.dod_id, validation='dodId', optional=False) }}
     {{ "forms.new_member.dod_help" | translate }} {{ Tooltip("forms.new_member.dod_text"|translate, title="", classes="icon-tooltip--tight") }}
   </div>
+{% endmacro %}
+
+{% macro confirmPOC(form, member_role_id=None, current_member_id=None ) %}
+  HOLA POC
+  <br/>
+  {{ member_role_id }}
+  <br/>
+  {{ current_member_id }}
 {% endmacro %}
