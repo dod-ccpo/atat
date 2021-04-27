@@ -7,6 +7,9 @@
 {% import "portfolios/fragments/member_form_fields.html" as member_form_fields %}
 {% from "components/toggle_menu.html" import ToggleMenu %}
 
+{# setting a flag for if the viewer is also POC #}
+{% set current_user_is_POC = user_can("view_portfolio_poc") -%}
+
 {% if user_can(permissions.EDIT_PORTFOLIO_USERS) -%}
   {% for member in members -%}
     {% if not member.ppoc -%}
@@ -130,20 +133,27 @@
                 {%-endfor %}
                 {% if user_can(permissions.EDIT_PORTFOLIO_USERS) -%}
                   {% call ToggleMenu() %}
-                    <a
-                      {% if not member.ppoc %}v-on:click="openModal('{{ perms_modal }}')"{% endif %}
-                      class="{% if member.ppoc %}disabled{% endif %}">
-                      Edit Permissions
-                    </a>
+                      <a
+                        {% if not member.ppoc %}v-on:click="openModal('{{ perms_modal }}')"{% endif %}
+                        class="{% if member.ppoc %}disabled{% endif %}">
+                        Edit Permissions
+                      </a>
                     {% if invite_pending or invite_expired -%}
                       <a v-on:click="openModal('{{ resend_invite_modal }}')">Resend Invite</a>
                       <a v-on:click="openModal('{{ revoke_invite_modal }}')">Revoke Invite</a>
-                    {% else %}
+                    {% elif not ( current_user or member.ppoc ) %}
                       <a
                         {% if not current_user %}v-on:click="openModal('{{ remove_manager_modal }}')"{% endif %}
                         class="{% if current_user %}disabled{% endif %}">
                         Remove Manager
                       </a>
+                      {% if current_user_is_POC %}
+                      <a
+                        {% if not current_user %}v-on:click="openModal('{{ perms_modal }}')"{% endif %}
+                        class="{% if current_user %}disabled{% endif %}">
+                        Make owner POC
+                      </a>
+                      {%- endif %}
                     {%- endif %}
                   {% endcall %}
                 {%- endif %}
