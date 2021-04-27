@@ -84,13 +84,11 @@
       {% for status, to_list in task_orders.items() %}
         {{ TaskOrderList(to_list, status) }}
       {% endfor %}
-  <div class="action-group-footer action-group-footer--expand-offset">
-    <div class="action-group-footer--container">
+    <div class="action-group">
       <a href="{{ url_for("applications.view_new_application_step_1", portfolio_id=portfolio.id) }}" class="usa-button usa-button-primary">
         Next: {{ "portfolios.applications.create_button"|translate }}
       </a>
     </div>
-  </div>
     {% endcall %}
   {% else %}
     {{ EmptyState(
