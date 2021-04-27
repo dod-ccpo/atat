@@ -50,6 +50,7 @@ def filter_members_data(members_list):
         )
         member_data = {
             "role_id": member.id,
+            "user_id": member.user_id,
             "user_name": member.user_name,
             "permission_sets": filter_perm_sets_data(member),
             "status": member.display_status,
