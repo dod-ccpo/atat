@@ -38,10 +38,10 @@
       {% set modal_name = "make_poc_member-{}".format(loop.index) %}
       {% call Modal(modal_name, classes="form-content--member-form") %}
         <div class="modal__form--header">
-          <h1>Make POC {{ Icon('avatar') }} {{ "portfolios.applications.members.form.edit_access_header" | translate({ "user": member.user_name }) }}</h1>
+          <h1>{{ Icon('avatar') }} {{ "portfolios.applications.members.form.edit_access_header" | translate({ "user": member.user_name }) }}</h1>
         </div>
         <base-form inline-template>
-          <form id='{{ modal_name }}' method="POST" action="{{ url_for('portfolios.update_member', portfolio_id=portfolio.id, portfolio_role_id=member.role_id) }}">
+          <form id='{{ modal_name }}' method="POST" action="{{ url_for('portfolios.update_ppoc', portfolio_id=portfolio.id, role_id=member.role_id) }}">
             {{ member.form.csrf_token }}
             {{ member_form.SubmitStep(
               name=modal_name,
@@ -150,7 +150,7 @@
                   <div>
                     {{ ("portfolios.admin.members.{}.{}".format(perm, value)) | translate }}
                   </div>
-                {%-endfor %}
+                {%- endfor %}
                 {% if user_can(permissions.EDIT_PORTFOLIO_USERS) -%}
                   {% call ToggleMenu() %}
                       <a
@@ -171,7 +171,7 @@
                       <a
                         {% if not current_user %} v-on:click="openModal('{{ make_poc_modal }}')"{% endif %}
                         class="{% if current_user %}disabled{% endif %}">
-                        Make owner POC
+                        Assign Primary PoC
                       </a>
                       {%- endif %}
                     {%- endif %}

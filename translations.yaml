@@ -258,6 +258,9 @@ forms:
     portfolio_mgmt:
       label: Edit Portfolio
       description: "Edit this Portfolio's settings."
+    portfolio_poc:
+      label: Assign Primary PoC
+      description: "Owner this Portfolio's primary point of contact settings."
     reporting:
       label: Edit Reporting
       description: "View and export reports about this Portfolio's funding."

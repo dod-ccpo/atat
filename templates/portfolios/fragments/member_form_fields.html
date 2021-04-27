@@ -40,9 +40,17 @@
 {% endmacro %}
 
 {% macro confirmPOC(form, member_role_id=None, current_member_id=None ) %}
-  HOLA POC
+
+    {% if new %}
+      {% set portfolio_poc = "perms_portfolio_mgmt-poc" %}
+    {% else %}
+      {% set portfolio_poc = "perms_portfolio_mgmt-poc-{}".format(member_role_id) %}
+    {% endif %}
+  <h2>Assign Primary PoC</h2>
   <br/>
   {{ member_role_id }}
   <br/>
   {{ current_member_id }}
+
+ {{ CheckboxInput(form.perms_portfolio_poc, classes="input__inline-fields", key=portfolio_poc, id=portfolio_poc, optional=True) }}
 {% endmacro %}
