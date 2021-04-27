@@ -12,3 +12,6 @@ MIGRATE_DB="true"
 
 # Run the shared update script
 source ./script/include/run_update
+
+# Re-generate static assets
+yarn build
