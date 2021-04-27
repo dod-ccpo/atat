@@ -434,14 +434,15 @@ class MockCloudProvider(CloudProviderInterface):
         self._maybe_raise(self.SERVER_FAILURE_PCT, self.SERVER_EXCEPTION)
         self._maybe_raise(self.UNAUTHORIZED_RATE, self.AUTHENTICATION_EXCEPTION)
 
-        return UserRoleCSPResult(id=f"{AZURE_MGMNT_PATH}{uuid4()}",)
+        return UserRoleCSPResult(
+            id=f"{AZURE_MGMNT_PATH}{uuid4()}",
+        )
 
     def get_calculator_url(self):
         return "https://www.rackspace.com/en-us/calculator"
 
     def get_environment_login_url(self, environment):
-        """Returns the login url for a given environment
-        """
+        """Returns the login url for a given environment"""
         return "https://www.mycloud.com/my-env-login"
 
     def _id(self):

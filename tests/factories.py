@@ -60,9 +60,9 @@ def lazy_email(cls) -> str:
 
 
 def left_pad_sequence(length: int) -> Callable:
-    """Returns a function which, given a number, left pads it with 0s so it 
+    """Returns a function which, given a number, left pads it with 0s so it
     reaches the given length.
-    
+
     To be used in factory.Sequence().
     """
     return lambda n: str(n).zfill(length)

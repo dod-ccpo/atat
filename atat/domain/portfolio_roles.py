@@ -50,8 +50,8 @@ class PortfolioRoles(object):
             )
 
         if permission_sets:
-            new_portfolio_role.permission_sets = PortfolioRoles._permission_sets_for_names(
-                permission_sets
+            new_portfolio_role.permission_sets = (
+                PortfolioRoles._permission_sets_for_names(permission_sets)
             )
 
         user.portfolio_roles.append(new_portfolio_role)

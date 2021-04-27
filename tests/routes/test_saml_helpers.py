@@ -47,7 +47,11 @@ def test_prepare_login_url_success():
 
 def test_qp_cache_success():
     request = Mock(
-        args={"next": "/home", "username": "Amanda", "dod_id": "1234567890",}
+        args={
+            "next": "/home",
+            "username": "Amanda",
+            "dod_id": "1234567890",
+        }
     )
 
     _cache_params_in_session(request)
@@ -266,7 +270,9 @@ class TestSamlAttributes:
     def test_get_user_from_saml_invalid_sam_format(self, mock_attributes):
         saml_attributes = {
             **mock_attributes,
-            **{SAMLAttributes.SAM_ACCOUNT_NAME: "sam account name format changed",},
+            **{
+                SAMLAttributes.SAM_ACCOUNT_NAME: "sam account name format changed",
+            },
         }
         with pytest.raises(Exception):
             get_user_from_saml_attributes(saml_attributes)
@@ -275,7 +281,9 @@ class TestSamlAttributes:
         expected_dod_id = "1234567890"
         saml_attributes = {
             **mock_attributes,
-            **{SAMLAttributes.SAM_ACCOUNT_NAME: f"{expected_dod_id}.MIL",},
+            **{
+                SAMLAttributes.SAM_ACCOUNT_NAME: f"{expected_dod_id}.MIL",
+            },
         }
         expected_user = UserFactory.create(dod_id=expected_dod_id)
 
