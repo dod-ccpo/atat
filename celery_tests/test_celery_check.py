@@ -16,7 +16,9 @@ def test_verify_celery_tasks():
     registered_tasks = []
 
     if tasks:
-        registered_tasks = [item for lst_tasks in list(tasks.values()) for item in lst_tasks]
+        registered_tasks = [
+            item for lst_tasks in list(tasks.values()) for item in lst_tasks
+        ]
 
     assert registered_tasks == [
         "atat.jobs.create_application",
