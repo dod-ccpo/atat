@@ -4,9 +4,15 @@ import random
 import string
 
 from selenium.common.exceptions import TimeoutException
-from uitests.framework.page_objects.task_order_page import TaskOrderPage, time_run
+from uitests.framework.page_objects.task_order_page import (
+    TaskOrderPage,
+    random_no_generator,
+)
 from uitests.framework.utilities.read_properties import ReadConfig
-from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
+from uitests.framework.page_objects.new_portfolio_page import (
+    AddNewPortfolioPages,
+    random_generator,
+)
 from uitests.framework.page_objects import PageObjectMethods
 
 current_dir_path = "./uitests/framework/resources/test.pdf"
@@ -89,7 +95,7 @@ class TestCreateTaskOrder:
         self.to.click_submit_TO()
         try:
             self.to.success_msg()
-            activeto = str(time_run)
+            activeto = self.toNumber
             self.to.active_to(activeto)
         except TimeoutException:
             self.driver.execute_script(
