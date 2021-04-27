@@ -9,7 +9,8 @@
 
 {# setting a flag for if the viewer is also POC #}
 {% set current_user_is_POC = user_can("view_portfolio_poc") -%}
-
+{% set current_member_id =  user.id %}
+current_member_id {{ current_member_id }} <br>
 {% if user_can(permissions.EDIT_PORTFOLIO_USERS) -%}
   {% for member in members -%}
     {% if not member.ppoc -%}
@@ -110,14 +111,16 @@
           {% for member in members -%}
             {% set invite_pending = member.status == 'invite_pending' %}
             {% set invite_expired = member.status == 'invite_expired' %}
-            {% set current_user = current_member_id == member.role_id %}
+            {% set current_user = current_member_id == member.user_id %}
             {% set perms_modal = "edit_member-{}".format(loop.index) %}
             {% set resend_invite_modal = "resend_invite-{}".format(member.role_id) %}
             {% set revoke_invite_modal = "revoke_invite-{}".format(member.role_id) %}
             {% set remove_manager_modal = "remove_manager-{}".format(member.role_id) %}
+          current_member_id {{ current_member_id }}  ==  {{member.user_id}}<br>
 
             <tr>
               <td>
+                {{ perms_modal }} | {{current_user}} <br>
                 <strong>{{ member.user_name }}{% if member.role_id == current_member_id %} (You){% endif %}</strong>
                 <br>
                 {% if member.ppoc %}
@@ -134,7 +137,7 @@
                 {% if user_can(permissions.EDIT_PORTFOLIO_USERS) -%}
                   {% call ToggleMenu() %}
                       <a
-                        {% if not member.ppoc %}v-on:click="openModal('{{ perms_modal }}')"{% endif %}
+                        {% if not member.ppoc %} v-on:click="openModal('{{ perms_modal }}')"{% endif %}
                         class="{% if member.ppoc %}disabled{% endif %}">
                         Edit Permissions
                       </a>
@@ -143,13 +146,13 @@
                       <a v-on:click="openModal('{{ revoke_invite_modal }}')">Revoke Invite</a>
                     {% elif not ( current_user or member.ppoc ) %}
                       <a
-                        {% if not current_user %}v-on:click="openModal('{{ remove_manager_modal }}')"{% endif %}
+                        {% if not current_user %} v-on:click="openModal('{{ remove_manager_modal }}')"{% endif %}
                         class="{% if current_user %}disabled{% endif %}">
                         Remove Manager
                       </a>
                       {% if current_user_is_POC %}
                       <a
-                        {% if not current_user %}v-on:click="openModal('{{ perms_modal }}')"{% endif %}
+                        {% if not current_user %} v-on:click="openModal('{{ perms_modal }}')"{% endif %}
                         class="{% if current_user %}disabled{% endif %}">
                         Make owner POC
                       </a>
