@@ -20,9 +20,7 @@ def wrap_environment_role_lookup(user, environment_id=None, **kwargs):
 
 @applications_bp.route("/environments/<environment_id>/access")
 @user_can(
-    None,
-    override=wrap_environment_role_lookup,
-    message="access environment",
+    None, override=wrap_environment_role_lookup, message="access environment",
 )
 def access_environment(environment_id):
     return redirect("https://portal.azure.com")
