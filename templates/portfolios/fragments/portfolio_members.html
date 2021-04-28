@@ -8,7 +8,7 @@
 {% from "components/toggle_menu.html" import ToggleMenu %}
 
 {# setting a flag for if the viewer is also POC #}
-{% set current_user_is_POC = user_can("view_portfolio_poc") -%}
+{% set current_user_can_POC = user_can("view_portfolio_poc") -%}
 {% set current_member_id =  user.id %}
 
 {% if user_can(permissions.EDIT_PORTFOLIO_USERS) -%}
@@ -138,7 +138,6 @@
 
             <tr>
               <td>
-                current_user {{current_user}}<br>
                 <strong>{{ member.user_name }}{% if member.role_id == current_member_id %} (You){% endif %}</strong>
                 {% if member.ppoc %}
                   {{ Label(type="ppoc", classes='label--below label--purple')}}
@@ -161,18 +160,16 @@
                     {% if invite_pending or invite_expired -%}
                       <a v-on:click="openModal('{{ resend_invite_modal }}')">Resend Invite</a>
                       <a v-on:click="openModal('{{ revoke_invite_modal }}')">Revoke Invite</a>
-                    {% elif not ( current_user or member.ppoc ) %}
-                      <a
-                        {% if not current_user %} v-on:click="openModal('{{ remove_manager_modal }}')"{% endif %}
-                        class="{% if current_user %}disabled{% endif %}">
-                        Remove Manager
-                      </a>
-                      {% if current_user_is_POC %}
-                      <a
-                        {% if not current_user %} v-on:click="openModal('{{ make_poc_modal }}')"{% endif %}
-                        class="{% if current_user %}disabled{% endif %}">
-                        Assign Primary PoC
-                      </a>
+                    {% elif not member.ppoc %}
+                      {% if not current_user %}
+                        <a v-on:click="openModal('{{ remove_manager_modal }}')">
+                          Remove Manager
+                        </a>
+                      {%- endif %}
+                      {% if current_user_can_POC %}
+                        <a v-on:click="openModal('{{ make_poc_modal }}')">
+                          Assign Primary PoC
+                        </a>
                       {%- endif %}
                     {%- endif %}
                   {% endcall %}
