@@ -198,8 +198,6 @@ class AzureCloudProvider(CloudProviderInterface):
         self.root_tenant_id = config["AZURE_TENANT_ID"]
         self.vault_url = config["AZURE_VAULT_URL"]
         self.powershell_client_id = config["AZURE_POWERSHELL_CLIENT_ID"]
-        self.graph_resource = self.sdk.cloud.endpoints.microsoft_graph_resource_id
-        self.graph_scope = self.graph_resource + ".default"
         self.default_aadp_qty = config["AZURE_AADP_QTY"]
         self.roles = {
             "owner": config["AZURE_ROLE_DEF_ID_OWNER"],
@@ -212,6 +210,8 @@ class AzureCloudProvider(CloudProviderInterface):
         else:
             self.sdk = azure_sdk_provider
 
+        self.graph_resource = self.sdk.cloud.endpoints.microsoft_graph_resource_id
+        self.graph_scope = self.graph_resource + ".default"
         self.policy_manager = AzurePolicyManager(config["AZURE_POLICY_LOCATION"])
 
     @log_and_raise_exceptions
