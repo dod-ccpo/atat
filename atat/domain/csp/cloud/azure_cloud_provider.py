@@ -199,7 +199,7 @@ class AzureCloudProvider(CloudProviderInterface):
         self.vault_url = config["AZURE_VAULT_URL"]
         self.powershell_client_id = config["AZURE_POWERSHELL_CLIENT_ID"]
         self.graph_resource = self.sdk.cloud.endpoints.microsoft_graph_resource_id
-        self.graph_scope = config["AZURE_GRAPH_RESOURCE"] + DEFAULT_SCOPE_SUFFIX
+        self.graph_scope = self.graph_resource + ".default"
         self.default_aadp_qty = config["AZURE_AADP_QTY"]
         self.roles = {
             "owner": config["AZURE_ROLE_DEF_ID_OWNER"],
