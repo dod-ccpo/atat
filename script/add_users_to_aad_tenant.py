@@ -18,9 +18,10 @@ from atat.domain.csp.cloud.utils import (
     create_active_directory_user,
 )
 from atat.domain.csp.cloud.models import ServicePrincipalTokenPayload, UserCSPPayload
+from msrestazure.azure_cloud import AZURE_PUBLIC_CLOUD
 
-GRAPH_RESOURCE = "https://graph.microsoft.com"
-TOKEN_SCOPE = GRAPH_RESOURCE + "/.default"
+GRAPH_RESOURCE_ENDPOINT = AZURE_PUBLIC_CLOUD.endpoints.microsoft_graph_resource_id
+TOKEN_SCOPE = GRAPH_RESOURCE_ENDPOINT + ".default"
 
 
 def get_token(scope, client_id, client_secret, tenant_id):
@@ -47,7 +48,7 @@ def create_user(token, tenant_id, tenant_host_name):
         last_name=last_name,
     )
     response = create_active_directory_user(
-        token, GRAPH_RESOURCE, payload, password_reset=False
+        token, GRAPH_RESOURCE_ENDPOINT, payload, password_reset=False
     )
     response.raise_for_status()
     result = payload.dict()
