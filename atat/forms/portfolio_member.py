@@ -30,6 +30,11 @@ class PermissionsForm(BaseForm):
         default=False,
         description=translate("forms.new_member.portfolio_mgmt.description"),
     )
+    perms_portfolio_poc = BooleanField(
+        translate("forms.new_member.portfolio_poc.label"),
+        default=False,
+        description=translate("forms.new_member.portfolio_poc.description"),
+    )
 
     @property
     def data(self):
