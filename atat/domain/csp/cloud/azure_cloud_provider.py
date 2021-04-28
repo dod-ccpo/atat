@@ -7,7 +7,6 @@ import time
 from contextlib import contextmanager
 from enum import Enum
 from functools import wraps
-from msrestazure.azure_cloud import AZURE_PUBLIC_CLOUD
 from secrets import token_hex, token_urlsafe
 from typing import Dict, Optional, Tuple
 from urllib.parse import urljoin
@@ -199,7 +198,7 @@ class AzureCloudProvider(CloudProviderInterface):
         self.root_tenant_id = config["AZURE_TENANT_ID"]
         self.vault_url = config["AZURE_VAULT_URL"]
         self.powershell_client_id = config["AZURE_POWERSHELL_CLIENT_ID"]
-        self.graph_resource = AZURE_PUBLIC_CLOUD.endpoints.microsoft_graph_resource_id
+        self.graph_resource = self.sdk.cloud.endpoints.microsoft_graph_resource_id
         self.graph_scope = config["AZURE_GRAPH_RESOURCE"] + DEFAULT_SCOPE_SUFFIX
         self.default_aadp_qty = config["AZURE_AADP_QTY"]
         self.roles = {
