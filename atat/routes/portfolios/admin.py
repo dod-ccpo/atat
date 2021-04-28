@@ -119,27 +119,17 @@ def update_ppoc(portfolio_id):
     role_id = http_request.args.get("role_id")
     portfolio = Portfolios.get(g.current_user, portfolio_id)
 
-    if role_id:
-        new_ppoc_role = PortfolioRoles.get_by_id(role_id)
-        PortfolioRoles.make_ppoc(portfolio_role=new_ppoc_role)
+    new_ppoc_role = PortfolioRoles.get_by_id(role_id)
+    PortfolioRoles.make_ppoc(portfolio_role=new_ppoc_role)
 
-        flash("primary_point_of_contact_changed", ppoc_name=new_ppoc_role.full_name)
-
-        return redirect(
-            url_for(
-                "portfolios.admin",
-                portfolio_id=portfolio.id,
-                fragment="primary-point-of-contact",
-                _anchor="primary-point-of-contact",
-            )
-        )
+    flash("primary_point_of_contact_changed", ppoc_name=new_ppoc_role.full_name)
 
     return redirect(
         url_for(
             "portfolios.admin",
             portfolio_id=portfolio.id,
-            fragment="primary-point-of-contact-fail",
-            _anchor="primary-point-of-contact-fail",
+            fragment="primary-point-of-contact",
+            _anchor="primary-point-of-contact",
         )
     )
 
