@@ -4,9 +4,15 @@ import string
 import pytest
 
 from selenium.common.exceptions import TimeoutException
-from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
+from uitests.framework.page_objects.new_portfolio_page import (
+    AddNewPortfolioPages,
+    random_generator,
+)
 from uitests.framework.page_objects.reports_page import ReportsPages
-from uitests.framework.page_objects.task_order_page import TaskOrderPage, time_run
+from uitests.framework.page_objects.task_order_page import (
+    TaskOrderPage,
+    random_no_generator,
+)
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects import PageObjectMethods
 
@@ -97,7 +103,7 @@ class TestReportsBasic:
         self.rep.remaining_funds(rfunds)
         try:
             self.rep.active_to_text()
-            tno = str(time_run)
+            tno = self.toNumber
             self.rep.active_task_order_number(tno)
         except TimeoutException:
             self.driver.execute_script(
@@ -111,11 +117,3 @@ class TestReportsBasic:
             )
         print("Test: Verifying Reports - Active TO")
         self.driver.quit()
-
-
-def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
-    return "".join(random.choice(chars) for x in range(size))
-
-
-def random_no_generator(size=17, chars=string.digits):
-    return "".join(random.choice(chars) for x in range(size))
