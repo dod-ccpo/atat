@@ -54,9 +54,6 @@ class PermissionsForm(BaseForm):
         if _data["perms_portfolio_mgmt"]:
             perm_sets.append(PermissionSets.EDIT_PORTFOLIO_ADMIN)
 
-        if _data["perms_portfolio_poc"]:
-            perm_sets.append(PermissionSets.PORTFOLIO_POC)
-
         _data["permission_sets"] = perm_sets
         return _data
 
