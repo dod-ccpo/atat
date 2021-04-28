@@ -52,8 +52,13 @@ class EnvironmentRole(
     )
 
     def __repr__(self):
-        return "<EnvironmentRole(role='{}', user='{}', environment='{}', id='{}')>".format(
-            self.role, self.application_role.user_name, self.environment.name, self.id,
+        return (
+            "<EnvironmentRole(role='{}', user='{}', environment='{}', id='{}')>".format(
+                self.role,
+                self.application_role.user_name,
+                self.environment.name,
+                self.id,
+            )
         )
 
     @property

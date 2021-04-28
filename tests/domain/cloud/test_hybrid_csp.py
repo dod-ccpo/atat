@@ -71,7 +71,9 @@ class TestIntegration:
     @pytest.fixture(scope="session")
     def portfolio(self, csp, app):
         owner = UserFactory.create()
-        portfolio = PortfolioFactory.create(owner=owner,)
+        portfolio = PortfolioFactory.create(
+            owner=owner,
+        )
 
         _create_active_taskorder(TaskOrderFactory, portfolio)
 
@@ -264,7 +266,13 @@ def test_get_reporting_data(csp, app):
         tenant_id=csp.azure.root_tenant_id,
         from_date=from_date,
         to_date=to_date,
-        billing_profile_properties={"invoice_sections": [{"invoice_section_id": "",}],},
+        billing_profile_properties={
+            "invoice_sections": [
+                {
+                    "invoice_section_id": "",
+                }
+            ],
+        },
     )
 
     result = csp.get_reporting_data(payload)

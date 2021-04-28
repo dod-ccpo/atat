@@ -23,7 +23,10 @@ def upgrade():
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("task_id", sa.String(), nullable=False),
         sa.Column("environment_id", postgresql.UUID(as_uuid=True), nullable=False),
-        sa.ForeignKeyConstraint(["environment_id"], ["environments.id"],),
+        sa.ForeignKeyConstraint(
+            ["environment_id"],
+            ["environments.id"],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
@@ -31,7 +34,10 @@ def upgrade():
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("task_id", sa.String(), nullable=False),
         sa.Column("environment_role_id", postgresql.UUID(as_uuid=True), nullable=False),
-        sa.ForeignKeyConstraint(["environment_role_id"], ["environment_roles.id"],),
+        sa.ForeignKeyConstraint(
+            ["environment_role_id"],
+            ["environment_roles.id"],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     # ### end Alembic commands ###

@@ -22,7 +22,8 @@ class ReportsPages:
     def report_page_is_displayed(self):
         WebDriverWait(self.driver, 5).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".sticky-cta-text > h3"), "Reports",
+                (By.CSS_SELECTOR, ".sticky-cta-text > h3"),
+                "Reports",
             )
         )
 
@@ -31,7 +32,8 @@ class ReportsPages:
         msg = "Insufficient Funds"
         WebDriverWait(self.driver, 5).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "h3.usa-alert-heading"), msg,
+                (By.CSS_SELECTOR, "h3.usa-alert-heading"),
+                msg,
             )
         )
 
@@ -63,7 +65,8 @@ class ReportsPages:
     def ob_funds(self, ofunds):
         WebDriverWait(self.driver, 5).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.jedi-clin-funding__clin-wrapper > h3"), ofunds,
+                (By.CSS_SELECTOR, "div.jedi-clin-funding__clin-wrapper > h3"),
+                ofunds,
             )
         )
 
@@ -107,7 +110,8 @@ class ReportsPages:
     def active_to_text(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "h3.h4"), "Active Task Orders",
+                (By.CSS_SELECTOR, "h3.h4"),
+                "Active Task Orders",
             )
         )
 
@@ -115,7 +119,10 @@ class ReportsPages:
     def active_task_order_number(self, tno):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.jedi-clin-funding__active-task-orders > a",),
+                (
+                    By.CSS_SELECTOR,
+                    "div.jedi-clin-funding__active-task-orders > a",
+                ),
                 tno,
             )
         )
@@ -131,7 +138,8 @@ class ReportsPages:
     def valid_to_no_display(self, taskorderno):
         WebDriverWait(self.driver, 15).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".sticky-cta-text > h3"), taskorderno,
+                (By.CSS_SELECTOR, ".sticky-cta-text > h3"),
+                taskorderno,
             )
         )
 

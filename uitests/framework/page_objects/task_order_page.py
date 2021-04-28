@@ -130,7 +130,8 @@ class TaskOrderPage:
     def clin_card_title(self, clinNumber):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".card__title > .h4"), clinNumber,
+                (By.CSS_SELECTOR, ".card__title > .h4"),
+                clinNumber,
             )
         )
 
@@ -150,7 +151,8 @@ class TaskOrderPage:
     def percent_obligated(self, percentObligated):
         WebDriverWait(self.driver, 5).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "#percent-obligated"), percentObligated,
+                (By.CSS_SELECTOR, "#percent-obligated"),
+                percentObligated,
             )
         )
 
@@ -187,7 +189,8 @@ class TaskOrderPage:
     def validate_add_clin_btn(self):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "#add-clin"), "Add Another CLIN",
+                (By.CSS_SELECTOR, "#add-clin"),
+                "Add Another CLIN",
             )
         )
 
@@ -253,7 +256,8 @@ class TaskOrderPage:
     def validate_step4_header(self):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".sticky-cta-context"), "Step 4 of 5",
+                (By.CSS_SELECTOR, ".sticky-cta-context"),
+                "Step 4 of 5",
             )
         )
 
@@ -261,7 +265,8 @@ class TaskOrderPage:
     def validate_to_no_step4(self, toNumber):
         WebDriverWait(self.driver, 10).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".task-order__header > p"), toNumber,
+                (By.CSS_SELECTOR, ".task-order__header > p"),
+                toNumber,
             )
         )
 
