@@ -36,7 +36,6 @@ def filter_perm_sets_data(member):
         "perms_portfolio_mgmt": bool(
             member.has_permission_set(PermissionSets.EDIT_PORTFOLIO_ADMIN)
         ),
-
     }
 
     return perm_sets_data
@@ -137,13 +136,13 @@ def update_ppoc(portfolio_id):  # pragma: no cover
         )
 
     return redirect(
-            url_for(
-                "portfolios/admin.html",
-                portfolio_id=portfolio.id,
-                fragment="primary-point-of-contact-fail",
-                _anchor="primary-point-of-contact-fail",
-            )
+        url_for(
+            "portfolios/admin.html",
+            portfolio_id=portfolio.id,
+            fragment="primary-point-of-contact-fail",
+            _anchor="primary-point-of-contact-fail",
         )
+    )
 
 
 @portfolios_bp.route("/portfolios/<portfolio_id>/edit", methods=["POST"])
