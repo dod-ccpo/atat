@@ -123,10 +123,8 @@ class BaselineProvisionException(GeneralCSPException):
 
     @property
     def message(self):
-        return (
-            "Could not complete baseline provisioning for environment ({}): {}".format(
-                self.env_identifier, self.reason
-            )
+        return "Could not complete baseline provisioning for environment ({}): {}".format(
+            self.env_identifier, self.reason
         )
 
 

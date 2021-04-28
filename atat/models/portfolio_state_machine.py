@@ -56,10 +56,7 @@ class PortfolioStateMachine(
 
     id = Id()
 
-    portfolio_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("portfolios.id"),
-    )
+    portfolio_id = Column(UUID(as_uuid=True), ForeignKey("portfolios.id"),)
     portfolio = relationship("Portfolio", back_populates="state_machine")
 
     state = Column(

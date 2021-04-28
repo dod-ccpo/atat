@@ -245,8 +245,7 @@ def handle_update_member(application_id, application_role_id, form_data):
         except GeneralCSPException as exc:
             log_error(exc)
             flash(
-                "application_member_update_error",
-                user_name=app_role.user_name,
+                "application_member_update_error", user_name=app_role.user_name,
             )
 
 
@@ -302,9 +301,7 @@ def handle_update_application(form, application_id=None, portfolio_id=None):
 def settings(application_id):
     application = Applications.get(application_id)
 
-    return render_settings_page(
-        application=application,
-    )
+    return render_settings_page(application=application,)
 
 
 @applications_bp.route("/environments/<environment_id>/edit", methods=["POST"])

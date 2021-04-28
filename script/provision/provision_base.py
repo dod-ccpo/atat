@@ -46,12 +46,10 @@ def handle(f):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
-        "input_path",
-        help="Path to input json file",
+        "input_path", help="Path to input json file",
     )
     parser.add_argument(
-        "output_path",
-        help="Path to output json file",
+        "output_path", help="Path to output json file",
     )
     parser.add_argument(
         "--csp",

@@ -29,11 +29,7 @@ def upgrade():
         "environment_roles",
         "status",
         type_=sa.Enum(
-            "PENDING",
-            "COMPLETED",
-            "DISABLED",
-            name="status",
-            native_enum=False,
+            "PENDING", "COMPLETED", "DISABLED", name="status", native_enum=False,
         ),
         existing_type=sa.Enum(
             "PENDING", "COMPLETED", "PENDING_DELETE", name="status", native_enum=False
@@ -56,10 +52,6 @@ def downgrade():
             "PENDING", "COMPLETED", "PENDING_DELETE", name="status", native_enum=False
         ),
         existing_type=sa.Enum(
-            "PENDING",
-            "COMPLETED",
-            "DISABLED",
-            name="status",
-            native_enum=False,
+            "PENDING", "COMPLETED", "DISABLED", name="status", native_enum=False,
         ),
     )

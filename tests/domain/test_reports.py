@@ -8,11 +8,7 @@ class TestGetPortfolioSpending:
     csp_data = {
         "tenant_id": "",
         "billing_profile_properties": {
-            "invoice_sections": [
-                {
-                    "invoice_section_id": "",
-                }
-            ]
+            "invoice_sections": [{"invoice_section_id": "",}]
         },
     }
 

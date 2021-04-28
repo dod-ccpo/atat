@@ -63,10 +63,7 @@ if __name__ == "__main__":
         choices=["staging", "master"],
     )
     parser.add_argument(
-        "pod",
-        type=str,
-        help="the pod to query",
-        choices=["web", "beat", "worker"],
+        "pod", type=str, help="the pod to query", choices=["web", "beat", "worker"],
     )
     parser.add_argument(
         "--tail", type=int, help="number of log entries to tail", default=100

@@ -21,11 +21,7 @@ def setup_to_billing(csp, inputs):
     if result.get("task_order_billing_verify_url"):
         csp_method = csp.create_task_order_billing_verification
         payload = TaskOrderBillingVerificationCSPPayload(
-            **{
-                **inputs.get("initial_inputs"),
-                **inputs.get("csp_data"),
-                **result,
-            }
+            **{**inputs.get("initial_inputs"), **inputs.get("csp_data"), **result,}
         )
         retry_after = result.get("task_order_retry_after")
         result = verify_async(csp_method, payload, retry_after)

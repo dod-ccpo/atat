@@ -143,8 +143,7 @@ def test_make_select_input_template(options_input_macro, options_form):
 
 def test_make_upload_input_template(upload_input_macro, task_order_form):
     rendered_upload_macro = upload_input_macro(
-        task_order_form.pdf,
-        file_size_limit=int(app.config.get("FILE_SIZE_LIMIT")),
+        task_order_form.pdf, file_size_limit=int(app.config.get("FILE_SIZE_LIMIT")),
     )
     write_template(rendered_upload_macro, "upload_input_template.html")
 
@@ -152,8 +151,7 @@ def test_make_upload_input_template(upload_input_macro, task_order_form):
 def test_make_upload_input_error_template(upload_input_macro, task_order_form):
     task_order_form.validate()
     rendered_upload_macro = upload_input_macro(
-        task_order_form.pdf,
-        file_size_limit=int(app.config.get("FILE_SIZE_LIMIT")),
+        task_order_form.pdf, file_size_limit=int(app.config.get("FILE_SIZE_LIMIT")),
     )
     write_template(rendered_upload_macro, "upload_input_error_template.html")
 

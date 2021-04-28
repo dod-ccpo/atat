@@ -25,9 +25,7 @@ TOKEN_SCOPE = GRAPH_RESOURCE + "/.default"
 
 def get_token(scope, client_id, client_secret, tenant_id):
     payload = ServicePrincipalTokenPayload(
-        scope=scope,
-        client_id=client_id,
-        client_secret=client_secret,
+        scope=scope, client_id=client_id, client_secret=client_secret,
     )
     return get_principal_auth_token(tenant_id, payload)
 

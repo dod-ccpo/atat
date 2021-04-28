@@ -30,10 +30,7 @@ def claim_for_update(resource, minutes=30):
         .filter(
             and_(
                 model.id == resource.id,
-                or_(
-                    model.claimed_until.is_(None),
-                    model.claimed_until <= func.now(),
-                ),
+                or_(model.claimed_until.is_(None), model.claimed_until <= func.now(),),
             )
         )
         .update({"claimed_until": claim_until}, synchronize_session="fetch")
@@ -80,10 +77,7 @@ def claim_many_for_update(resources: List, minutes=30):
         .filter(
             and_(
                 model.id.in_(ids),
-                or_(
-                    model.claimed_until.is_(None),
-                    model.claimed_until <= func.now(),
-                ),
+                or_(model.claimed_until.is_(None), model.claimed_until <= func.now(),),
             )
         )
         .update({"claimed_until": claim_until}, synchronize_session="fetch")

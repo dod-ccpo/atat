@@ -97,9 +97,7 @@ class Applications(BaseDomainClass):
             permission_sets_names
         )
         app_role = ApplicationRole(
-            application=application,
-            permission_sets=permission_sets,
-            cloud_id=cloud_id,
+            application=application, permission_sets=permission_sets, cloud_id=cloud_id,
         )
 
         db.session.add(app_role)

@@ -236,8 +236,7 @@ def do_create_subscription(csp: CloudProviderInterface, environment_id=None):
         csp.create_subscription(payload)
     except GeneralCSPException as e:
         app.logger.warning(
-            "Unable to create subscription for environment %s.",
-            environment.id,
+            "Unable to create subscription for environment %s.", environment.id,
         )
         raise e
 
@@ -279,10 +278,7 @@ def do_create_environment_role(csp: CloudProviderInterface, environment_role_id=
 
         user = env_role.application_role.user
         domain_name = csp_details.get("domain_name")
-        username = generate_user_principal_name(
-            user.full_name,
-            domain_name,
-        )
+        username = generate_user_principal_name(user.full_name, domain_name,)
         send_mail(
             recipients=[user.email],
             subject=translate("email.azure_account_update.subject"),

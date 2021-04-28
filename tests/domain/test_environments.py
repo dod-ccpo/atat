@@ -51,9 +51,7 @@ def test_update_env_role_disabled_role():
     # An exception should be raised when a new role is passed to Environments.update_env_role
     with pytest.raises(DisabledError):
         Environments.update_env_role(
-            env_role.environment,
-            env_role.application_role,
-            CSPRole.BILLING_READ,
+            env_role.environment, env_role.application_role, CSPRole.BILLING_READ,
         )
 
     assert env_role.role is None

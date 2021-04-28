@@ -258,9 +258,7 @@ def assign_user_to_saml_idp(user_object_id: str, sp_object_id: str, access_token
 
 
 @click.command()
-@click.argument(
-    "tenant-id",
-)
+@click.argument("tenant-id",)
 @click.argument("application-id")
 @click.argument("password")
 @click.argument("hostname")

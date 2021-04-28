@@ -74,8 +74,7 @@ class Login:
     def validate_new_user_name(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "div.panel > div > h1 > div.h2"),
-                "Jimmy Valentine",
+                (By.CSS_SELECTOR, "div.panel > div > h1 > div.h2"), "Jimmy Valentine",
             )
         )
 
@@ -90,8 +89,7 @@ class Login:
     def validate_user_info_update(self):
         WebDriverWait(self.driver, 30).until(
             EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, "h3.usa-alert-heading"),
-                "User information updated.",
+                (By.CSS_SELECTOR, "h3.usa-alert-heading"), "User information updated.",
             )
         )
 

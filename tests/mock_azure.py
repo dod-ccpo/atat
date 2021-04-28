@@ -65,9 +65,7 @@ def mock_azure(monkeypatch):
         Mock(return_value=MOCK_ACCESS_TOKEN),
     )
     monkeypatch.setattr(
-        AzureCloudProvider,
-        "validate_domain_name",
-        Mock(return_value=True),
+        AzureCloudProvider, "validate_domain_name", Mock(return_value=True),
     )
     azure_cloud_provider = AzureCloudProvider(
         AZURE_CONFIG, azure_sdk_provider=MockAzureSDK()

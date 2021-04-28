@@ -144,9 +144,7 @@ def test_get_pending_creation():
     # This ApplicationRole will not be in the results because it
     # does not have a user associated.
     ApplicationRoleFactory.create(
-        user=None,
-        application=ready_app,
-        status=ApplicationRoleStatus.ACTIVE,
+        user=None, application=ready_app, status=ApplicationRoleStatus.ACTIVE,
     )
 
     # This ApplicationRole will not be in the results because its

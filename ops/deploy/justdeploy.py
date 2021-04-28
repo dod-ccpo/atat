@@ -86,10 +86,7 @@ def deploy(
     ops_tf_application_container,
 ):
     setup(
-        sp_client_id,
-        sp_client_secret,
-        tenant_id,
-        namespace,
+        sp_client_id, sp_client_secret, tenant_id, namespace,
     )
 
     os.environ["ARM_CLIENT_ID"] = sp_client_id

@@ -84,10 +84,7 @@ def test_funding_duration(session):
         portfolio=portfolio,
         signed_at=random_past_date(),
         create_clins=[
-            {
-                "start_date": pendulum.now(tz="UTC"),
-                "end_date": funding_end_date,
-            }
+            {"start_date": pendulum.now(tz="UTC"), "end_date": funding_end_date,}
         ],
     )
 
@@ -155,11 +152,7 @@ class TestCurrentObligatedFunds:
         self, past_task_order, current_task_order, upcoming_task_order
     ):
         portfolio = PortfolioFactory(
-            task_orders=[
-                past_task_order,
-                current_task_order,
-                upcoming_task_order,
-            ]
+            task_orders=[past_task_order, current_task_order, upcoming_task_order,]
         )
         # Only sums the current task order
         assert portfolio.total_obligated_funds == Decimal(1000.0)
