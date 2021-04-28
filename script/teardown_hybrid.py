@@ -18,6 +18,7 @@ RESOURCE_MANAGER_ENDPOINT = AZURE_PUBLIC_CLOUD.endpoints.resource_manager
 
 DEFAULT_SCOPE_SUFFIX = ".default"
 
+
 def delete_tenant_principal_app(token, app_id):
     url = f"{GRAPH_RESOURCE_ENDPOINT}v1.0/applications/{app_id}"
 
