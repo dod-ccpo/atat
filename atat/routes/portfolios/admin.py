@@ -113,7 +113,6 @@ def admin(portfolio_id):
     return render_admin_page(portfolio)
 
 
-# Updating PPoC is a post-MVP feature
 @portfolios_bp.route("/portfolios/<portfolio_id>/update_ppoc", methods=["POST"])
 @user_can(Permissions.EDIT_PORTFOLIO_POC, message="update portfolio ppoc")
 def update_ppoc(portfolio_id):
