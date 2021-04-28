@@ -25,7 +25,6 @@ def test_update_portfolio_name_and_description(client, user_session):
     assert portfolio.description == "a portfolio for things"
 
 
-@pytest.mark.skip(reason="Out of scope for MVP")
 def updating_ppoc_successfully(client, old_ppoc, new_ppoc, portfolio):
     response = client.post(
         url_for("portfolios.update_ppoc", portfolio_id=portfolio.id, _external=True),
@@ -95,7 +94,6 @@ def test_update_ppoc_when_ppoc(client, user_session):
     )
 
 
-@pytest.mark.skip(reason="Out of scope for MVP")
 def test_update_ppoc_when_ccpo(client, user_session):
     ccpo = UserFactory.create_ccpo()
     portfolio = PortfolioFactory.create()
