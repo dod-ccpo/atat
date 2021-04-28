@@ -260,7 +260,7 @@ forms:
       description: "Edit this Portfolio's settings."
     portfolio_poc:
       label: Assign Primary PoC
-      description: "Owner this Portfolio's primary point of contact settings."
+      description: "Make this user the Portfolio's primary point of contact."
     reporting:
       label: Edit Reporting
       description: "View and export reports about this Portfolio's funding."
