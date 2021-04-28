@@ -45,7 +45,6 @@ def updating_ppoc_successfully(client, old_ppoc, new_ppoc, portfolio):
     assert Permissions.EDIT_PORTFOLIO_POC not in old_ppoc.permissions
 
 
-@pytest.mark.skip(reason="Out of scope for MVP")
 def test_update_ppoc_no_user_id_specified(client, user_session):
     portfolio = PortfolioFactory.create()
 
@@ -59,7 +58,6 @@ def test_update_ppoc_no_user_id_specified(client, user_session):
     assert response.status_code == 404
 
 
-@pytest.mark.skip(reason="Out of scope for MVP")
 def test_update_ppoc_to_member_not_on_portfolio(client, user_session):
     portfolio = PortfolioFactory.create()
     original_ppoc = portfolio.owner
@@ -77,7 +75,6 @@ def test_update_ppoc_to_member_not_on_portfolio(client, user_session):
     assert portfolio.owner.id == original_ppoc.id
 
 
-@pytest.mark.skip(reason="Out of scope for MVP")
 def test_update_ppoc_when_ppoc(client, user_session):
     portfolio = PortfolioFactory.create()
     original_ppoc = portfolio.owner_role
@@ -111,7 +108,6 @@ def test_update_ppoc_when_ccpo(client, user_session):
     )
 
 
-@pytest.mark.skip(reason="Out of scope for MVP")
 def test_update_ppoc_when_not_ppoc(client, user_session):
     portfolio = PortfolioFactory.create()
     new_owner = UserFactory.create()
