@@ -41,7 +41,7 @@
           <h1>{{ Icon('avatar') }} {{ "portfolios.applications.members.form.edit_access_header" | translate({ "user": member.user_name }) }}</h1>
         </div>
         <base-form inline-template>
-          <form id='{{ modal_name }}' method="POST" action="{{ url_for('portfolios.update_ppoc', portfolio_id=portfolio.id, role_id=member.role_id) }}">
+          <form id='{{ modal_name }}' method="POST" action="{{ url_for('portfolios.update_ppoc', portfolio_id=portfolio.id) }}">
             {{ member.form.csrf_token }}
             {{ member_form.SubmitStep(
               name=modal_name,
