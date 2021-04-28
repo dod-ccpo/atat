@@ -56,7 +56,7 @@ pytest-mock = "*"
 detect-secrets = "~1.1.0"
 beautifulsoup4 = "*"
 mypy = "*"
-black = "^21.4b1"
+black = "^21.4b2"
 pytest-depends = "^1.0.1"
 
 
