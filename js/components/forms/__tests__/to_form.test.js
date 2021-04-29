@@ -10,16 +10,16 @@ const TOFormWrapper = makeTestWrapper({
   templatePath: 'to_form.html',
 })
 
-describe('TOForm Test', async () => {
+describe('TOForm Test', () => {
   it('should allow users to add new CLINs', async () => {
     const wrapper = mount(TOFormWrapper, {
       propsData: {
         initialData: {},
       },
     })
-    expect(wrapper.findAll(clinFields).length).toBe(1)
+    expect(wrapper.findAllComponents(clinFields).length).toBe(1)
     await wrapper.find('#add-clin').trigger('click')
-    expect(wrapper.findAll(clinFields).length).toBe(2)
+    expect(wrapper.findAllComponents(clinFields).length).toBe(2)
   })
 
   it('should not enable the save button until the form is complete and valid', async () => {
