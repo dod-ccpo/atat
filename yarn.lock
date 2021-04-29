@@ -1499,10 +1499,10 @@ acorn-walk@^7.0.0, acorn-walk@^7.1.1:
   resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-7.2.0.tgz#0de889a601203909b0fbe07b8938dc21d2e967bc"
   integrity sha512-OPdCF6GsMIP+Az+aWfAAOEt2/+iVDKE7oy6lJ098aoe59oAmK76qV6Gw60SbZ8jHuG2wH058GF4pLFbYamYrVA==
 
-"acorn@>=5.7.4 <6.0.0 || >=6.4.1 <7.0.0 || >=7.1.1", "acorn@>=5.7.4 <6.0.0 || >=6.4.1 <7.0.0 || >=7.1.1 || ^8.1.1 || ^8.2.1", acorn@^6.0.1, acorn@^6.0.4, acorn@^7.0.0, acorn@^7.1.1, acorn@^8.1.0:
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.2.1.tgz#0d36af126fb6755095879c1dc6fd7edf7d60a5fb"
-  integrity sha512-z716cpm5TX4uzOzILx8PavOE6C6DKshHDw1aQN52M/yNSqE9s5O8SMfyhCCfCJ3HmTL0NkVOi+8a/55T7YB3bg==
+"acorn@>=5.7.4 <6.0.0 || >=6.4.1 <7.0.0 || >=7.1.1", "acorn@>=5.7.4 <6.0.0 || >=6.4.1 <7.0.0 || >=7.1.1 || ^8.1.1 || ^8.2.1 || ^8.2.2", acorn@^6.0.1, acorn@^6.0.4, acorn@^7.0.0, acorn@^7.1.1, acorn@^8.1.0:
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.2.2.tgz#c4574e4fea298d6e6ed4b85ab844b06dd59f26d6"
+  integrity sha512-VrMS8kxT0e7J1EX0p6rI/E0FbfOVcvBpbIqHThFv+f8YrZIlMfVotYcXKVPmTvPW8sW5miJzfUFrrvthUZg8VQ==
 
 acorn@^6.4.1:
   version "6.4.2"
