@@ -23,8 +23,8 @@ describe('MultiCheckboxInput Renders Correctly', () => {
         },
       },
     })
-    expect(wrapper.contains('.usa-input--success')).toBe(false)
-    expect(wrapper.contains('.usa-input--error')).toBe(false)
+    expect(wrapper.find('.usa-input--success').exists()).toBe(false)
+    expect(wrapper.find('.usa-input--error').exists()).toBe(false)
     expect(wrapper.find('.usa-input input[value="a"]').element.checked).toBe(
       false
     )
@@ -60,8 +60,8 @@ describe('Multicheckbox shows validation states correctly', () => {
       },
     })
     await wrapper.find('.usa-input input[value="a"]').setChecked()
-    expect(wrapper.contains('.usa-input--success')).toBe(true)
-    expect(wrapper.contains('.usa-input--error')).toBe(false)
+    expect(wrapper.find('.usa-input--success').exists()).toBe(true)
+    expect(wrapper.find('.usa-input--error').exists()).toBe(false)
   })
 
   it('Should be invalid when no checkboxes are checked', async () => {
@@ -96,7 +96,7 @@ describe('Multicheckbox shows validation states correctly', () => {
     await checkboxA.setChecked()
     await checkboxA.setChecked(false)
 
-    expect(wrapper.contains('.usa-input--error')).toBe(false)
-    expect(wrapper.contains('.usa-input--success')).toBe(true)
+    expect(wrapper.find('.usa-input--error').exists()).toBe(false)
+    expect(wrapper.find('.usa-input--success').exists()).toBe(true)
   })
 })

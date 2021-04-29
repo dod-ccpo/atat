@@ -55,8 +55,8 @@ describe('SelectInput Renders Correctly', () => {
 
     await wrapper.find('select#selectfield').trigger('change')
 
-    expect(wrapper.contains('.usa-input--error')).toBe(true)
-    expect(wrapper.contains('.usa-input--success')).toBe(false)
+    expect(wrapper.find('.usa-input--error').exists()).toBe(true)
+    expect(wrapper.find('.usa-input--success').exists()).toBe(false)
   })
 
   it('Should be considered valid if value is selected', async () => {
@@ -74,8 +74,8 @@ describe('SelectInput Renders Correctly', () => {
     await wrapper.find('option[value="a"]').setSelected()
     await selectField.trigger('change')
 
-    expect(wrapper.contains('.usa-input--error')).toBe(false)
-    expect(wrapper.contains('.usa-input--success')).toBe(true)
+    expect(wrapper.find('.usa-input--error').exists()).toBe(false)
+    expect(wrapper.find('.usa-input--success').exists()).toBe(true)
   })
 })
 
@@ -149,7 +149,7 @@ describe('RadioInput Renders Correctly', () => {
 
     await wrapper.findAll('input[type="radio"]').at(0).setChecked()
 
-    expect(wrapper.contains('.usa-input--error')).toBe(false)
-    expect(wrapper.contains('.usa-input--success')).toBe(true)
+    expect(wrapper.find('.usa-input--error').exists()).toBe(false)
+    expect(wrapper.find('.usa-input--success').exists()).toBe(true)
   })
 })
