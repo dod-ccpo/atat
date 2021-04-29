@@ -111,6 +111,11 @@
     text-decoration: none;
     text-overflow: ellipsis;
 
+    &:focus {
+      position: relative;
+      z-index: auto;
+    }
+
     &--active {
       font-size: $base-font-size;
       font-weight: $font-bold;
