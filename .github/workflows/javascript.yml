@@ -1,0 +1,47 @@
+---
+name: Validate JavaScript code
+
+on:
+  push:
+    branches:
+      - "main"
+      - "develop"
+      - "release/*"
+    paths:
+      - "**.js"
+      - ".github/**"
+      - "package.json"
+      - "yarn.lock"
+      - ".prettierignore"
+      - "prettier.config.json"
+  pull_request:
+    paths:
+      - "**.js"
+      - ".github/**"
+      - "package.json"
+      - "yarn.lock"
+      - ".prettierignore"
+      - "prettier.config.json"
+
+jobs:
+  formatting:
+    name: "Validate JavaScript formatting"
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache yarn dependencies
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-yarn-deps
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-formatting-${{ env.cache-name }}-${{ hashFiles('package.json', 'yarn.lock')}}
+          restore-keys: |
+            ${{ runner.os }}-formatting-${{ env.cache-name }}-
+      - name: Install yarn dependencies
+        run: |
+          yarn install --dev
+      - name: Check Javascript formatting
+        run: |
+          yarn run prettier --list-different --config ./prettier.config.json "js/**/*.js" "styles/**/*.scss"

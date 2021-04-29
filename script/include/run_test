@@ -26,12 +26,14 @@ fi
 
 ## Main
 if [ "${RUN_PYTHON_TESTS}" = "true" ]; then
-  output_divider "Lint Python files"
-  run_python_lint "${PYTHON_FILES}"
-  output_divider "Perform static analysis on Python files"
-  run_python_static_analysis "${PYTHON_FILES}"
-  output_divider "Perform type checking on Python files"
-  run_python_typecheck
+  if [ "${RUN_PYTHON_LINT}" = "true" ]; then
+    output_divider "Lint Python files"
+    run_python_lint "${PYTHON_FILES}"
+    output_divider "Perform static analysis on Python files"
+    run_python_static_analysis "${PYTHON_FILES}"
+    output_divider "Perform type checking on Python files"
+    run_python_typecheck
+  fi
   output_divider "Run Python unit test suite"
   run_python_unit_tests "${PYTHON_FILES}"
 fi

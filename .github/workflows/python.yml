@@ -1,0 +1,113 @@
+---
+name: Validate Python code
+
+on:
+  push:
+    branches:
+      - "main"
+      - "develop"
+      - "release/*"
+    paths:
+      - "**.py"
+      - ".github/**"
+      - "pyproject.toml"
+      - "poetry.*"
+      - ".bandit_config"
+      - ".pylintrc"
+  pull_request:
+    paths:
+      - "**.py"
+      - ".github/**"
+      - "pyproject.toml"
+      - "poetry.*"
+      - ".bandit_config"
+      - ".pylintrc"
+
+env:
+  PYTHON_FILES: "./app.py ./atat/** ./config"
+  PYTHON_VERSION: "3.8.8"
+
+jobs:
+  formatting:
+    name: "Validate format of Python code"
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Python version
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}        
+      - name: Validate formatting
+        uses: psf/black@stable
+        with:
+          args: ". --check --diff"
+  bandit:
+    name: "Check for Python security issues"
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install xmlsec and python dependencies
+        run: |
+          sudo apt-get update -qqy
+          sudo apt-get install -qqy libxml2-dev libxmlsec1-dev libxmlsec1-openssl xmlsec1 pkg-config
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Python version
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Cache poetry virtual environment
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-poetry-env
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-bandit-${{ env.PYTHON_VERSION }}-${{ env.cache-name }}-${{ hashFiles('pyproject.toml', 'poetry.lock')}}
+          restore-keys: |
+            ${{ runner.os }}-bandit-${{ env.PYTHON_VERSION }}-${{ env.cache-name }}-
+            ${{ runner.os }}-bandit-${{ env.PYTHON_VERSION }}-
+      - name: Install poetry
+        run: |
+          pip install poetry
+      - name: Install poetry dependencies
+        run: |
+          poetry install
+      - name: Scan for security problems
+        run: |
+          poetry run bandit -c ./.bandit_config -r ${PYTHON_FILES}
+  pylint:
+    name: "Check for Python lint issues"
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install xmlsec and python dependencies
+        run: |
+          sudo apt-get update -qqy
+          sudo apt-get install -qqy libxml2-dev libxmlsec1-dev libxmlsec1-openssl xmlsec1 pkg-config
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Python version
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Cache poetry virtual environment
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-poetry-env
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-lint-${{ env.PYTHON_VERSION }}-${{ env.cache-name }}-${{ hashFiles('pyproject.toml', 'poetry.lock')}}
+          restore-keys: |
+            ${{ runner.os }}-lint-${{ env.PYTHON_VERSION }}-${{ env.cache-name }}-
+            ${{ runner.os }}-lint-${{ env.PYTHON_VERSION }}-
+      - name: Install poetry
+        run: |
+          pip install poetry
+      - name: Install poetry dependencies
+        run: |
+          poetry install
+      - name: Scan for pylint problems
+        run: |
+          poetry run pylint ${PYTHON_FILES}
+      - name: Validate import orders
+        run: |
+          poetry run isort --check --diff atat/ tests/
