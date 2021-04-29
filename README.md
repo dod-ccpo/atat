@@ -173,7 +173,7 @@ The `/login-dev` routes require that you have a valid account in the Azure Activ
 ### Seeding the database
 
 We have a helper script that will seed the database with requests, portfolios and
-applications for all of the test users:
+applications for all the test users:
 
 `poetry run python script/seed_sample.py`
 

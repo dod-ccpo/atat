@@ -1,0 +1,24 @@
+[
+    {
+        "user_owner": {
+          "dod_id": "2345678901",
+          "first_name": "Amanda",
+          "last_name": "Adamson"
+        },
+        "portfolio":{
+            "name":"example-json name portfolio",
+            "desc":"example-json description portfolio",
+            "branch":  [
+              "air_force",
+              "army",
+              "marine_corps",
+              "navy",
+              "space_force",
+              "ccmd_js",
+              "dafa",
+              "osd_psas",
+              "other"
+            ]
+        }
+    }
+]
