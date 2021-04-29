@@ -12,9 +12,6 @@ We're using [Locust.io](https://locust.io/) for our load tests. The tests can be
 
    `docker build . -t locust`
 
-2. Run the container:
+2. Run the container (setting the host address such that it can be reached from the host OS):
 
-   `docker run --rm -p 8089:8089 -e DISABLE_VERIFY=false locust:latest`
-
-Since the locust tests will run within the docker network, if you want to run the tests against your local server, you'll need to use the special docker loopback domain:
-  - OSX: http://docker.for.mac.localhost:8000
+   `docker run --rm -p 8089:8089 -e DISABLE_VERIFY=false locust:latest -H https://host.docker.internal:8000`
