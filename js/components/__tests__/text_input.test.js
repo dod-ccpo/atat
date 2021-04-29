@@ -26,11 +26,11 @@ describe('TextInput Validates Correctly', () => {
           },
         },
       })
-      expect(wrapper.contains('.usa-input--success')).toBe(false)
-      expect(wrapper.contains('.usa-input--error')).toBe(false)
-      expect(wrapper.contains('.usa-input--validation--taskOrderNumber')).toBe(
-        true
-      )
+      expect(wrapper.find('.usa-input--success').exists()).toBe(false)
+      expect(wrapper.find('.usa-input--error').exists()).toBe(false)
+      expect(
+        wrapper.find('.usa-input--validation--taskOrderNumber').exists()
+      ).toBe(true)
     })
 
     it('Should allow valid TO numbers', async () => {
@@ -60,8 +60,8 @@ describe('TextInput Validates Correctly', () => {
         // manually trigger change event in hidden fields
         await hiddenField.trigger('change')
         // check for validation classes
-        expect(wrapper.contains('.usa-input--success')).toBe(true)
-        expect(wrapper.contains('.usa-input--error')).toBe(false)
+        expect(wrapper.find('.usa-input--success').exists()).toBe(true)
+        expect(wrapper.find('.usa-input--error').exists()).toBe(false)
       }
     })
 
@@ -90,8 +90,8 @@ describe('TextInput Validates Correctly', () => {
         // manually trigger change event in hidden fields
         await hiddenField.trigger('change')
         // check for validation classes
-        expect(wrapper.contains('.usa-input--success')).toBe(false)
-        expect(wrapper.contains('.usa-input--error')).toBe(true)
+        expect(wrapper.find('.usa-input--success').exists()).toBe(false)
+        expect(wrapper.find('.usa-input--error').exists()).toBe(true)
       }
     })
   })
