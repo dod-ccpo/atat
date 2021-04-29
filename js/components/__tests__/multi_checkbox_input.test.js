@@ -79,8 +79,8 @@ describe('Multicheckbox shows validation states correctly', () => {
     await checkboxA.setChecked()
     await checkboxA.setChecked(false)
 
-    expect(wrapper.contains('.usa-input--error')).toBe(true)
-    expect(wrapper.contains('.usa-input--success')).toBe(false)
+    expect(wrapper.find('.usa-input--error').exists()).toBe(true)
+    expect(wrapper.find('.usa-input--success').exists()).toBe(false)
   })
 
   it('Should be valid when no checkboxes are checked but it is optional', async () => {
