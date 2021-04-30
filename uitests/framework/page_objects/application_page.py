@@ -1,3 +1,7 @@
+import pytest
+import random
+import string
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -39,7 +43,7 @@ class CreateApplicationPages:
     def __init__(self, driver):
         self.driver = driver
 
-    def select_portfolio(self):  ###Needs to be moved to new portfolio page objects
+    def select_portfolio(self):  # Needs to be moved to new portfolio page objects
         self.driver.find_element_by_css_selector(self.btn_select_portfolio_css).click()
 
     def click_create_app(self):
@@ -293,3 +297,7 @@ class CreateApplicationPages:
                 "Set Portfolio Permissions",
             )
         )
+
+
+def random_dod_id_generator(size=10, chars=string.digits):
+    return "".join(random.choice(chars) for x in range(size))
