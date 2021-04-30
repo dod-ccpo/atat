@@ -49,7 +49,8 @@
     "minimist": ">=1.2.2",
     "acorn": ">=5.7.4 <6.0.0 || >=6.4.1 <7.0.0 || >=7.1.1",
     "uswds/**/acorn": "^6.4.1",
-    "kind-of": ">=6.0.3"
+    "kind-of": ">=6.0.3",
+    "cssnano": "4.1.11"
   },
   "browserslist": [
     "last 3 version",
