@@ -83,7 +83,7 @@
     width: $sidenav-expanded-width;
     background-color: $color-white;
     list-style: none;
-    padding: 0 0 ($gap * 2) 0;
+    padding: ($gap * 2) 0 ($gap * 2) 0;
 
     &--no-header {
       top: $topbar-height + $usa-banner-height;
@@ -110,6 +110,11 @@
     color: $color-black-light !important;
     text-decoration: none;
     text-overflow: ellipsis;
+
+    &:focus {
+      position: relative;
+      z-index: 1;
+    }
 
     &--active {
       font-size: $base-font-size;
