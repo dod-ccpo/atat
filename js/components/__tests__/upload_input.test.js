@@ -69,7 +69,7 @@ describe('UploadInput Test', () => {
       },
     })
 
-    const component = wrapper.find(uploadinput)
+    const component = wrapper.findComponent(uploadinput)
     const event = { target: { value: '', files: [{ name: 'sample.pdf' }] } }
 
     component.setMethods({
@@ -91,7 +91,7 @@ describe('UploadInput Test', () => {
     })
 
     const event = { preventDefault: () => {}, target: { value: 'val' } }
-    const component = wrapper.find(uploadinput)
+    const component = wrapper.findComponent(uploadinput)
 
     component.vm.removeAttachment(event)
 
