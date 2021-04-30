@@ -83,7 +83,7 @@
     width: $sidenav-expanded-width;
     background-color: $color-white;
     list-style: none;
-    padding: 0 0 ($gap * 2) 0;
+    padding: ($gap * 2) 0 ($gap * 2) 0;
 
     &--no-header {
       top: $topbar-height + $usa-banner-height;
@@ -97,7 +97,6 @@
   }
 
   &__item {
-    padding-top: 6px;
     margin: 0;
     display: block;
     color: $color-black-light !important;
