@@ -29,8 +29,7 @@ class TestCreateExpiredTaskOrder:
         )
         self.driver.get(self.url2)
         self.driver.maximize_window()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.cm = PageObjectMethods(self.driver)
         self.cm.validate_atat()
         self.port = AddNewPortfolioPages(self.driver)
@@ -43,8 +42,7 @@ class TestCreateExpiredTaskOrder:
         self.port.enter_portfolio_description(
             "Entering the description to verify the text"
         )
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.port.select_checkbox()
         time.sleep(5)
         self.port.click_save_portfolio_btn()
@@ -55,11 +53,9 @@ class TestCreateExpiredTaskOrder:
         self.to = TaskOrderPage(self.driver)
         self.to.click_task_order()
         self.to.validate_add_to()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_add_new_to()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.driver.execute_script(
             "document.querySelector('#pdf').style.visibility = 'visible'"
         )
@@ -71,14 +67,12 @@ class TestCreateExpiredTaskOrder:
         file_input.send_keys(absolute_file_path)
         self.to.click_next_add_TO_number()
         time.sleep(10)
-        #Random Generator for Unique TO#
+        # Random Generator for Unique TO#
         self.tnumber = random_no_generator()
         self.to.enter_TO_number(self.tnumber)
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_next_add_clin_number()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.enter_clin_number("0012")
         self.to.add_clin_value("800,000")
         self.to.add_obligated_clin_value("100,000")
@@ -90,8 +84,7 @@ class TestCreateExpiredTaskOrder:
         self.to.add_end_year("2021")
         self.to.click_next_review_TO()
         self.to.click_confirm()
-        self.driver.execute_script(
-            "window.scrollTo(0,document.body.scrollHeight)")
+        self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.to.click_checkbox_one()
         self.to.click_check_box_two()
         self.to.click_submit_TO()
