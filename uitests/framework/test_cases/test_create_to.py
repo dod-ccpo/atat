@@ -1,7 +1,5 @@
 import os
 import pytest
-import random
-import string
 
 from selenium.common.exceptions import TimeoutException
 from uitests.framework.page_objects.task_order_page import (
@@ -40,9 +38,6 @@ class TestCreateTaskOrder:
 
         # Generator to create unique Portfolio name
         self.pName = "Test Portfolio" + random_generator()
-
-        # Generator to create unique Application name
-        self.appName = "App Name" + random_no_generator()
 
         # Generator to create unique Task Order number
         self.toNumber = random_no_generator()
@@ -118,11 +113,3 @@ class TestCreateTaskOrder:
             )
         print("Test: Create Active Task Order")
         self.driver.quit()
-
-
-def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
-    return "".join(random.choice(chars) for x in range(size))
-
-
-def random_no_generator(size=17, chars=string.digits):
-    return "".join(random.choice(chars) for x in range(size))
