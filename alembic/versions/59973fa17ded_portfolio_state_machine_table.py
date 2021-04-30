@@ -24,7 +24,10 @@ def upgrade():
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("task_id", sa.String(), nullable=False),
         sa.Column("portfolio_id", postgresql.UUID(as_uuid=True), nullable=False),
-        sa.ForeignKeyConstraint(["portfolio_id"], ["portfolios.id"],),
+        sa.ForeignKeyConstraint(
+            ["portfolio_id"],
+            ["portfolios.id"],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
@@ -73,7 +76,10 @@ def upgrade():
             ),
             nullable=False,
         ),
-        sa.ForeignKeyConstraint(["portfolio_id"], ["portfolios.id"],),
+        sa.ForeignKeyConstraint(
+            ["portfolio_id"],
+            ["portfolios.id"],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.add_column("portfolios", sa.Column("app_migration", sa.String(), nullable=True))

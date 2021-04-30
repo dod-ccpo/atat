@@ -1,0 +1,98 @@
+---
+name: Full CI Build
+on:
+  pull_request:
+  push:
+    branches:
+      - "master"
+      - "develop"
+      - "release/**"
+
+jobs:
+  cibuildscript:
+    name: Pre-merge Checks / Unit Tests / Sonar Scan
+    runs-on: ubuntu-20.04
+    env:
+      PYTHON_VERSION: "3.8.8"
+    services:
+      redis:
+        image: redis:6
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+      postgres:
+        image: postgres:10
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: atat_test
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: Install xmlsec and python dependencies
+        run: |
+          sudo apt-get update -qqy
+          sudo apt-get install -qqy libxml2-dev libxmlsec1-dev libxmlsec1-openssl xmlsec1 pkg-config
+      - name: Install correct Python version
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set Up Poetry
+        run: |
+          pip install poetry
+        shell: bash
+      - name: Cache poetry virtual environment
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-poetry-env
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-build-${{ env.PYTHON_VERSION }}-${{ env.cache-name }}-${{ hashFiles('pyproject.toml', 'poetry.lock')}}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.PYTHON_VERSION }}-${{ env.cache-name }}-
+            ${{ runner.os }}-build-${{ env.PYTHON_VERSION }}-
+      - name: Cache yarn dependencies
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-yarn-deps
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('package.json', 'yarn.lock')}}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+      - name: Run project setup script
+        run: |
+          sudo apt-get install -qqy postgresql-client
+          script/setup
+        shell: bash
+        env:
+          PGDATABASE: atat_test
+          PGHOST: localhost
+          PGPORT: 5432
+          REDIS_HOST: localhost:6379
+      - name: Run cibuild script (formatting and unit tests)
+        run: |
+          script/cibuild
+        shell: bash
+        env:
+          PGHOST: localhost
+          PGPORT: 5432
+          REDIS_HOST: localhost:6379
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -50,6 +50,7 @@ def filter_members_data(members_list):
         )
         member_data = {
             "role_id": member.id,
+            "user_id": member.user_id,
             "user_name": member.user_name,
             "permission_sets": filter_perm_sets_data(member),
             "status": member.display_status,
@@ -112,27 +113,25 @@ def admin(portfolio_id):
     return render_admin_page(portfolio)
 
 
-# Updating PPoC is a post-MVP feature
-# @portfolios_bp.route("/portfolios/<portfolio_id>/update_ppoc", methods=["POST"])
-# @user_can(Permissions.EDIT_PORTFOLIO_POC, message="update portfolio ppoc")
-# def update_ppoc(portfolio_id):  # pragma: no cover
-#     role_id = http_request.form.get("role_id")
-#
-#     portfolio = Portfolios.get(g.current_user, portfolio_id)
-#     new_ppoc_role = PortfolioRoles.get_by_id(role_id)
-#
-#     PortfolioRoles.make_ppoc(portfolio_role=new_ppoc_role)
-#
-#     flash("primary_point_of_contact_changed", ppoc_name=new_ppoc_role.full_name)
-#
-#     return redirect(
-#         url_for(
-#             "portfolios.admin",
-#             portfolio_id=portfolio.id,
-#             fragment="primary-point-of-contact",
-#             _anchor="primary-point-of-contact",
-#         )
-#     )
+@portfolios_bp.route("/portfolios/<portfolio_id>/update_ppoc", methods=["POST"])
+@user_can(Permissions.EDIT_PORTFOLIO_POC, message="update portfolio ppoc")
+def update_ppoc(portfolio_id):
+    role_id = http_request.form.get("role_id")
+    portfolio = Portfolios.get(g.current_user, portfolio_id)
+
+    new_ppoc_role = PortfolioRoles.get_by_id(role_id)
+    PortfolioRoles.make_ppoc(portfolio_role=new_ppoc_role)
+
+    flash("primary_point_of_contact_changed", ppoc_name=new_ppoc_role.full_name)
+
+    return redirect(
+        url_for(
+            "portfolios.admin",
+            portfolio_id=portfolio.id,
+            fragment="primary-point-of-contact",
+            _anchor="primary-point-of-contact",
+        )
+    )
 
 
 @portfolios_bp.route("/portfolios/<portfolio_id>/edit", methods=["POST"])
@@ -146,7 +145,7 @@ def edit(portfolio_id):
             url_for("applications.portfolio_applications", portfolio_id=portfolio.id)
         )
     else:
-        # rerender portfolio admin page
+        # re-render portfolio admin page
         return render_admin_page(portfolio, form)
 
 

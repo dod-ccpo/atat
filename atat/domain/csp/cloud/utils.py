@@ -63,5 +63,8 @@ def create_active_directory_user(
     url = f"{graph_resource}/v1.0/users"
 
     return requests.post(
-        url, headers=make_auth_header(graph_token), json=request_body, timeout=30,
+        url,
+        headers=make_auth_header(graph_token),
+        json=request_body,
+        timeout=30,
     )

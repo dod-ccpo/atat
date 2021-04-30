@@ -46,8 +46,7 @@ class AuthorizationException(GeneralCSPException):
 
 
 class ConnectionException(GeneralCSPException):
-    """A general problem with the connection, timeouts or unresolved endpoints
-    """
+    """A general problem with the connection, timeouts or unresolved endpoints"""
 
     def __init__(self, connection_error):
         self.connection_error = connection_error
@@ -58,8 +57,7 @@ class ConnectionException(GeneralCSPException):
 
 
 class UnknownServerException(GeneralCSPException):
-    """An error occured on the CSP side (5xx) and we don't know why
-    """
+    """An error occured on the CSP side (5xx) and we don't know why"""
 
     def __init__(self, status_code, server_error):
         self.status_code = status_code
@@ -71,8 +69,7 @@ class UnknownServerException(GeneralCSPException):
 
 
 class EnvironmentCreationException(GeneralCSPException):
-    """If there was an error in creating the environment
-    """
+    """If there was an error in creating the environment"""
 
     def __init__(self, env_identifier, reason):
         self.env_identifier = env_identifier
@@ -86,8 +83,7 @@ class EnvironmentCreationException(GeneralCSPException):
 
 
 class ResourceProvisioningError(GeneralCSPException):
-    """Failed to provision a cloud-specific resource
-    """
+    """Failed to provision a cloud-specific resource"""
 
     def __init__(self, resource, reason):
         self.resource = resource
@@ -99,13 +95,11 @@ class ResourceProvisioningError(GeneralCSPException):
 
 
 class UserProvisioningException(GeneralCSPException):
-    """Failed to provision a user
-    """
+    """Failed to provision a user"""
 
 
 class UserRemovalException(GeneralCSPException):
-    """Failed to remove a user
-    """
+    """Failed to remove a user"""
 
     def __init__(self, user_csp_id, reason):
         self.user_csp_id = user_csp_id
@@ -129,8 +123,10 @@ class BaselineProvisionException(GeneralCSPException):
 
     @property
     def message(self):
-        return "Could not complete baseline provisioning for environment ({}): {}".format(
-            self.env_identifier, self.reason
+        return (
+            "Could not complete baseline provisioning for environment ({}): {}".format(
+                self.env_identifier, self.reason
+            )
         )
 
 

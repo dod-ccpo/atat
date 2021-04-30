@@ -19,7 +19,7 @@ from wtforms.validators import (
     ValidationError,
 )
 
-from atat.forms.validators import alpha_numeric, number
+from atat.forms.validators import alpha_numeric, alpha_numeric_name_pdf, number
 from atat.utils.localization import translate
 
 from .data import JEDI_CLIN_TYPES
@@ -139,7 +139,7 @@ class AttachmentForm(BaseForm):
             Length(
                 max=100, message=translate("forms.attachment.filename.length_error")
             ),
-            alpha_numeric(),
+            alpha_numeric_name_pdf(),
         ],
     )
     object_name = HiddenField(
@@ -151,7 +151,7 @@ class AttachmentForm(BaseForm):
             alpha_numeric(),
         ],
     )
-    accept = ".pdf,application/pdf"
+    accept = "application/pdf"
 
     def validate(self, *args, **kwargs):
         return super().validate(*args, **{**kwargs, "flash_invalid": False})

@@ -258,6 +258,9 @@ forms:
     portfolio_mgmt:
       label: Edit Portfolio
       description: "Edit this Portfolio's settings."
+    portfolio_poc:
+      label: Assign Primary PoC
+      description: "Make this user the Portfolio's primary point of contact."
     reporting:
       label: Edit Reporting
       description: "View and export reports about this Portfolio's funding."
@@ -316,7 +319,7 @@ forms:
   task_order:
     upload_error: There was an error uploading your file. Please try again. If you encounter repeated problems uploading this file, please contact CCPO.
     size_error: "The file you have selected is too large. Please choose a file no larger than {file_size_limit}MB."
-    filename_error: File names can only contain the characters A-Z, 0-9, space, hyphen, underscore, and period.
+    filename_error: File names must end in .pdf and can only contain the characters A-Z, 0-9, space, hyphen, underscore, and period.
     number_description: Task Order Number
     pop_errors:
       date_order: PoP start date must be before end date.
@@ -456,13 +459,13 @@ portfolios:
           title: Environment Roles
           table_header: Environment Access
           edit_description: Add or revoke Environment access.
-          description: Additional role controls are available in the CSP console. <a href="#"> Learn More </a>
+          description: Additional role controls are available in the CSP console. <a href="{learn_more_url}" target="_blank"> Learn More </a>
           revoke_warning: Save changes to revoke access, <strong>this can not be undone.</strong>
           suspended: Suspended access cannot be modified.
         next_button: "Next: Roles and Permissions"
         app_perms:
           title: Application Permissions
-          description: Application permissions allow users to provision and modify applications and teams. <a href="#"> Learn More </a>
+          description: Application permissions allow users to provision and modify applications and teams. <a href="{learn_more_url}" target="_blank"> Learn More </a>
         edit_access_header: "Manage {user}'s Access"
         add_member: Add Member
       menu:

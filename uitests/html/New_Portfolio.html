@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>New Portfolio</title>
+<meta name="ghost-inspector-details" content="" />
+<meta name="ghost-inspector-browser" content="chrome" />
+<meta name="ghost-inspector-userAgent" content="" />
+<meta name="ghost-inspector-region" content="us-east-1" />
+<meta name="ghost-inspector-globalStepDelay" content="250" />
+<meta name="ghost-inspector-maxWaitDelay" content="15000" />
+<meta name="ghost-inspector-maxAjaxDelay" content="10000" />
+<meta name="ghost-inspector-viewportSize" content="1920x1080" />
+<meta name="ghost-inspector-screenshotTarget" content="" />
+<meta name="ghost-inspector-screenshotExclusions" content="div.global-navigation, time" />
+<meta name="ghost-inspector-screenshotCompareEnabled" content="true" />
+<meta name="ghost-inspector-screenshotCompareThreshold" content="0.04" />
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr>
+<td rowspan="1" colspan="3">New Portfolio</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - login
+-->
+<tr>
+<td>open</td>
+<td>/login-local</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<!--Imported from: AT-AT CI - login
+-->
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.home__content > h1</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=.home__content > h1</td>
+<td>JEDI Cloud Services</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=a[href="/portfolios/new"]</td>
+<td></td>
+</tr>
+<tr original-target="a[href=&quot;/portfolios/new&quot;],xpath=//a[contains(text(), &quot;Add New Portfolio&quot;)]">
+<td>click</td>
+<td>css=a[href="/portfolios/new"]</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.portfolio-header__name > h1</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=.portfolio-header__name > h1</td>
+<td>*New Portfolio*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.sticky-cta-text > h3</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=.sticky-cta-text > h3</td>
+<td>*Name and Describe Portfolio*</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=#name</td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>css=#name</td>
+<td>Tatooine Energy Maintenance Systems ${alphanumeric}</td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=fieldset.usa-input__choices > ul > li:nth-of-type(5) > label</td>
+<td></td>
+</tr>
+<tr original-target="fieldset.usa-input__choices > ul > li:nth-of-type(5) > label,xpath=//label[contains(text(), &quot;Other&quot;)]">
+<td>click</td>
+<td>css=fieldset.usa-input__choices > ul > li:nth-of-type(5) > label</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=input[type="submit"]</td>
+<td></td>
+</tr>
+<tr>
+<td>click</td>
+<td>css=input[type="submit"]</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>waitForElementPresent</td>
+<td>css=.empty-state > h3</td>
+<td></td>
+</tr>
+<tr>
+<td>assertText</td>
+<td>css=.empty-state > h3</td>
+<td>*You don’t have any Applications yet*</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

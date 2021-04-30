@@ -280,7 +280,7 @@ All config settings must be declared in "config/base.ini", even if they are null
 - `AZURE_CALC_SECRET`: The secret key used to generate a token for the Azure pricing calculator
 - `AZURE_CALC_URL`: The redirect URL for the Azure pricing calculator.
 - `AZURE_LOGIN_URL`: The URL used to login for an Azure instance.
-- `AZURE_POWERSHELL_CLIENT_ID`: This client id is set to a value [hardcoded by Microsoft](https://docs.microsoft.com/en-us/azure-stack/user/azure-stack-rest-api-use?view=azs-2008#example) for making API calls
+- `AZURE_POWERSHELL_CLIENT_ID`: This contains [a well-known ApplicationID made publicly available my Microsoft](https://docs.microsoft.com/en-us/azure-stack/user/azure-stack-rest-api-use?view=azs-2008#example) for the purpose of making API requests to Azure via the PowerShell application.
 - `AZURE_STORAGE_KEY`: A valid secret key for the Azure blob storage account.
 - `AZURE_TO_BUCKET_NAME`: The Azure blob storage container name for task order uploads.
 - `BLOB_STORAGE_URL`: URL to Azure blob storage container.

@@ -29,7 +29,11 @@ def upgrade():
         "environment_roles",
         "role",
         type_=sa.Enum(
-            "ADMIN", "BILLING_READ", "CONTRIBUTOR", name="role", native_enum=False,
+            "ADMIN",
+            "BILLING_READ",
+            "CONTRIBUTOR",
+            name="role",
+            native_enum=False,
         ),
         existing_type=sa.VARCHAR(),
         nullable=True,
@@ -44,7 +48,11 @@ def downgrade():
         "status",
         type_=sa.VARCHAR(),
         existing_type=sa.Enum(
-            "ADMIN", "BILLING_READ", "CONTRIBUTOR", name="status", native_enum=False,
+            "ADMIN",
+            "BILLING_READ",
+            "CONTRIBUTOR",
+            name="status",
+            native_enum=False,
         ),
     )
     # ### end Alembic commands ###

@@ -223,7 +223,10 @@ def upgrade():
         sa.Column("name", sa.String(), nullable=False),
         sa.Column("description", sa.String(), nullable=False),
         sa.Column("portfolio_id", postgresql.UUID(as_uuid=True), nullable=False),
-        sa.ForeignKeyConstraint(["portfolio_id"], [_portfolios_id],),
+        sa.ForeignKeyConstraint(
+            ["portfolio_id"],
+            [_portfolios_id],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
@@ -253,8 +256,14 @@ def upgrade():
             sa.Enum("ACTIVE", "DISABLED", "PENDING", name="status", native_enum=False),
             nullable=True,
         ),
-        sa.ForeignKeyConstraint(["portfolio_id"], [_portfolios_id],),
-        sa.ForeignKeyConstraint(["user_id"], [_users_id],),
+        sa.ForeignKeyConstraint(
+            ["portfolio_id"],
+            [_portfolios_id],
+        ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            [_users_id],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(
@@ -298,17 +307,32 @@ def upgrade():
         sa.Column("number", sa.String(), nullable=True),
         sa.Column("signer_dod_id", sa.String(), nullable=True),
         sa.Column("signed_at", sa.DateTime(), nullable=True),
-        sa.ForeignKeyConstraint(["pdf_attachment_id"], ["attachments.id"],),
-        sa.ForeignKeyConstraint(["portfolio_id"], [_portfolios_id],),
-        sa.ForeignKeyConstraint(["user_id"], [_users_id],),
+        sa.ForeignKeyConstraint(
+            ["pdf_attachment_id"],
+            ["attachments.id"],
+        ),
+        sa.ForeignKeyConstraint(
+            ["portfolio_id"],
+            [_portfolios_id],
+        ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            [_users_id],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
         "users_permission_sets",
         sa.Column("user_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("permission_set_id", postgresql.UUID(as_uuid=True), nullable=True),
-        sa.ForeignKeyConstraint(["permission_set_id"], [_permission_sets_id],),
-        sa.ForeignKeyConstraint(["user_id"], [_users_id],),
+        sa.ForeignKeyConstraint(
+            ["permission_set_id"],
+            [_permission_sets_id],
+        ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            [_users_id],
+        ),
     )
     op.create_table(
         "application_roles",
@@ -340,8 +364,14 @@ def upgrade():
             sa.Enum("ACTIVE", "DISABLED", "PENDING", name="status", native_enum=False),
             nullable=True,
         ),
-        sa.ForeignKeyConstraint(["application_id"], [_applications_id],),
-        sa.ForeignKeyConstraint(["user_id"], [_users_id],),
+        sa.ForeignKeyConstraint(
+            ["application_id"],
+            [_applications_id],
+        ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            [_users_id],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(
@@ -395,9 +425,18 @@ def upgrade():
         sa.Column("resource_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("display_name", sa.String(), nullable=True),
         sa.Column("action", sa.String(), nullable=False),
-        sa.ForeignKeyConstraint(["application_id"], [_applications_id],),
-        sa.ForeignKeyConstraint(["portfolio_id"], [_portfolios_id],),
-        sa.ForeignKeyConstraint(["user_id"], [_users_id],),
+        sa.ForeignKeyConstraint(
+            ["application_id"],
+            [_applications_id],
+        ),
+        sa.ForeignKeyConstraint(
+            ["portfolio_id"],
+            [_portfolios_id],
+        ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            [_users_id],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(
@@ -461,7 +500,10 @@ def upgrade():
             ),
             nullable=True,
         ),
-        sa.ForeignKeyConstraint(["task_order_id"], ["task_orders.id"],),
+        sa.ForeignKeyConstraint(
+            ["task_order_id"],
+            ["task_orders.id"],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
@@ -490,7 +532,10 @@ def upgrade():
         sa.Column("name", sa.String(), nullable=False),
         sa.Column("application_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("cloud_id", sa.String(), nullable=True),
-        sa.ForeignKeyConstraint(["application_id"], [_applications_id],),
+        sa.ForeignKeyConstraint(
+            ["application_id"],
+            [_applications_id],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
@@ -536,9 +581,18 @@ def upgrade():
         sa.Column("portfolio_role_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("user_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("inviter_id", postgresql.UUID(as_uuid=True), nullable=True),
-        sa.ForeignKeyConstraint(["inviter_id"], [_users_id],),
-        sa.ForeignKeyConstraint(["portfolio_role_id"], ["portfolio_roles.id"],),
-        sa.ForeignKeyConstraint(["user_id"], [_users_id],),
+        sa.ForeignKeyConstraint(
+            ["inviter_id"],
+            [_users_id],
+        ),
+        sa.ForeignKeyConstraint(
+            ["portfolio_role_id"],
+            ["portfolio_roles.id"],
+        ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            [_users_id],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(
@@ -569,8 +623,14 @@ def upgrade():
         "portfolio_roles_permission_sets",
         sa.Column("portfolio_role_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("permission_set_id", postgresql.UUID(as_uuid=True), nullable=True),
-        sa.ForeignKeyConstraint(["permission_set_id"], [_permission_sets_id],),
-        sa.ForeignKeyConstraint(["portfolio_role_id"], ["portfolio_roles.id"],),
+        sa.ForeignKeyConstraint(
+            ["permission_set_id"],
+            [_permission_sets_id],
+        ),
+        sa.ForeignKeyConstraint(
+            ["portfolio_role_id"],
+            ["portfolio_roles.id"],
+        ),
     )
     op.create_table(
         "application_invitations",
@@ -615,9 +675,18 @@ def upgrade():
         sa.Column("application_role_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("user_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("inviter_id", postgresql.UUID(as_uuid=True), nullable=True),
-        sa.ForeignKeyConstraint(["application_role_id"], [_application_roles_id],),
-        sa.ForeignKeyConstraint(["inviter_id"], [_users_id],),
-        sa.ForeignKeyConstraint(["user_id"], [_users_id],),
+        sa.ForeignKeyConstraint(
+            ["application_role_id"],
+            [_application_roles_id],
+        ),
+        sa.ForeignKeyConstraint(
+            ["inviter_id"],
+            [_users_id],
+        ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            [_users_id],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(
@@ -648,8 +717,14 @@ def upgrade():
         "application_roles_permission_sets",
         sa.Column("application_role_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("permission_set_id", postgresql.UUID(as_uuid=True), nullable=True),
-        sa.ForeignKeyConstraint(["application_role_id"], [_application_roles_id],),
-        sa.ForeignKeyConstraint(["permission_set_id"], [_permission_sets_id],),
+        sa.ForeignKeyConstraint(
+            ["application_role_id"],
+            [_application_roles_id],
+        ),
+        sa.ForeignKeyConstraint(
+            ["permission_set_id"],
+            [_permission_sets_id],
+        ),
     )
     op.create_table(
         "environment_roles",
@@ -677,8 +752,14 @@ def upgrade():
         sa.Column("environment_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("role", sa.String(), nullable=True),
         sa.Column("application_role_id", postgresql.UUID(as_uuid=True), nullable=False),
-        sa.ForeignKeyConstraint(["application_role_id"], [_application_roles_id],),
-        sa.ForeignKeyConstraint(["environment_id"], ["environments.id"],),
+        sa.ForeignKeyConstraint(
+            ["application_role_id"],
+            [_application_roles_id],
+        ),
+        sa.ForeignKeyConstraint(
+            ["environment_id"],
+            ["environments.id"],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(

@@ -103,7 +103,7 @@ class Environments(object):
     @classmethod
     def get_environments_pending_creation(cls, now) -> List[UUID]:
         """
-        Query for any environment with an active CLIN and provisioned 
+        Query for any environment with an active CLIN and provisioned
         application that doesn't yet have a `cloud_id`.
         """
         results = (

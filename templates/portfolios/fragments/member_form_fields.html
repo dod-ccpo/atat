@@ -36,3 +36,14 @@
     {{ "forms.new_member.dod_help" | translate }} {{ Tooltip("forms.new_member.dod_text"|translate, title="", classes="icon-tooltip--tight") }}
   </div>
 {% endmacro %}
+
+{% macro confirmPOC(form, member_role_id=None, current_member_id=None ) %}
+  {% if new %}
+    {% set portfolio_poc = "perms_portfolio_mgmt-poc" %}
+  {% else %}
+    {% set portfolio_poc = "perms_portfolio_mgmt-poc-{}".format(member_role_id) %}
+  {% endif %}
+  <h2>Set Portfolio Permissions</h2>
+ <input name="role_id" hidden="hidden" value="{{member_role_id}}" />
+ {{ CheckboxInput(form.perms_portfolio_poc, classes="input__inline-fields", key=portfolio_poc, id=portfolio_poc, optional=True) }}
+{% endmacro %}

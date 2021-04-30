@@ -14,10 +14,18 @@ def test_profile_complete_with_all_info():
 
 
 @pytest.mark.parametrize("missing_field", User.REQUIRED_FIELDS)
-def test_profile_complete_with_missing_info(missing_field):
-    user = UserFactory.create()
-    setattr(user, missing_field, None)
-    assert not user.profile_complete
+def test_profile_complete_with_missing_info(missing_field, session):
+    # Missing the dod_id field is still cause for the profile to not be
+    # completed and is therefore in REQUIRED_FIELDS; however, the DB
+    # session will autoflush by default and try to write that field back
+    # to the database and for dod_id and others, that could result in an
+    # IntegrityError. Ensuring that we don't autoflush during this test
+    # will allow us to test the `profile_complete` logic without breaking
+    # database constraints.
+    with session.no_autoflush:
+        user = UserFactory.create()
+        setattr(user, missing_field, None)
+        assert not user.profile_complete
 
 
 def test_cannot_update_dod_id(session):

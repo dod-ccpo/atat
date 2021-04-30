@@ -46,10 +46,10 @@ class AzureStages(Enum):
 
 def _build_csp_states(csp_stages: Enum) -> Dict[str, str]:
     """Builds a complete dictionary of portfolio provisioning states for a CSP
-    
-    Includes system states, plus each CSP stage combined with each Stage State. 
-    E.g. Given two CSP Stages, `TENANT` & `BILLING_PROFILE`, and three possible 
-    stage states, `CREATED`, `IN_PROGRESS`, & FAILED, this function generates a 
+
+    Includes system states, plus each CSP stage combined with each Stage State.
+    E.g. Given two CSP Stages, `TENANT` & `BILLING_PROFILE`, and three possible
+    stage states, `CREATED`, `IN_PROGRESS`, & FAILED, this function generates a
     dictionary of system states + states that correspond with:
     - TENANT_CREATED
     - TENANT_IN_PROGRESS
@@ -81,30 +81,30 @@ compose_state = lambda csp_stage, state: getattr(
 
 def _build_transitions(csp_stages):
     """Build transitions between each provisioning state for a given CSP
-    
-    For each CSP state (a combination of CSP stages and StateStages) We need 
-    transitions: 
-    
+
+    For each CSP state (a combination of CSP stages and StateStages) We need
+    transitions:
+
     - from the system `UNSTARTED` state or the previous stage's `_CREATED` state
       to `<CSP stage>_IN_PROGRESS` to try the provisioning step
         - triggered with a `create_<CSP stage>` trigger
-    
-    - from `<CSP stage>_IN_PROGRESS` to `<CSP stage>_FAILED`, when the 
+
+    - from `<CSP stage>_IN_PROGRESS` to `<CSP stage>_FAILED`, when the
       provisioning step fails
         - triggered with a `fail_<CSP stage>` trigger
-    
+
     - from `<CSP stage>_IN_PROGRESS` to the previous `<CSP stage>_CREATED` state
       (or UNSTARTED), when we need to retry the provisioning step
         - triggered with a `reset_<CSP stage>` trigger
-    
+
     - from `<CSP stage>_FAILED` to `<CSP stage>_IN_PROGRESS`, to retry the
       provisioning step
         - triggered with a `resume_progress_<CSP stage>` trigger
-    
-    - from `<CSP stage>_IN_PROGRESS` to `<CSP stage>_CREATED` state, when the 
+
+    - from `<CSP stage>_IN_PROGRESS` to `<CSP stage>_CREATED` state, when the
       provisioning step is successful
         - triggered with a `finish_<CSP stage>` trigger
-    
+
     - from the last stage's `_CREATED` state to the system `COMPLETED` state
         - triggered with a `complete` trigger
     """
@@ -197,7 +197,7 @@ class FSMMixin:
     ]
 
     def _find_and_call_stage_trigger(self, trigger_prefix, **kwargs):
-        """Given a trigger prefix, find the appropriate trigger to call for the 
+        """Given a trigger prefix, find the appropriate trigger to call for the
         current Portfolio provisioning stage
 
 

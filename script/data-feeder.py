@@ -6,6 +6,7 @@ Tool set for seed data into the ATAT application
 
 import os
 import re
+import warnings
 from typing import Optional, List
 
 import pendulum
@@ -19,6 +20,7 @@ import questionary
 from questionary import Choice, Validator, ValidationError, prompt
 from progress.spinner import PieSpinner as Spinner
 from progress.bar import FillingCirclesBar as Bar
+from sqlalchemy.exc import SAWarning
 
 # app modules imports
 from atat.app import make_config, make_app
@@ -429,6 +431,7 @@ Select all that apply.
 
 # Run CLI Tool app
 if __name__ == "__main__":
+    warnings.simplefilter("ignore", category=SAWarning)
     config = make_config({"default": {"DEBUG": False}})
     web_app = make_app(config)
 
