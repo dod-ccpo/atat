@@ -134,7 +134,7 @@ flash:
       title: Application invitation error
       message: There was an error processing the invitation for {user_name} from {application_name}
     resent:
-      message: "{email} has been sent an invitation to access this Application"
+      message: "{name} has been sent an invitation to access this Application"
   application_member:
     removed:
       title: Team member removed from application
