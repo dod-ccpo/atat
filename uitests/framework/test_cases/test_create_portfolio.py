@@ -1,5 +1,3 @@
-import random
-import string
 import pytest
 
 from selenium.common.exceptions import TimeoutException
@@ -7,7 +5,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from uitests.framework.utilities.read_properties import ReadConfig
-from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
+from uitests.framework.page_objects.new_portfolio_page import (
+    AddNewPortfolioPages,
+    random_generator,
+)
 from uitests.framework.page_objects import PageObjectMethods
 
 
@@ -62,7 +63,3 @@ class TestCreatePortfolio:
             )
         print("Test: Create Portfolio")
         self.driver.quit()
-
-
-def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
-    return "".join(random.choice(chars) for x in range(size))
