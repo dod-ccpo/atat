@@ -1,8 +1,8 @@
 <dodlogin inline-template key="notice">
   <div>
-    <div class="usa-button usa-button-primary usa-button-big login-banner__button" v-on:click="displayNotice()">
+    <button class="usa-button usa-button-primary usa-button-big login-banner__button" v-on:click="displayNotice()">
       {{ "login.login_button" | translate }}
-    </div>
+    </button>
 
     <div class="dod-login-notice" v-if="visible" v-cloak>
       <div class='usa-alert usa-alert-info'>
