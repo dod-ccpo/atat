@@ -73,7 +73,9 @@ class TestCreateTaskOrder:
         )
         absolute_file_path = os.path.abspath(current_dir_path)
         file_input = self.driver.find_element_by_id("pdf")
-        assert file_input.is_enabled() is True, "File input element is expected to be enabled before PDF upload, but is not enabled."
+        assert (
+            file_input.is_enabled() is True
+        ), "File input element is expected to be enabled before PDF upload, but is not enabled."
         file_input.send_keys(absolute_file_path)
         file_input_disable = self.driver.find_element_by_css_selector(
             "#pdf"
