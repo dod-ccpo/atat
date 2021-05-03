@@ -62,27 +62,6 @@ describe('UploadInput Test', () => {
     expect(messageArea.html()).toContain('Test Error Message')
   })
 
-  it('should disable the file input when a file is uploaded', (done) => {
-    const wrapper = mount(UploadErrorWrapper, {
-      propsData: {
-        initialData: {},
-      },
-    })
-
-    const component = wrapper.findComponent(uploadinput)
-    const event = { target: { value: '', files: [{ name: 'sample.pdf' }] } }
-
-    component.setMethods({
-      getUploader: async () => new MockUploader('token', 'objectName'),
-      getDownloadLink: async (_f, _o) => 'downloadLink',
-    })
-
-    component.vm.addAttachment(event).then(() => {
-      expect(component.vm.$refs.attachmentInput.disabled).toBe(true)
-      done()
-    })
-  })
-
   it('should enable the file input when the attachment is removed', () => {
     const wrapper = mount(UploadErrorWrapper, {
       propsData: {
