@@ -78,7 +78,9 @@ class TestCreateTaskOrder:
         file_input_disable = self.driver.find_element_by_css_selector(
             "#pdf"
         ).is_enabled()
-        assert file_input_disable is False, "Input file is enable after setting the file."
+        assert (
+            file_input_disable is False
+        ), "Input file is enable after setting the file."
         self.to.click_next_add_TO_number()
         self.to.enter_TO_number(self.toNumber)
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
