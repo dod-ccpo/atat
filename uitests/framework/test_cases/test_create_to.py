@@ -73,14 +73,14 @@ class TestCreateTaskOrder:
         )
         absolute_file_path = os.path.abspath(current_dir_path)
         file_input = self.driver.find_element_by_id("pdf")
-        assert file_input.is_enabled() is True, "Input file is not enable"
+        assert file_input.is_enabled() is True, "File input element is expected to be enabled before PDF upload, but is not enabled."
         file_input.send_keys(absolute_file_path)
         file_input_disable = self.driver.find_element_by_css_selector(
             "#pdf"
         ).is_enabled()
         assert (
             file_input_disable is False
-        ), "Input file is enable after setting the file."
+        ), "File input element is expected to be disabled after PDF upload, but is enabled."
         self.to.click_next_add_TO_number()
         self.to.enter_TO_number(self.toNumber)
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
