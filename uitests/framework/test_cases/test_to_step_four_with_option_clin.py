@@ -12,6 +12,10 @@ from uitests.framework.page_objects.task_order_page import (
 )
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects import PageObjectMethods
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 current_dir_path = "./uitests/framework/resources/test.pdf"
 
@@ -23,10 +27,7 @@ class TestTOStep4OptionClin:
 
     def test_to_step4_add_clin(self, setup):
         self.driver = setup
-        self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": " 27.TO Step 4 -with Option CLIN"}}'
-        )
+        self.driver.execute_script(set_session_name(" 27.TO Step 4 -with Option CLIN"))
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -106,12 +107,15 @@ class TestTOStep4OptionClin:
             # Click on the Confirm Btn to Navigate to the next page
             self.to.click_confirm()
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Next:Confirm button is enabled and able to click and CLIN Number is showing as expected"}}'
+                set_session_name(
+                    "passed",
+                    "Next:Confirm button is enabled and able to click and CLIN Number is showing as expected",
+                )
             )
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Timed out due to Next:Confirm button is not enabled or clickable"}}'
+                set_session_name(
+                    "failed",
+                    "Timed out due to Next:Confirm button is not enabled or clickable",
+                )
             )
-        self.driver.quit()

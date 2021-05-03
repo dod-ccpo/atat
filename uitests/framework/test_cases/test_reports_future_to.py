@@ -14,6 +14,10 @@ from uitests.framework.page_objects.task_order_page import (
 from uitests.framework.page_objects.reports_page import ReportsPages
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects import PageObjectMethods
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 current_dir_path = "./uitests/framework/resources/test.pdf"
 
@@ -24,10 +28,7 @@ class TestCreateFutureToReports:
 
     def test_future_to_report(self, setup):
         self.driver = setup
-        self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "11. Reports-with Future TO"}}'
-        )
+        self.driver.execute_script(set_session_name("11. Reports-with Future TO"))
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -118,12 +119,14 @@ class TestCreateFutureToReports:
             self.rep.remaining_funds(rfunds)
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Timed out due to Estimated Expended funds & Remaining funds not matched "}}'
+                set_session_name(
+                    "failed",
+                    "Timed out due to Estimated Expended funds & Remaining funds not matched ",
+                )
             )
         else:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Estimated Expended funds & Remaining funds matched"}}'
+                set_session_name(
+                    "passed", "Estimated Expended funds & Remaining funds matched"
+                )
             )
-        self.driver.quit()

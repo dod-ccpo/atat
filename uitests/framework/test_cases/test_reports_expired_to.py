@@ -14,6 +14,10 @@ from uitests.framework.page_objects.task_order_page import (
 from uitests.framework.page_objects.reports_page import ReportsPages
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects import PageObjectMethods
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 current_dir_path = "./uitests/framework/resources/test.pdf"
 
@@ -24,10 +28,7 @@ class TestExpiredToReports:
 
     def test_expired_to_reports(self, setup):
         self.driver = setup
-        self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "12. Reports-with Expired TO"}}'
-        )
+        self.driver.execute_script(set_session_name("12. Reports-with Expired TO"))
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -125,12 +126,14 @@ class TestExpiredToReports:
             self.rep.amount_obligated((amountOb))
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Timed out due to PoP & Amount Obligated are not matched under expired funding "}}'
+                set_session_name(
+                    "failed",
+                    "Timed out due to PoP & Amount Obligated are not matched under expired funding ",
+                )
             )
         else:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"PoP & Amount Obligated are matched under expired funding"}}'
+                set_session_name(
+                    "passed", "PoP & Amount Obligated are matched under expired funding"
+                )
             )
-        self.driver.quit()

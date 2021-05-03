@@ -12,6 +12,10 @@ from uitests.framework.page_objects.new_portfolio_page import (
 from uitests.framework.page_objects.task_order_page import random_no_generator
 from uitests.framework.page_objects.application_page import CreateApplicationPages
 from uitests.framework.page_objects import PageObjectMethods
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 
 @pytest.mark.AT6163
@@ -24,10 +28,7 @@ class TestEditAppMem:
         self.driver = setup
         self.driver.get(self.url2)
         self.driver.maximize_window()
-        self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "30. Edit Application Member"}}'
-        )
+        self.driver.execute_script(set_session_name("30. Edit Application Member"))
 
         # Initializing Page Objects
         self.app = CreateApplicationPages(self.driver)
@@ -99,13 +100,10 @@ class TestEditAppMem:
                 )
             )
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Application Indexing Verified"}}'
+                set_session_status("passed", "Application Indexing Verified")
             )
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Indexing Not Verified"}}'
+                set_session_status("failed", "Indexing Not Verified")
             )
         print("Test: Verification of Editing a Member")
-        self.driver.quit()

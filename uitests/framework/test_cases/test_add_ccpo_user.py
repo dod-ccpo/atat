@@ -7,6 +7,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from uitests.framework.page_objects import PageObjectMethods
 from uitests.framework.page_objects.login_page import Login
 from uitests.framework.utilities.read_properties import ReadConfig
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 
 @pytest.mark.AT6163
@@ -23,8 +27,7 @@ class TestAddNewCcpoUser:
         self.driver.maximize_window()
         self.driver.get(self.url + "/ccpo-users")
         self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "34. Verification of New CCPO User"}}'
+            set_session_name("34. Verification of New CCPO User")
         )
 
         # Initializing Page Objects
@@ -46,13 +49,12 @@ class TestAddNewCcpoUser:
                 )
             )
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Successfully Created New CCPO User"}}'
+                set_session_status("passed", "Successfully created new CCPO user")
             )
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"New CCPO User creation Not Successful"}}'
+                set_session_status(
+                    "failed", "New CCPO user creation was not successful"
+                )
             )
         print("Test: Verification of New CCPO User")
-        self.driver.quit()

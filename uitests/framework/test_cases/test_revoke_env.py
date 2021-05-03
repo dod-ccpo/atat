@@ -11,6 +11,10 @@ from uitests.framework.page_objects.new_portfolio_page import (
     random_generator,
 )
 from uitests.framework.utilities.read_properties import ReadConfig
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 
 @pytest.mark.regression
@@ -23,10 +27,7 @@ class TestRevokeEnvironment:
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "18. Revoke Environment Access"}}'
-        )
+        self.driver.execute_script(set_session_name("18. Revoke Environment Access"))
 
         # Initializing Page Objects
         self.cm = PageObjectMethods(self.driver)
@@ -104,13 +105,10 @@ class TestRevokeEnvironment:
                 )
             )
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Environment has been revoked"}}'
+                set_session_status("passed", "Environment has been revoked")
             )
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Environment has NOT been revoked"}}'
+                set_session_status("failed", "Environment has NOT been revoked")
             )
         print("Test: Revoke Environment")
-        self.driver.quit()

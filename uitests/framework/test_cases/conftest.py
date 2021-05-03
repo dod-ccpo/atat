@@ -1,83 +1,102 @@
-import datetime
+import json
 import os
+from enum import Enum
+from typing import Dict
+
 import pytest
-
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 
-# buildName = datetime.datetime.now().strftime('Smoke Test: ' + '%m/%d/%y')
-buildName = "Work in Progress"
-# buildName = datetime.datetime.now().strftime('Regression Test: ' + '%m/%d/%y')
+from uitests.framework.utilities import browserstack
 
-chrome = {
-    "os_version": "10",
+LOCAL_ID = os.environ.get("BROWSERSTACK_LOCAL_IDENTIFIER", "")
+BUILD_NAME = os.environ["BROWSERSTACK_BUILD_NAME"]
+
+common_caps = {
     "os": "Windows",
-    "browser": "chrome",  # Edge  Chrome  IE
-    "browser_version": "latest",  # 88.0  89.0    11.0
-    "resolution": "1920x1080",
-    "browserstack.sendKeys": "true",
-    "browserstack.debug": "true",
-    "build": buildName,  # Your tests will be organized within this build
-}
-edge = {
     "os_version": "10",
-    "os": "Windows",
-    "browser": "edge",  # Edge  Chrome  IE
-    "browser_version": "latest",  # 88.0  89.0    11.0
+    "browser_version": "latest",
     "resolution": "1920x1080",
-    "browserstack.sendKeys": "true",
     "browserstack.debug": "true",
-    "build": buildName,  # Your tests will be organized within this build
-}
-ie = {
-    "os_version": "10",
-    "os": "Windows",
-    "browser": "ie",  # Edge  Chrome  IE
-    "browser_version": "latest",  # 88.0  89.0    11.0
-    "resolution": "1920x1080",
     "browserstack.sendKeys": "true",
-    "browserstack.debug": "true",
-    "build": buildName,  # Your tests will be organized within this build
+    "build": BUILD_NAME,
 }
+
+local_caps = {
+    "acceptSslCerts": "true",
+    "browserstack.local": "true",
+    "browserstack.localIdentifier": LOCAL_ID,
+}
+
+
+class Browser(Enum):
+    CHROME = "chrome"
+    EDGE = "edge"
+    IE = "ie"
+    SAFARI = "safari"
+
+    def capabilities(self, local: bool = False) -> Dict[str, str]:
+        caps = {"browser": self.value, **common_caps}
+        if local:
+            caps.update(local_caps)
+        return caps
+
+    @property
+    def webdriver(self):
+        return getattr(webdriver, self.value.title())
+
+
+class ExecutionType(Enum):
+    BROWSERSTACK_REMOTE = "BrowserStackRemote"
+    BROWSERSTACK_LOCAL = "BrowserStackLocal"
+    LOCAL = "Local"
 
 
 @pytest.fixture()
-def setup(browser):
+def setup(browser: Browser, run_type: ExecutionType):
     """
     Setup the browser compatibility and drivers to use for each
-
-    TODO: replace browser == "chrome" with enum class for types.
 
     :param browser: string
     :return: SeleniumWebDriverType
     """
-    if browser is None:
-        browser = "chrome-local"
-
-    address = os.getenv("browserStackApi")
-    if browser == "chrome":
-        driver = webdriver.Remote(command_executor=address, desired_capabilities=chrome)
-        print("Launching Chrome Browser.....")
-    elif browser == "edge":
-        driver = webdriver.Remote(command_executor=address, desired_capabilities=edge)
-        print("Launching Edge Browser.....")
-    elif browser == "ie":
-        driver = webdriver.Remote(command_executor=address, desired_capabilities=ie)
-        print("Launching IE 11 Browser.....")
-    elif browser == "chrome-local":
-        driver = webdriver.Chrome()
-        print("Launching in default browser: Chrome")
-    elif browser == "safari-local":
-        driver = webdriver.Safari()
-        print("Launching in default browser: Safari")
+    if run_type is ExecutionType.LOCAL:
+        constructor = browser.webdriver
+        args = {}
+        print(f"Launching in local browser: {browser.value.title()}")
     else:
-        print("Please select a browser, Example: --browser chrome-local")
-    return driver
+        user_name = os.environ["BROWSERSTACK_USERNAME"]
+        access_key = os.environ["BROWSERSTACK_ACCESS_KEY"]
+        constructor = webdriver.Remote
+        args = {
+            "command_executor": f"https://{user_name}:{access_key}@hub-cloud.browserstack.com/wd/hub",
+            "desired_capabilities": browser.capabilities(
+                local=(run_type is ExecutionType.BROWSERSTACK_LOCAL)
+            ),
+        }
+
+    with constructor(**args) as driver:
+        if run_type is not ExecutionType.LOCAL:
+            driver = browserstack.BrowserStackWrapper(driver)
+        yield driver
 
 
-def pytest_addoption(parser):  # This will get the value from command line or hooks
-    parser.addoption("--browser")
+def pytest_addoption(parser):
+    parser.addoption(
+        "--browser", help="The name of the browser to use", default=Browser.CHROME.value
+    )
+    parser.addoption(
+        "--run-type",
+        help="How to run the tests: BrowserStackLocal, BrowserStackRemote, Local",
+        default=ExecutionType.LOCAL.value,
+    )
 
 
-@pytest.fixture()  # This will return th browser value to setup method
-def browser(request):
-    return request.config.getoption("--browser")
+@pytest.fixture()
+def browser(request) -> Browser:
+    return Browser(request.config.getoption("--browser"))
+
+
+@pytest.fixture()
+def run_type(request) -> ExecutionType:
+    return ExecutionType(request.config.getoption("--run-type"))

@@ -12,6 +12,10 @@ from uitests.framework.page_objects.application_page import (
 from uitests.framework.page_objects.new_portfolio_page import random_generator
 from uitests.framework.page_objects.login_page import Login
 from uitests.framework.utilities.read_properties import ReadConfig
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 
 @pytest.mark.AT6163
@@ -25,10 +29,7 @@ class TestAddNewUser:
         self.driver = setup
         self.driver.get(self.url)
         self.driver.maximize_window()
-        self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "27. Create New User"}}'
-        )
+        self.driver.execute_script(set_session_name("27. Create New User"))
 
         # Initializing Page Objects
         self.login = Login(self.driver)
@@ -63,13 +64,10 @@ class TestAddNewUser:
                 )
             )
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Successfully Created New CCPO User"}}'
+                set_session_status("passed", "Successfully Created New CCPO User")
             )
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"New CCPO User creation Not Successful"}}'
+                set_session_status("failed", "New CCPO User creation Not Successful")
             )
         print("Test: Creation of New User")
-        self.driver.quit()

@@ -11,6 +11,10 @@ from uitests.framework.page_objects.new_portfolio_page import (
     AddNewPortfolioPages,
     random_generator,
 )
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 
 @pytest.mark.regression
@@ -24,8 +28,7 @@ class TestResendPortfolioMemberInvite:
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "16. Resend Portfolio Member Invite"}}'
+            set_session_name("16. Resend Portfolio Member Invite")
         )
 
         # Initializing Page Objects
@@ -77,14 +80,9 @@ class TestResendPortfolioMemberInvite:
                     "has been sent an invitation to access this Portfolio",
                 )
             )
-            self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Text is Matched"}}'
-            )
+            self.driver.execute_script(set_session_status("passed", "Text is Matched"))
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Text is NOT Matched"}}'
+                set_session_status("failed", "Text is NOT Matched")
             )
         print("Test: Resend Portfolio Member Invite")
-        self.driver.quit()
