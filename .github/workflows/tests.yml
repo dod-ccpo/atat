@@ -91,8 +91,14 @@ jobs:
           PGHOST: localhost
           PGPORT: 5432
           REDIS_HOST: localhost:6379
-      - name: Analyze with SonarCloud
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Save github SHA
+        run: |
+          printf ${{ github.ref }} > ./ref.txt
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: |
+            coverage.xml
+            coverage/lcov.info
+            ref.txt
