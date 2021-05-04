@@ -4,10 +4,12 @@ import sys
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(parent_dir)
 
-from atat.app import make_config, make_app
+from atat.app import make_app
 
 from atat.domain.exceptions import NotFoundError
 from atat.domain.users import Users
+
+from atat.utils.config import make_config
 
 
 def grant_ccpo_perms(dod_id):

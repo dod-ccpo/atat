@@ -8,7 +8,8 @@ project_directory = os.path.join(script_directory, "../")
 parent_dir = os.path.abspath(project_directory)
 sys.path.append(parent_dir)
 
-from atat.app import make_app, make_config
+from atat.app import make_app
+from atat.utils.config import make_config
 import base64
 import re
 from urllib.parse import urlparse

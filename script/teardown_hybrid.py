@@ -5,10 +5,10 @@ import requests
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(parent_dir)
 
-from atat.app import make_config
 from atat.domain.csp.cloud.hybrid_cloud_provider import HYBRID_PREFIX
 from atat.domain.csp.cloud.utils import get_principal_auth_token, make_auth_header
 from atat.domain.csp.cloud.models import UserPrincipalTokenPayload
+from atat.utils.config import make_config
 from msrestazure.azure_cloud import AZURE_PUBLIC_CLOUD
 
 # these contain trailing forward slash
