@@ -1,6 +1,4 @@
 import pytest
-import random
-import string
 
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
@@ -33,9 +31,6 @@ class TestAddNewCcpoUser:
         self.login = Login(self.driver)
         self.cm = PageObjectMethods(self.driver)
 
-        # Generator to create unique DOD ID number
-        self.dodid = random_no_generator()
-
         self.login.validate_ccpo_user_displayed()
         self.login.click_add_new_user()
         self.login.enter_new_dod_id("3456789012")
@@ -61,7 +56,3 @@ class TestAddNewCcpoUser:
             )
         print("Test: Verification of New CCPO User")
         self.driver.quit()
-
-
-def random_no_generator(size=10, chars=string.digits):
-    return "".join(random.choice(chars) for x in range(size))

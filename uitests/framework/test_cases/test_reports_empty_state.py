@@ -1,10 +1,10 @@
-import random
-import string
-import time
 import pytest
 from selenium.common.exceptions import TimeoutException
 from uitests.framework.utilities.read_properties import ReadConfig
-from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
+from uitests.framework.page_objects.new_portfolio_page import (
+    AddNewPortfolioPages,
+    random_generator,
+)
 from uitests.framework.page_objects.reports_page import ReportsPages
 
 
@@ -67,7 +67,3 @@ class TestReportsEmptyState:
                 '"Estimated Expended funds & Remaining funds matched"}}'
             )
         self.driver.quit()
-
-
-def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
-    return "".join(random.choice(chars) for x in range(size))

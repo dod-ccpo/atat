@@ -1,12 +1,16 @@
 import os
 import time
-import random
-import string
 import pytest
 
 from selenium.common.exceptions import TimeoutException
-from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
-from uitests.framework.page_objects.task_order_page import TaskOrderPage
+from uitests.framework.page_objects.new_portfolio_page import (
+    AddNewPortfolioPages,
+    random_generator,
+)
+from uitests.framework.page_objects.task_order_page import (
+    TaskOrderPage,
+    random_no_generator,
+)
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects import PageObjectMethods
 
@@ -32,6 +36,7 @@ class TestCreateExpiredTaskOrder:
         self.port.click_new_portfolio()
         self.port.validate_new_portfolio()
         self.port.validate_name_desc()
+        # Random Generator for unique Porfolio Name
         self.pName = "Test Portfolio" + random_generator()
         self.port.enter_portfolio_name(self.pName)
         self.port.enter_portfolio_description(
@@ -62,6 +67,7 @@ class TestCreateExpiredTaskOrder:
         file_input.send_keys(absolute_file_path)
         self.to.click_next_add_TO_number()
         time.sleep(10)
+        # Random Generator for Unique TO#
         self.tnumber = random_no_generator()
         self.to.enter_TO_number(self.tnumber)
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -100,11 +106,3 @@ class TestCreateExpiredTaskOrder:
             )
 
             self.driver.quit()
-
-
-def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
-    return "".join(random.choice(chars) for x in range(size))
-
-
-def random_no_generator(size=17, chars=string.digits):
-    return "".join(random.choice(chars) for x in range(size))

@@ -1,8 +1,7 @@
 import os
 import time
-import random
-import string
 import pytest
+
 
 from selenium.common.exceptions import TimeoutException
 from uitests.framework.page_objects.task_order_page import TaskOrderPage
@@ -35,6 +34,7 @@ class TestCreateDraftTaskOrder:
         self.port.click_new_portfolio()
         self.port.validate_new_portfolio()
         self.port.validate_name_desc()
+        # Random Generator for unique Portfolio Name
         self.pName = "Test Portfolio" + random_generator()
         self.port.enter_portfolio_name(self.pName)
         self.port.enter_portfolio_description(

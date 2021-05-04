@@ -1,6 +1,3 @@
-import random
-import string
-
 import pytest
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
@@ -8,7 +5,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from uitests.framework.page_objects.application_page import CreateApplicationPages
 from uitests.framework.page_objects import PageObjectMethods
-from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
+from uitests.framework.page_objects.new_portfolio_page import (
+    AddNewPortfolioPages,
+    random_generator,
+)
 from uitests.framework.utilities.read_properties import ReadConfig
 
 
@@ -89,7 +89,3 @@ class TestRevokeAppMemInvite:
             )
         print("Test: Revoke Application Member Invite")
         self.driver.quit()
-
-
-def random_generator(size=15, chars=string.ascii_lowercase + string.digits):
-    return "".join(random.choice(chars) for x in range(size))

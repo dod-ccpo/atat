@@ -1,13 +1,15 @@
 import pytest
-import random
-import string
 
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from uitests.framework.page_objects import PageObjectMethods
-from uitests.framework.page_objects.application_page import CreateApplicationPages
+from uitests.framework.page_objects.application_page import (
+    CreateApplicationPages,
+    random_dod_id_generator,
+)
+from uitests.framework.page_objects.new_portfolio_page import random_generator
 from uitests.framework.page_objects.login_page import Login
 from uitests.framework.utilities.read_properties import ReadConfig
 
@@ -34,7 +36,7 @@ class TestAddNewUser:
         self.app = CreateApplicationPages(self.driver)
 
         # Generator to create unique DOD ID number
-        self.dodid = random_no_generator()
+        self.dodid = random_dod_id_generator()
 
         # Generator to create unique email address
         self.email = random_generator() + "@gmail.com"
@@ -71,11 +73,3 @@ class TestAddNewUser:
             )
         print("Test: Creation of New User")
         self.driver.quit()
-
-
-def random_generator(size=10, chars=string.ascii_lowercase + string.digits):
-    return "".join(random.choice(chars) for x in range(size))
-
-
-def random_no_generator(size=10, chars=string.digits):
-    return "".join(random.choice(chars) for x in range(size))
