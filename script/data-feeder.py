@@ -331,12 +331,14 @@ def is_valid_component_branches_list(component_branches: list = []):
     return False
 
 
-# clin_type: str = None, # choices=JEDI_CLIN_TYPES,
 def is_valid_clin_type(clin_type: str = ""):
     return len(list(filter(lambda x: clin_type in x, JEDI_CLIN_TYPES))) >= 1
 
 
-# clin_number: str = None, # validators=[number(), Length(max=4)],
+def is_valid_clin_number(clin_number: str = ""):
+    return True if re.match("^\d{4}$", clin_number) else False
+
+
 # start_date: str = None, # format="%m/%d/%Y",
 #                         # validators=[validate_date_in_range]
 # end_date: str = None, # format="%m/%d/%Y",
