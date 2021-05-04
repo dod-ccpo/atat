@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-from atat.app import make_app, make_config
+from atat.app import make_app
+from atat.utils.config import make_config
 
 config = make_config()
 app = make_app(config)

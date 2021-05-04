@@ -10,7 +10,7 @@ from uuid import uuid4
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(parent_dir)
 
-from atat.app import make_config, make_app
+from atat.app import make_app
 from atat.database import db
 
 from atat.models.application import Application
@@ -32,6 +32,7 @@ from atat.domain.users import Users
 from atat.routes.dev import _DEV_USERS as DEV_USERS
 
 from atat.utils import pick
+from atat.utils.config import make_config
 
 from tests.factories import (
     random_defense_component,

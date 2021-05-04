@@ -1,6 +1,4 @@
-import json
 from datetime import date
-from enum import Enum
 
 from flask.json import JSONEncoder
 from werkzeug.datastructures import FileStorage
@@ -17,13 +15,3 @@ class CustomJSONEncoder(JSONEncoder):
         elif isinstance(obj, FileStorage):
             return obj.filename
         return JSONEncoder.default(self, obj)
-
-
-def sqlalchemy_dumps(dct):
-    def _default(obj):
-        if isinstance(obj, Enum):
-            return obj.name
-        else:
-            raise TypeError()
-
-    return json.dumps(dct, default=_default)

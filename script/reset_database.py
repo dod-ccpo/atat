@@ -11,7 +11,8 @@ from alembic import config as alembic_config
 
 from seed_roles import seed_roles
 from atat.database import db
-from atat.app import make_config, make_app
+from atat.app import make_app
+from atat.utils.config import make_config
 
 
 def reset_database():

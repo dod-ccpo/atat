@@ -7,7 +7,7 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(parent_dir)
 
 from sqlalchemy.orm.exc import NoResultFound
-from atat.app import make_config, make_app
+from atat.app import make_app
 from atat.database import db
 from atat.models import PermissionSet
 from atat.domain.permission_sets import (
@@ -15,6 +15,7 @@ from atat.domain.permission_sets import (
     PORTFOLIO_PERMISSION_SETS,
     APPLICATION_PERMISSION_SETS,
 )
+from atat.utils.config import make_config
 
 
 def seed_roles():

@@ -28,7 +28,7 @@ from unipath import Path
 parent_dir = Path(__file__).parent.parent
 sys.path.append(parent_dir)
 
-from atat.app import make_config
+from atat.utils.config import make_config
 
 app_config = make_config()
 config.set_main_option("sqlalchemy.url", app_config["DATABASE_URI"])

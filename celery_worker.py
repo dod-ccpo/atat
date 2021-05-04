@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 import logging
 
-from atat.app import celery, make_app, make_config
+# Even though `celery` is not used here directly, it does later get imported
+# and so therefore cannot be removed
+from atat.app import celery, make_app
+from atat.utils.config import make_config
 from celery.signals import after_setup_task_logger
 
 from atat.utils.logging import JsonFormatter
