@@ -102,7 +102,7 @@ def get_atat_user_by_dod_id(dod_id: str = None):
 
 
 def create_atat_portfolio(
-    owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
+        owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
 ):
     with web_app.app_context():
         try:
@@ -181,11 +181,11 @@ def get_cli_user(dod_id: str = None, name: str = None):
 
 
 def add_cli_portfolio_interactive(
-    owner_name: str = None,
-    owner_dod_id: str = None,
-    name: str = None,
-    desc: str = None,
-    comp: Optional[str] = None,
+        owner_name: str = None,
+        owner_dod_id: str = None,
+        name: str = None,
+        desc: str = None,
+        comp: Optional[str] = None,
 ):
     # get user owner object
     owner_user = get_cli_user(name=owner_name, dod_id=owner_dod_id)
@@ -331,6 +331,19 @@ def is_valid_component_branches_list(component_branches: list = []):
     return False
 
 
+# clin_type: str = None, # choices=JEDI_CLIN_TYPES,
+def is_valid_clin_type(clin_type: str = ""):
+    return len(list(filter(lambda x: clin_type in x, JEDI_CLIN_TYPES))) >= 1
+
+
+# clin_number: str = None, # validators=[number(), Length(max=4)],
+# start_date: str = None, # format="%m/%d/%Y",
+#                         # validators=[validate_date_in_range]
+# end_date: str = None, # format="%m/%d/%Y",
+#                       # validators=[validate_date_in_range]
+# total_amount: str = None, # number rage [0,MAX_CLIN_AMOUNT]
+
+
 class CliValidatorDodId(Validator):
     def validate(self, document):
         if not is_valid_dod_id(document.text):
@@ -382,12 +395,12 @@ def get_user(name: str = None, dod_id: str = None):
 
 @cli_app.command()
 def add_portfolio(
-    owner_name: str = None,
-    owner_dod_id: str = None,
-    name: str = None,
-    desc: str = None,
-    comp: Optional[str] = None,
-    feed_json: str = None,
+        owner_name: str = None,
+        owner_dod_id: str = None,
+        name: str = None,
+        desc: str = None,
+        comp: Optional[str] = None,
+        feed_json: str = None,
 ):
     """
         Add A New Portfolio like form on ATAT
@@ -432,13 +445,13 @@ def add_portfolio(
 
 @cli_app.command()
 def add_clin(
-    clin_type: str = None, # choices=JEDI_CLIN_TYPES,
-    clin_number: str = None, # validators=[number(), Length(max=4)],
-    start_date: str = None, # format="%m/%d/%Y",
-                            # validators=[validate_date_in_range]
-    end_date: str = None, # format="%m/%d/%Y",
-                          # validators=[validate_date_in_range]
-    total_amount: str = None, # number rage [0,MAX_CLIN_AMOUNT]
+        clin_type: str = None,  # choices=JEDI_CLIN_TYPES,
+        clin_number: str = None,  # validators=[number(), Length(max=4)],
+        start_date: str = None,  # format="%m/%d/%Y",
+        # validators=[validate_date_in_range]
+        end_date: str = None,  # format="%m/%d/%Y",
+        # validators=[validate_date_in_range]
+        total_amount: str = None,  # number rage [0,MAX_CLIN_AMOUNT]
 ):
     print(MAX_CLIN_AMOUNT)
     print(JEDI_CLIN_TYPES)
