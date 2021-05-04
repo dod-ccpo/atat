@@ -28,6 +28,7 @@ from atat.domain import NotFoundError
 from atat.domain.users import Users, User
 from atat.forms.data import SERVICE_BRANCHES, JEDI_CLIN_TYPES
 from atat.domain.portfolios import Portfolios
+from atat.forms.task_order import MAX_CLIN_AMOUNT
 from atat.utils import pick
 from atat.routes.dev import _DEV_USERS
 
@@ -101,7 +102,7 @@ def get_atat_user_by_dod_id(dod_id: str = None):
 
 
 def create_atat_portfolio(
-        owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
+    owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
 ):
     with web_app.app_context():
         try:
@@ -161,11 +162,13 @@ def get_cli_user(dod_id: str = None, name: str = None):
         ).ask()
     if get_user_by == "user":
         name = questionary.select(
-            "Please write the selected", choices=list(_DEV_USERS.keys()),
+            "Please write the selected",
+            choices=list(_DEV_USERS.keys()),
         ).ask()
     elif get_user_by == "id":
         dod_id = questionary.text(
-            "Please write the DOD_ID of the user?", validate=CliValidatorDodId,
+            "Please write the DOD_ID of the user?",
+            validate=CliValidatorDodId,
         ).ask()
 
     # Get User object:
@@ -174,16 +177,15 @@ def get_cli_user(dod_id: str = None, name: str = None):
     elif name is not None:
         user = get_atat_dev_user(name=name)
 
-
     return user
 
 
 def add_cli_portfolio_interactive(
-        owner_name: str = None,
-        owner_dod_id: str = None,
-        name: str = None,
-        desc: str = None,
-        comp: Optional[str] = None,
+    owner_name: str = None,
+    owner_dod_id: str = None,
+    name: str = None,
+    desc: str = None,
+    comp: Optional[str] = None,
 ):
     # get user owner object
     owner_user = get_cli_user(name=owner_name, dod_id=owner_dod_id)
@@ -227,8 +229,7 @@ def add_cli_portfolio_interactive(
 def add_cli_portfolio_json(feed_json: str = None):
     if feed_json is None:
         feed_json = questionary.path(
-            "please choice an PDF file?",
-            validate=CliValidatorFileJSON
+            "please choice an PDF file?", validate=CliValidatorFileJSON
         ).ask()
 
     if feed_json is not None:
@@ -236,7 +237,7 @@ def add_cli_portfolio_json(feed_json: str = None):
             portfolios_request = json.load(json_file)
             print("portfolios_request", portfolios_request)
             print("portfolios_request len", len(portfolios_request))
-            bar = Bar("Processing...", max=len(portfolios_request)+1)
+            bar = Bar("Processing...", max=len(portfolios_request) + 1)
             for index, portfolio in enumerate(portfolios_request, start=1):
                 # TODO: replace the print with logs
                 bar.next()
@@ -254,14 +255,20 @@ def add_cli_portfolio_json(feed_json: str = None):
                     is_good(False)
                     continue
                 if not is_valid_portfolio_name(portfolio_name):
-                    print(" Not valid Portfolio name on portfolio number {} ".format(index))
+                    print(
+                        " Not valid Portfolio name on portfolio number {} ".format(
+                            index
+                        )
+                    )
                     is_good(False)
                     continue
 
                 # get user owner object
                 owner_user = get_cli_user(dod_id=dod_id)
                 # adding the portfolio
-                portfolio_response = create_atat_portfolio(owner_user, portfolio_name, portfolio_desc, portfolio_branch)
+                portfolio_response = create_atat_portfolio(
+                    owner_user, portfolio_name, portfolio_desc, portfolio_branch
+                )
                 # Success indicator
                 if portfolio_response is not None:
                     is_good(True)
@@ -314,11 +321,7 @@ def is_valid_uri_json_file(file_json: str = None):
     if file_json is None:
         return False
     else:
-        return (
-            True
-            if re.match("^[a-zA-Z0-9\/\-\_]+.json$", file_json)
-            else False
-        )
+        return True if re.match("^[a-zA-Z0-9\/\-\_]+.json$", file_json) else False
 
 
 def is_valid_component_branches_list(component_branches: list = []):
@@ -379,30 +382,30 @@ def get_user(name: str = None, dod_id: str = None):
 
 @cli_app.command()
 def add_portfolio(
-        owner_name: str = None,
-        owner_dod_id: str = None,
-        name: str = None,
-        desc: str = None,
-        comp: Optional[str] = None,
-        feed_json: str = None,
+    owner_name: str = None,
+    owner_dod_id: str = None,
+    name: str = None,
+    desc: str = None,
+    comp: Optional[str] = None,
+    feed_json: str = None,
 ):
     """
-    Add A New Portfolio like form on ATAT
+        Add A New Portfolio like form on ATAT
 
-    :param owner_dod_id: portfolio owner user dod id.
+        :param owner_dod_id: portfolio owner user dod id.
 
-    :param owner_name: portfolio owner username form the dev list (test mode only).
+        :param owner_name: portfolio owner username form the dev list (test mode only).
 
-    :param feed_json: pass a file on json format to add one or more portfolios.
+        :param feed_json: pass a file on json format to add one or more portfolios.
 
-    :param name: A name that is descriptive enough for users to identify the Portfolio. You may consider naming based on.
+        :param name: A name that is descriptive enough for users to identify the Portfolio. You may consider naming based on.
 
-    :param desc: Add a brief one to two sentence description of your portfolio. Consider this your statement of work.
+        :param desc: Add a brief one to two sentence description of your portfolio. Consider this your statement of work.
 
-    :param comp: Select the DOD component(s) that will fund all Applications within this Portfolio. Multiple DoD organizations can fund the same Portfolio.
-Select all that apply.
+        :param comp: Select the DOD component(s) that will fund all Applications within this Portfolio. Multiple DoD organizations can fund the same Portfolio.
+    Select all that apply.
 
-    :return: create a portfolio on the DB of ATAT
+        :return: create a portfolio on the DB of ATAT
     """
 
     # select type of interaction
@@ -416,9 +419,7 @@ Select all that apply.
         ).ask()
 
     if get_portfolio_by == "json":
-        add_cli_portfolio_json(
-            feed_json=feed_json
-        )
+        add_cli_portfolio_json(feed_json=feed_json)
     else:
         add_cli_portfolio_interactive(
             owner_name=owner_name,
@@ -427,6 +428,21 @@ Select all that apply.
             desc=desc,
             comp=comp,
         )
+
+
+@cli_app.command()
+def add_clin(
+    clin_type: str = None, # choices=JEDI_CLIN_TYPES,
+    clin_number: str = None, # validators=[number(), Length(max=4)],
+    start_date: str = None, # format="%m/%d/%Y",
+                            # validators=[validate_date_in_range]
+    end_date: str = None, # format="%m/%d/%Y",
+                          # validators=[validate_date_in_range]
+    total_amount: str = None, # number rage [0,MAX_CLIN_AMOUNT]
+):
+    print(MAX_CLIN_AMOUNT)
+    print(JEDI_CLIN_TYPES)
+    pass
 
 
 # Run CLI Tool app
