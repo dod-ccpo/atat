@@ -46,8 +46,10 @@
           {% block next_button %}
             {{ SaveButton(text=('portfolios.applications.new.step_1_button_text' | translate)) }}
           {% endblock %}
-          <a href="{{ url_for('applications.portfolio_applications', portfolio_id=portfolio.id) }}">
-            Cancel
+          <a href="{{ url_for('applications.portfolio_applications', portfolio_id=portfolio.id) }}"
+             tabindex=0
+             role="button">
+            {{ "common.cancel" | translate }}
           </a>
         </div>
       </div>
