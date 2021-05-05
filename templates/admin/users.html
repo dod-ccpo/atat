@@ -35,7 +35,7 @@
               <td>{{ user.full_name }}</td>
               <td>{{ user.email }}</td>
               <td>{{ user.dod_id }}</td>
-              <td>{{ user.last_login }}</td>
+              <td>{{ user.last_login | formattedDate(formatter="%b %d, %Y")}}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -47,6 +47,8 @@
       {{ all_users[0] }}
       users_info:
       {{ users_info[0] }}
+      portfolios_sam:
+      {{ portfolios_sam }}
     </pre>
 
 
