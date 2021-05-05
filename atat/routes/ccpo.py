@@ -9,6 +9,7 @@ from atat.domain.exceptions import NotFoundError
 from atat.domain.portfolios import Portfolios
 from atat.domain.users import Users
 from atat.forms.ccpo_user import CCPOUserForm
+from atat.models import User
 from atat.models.permissions import Permissions
 from atat.utils.context_processors import atat as atat_context_processor
 from atat.utils.flash import formatted_flash as flash
@@ -38,15 +39,22 @@ def users():
     return render_template("ccpo/users.html", users_info=users_info)
 
 
+def get_portfolios_from_user(user: User = None):
+    if user is None:
+        return ""
+
+    portfolios = Portfolios.for_user(user)
+    return [(portfolio.displayname, portfolio.portfolio_id) for portfolio in portfolios]
+
+
 @bp.route("/admin/users")
 def all_users():
     all_users = Users.get_users()
-    users_info = [(user, CCPOUserForm(obj=user)) for user in all_users]
-    portfolios_sam = Portfolios.for_user(all_users[0])
+    users_info = [(user, CCPOUserForm(obj=user), get_portfolios_from_user(user)) for user in all_users]
+
     return render_template(
         "admin/users.html",
         users_info=users_info,
-        portfolios_sam=portfolios_sam,
         all_users=all_users)
 
 

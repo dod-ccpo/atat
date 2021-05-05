@@ -20,11 +20,12 @@
             <th id="user-name">{{ "common.name" | translate }}</th>
             <th id="user-email">{{ "common.email" | translate }}</th>
             <th id="user-dod-id">{{ "common.dod_id" | translate }}</th>
-            <th id="user-dod-id">last login</th>
+            <th id="user-dod-id">Last login</th>
+            <th id="user-dod-id">Portfolios</th>
           </tr>
         </thead>
         <tbody>
-          {% for user, form in users_info %}
+          {% for user, form, portfolios in users_info %}
             {% set modal_id = "disable_ccpo_user_{}".format(user.dod_id) %}
             {% set disable_button_class = 'button-danger-outline' %}
             {% if user == g.current_user %}
@@ -35,6 +36,11 @@
               <td>{{ user.full_name }}</td>
               <td>{{ user.email }}</td>
               <td>{{ user.dod_id }}</td>
+              <td>
+                {% for name, id in portfolios%}
+                    {{ name }},
+                {% endfor %}
+              </td>
               <td>{{ user.last_login | formattedDate(formatter="%b %d, %Y")}}</td>
             </tr>
           {% endfor %}
@@ -47,8 +53,6 @@
       {{ all_users[0] }}
       users_info:
       {{ users_info[0] }}
-      portfolios_sam:
-      {{ portfolios_sam }}
     </pre>
 
 
