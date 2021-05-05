@@ -43,7 +43,7 @@ jobs:
       - name: Read the GIT reference used for the CI tests
         run: |
           echo "GIT_REF=$(cat ../pr/ref)" >> $GITHUB_ENV
-          echo "PR_BASE_REF=$(cat ../pr/base" >> $GITHUB_ENV
+          echo "PR_BASE_REF=$(cat ../pr/base)" >> $GITHUB_ENV
           echo "PR_SOURCE_REF=$(cat ../pr/source)" >> $GITHUB_ENV
           echo "PR_ID=$(cat ../pr/num)" >> $GITHUB_ENV
       - name: Checkout Code
