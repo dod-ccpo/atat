@@ -42,7 +42,10 @@ jobs:
         run: unzip ../coverage.zip -d ..
       - name: Read the GIT reference used for the CI tests
         run: |
-          echo "git_ref=$(cat ../ref.txt)" >> $GITHUB_ENV
+          echo "GIT_REF=$(cat ../pr/ref)" >> $GITHUB_ENV
+          echo "PR_BASE_REF=$(cat ../pr/base" >> $GITHUB_ENV
+          echo "PR_SOURCE_REF=$(cat ../pr/source)" >> $GITHUB_ENV
+          echo "PR_ID=$(cat ../pr/num)" >> $GITHUB_ENV
       - name: Checkout Code
         # In general, checking out the code here, where we may have come from an untrusted context
         # would be a red flag. In this scenario, we will not be running the malicious code; just
@@ -50,7 +53,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          ref: ${{ env.git_ref }}
+          ref: ${{ env.GIT_REF }}
       - name: Copy coverage reports
         run: |
           mv ../coverage .
@@ -60,3 +63,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.pullrequest.key=${{ env.PR_ID }}
+            -Dsonar.pullrequest.branch=${{ env.PR_SOURCE_REF }}
+            -Dsonar.pullrequest.base=${{ env.PR_BASE_REF }}
