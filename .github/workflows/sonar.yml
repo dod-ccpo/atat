@@ -37,12 +37,12 @@ jobs:
                  archive_format: 'zip',
             });
             var fs = require('fs');
-            fs.writeFileSync('${{ github.workspace }}/coverage.zip', Buffer.from(download.data));
+            fs.writeFileSync('${{ github.workspace }}/../coverage.zip', Buffer.from(download.data));
       - name: Unzip coverage reports
-        run: unzip coverage.zip
+        run: unzip ../coverage.zip -d ..
       - name: Read the GIT reference used for the CI tests
         run: |
-          echo "git_ref=$(cat ref.txt)" >> $GITHUB_ENV
+          echo "git_ref=$(cat ../ref.txt)" >> $GITHUB_ENV
       - name: Checkout Code
         # In general, checking out the code here, where we may have come from an untrusted context
         # would be a red flag. In this scenario, we will not be running the malicious code; just
@@ -51,15 +51,12 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ env.git_ref }}
-          path: atat
       - name: Copy coverage reports
         run: |
-          mv coverage atat
-          mv coverage.xml atat
+          mv ../coverage .
+          mv ../coverage.xml .
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: atat
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
