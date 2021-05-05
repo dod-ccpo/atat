@@ -8,6 +8,7 @@ import os
 import re
 import warnings
 from typing import Optional, List
+from datetime import datetime, timedelta
 
 import pendulum
 import json
@@ -102,7 +103,7 @@ def get_atat_user_by_dod_id(dod_id: str = None):
 
 
 def create_atat_portfolio(
-        owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
+    owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
 ):
     with web_app.app_context():
         try:
@@ -181,11 +182,11 @@ def get_cli_user(dod_id: str = None, name: str = None):
 
 
 def add_cli_portfolio_interactive(
-        owner_name: str = None,
-        owner_dod_id: str = None,
-        name: str = None,
-        desc: str = None,
-        comp: Optional[str] = None,
+    owner_name: str = None,
+    owner_dod_id: str = None,
+    name: str = None,
+    desc: str = None,
+    comp: Optional[str] = None,
 ):
     # get user owner object
     owner_user = get_cli_user(name=owner_name, dod_id=owner_dod_id)
@@ -339,11 +340,35 @@ def is_valid_clin_number(clin_number: str = ""):
     return True if re.match("^\d{4}$", clin_number) else False
 
 
-# start_date: str = None, # format="%m/%d/%Y",
-#                         # validators=[validate_date_in_range]
-# end_date: str = None, # format="%m/%d/%Y",
-#                       # validators=[validate_date_in_range]
-# total_amount: str = None, # number rage [0,MAX_CLIN_AMOUNT]
+def is_valid_clin_date_rage(
+    clin_date: str = "",  # YYYY-mm-dd
+    contract_start: str = "2022-09-14",
+    contract_end: str = "2019-09-14",
+):
+    if clin_date == "":
+        return False
+
+    # contract_start = app.config.get("CONTRACT_START_DATE") # 2022-09-14
+    # contract_end = app.config.get("CONTRACT_END_DATE") # 2019-09-14
+    today = datetime.now()
+    yesterday = today - timedelta(days=1)
+    contract_start_obj = datetime.strptime(contract_start, "%Y-%m-%d")
+    contract_end_obj = datetime.strptime(contract_end, "%Y-%m-%d")
+    clin_date_obj = datetime.strptime(clin_date, "%Y-%m-%d")
+    return (
+        True
+        if yesterday < clin_date_obj < contract_end_obj
+        and clin_date_obj > contract_start_obj
+        else False
+    )
+
+
+def is_valid_clin_amount(amount: str = "", max_amount: str = MAX_CLIN_AMOUNT):
+    return (
+        True
+        if re.match("^[\d]+$", amount) and int(amount) <= int(MAX_CLIN_AMOUNT)
+        else False
+    )
 
 
 class CliValidatorDodId(Validator):
@@ -397,12 +422,12 @@ def get_user(name: str = None, dod_id: str = None):
 
 @cli_app.command()
 def add_portfolio(
-        owner_name: str = None,
-        owner_dod_id: str = None,
-        name: str = None,
-        desc: str = None,
-        comp: Optional[str] = None,
-        feed_json: str = None,
+    owner_name: str = None,
+    owner_dod_id: str = None,
+    name: str = None,
+    desc: str = None,
+    comp: Optional[str] = None,
+    feed_json: str = None,
 ):
     """
         Add A New Portfolio like form on ATAT
@@ -447,13 +472,13 @@ def add_portfolio(
 
 @cli_app.command()
 def add_clin(
-        clin_type: str = None,  # choices=JEDI_CLIN_TYPES,
-        clin_number: str = None,  # validators=[number(), Length(max=4)],
-        start_date: str = None,  # format="%m/%d/%Y",
-        # validators=[validate_date_in_range]
-        end_date: str = None,  # format="%m/%d/%Y",
-        # validators=[validate_date_in_range]
-        total_amount: str = None,  # number rage [0,MAX_CLIN_AMOUNT]
+    clin_type: str = None,  # choices=JEDI_CLIN_TYPES,
+    clin_number: str = None,  # validators=[number(), Length(max=4)],
+    start_date: str = None,  # format="%m/%d/%Y",
+    # validators=[validate_date_in_range]
+    end_date: str = None,  # format="%m/%d/%Y",
+    # validators=[validate_date_in_range]
+    total_amount: str = None,  # number rage [0,MAX_CLIN_AMOUNT]
 ):
     print(MAX_CLIN_AMOUNT)
     print(JEDI_CLIN_TYPES)
