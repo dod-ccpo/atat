@@ -6,6 +6,7 @@ from atat.domain.audit_log import AuditLog
 from atat.domain.authz.decorator import user_can_access_decorator as user_can
 from atat.domain.common import Paginator
 from atat.domain.exceptions import NotFoundError
+from atat.domain.portfolios import Portfolios
 from atat.domain.users import Users
 from atat.forms.ccpo_user import CCPOUserForm
 from atat.models.permissions import Permissions
@@ -34,7 +35,8 @@ def activity_history():
 def users():
     users = Users.get_ccpo_users()
     users_info = [(user, CCPOUserForm(obj=user)) for user in users]
-    return render_template("ccpo/users.html", users_info=users_info)
+    portfolios_sam = Portfolios.for_user(users[0])
+    return render_template("ccpo/users.html", users_info=users_info, portfolios_sam=portfolios_sam)
 
 
 @bp.route("/ccpo-users/new")
