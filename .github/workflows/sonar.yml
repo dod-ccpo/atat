@@ -68,3 +68,5 @@ jobs:
             -Dsonar.pullrequest.key=${{ env.PR_ID }}
             -Dsonar.pullrequest.branch=${{ env.PR_SOURCE_REF }}
             -Dsonar.pullrequest.base=${{ env.PR_BASE_REF }}
+            -Dsonar.pullrequest.provider=github
+            -Dsonar.pullrequest.github.reposiory=dod-ccpo/atat
