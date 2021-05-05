@@ -38,13 +38,13 @@ def users():
     return render_template("ccpo/users.html", users_info=users_info)
 
 
-@bp.route("/users")
+@bp.route("/admin/users")
 def all_users():
     all_users = Users.get_users()
     users_info = [(user, CCPOUserForm(obj=user)) for user in all_users]
     portfolios_sam = Portfolios.for_user(all_users[0])
     return render_template(
-        "ccpo/users.html",
+        "admin/users.html",
         users_info=users_info,
         portfolios_sam=portfolios_sam,
         all_users=all_users)

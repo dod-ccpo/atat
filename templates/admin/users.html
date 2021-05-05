@@ -1,0 +1,54 @@
+{% extends "base_private.html" %}
+
+{% from "components/alert.html" import Alert %}
+{% from "components/delete_confirmation.html" import DeleteConfirmation %}
+{% from "components/icon.html" import Icon %}
+{% from "components/modal.html" import Modal %}
+
+{% block content %}
+  <div class="ccpo-panel-container">
+    <div class='col'>
+      <div class="h2">
+        {{ "ccpo.users_title" | translate }} - admin all Users
+      </div>
+
+      {% include "fragments/flash.html" %}
+
+      <table>
+        <thead>
+          <tr>
+            <th id="user-name">{{ "common.name" | translate }}</th>
+            <th id="user-email">{{ "common.email" | translate }}</th>
+            <th id="user-dod-id">{{ "common.dod_id" | translate }}</th>
+            <th id="user-dod-id">last login</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user, form in users_info %}
+            {% set modal_id = "disable_ccpo_user_{}".format(user.dod_id) %}
+            {% set disable_button_class = 'button-danger-outline' %}
+            {% if user == g.current_user %}
+              {% set disable_button_class = "usa-button-disabled" %}
+            {% endif %}
+
+            <tr>
+              <td>{{ user.full_name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.dod_id }}</td>
+              <td>{{ user.last_login }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <pre>
+      all_users:
+      {{ all_users[0] }}
+      users_info:
+      {{ users_info[0] }}
+    </pre>
+
+
+  </div>
+{% endblock %}
