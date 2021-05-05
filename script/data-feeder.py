@@ -472,14 +472,27 @@ def add_portfolio(
 
 @cli_app.command()
 def add_clin(
-    clin_type: str = None,  # choices=JEDI_CLIN_TYPES,
-    clin_number: str = None,  # validators=[number(), Length(max=4)],
-    start_date: str = None,  # format="%m/%d/%Y",
-    # validators=[validate_date_in_range]
-    end_date: str = None,  # format="%m/%d/%Y",
-    # validators=[validate_date_in_range]
-    total_amount: str = None,  # number rage [0,MAX_CLIN_AMOUNT]
+    portfolio_id: str = None,
+    clin_type: str = None,
+    clin_number: str = None,
+    start_date: str = None,
+    end_date: str = None,
+    total_amount: str = None,
+    feed_json: str = None
 ):
+    """
+    add an Object type CLIN
+
+
+    :param portfolio_id: the database portfolio_id link to this CLIN.
+    :param clin_type: str  base on choices=JEDI_CLIN_TYPES,
+    :param clin_number: four digit clin identifier validators=[number(), Length(max=4)],
+    :param start_date: str format is year-month-day
+    :param end_date: str format is year-month-day
+    :param total_amount: Amount of money is a str but represent and integer number, by default is not more than MAX_CLIN_AMOUNT
+    :param feed_json: json object representation of the CLIN
+    :return: Object type CLIN
+    """
     print(MAX_CLIN_AMOUNT)
     print(JEDI_CLIN_TYPES)
     pass
