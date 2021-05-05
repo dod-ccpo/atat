@@ -39,6 +39,14 @@ class Users(object):
         )
 
     @classmethod
+    def get_users(cls):
+        return (
+            db.session.query(User)
+            .order_by(User.last_name)
+            .all()
+        )
+
+    @classmethod
     def create(cls, dod_id, permission_sets=None, **kwargs):
         if permission_sets:
             permission_sets = PermissionSets.get_many(permission_sets)
