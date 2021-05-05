@@ -91,18 +91,8 @@ jobs:
           PGHOST: localhost
           PGPORT: 5432
           REDIS_HOST: localhost:6379
-      - name: Save GitHub Context Information
-        run: |
-          mkdir -p pr
-          printf ${{ github.ref }} > ./pr/ref
-          printf ${{ github.base_ref }} > ./pr/base
-          printf ${{ github.head_ref }} > ./pr/source
-          printf ${{ github.event.number }} > ./pr/num
-      - name: Upload coverage report artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: coverage
-          path: |
-            coverage.xml
-            coverage/lcov.info
-            pr/*
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
