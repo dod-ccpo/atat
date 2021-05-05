@@ -144,7 +144,7 @@ python-versions = "*"
 
 [[package]]
 name = "black"
-version = "21.4b2"
+version = "21.5b0"
 description = "The uncompromising code formatter."
 category = "dev"
 optional = false
@@ -1343,7 +1343,7 @@ lxml = ">=3.8"
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.8.7"
-content-hash = "fb4e6e002c5b14b1dafbe86d52079fbd17ecd8051ae07df416dd537cbbf4ec8a"
+content-hash = "32438168c609f7c5c43ef6a17b02b3f581b433382d5920ecd215e730fa78bfc5"
 
 [metadata.files]
 adal = [
@@ -1396,8 +1396,8 @@ billiard = [
     {file = "billiard-3.6.3.0.tar.gz", hash = "sha256:d91725ce6425f33a97dfa72fb6bfef0e47d4652acd98a032bd1a7fbf06d5fa6a"},
 ]
 black = [
-    {file = "black-21.4b2-py3-none-any.whl", hash = "sha256:bff7067d8bc25eb21dcfdbc8c72f2baafd9ec6de4663241a52fb904b304d391f"},
-    {file = "black-21.4b2.tar.gz", hash = "sha256:fc9bcf3b482b05c1f35f6a882c079dc01b9c7795827532f4cc43c0ec88067bbc"},
+    {file = "black-21.5b0-py3-none-any.whl", hash = "sha256:0e80435b8a88f383c9149ae89d671eb2095b72344b0fe8a1d61d2ff5110ed173"},
+    {file = "black-21.5b0.tar.gz", hash = "sha256:9dc2042018ca10735366d944c2c12d9cad6dec74a3d5f679d09384ea185d9943"},
 ]
 blinker = [
     {file = "blinker-1.4.tar.gz", hash = "sha256:471aee25f3992bd325afa3772f1063dbdbbca947a041b8b89466dc00d606f8b6"},
