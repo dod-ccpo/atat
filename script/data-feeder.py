@@ -39,26 +39,6 @@ CHOICE_SERVICE_BRANCHES = []
 for branch in SERVICE_BRANCHES:
     CHOICE_SERVICE_BRANCHES.append(Choice(title=branch[1], value=branch[0]))
 
-atat_banner = """
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░░░░░░░░░░░░░░░░░░  ░░░░░░░░           ░░░░░░░  ░░░░░░░░           ░░░░░░░░░░░░
-░░░░░░░░░░░▒▒▒▒▒▒  ▒  ▒▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒▒  ▒  ▒▒▒▒▒▒▒▒▒▒   ▒▒▒▒░░░░░░░░░░░░
-░░░░░░░░░░░▒▒▒▒▒  ▒▒   ▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒  ▒▒   ▒▒▒▒▒▒▒▒▒   ▒▒▒▒░░░░░░░░░░░░
-░░░░░░░░░░░▓▓▓▓   ▓▓▓   ▓▓▓▓▓▓▓▓   ▓▓▓▓▓▓▓▓   ▓▓▓   ▓▓▓▓▓▓▓▓   ▓▓▓▓░░░░░░░░░░░░
-░░░░░░░░░░░▓▓▓       ▓   ▓▓▓▓▓▓▓   ▓▓▓▓▓▓▓       ▓   ▓▓▓▓▓▓▓   ▓▓▓▓░░░░░░░░░░░░
-░░░░░░░░░░░▓▓   ▓▓▓▓▓▓▓   ▓▓▓▓▓▓   ▓▓▓▓▓▓   ▓▓▓▓▓▓▓   ▓▓▓▓▓▓   ▓▓▓▓░░░░░░░░░░░░
-░░░░░░░░░░░█   █████████   █████   █████   █████████   █████   ████░░░░░░░░░░░░
-░░░░░░░░░░░████████████████████████████████████████████████████████░░░░░░░░░░░░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░█▀▀▄░█░░█░░░█░░░░█░▒█░█▀▀▄░▀█▀░█▀▀░█▀▀▄░░░█▀▀░▀█▀░█▀▀▄░█▀▀▄░▀█▀░█▀▀░█▀▀▀░█░░█░
-░█▀▀▄░█▄▄█░░░█▀▀█░█░▒█░█░▒█░░█░░█▀▀░█▄▄▀░░░▀▀▄░░█░░█▄▄▀░█▄▄█░░█░░█▀▀░█░▀▄░█▄▄█░
-░▀▀▀▀░▄▄▄▀░░░▀░░▀░░▀▀▀░▀░░▀░░▀░░▀▀▀░▀░▀▀░░░▀▀▀░░▀░░▀░▀▀░▀░░▀░░▀░░▀▀▀░▀▀▀▀░▄▄▄▀░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-           
-                        ---CLI INTERACTIVE TOOL----
-                                             
-"""
-
 
 # Methods and classes
 
@@ -123,7 +103,7 @@ def get_atat_user_by_dod_id(dod_id: str = None):
 
 
 def create_atat_portfolio(
-    owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
+        owner: User, portfolio_name: str, portfolio_desc: str, branches: List[str]
 ):
     with web_app.app_context():
         try:
@@ -161,6 +141,34 @@ def is_good(good: bool = False):
     else:
         ending = typer.style("bad", fg=typer.colors.RED, bold=True)
         typer.echo(ending)
+
+
+def print_banner(msg: str = ""):
+    atat_banner = """
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░  ░░░░░░░░           ░░░░░░░  ░░░░░░░░           ░░░░░░░░░░░░
+░░░░░░░░░░░▒▒▒▒▒▒  ▒  ▒▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒▒  ▒  ▒▒▒▒▒▒▒▒▒▒   ▒▒▒▒░░░░░░░░░░░░
+░░░░░░░░░░░▒▒▒▒▒  ▒▒   ▒▒▒▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒  ▒▒   ▒▒▒▒▒▒▒▒▒   ▒▒▒▒░░░░░░░░░░░░
+░░░░░░░░░░░▓▓▓▓   ▓▓▓   ▓▓▓▓▓▓▓▓   ▓▓▓▓▓▓▓▓   ▓▓▓   ▓▓▓▓▓▓▓▓   ▓▓▓▓░░░░░░░░░░░░
+░░░░░░░░░░░▓▓▓       ▓   ▓▓▓▓▓▓▓   ▓▓▓▓▓▓▓       ▓   ▓▓▓▓▓▓▓   ▓▓▓▓░░░░░░░░░░░░
+░░░░░░░░░░░▓▓   ▓▓▓▓▓▓▓   ▓▓▓▓▓▓   ▓▓▓▓▓▓   ▓▓▓▓▓▓▓   ▓▓▓▓▓▓   ▓▓▓▓░░░░░░░░░░░░
+░░░░░░░░░░░█   █████████   █████   █████   █████████   █████   ████░░░░░░░░░░░░
+░░░░░░░░░░░████████████████████████████████████████████████████████░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░█▀▀▄░█░░█░░░█░░░░█░▒█░█▀▀▄░▀█▀░█▀▀░█▀▀▄░░░█▀▀░▀█▀░█▀▀▄░█▀▀▄░▀█▀░█▀▀░█▀▀▀░█░░█░
+░█▀▀▄░█▄▄█░░░█▀▀█░█░▒█░█░▒█░░█░░█▀▀░█▄▄▀░░░▀▀▄░░█░░█▄▄▀░█▄▄█░░█░░█▀▀░█░▀▄░█▄▄█░
+░▀▀▀▀░▄▄▄▀░░░▀░░▀░░▀▀▀░▀░░▀░░▀░░▀▀▀░▀░▀▀░░░▀▀▀░░▀░░▀░▀▀░▀░░▀░░▀░░▀▀▀░▀▀▀▀░▄▄▄▀░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+                        ---CLI INTERACTIVE TOOL----
+    """
+
+    banner_color = typer.style(atat_banner, fg=typer.colors.BRIGHT_BLUE, bold=True)
+    typer.echo(banner_color)
+    if msg:
+        msg_color = typer.style(msg, fg=typer.colors.CYAN, bold=True)
+        typer.echo(msg_color)
+        typer.echo("")
 
 
 def get_cli_user(dod_id: str = None, name: str = None):
@@ -202,11 +210,11 @@ def get_cli_user(dod_id: str = None, name: str = None):
 
 
 def add_cli_portfolio_interactive(
-    owner_name: str = None,
-    owner_dod_id: str = None,
-    name: str = None,
-    desc: str = None,
-    comp: Optional[str] = None,
+        owner_name: str = None,
+        owner_dod_id: str = None,
+        name: str = None,
+        desc: str = None,
+        comp: Optional[str] = None,
 ):
     # get user owner object
     owner_user = get_cli_user(name=owner_name, dod_id=owner_dod_id)
@@ -361,9 +369,9 @@ def is_valid_clin_number(clin_number: str = ""):
 
 
 def is_valid_clin_date_rage(
-    clin_date: str = "",  # YYYY-mm-dd
-    contract_start: str = "2022-09-14",
-    contract_end: str = "2019-09-14",
+        clin_date: str = "",  # YYYY-mm-dd
+        contract_start: str = "2022-09-14",
+        contract_end: str = "2019-09-14",
 ):
     if clin_date == "":
         return False
@@ -378,7 +386,7 @@ def is_valid_clin_date_rage(
     return (
         True
         if yesterday < clin_date_obj < contract_end_obj
-        and clin_date_obj > contract_start_obj
+           and clin_date_obj > contract_start_obj
         else False
     )
 
@@ -442,12 +450,12 @@ def get_user(name: str = None, dod_id: str = None):
 
 @cli_app.command()
 def add_portfolio(
-    owner_name: str = None,
-    owner_dod_id: str = None,
-    name: str = None,
-    desc: str = None,
-    comp: Optional[str] = None,
-    feed_json: str = None,
+        owner_name: str = None,
+        owner_dod_id: str = None,
+        name: str = None,
+        desc: str = None,
+        comp: Optional[str] = None,
+        feed_json: str = None,
 ):
     """
 
@@ -493,19 +501,19 @@ def add_portfolio(
 
 @cli_app.command()
 def add_clin(
-    portfolio_id: str = None,
-    clin_type: str = None,
-    clin_number: str = None,
-    start_date: str = None,
-    end_date: str = None,
-    total_amount: str = None,
-    feed_json: str = None
+        task_order_id: str = None,
+        clin_type: str = None,
+        clin_number: str = None,
+        start_date: str = None,
+        end_date: str = None,
+        total_amount: str = None,
+        feed_json: str = None
 ):
     """
     add an Object type CLIN
 
 
-    :param portfolio_id: the database portfolio_id link to this CLIN.
+    :param task_order_id: task_order_id link to this CLIN.
     :param clin_type: str  base on choices=JEDI_CLIN_TYPES,
     :param clin_number: four digit clin identifier validators=[number(), Length(max=4)],
     :param start_date: str format is year-month-day
@@ -515,10 +523,21 @@ def add_clin(
     :return: Object type CLIN
     """
 
-    print(atat_banner)
+    # select type of interaction
+    if None in [task_order_id, clin_type, clin_number, start_date, end_date, total_amount, feed_json]:
+        get_portfolio_by = questionary.select(
+            "Add a portfolio by:",
+            choices=[
+                Choice(title="Interactive console", value="cli"),
+                Choice(title="Load a json file", value="json"),
+            ],
+        ).ask()
 
-    print(MAX_CLIN_AMOUNT)
-    print(JEDI_CLIN_TYPES)
+    if get_portfolio_by ==  "cli":
+        print_banner(msg="Add CLIN command")
+        print(MAX_CLIN_AMOUNT)
+        print(JEDI_CLIN_TYPES)
+
     pass
 
 
