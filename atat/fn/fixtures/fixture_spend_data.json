@@ -1,0 +1,390 @@
+{
+  "A-Wing": {
+    "applications": [
+      {
+        "name": "LC04",
+        "environments": [
+          {
+            "name": "Integ",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 663,
+                "JEDI_CLIN_2": 397
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 590,
+                "JEDI_CLIN_2": 829
+              },
+              "total": {
+                "JEDI_CLIN_1": 42467,
+                "JEDI_CLIN_2": 33873
+              }
+            }
+          },
+          {
+            "name": "PreProd",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 1000,
+                "JEDI_CLIN_2": 626
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 685,
+                "JEDI_CLIN_2": 331
+              },
+              "total": {
+                "JEDI_CLIN_1": 21874,
+                "JEDI_CLIN_2": 25506
+              }
+            }
+          },
+          {
+            "name": "Prod",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 856,
+                "JEDI_CLIN_2": 627
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 921,
+                "JEDI_CLIN_2": 473
+              },
+              "total": {
+                "JEDI_CLIN_1": 35566,
+                "JEDI_CLIN_2": 42514
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "SF18",
+        "environments": [
+          {
+            "name": "Integ",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 777,
+                "JEDI_CLIN_2": 850
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 584,
+                "JEDI_CLIN_2": 362
+              },
+              "total": {
+                "JEDI_CLIN_1": 44505,
+                "JEDI_CLIN_2": 21378
+              }
+            }
+          },
+          {
+            "name": "PreProd",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 487,
+                "JEDI_CLIN_2": 733
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 542,
+                "JEDI_CLIN_2": 999
+              },
+              "total": {
+                "JEDI_CLIN_1": 8713,
+                "JEDI_CLIN_2": 10586
+              }
+            }
+          },
+          {
+            "name": "Prod",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 420,
+                "JEDI_CLIN_2": 503
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 756,
+                "JEDI_CLIN_2": 941
+              },
+              "total": {
+                "JEDI_CLIN_1": 43003,
+                "JEDI_CLIN_2": 20601
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Canton",
+        "environments": [
+          {
+            "name": "Prod",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 661,
+                "JEDI_CLIN_2": 599
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 962,
+                "JEDI_CLIN_2": 383
+              },
+              "total": {
+                "JEDI_CLIN_1": 24501,
+                "JEDI_CLIN_2": 7551
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "BD04",
+        "environments": [
+          {
+            "name": "Integ",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 790,
+                "JEDI_CLIN_2": 513
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 886,
+                "JEDI_CLIN_2": 991
+              },
+              "total": {
+                "JEDI_CLIN_1": 43684,
+                "JEDI_CLIN_2": 40196
+              }
+            }
+          },
+          {
+            "name": "PreProd",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 513,
+                "JEDI_CLIN_2": 706
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 945,
+                "JEDI_CLIN_2": 380
+              },
+              "total": {
+                "JEDI_CLIN_1": 28189,
+                "JEDI_CLIN_2": 9759
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "SCV18",
+        "environments": [
+          {
+            "name": "Dev",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 933,
+                "JEDI_CLIN_2": 993
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 319,
+                "JEDI_CLIN_2": 619
+              },
+              "total": {
+                "JEDI_CLIN_1": 40585,
+                "JEDI_CLIN_2": 28872
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Crown",
+        "environments": [
+          {
+            "name": "CR Portal Dev",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 711,
+                "JEDI_CLIN_2": 413
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 908,
+                "JEDI_CLIN_2": 632
+              },
+              "total": {
+                "JEDI_CLIN_1": 18753,
+                "JEDI_CLIN_2": 4004
+              }
+            }
+          },
+          {
+            "name": "CR Staging",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 440,
+                "JEDI_CLIN_2": 918
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 370,
+                "JEDI_CLIN_2": 472
+              },
+              "total": {
+                "JEDI_CLIN_1": 40602,
+                "JEDI_CLIN_2": 6834
+              }
+            }
+          },
+          {
+            "name": "CR Portal Test 1",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 928,
+                "JEDI_CLIN_2": 796
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 680,
+                "JEDI_CLIN_2": 312
+              },
+              "total": {
+                "JEDI_CLIN_1": 36058,
+                "JEDI_CLIN_2": 42375
+              }
+            }
+          },
+          {
+            "name": "Jewels Prod",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 304,
+                "JEDI_CLIN_2": 428
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 898,
+                "JEDI_CLIN_2": 729
+              },
+              "total": {
+                "JEDI_CLIN_1": 3162,
+                "JEDI_CLIN_2": 49836
+              }
+            }
+          },
+          {
+            "name": "Jewels Dev",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 498,
+                "JEDI_CLIN_2": 890
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 506,
+                "JEDI_CLIN_2": 659
+              },
+              "total": {
+                "JEDI_CLIN_1": 6248,
+                "JEDI_CLIN_2": 3866
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "B-Wing": {
+    "applications": [
+      {
+        "name": "NP02",
+        "environments": [
+          {
+            "name": "Integ",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 455,
+                "JEDI_CLIN_2": 746
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 973,
+                "JEDI_CLIN_2": 504
+              },
+              "total": {
+                "JEDI_CLIN_1": 11493,
+                "JEDI_CLIN_2": 17751
+              }
+            }
+          },
+          {
+            "name": "PreProd",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 582,
+                "JEDI_CLIN_2": 339
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 392,
+                "JEDI_CLIN_2": 885
+              },
+              "total": {
+                "JEDI_CLIN_1": 41856,
+                "JEDI_CLIN_2": 46399
+              }
+            }
+          },
+          {
+            "name": "Prod",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 446,
+                "JEDI_CLIN_2": 670
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 368,
+                "JEDI_CLIN_2": 963
+              },
+              "total": {
+                "JEDI_CLIN_1": 10030,
+                "JEDI_CLIN_2": 29253
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "FM",
+        "environments": [
+          {
+            "name": "Integ",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 994,
+                "JEDI_CLIN_2": 573
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 699,
+                "JEDI_CLIN_2": 418
+              },
+              "total": {
+                "JEDI_CLIN_1": 27881,
+                "JEDI_CLIN_2": 37092
+              }
+            }
+          },
+          {
+            "name": "Prod",
+            "spending": {
+              "this_month": {
+                "JEDI_CLIN_1": 838,
+                "JEDI_CLIN_2": 839
+              },
+              "last_month": {
+                "JEDI_CLIN_1": 775,
+                "JEDI_CLIN_2": 946
+              },
+              "total": {
+                "JEDI_CLIN_1": 45007,
+                "JEDI_CLIN_2": 16197
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
