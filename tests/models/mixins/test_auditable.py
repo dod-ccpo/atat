@@ -42,7 +42,7 @@ def test_logging_audit_event_on_update(mock_logger):
 
     Users.update(user, {"first_name": "Greedo"})
     assert "Audit Event update" in mock_logger.messages
-    assert len(mock_logger.messages) == 2
+    assert len(mock_logger.messages) == 3
 
     event_log = mock_logger.extras[1]["audit_event"]
     assert event_log["resource_type"] == "user"

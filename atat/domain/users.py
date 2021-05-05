@@ -1,4 +1,5 @@
 import pendulum
+from flask import current_app as app
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -48,6 +49,7 @@ class Users(object):
             user = User(dod_id=dod_id, permission_sets=permission_sets, **kwargs)
             db.session.add(user)
             db.session.commit()
+            app.logger.info(f"{user.full_name}'s account is created.")
         except IntegrityError:
             db.session.rollback()
             raise AlreadyExistsError("user")
@@ -89,6 +91,7 @@ class Users(object):
         db.session.add(user)
         db.session.commit()
 
+        app.logger.info(f"{user.full_name} was updated.")
         return user
 
     @classmethod
@@ -98,6 +101,7 @@ class Users(object):
 
         if commit:
             db.session.commit()
+            app.logger.info(f"{user.full_name} was given all ccpo perms.")
 
         return user
 
@@ -106,6 +110,7 @@ class Users(object):
         user.permission_sets = []
         db.session.add(user)
         db.session.commit()
+        app.logger.info(f"{user.full_name}'s ccpo perms was revoked.")
         return user
 
     @classmethod
