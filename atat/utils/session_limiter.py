@@ -28,4 +28,4 @@ class SessionLimiter(object):
 
     def _delete_session(self, session_id):
         self.redis.delete(f"{self.session_prefix}{session_id}")
-        app.logger.info(f"{self.session_prefix}{session_id} is deleted from Redis.")
+        app.logger.info(f"{self.session_prefix} {session_id} is deleted from Redis.")
