@@ -85,8 +85,15 @@
             <hr class="full-width">
             {{ "invites.revoke_modal_text" | translate({"application": application.name}) }}
             <div class="action-group">
-              <button class="action-group__action usa-button usa-button-primary" type="submit">{{ "invites.revoke" | translate }}</button>
-              <button class='action-group__action usa-button usa-button-secondary' v-on:click='closeModal("{{revoke_invite_modal}}")' type="button">{{ "common.cancel" | translate }}</button>
+              <button class="action-group__action usa-button usa-button-primary"
+                      tabindex=0
+                      role="button"
+                      type="submit">{{ "invites.revoke" | translate }}</button>
+              <button class='action-group__action usa-button usa-button-secondary'
+                      v-on:click='closeModal("{{revoke_invite_modal}}")'
+                      tabindex=0
+                      role="button"
+                      type="button">{{ "common.cancel" | translate }}</button>
             </div>
           </form>
         {% endcall %}

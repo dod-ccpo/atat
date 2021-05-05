@@ -50,12 +50,16 @@
               <button
                 type="submit"
                 class="usa-button usa-button-secondary"
+                tabindex=0
+                role="button"
                 formaction="{{ previous_button_link }}">
                 {{ "common.previous" | translate }}
               </button>
             {% else -%}
               <a
                 class="usa-button usa-button-secondary"
+                tabindex=0
+                role="button"
                 href="{{ previous_button_link }}">
                 {{ "common.previous" | translate }}
               </a>
@@ -63,6 +67,8 @@
           {% endif %}
           <a
             v-on:click="openModal('cancel')"
+            tabindex=0
+            role="button"
             class="action-group__action icon-link">
             {{ "common.cancel" | translate }}
           </a>

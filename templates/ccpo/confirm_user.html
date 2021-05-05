@@ -25,7 +25,10 @@
               type='submit'
               class='action-group__action usa-button'
               value='{{ "ccpo.form.confirm_button" | translate }}'>
-          <a class='action-group__action icon-link icon-link--default' href="{{ url_for('ccpo.users') }}">
+          <a class='action-group__action icon-link icon-link--default'
+             tabindex=0
+             role="button"
+             href="{{ url_for('ccpo.users') }}">
             {{ "common.cancel" | translate }}
           </a>
         </div>

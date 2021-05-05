@@ -82,8 +82,15 @@
             <hr class="full-width">
             {{ "invites.revoke_modal_text" | translate({"application": portfolio.name}) }}
             <div class="action-group">
-              <button class="action-group__action usa-button usa-button-primary" type="submit">{{ "invites.revoke" | translate }}</button>
-              <button class='action-group__action usa-button usa-button-secondary' v-on:click='closeModal("{{revoke_invite_modal}}")' type="button">{{ "common.cancel" | translate }}</button>
+              <button class="action-group__action usa-button usa-button-primary"
+                      tabindex=0
+                      role="button"
+                      type="submit">{{ "invites.revoke" | translate }}</button>
+              <button class='action-group__action usa-button usa-button-secondary'
+                      v-on:click='closeModal("{{revoke_invite_modal}}")'
+                      tabindex=0
+                      role="button"
+                      type="button">{{ "common.cancel" | translate }}</button>
             </div>
           </form>
         {% endcall %}
@@ -106,7 +113,10 @@
                 {{ "portfolios.members.archive_button" | translate }}
               </button>
             </form>
-            <a v-on:click="closeModal('{{ modal_id }}')" class="action-group__action icon-link icon-link--default">{{ "common.cancel" | translate }}</a>
+            <a v-on:click="closeModal('{{ modal_id }}')"
+               tabindex=0
+               role="button"
+               class="action-group__action icon-link icon-link--default">{{ "common.cancel" | translate }}</a>
           </div>
         {% endcall %}
       {%- endif %}
