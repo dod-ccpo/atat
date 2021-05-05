@@ -1,0 +1,19 @@
+name: Test Locust Load Test
+
+on: [push]
+
+jobs:
+  build:
+    name: 'Locust Load Test'
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run Load Test
+        uses: dod-ccpo/atat@develop
+        with:
+          LOCUSTFILE: "load-test/locustfile.py"
+          URL:  "https://google.com"
+          USERS: "3"
+          RATE: "3"
+          RUNTIME: "10s"
