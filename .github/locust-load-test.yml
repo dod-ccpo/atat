@@ -1,4 +1,4 @@
-name: Test Locust Load Test
+name: Locust Load Test
 
 on: [push]
 
@@ -13,7 +13,7 @@ jobs:
         uses: dod-ccpo/atat@develop
         with:
           LOCUSTFILE: "load-test/locustfile.py"
-          URL:  "https://google.com"
-          USERS: "3"
-          RATE: "3"
-          RUNTIME: "10s"
+          URL:  "https://demo.atat.dev"
+          USERS: "10"
+          RATE: "2"
+          RUNTIME: "60s"
