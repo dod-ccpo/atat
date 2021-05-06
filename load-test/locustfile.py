@@ -304,6 +304,7 @@ def user_status(f):
     """
     Decorator to wrap Task functions.
     """
+
     @wraps(f)
     def decorated_function(*args, **kwargs):
         task_set = args[0]
@@ -326,6 +327,7 @@ class UserBehavior(SequentialTaskSet):
     """
     Defines Tasks a User can execute.
     """
+
     def on_start(self):
         self.client.verify = not DISABLE_VERIFY
         login_as(self.user, self.client)
@@ -373,7 +375,7 @@ class ATATUser(FastHttpUser):
     """
     Represents one User, AKA locust, to be spawned to attack the system to be load tested.
     """
-    
+
     tasks = [UserBehavior]
 
     wait_time = between(3, 9)
@@ -383,10 +385,8 @@ class ATATUser(FastHttpUser):
         """
         Called when a User starts running.
         """
-        dod_id = get_new_dod_id()
+        self.dod_id = get_new_dod_id()
         first_name, last_name = get_new_name()
-
-        self.dod_id = dod_id
         self.first_name = first_name
         self.last_name = last_name
         self.email = "".join([first_name.lower(), last_name.lower(), "@loadtest.atat"])
