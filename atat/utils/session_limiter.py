@@ -34,4 +34,6 @@ class SessionLimiter(object):
 
     def _delete_session(self, session_id):
         self.redis.delete(f"{self.session_prefix}{session_id}")
-        app.logger.info("The session [%s%s] is destroyed.", self.session_prefix, session_id)
+        app.logger.info(
+            "The session [%s%s] is destroyed.", self.session_prefix, session_id
+        )
