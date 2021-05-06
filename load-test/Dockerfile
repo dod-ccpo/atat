@@ -1,4 +1,4 @@
-FROM locustio/locust:1.3.1
+FROM locustio/locust:1.5.1
 USER root
 RUN pip install -U pip
 RUN pip install pyquery names
