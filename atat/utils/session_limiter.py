@@ -17,15 +17,21 @@ class SessionLimiter(object):
         session_id = self.session.sid
 
         app.logger.info(
-            f"The previous session [{self.session_prefix}{user.last_session_id}] is deleted for user: {user.full_name}."
+            "The previous session [%s %s] is deleted for user: %s.",
+            self.session_prefix,
+            user.last_session_id,
+            user.full_name,
         )
         self._delete_session(user.last_session_id)
 
         app.logger.info(
-            f"A new Session {self.session_prefix}{session_id} is assigned for user: {user.full_name}."
+            "A new Session %s%s is assigned for user: %s.",
+            self.session_prefix,
+            session_id,
+            user.full_name,
         )
         Users.update_last_session_id(user, session_id)
 
     def _delete_session(self, session_id):
         self.redis.delete(f"{self.session_prefix}{session_id}")
-        app.logger.info(f"{self.session_prefix} {session_id} is deleted from Redis.")
+        app.logger.info("%s %s is deleted from Redis.", self.session_prefix, session_id)

@@ -49,7 +49,7 @@ class Users(object):
             user = User(dod_id=dod_id, permission_sets=permission_sets, **kwargs)
             db.session.add(user)
             db.session.commit()
-            app.logger.info(f"{user.full_name}'s account is created.")
+            app.logger.info("%s's account is created.", user.full_name)
         except IntegrityError:
             db.session.rollback()
             raise AlreadyExistsError("user")
@@ -91,7 +91,7 @@ class Users(object):
         db.session.add(user)
         db.session.commit()
 
-        app.logger.info(f"{user.full_name} was updated.")
+        app.logger.info("%s was updated.", user.full_name)
         return user
 
     @classmethod
@@ -101,7 +101,7 @@ class Users(object):
 
         if commit:
             db.session.commit()
-            app.logger.info(f"{user.full_name} was given all ccpo perms.")
+            app.logger.info("%s was given all CCPO permissions.", user.full_name)
 
         return user
 
@@ -110,7 +110,7 @@ class Users(object):
         user.permission_sets = []
         db.session.add(user)
         db.session.commit()
-        app.logger.info(f"{user.full_name}'s ccpo perms was revoked.")
+        app.logger.info("%s's CCPO permissions was revoked.", user.full_name)
         return user
 
     @classmethod
