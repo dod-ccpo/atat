@@ -96,6 +96,17 @@ def test_get_ccpo_users():
     assert rando not in ccpo_users
 
 
+def test_get_users():
+    ccpo_1 = UserFactory.create_ccpo()
+    ccpo_2 = UserFactory.create_ccpo()
+    rando = UserFactory.create()
+
+    users = Users.get_users()
+    assert ccpo_1 in users
+    assert ccpo_2 in users
+    assert rando in users
+
+
 def test_give_ccpo_perms():
     rando = UserFactory.create()
     Users.give_ccpo_perms(rando)
