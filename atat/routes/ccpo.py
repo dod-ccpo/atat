@@ -73,3 +73,9 @@ def remove_access(user_id):
     Users.revoke_ccpo_perms(user)
     flash("ccpo_user_removed", user_name=user.full_name)
     return redirect(url_for(_CCPO_USERS_ROUTE))
+
+
+@bp.route("/admin/dashboard")
+@user_can(Permissions.VIEW_CCPO_USER, message="view ccpo users")
+def dashboard():
+    return render_template("admin/index.html")

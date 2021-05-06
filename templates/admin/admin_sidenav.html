@@ -1,0 +1,37 @@
+{% from "components/icon.html" import Icon %}
+{% from "components/sidenav_item.html" import SidenavItem %}
+
+<div class="global-navigation">
+  <sidenav-toggler v-cloak inline-template>
+    <div v-bind:class="{'sidenav-container': isVisible, 'sidenav-container--minimized': !isVisible}">
+      <div v-bind:class="{'sidenav': isVisible, 'sidenav--minimized': !isVisible}">
+        <div v-bind:class="{'sidenav__header': isVisible, 'sidenav__header--minimized': !isVisible}" class="row">
+          <template v-if="isVisible">
+            <span class="sidenav__title col col--grow">Admin Console</span>
+            <a href="#" v-on:click="toggle" class="sidenav__toggle col">
+              {{ Icon('angle-double-left-solid', classes="sidenav__toggle-arrows icon--primary") }}
+              <span>Hide</span>
+            </a>
+          </template>
+          <template v-else>
+            <a href="#" v-on:click="toggle" class="sidenav__toggle col">
+              <span>Show</span>
+              {{ Icon('angle-double-right-solid', classes="sidenav__toggle-arrows icon--primary") }}
+            </a>
+          </template>
+        </div>
+        <ul class="sidenav__list" v-if="isVisible">
+            {{ SidenavItem('Dashboard',
+              href="/admin/dashboard",
+              active=request.url_rule.endpoint == "ccpo.dashboard",
+              ) }}
+          {{ SidenavItem('Users',
+              href="/ccpo-users",
+              active=request.url_rule.endpoint == "ccpo.users",
+              ) }}
+
+        </ul>
+      </div>
+    </div>
+  </sidenav-toggler>
+</div>

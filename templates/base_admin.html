@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}JEDI Cloud{% endblock %}
+
+{% block body %}
+    <div class='global-layout'>
+      {% include 'admin/admin_sidenav.html' %}
+
+      <div class='global-panel-container'>
+        {% block sidenav %}{% endblock %}
+
+        {% block content %}
+          these are not the droids you are looking for
+        {% endblock %}
+      </div>
+    </div>
+
+    {% if g.modal %}
+      <div data-modal="{{ g.modal }}" id="modalOpen">
+      </div>
+    {% endif %}
+{% endblock %}
