@@ -1,43 +1,43 @@
 #admin-all-users-page {
-    font-size: .8em;
+  font-size: 0.8em;
 
-    table#all-users-page__table.atat-table {
-        position: relative;
-        thead {
-            tr {
-              th {
-                a{
-                    color:$color-black-light;
-                    text-decoration: none;
-                    margin-right: 16px;
-                    &:after{
-                        padding-left: 2px;
-                        position: relative;
-                        top: .2em;
-                        content: " ";
-                        background-image: url("#{$asset-path}/img/angle-arrow-down.svg");
-                        background-position: left center;
-                        width: 16px;
-                        height: 1em;
-                        display: inline-block;
-                        background-origin: content-box;
-                        background-repeat: no-repeat;
-                        background-size: 13px;
-                    }
-                    &:hover:after{
-                        background-image: url("#{$asset-path}/img/angle-arrow-down-primary.svg");
-                    }
-                    &.current:after{
-                        background-image: url("#{$asset-path}/img/arrow-down.svg");
-                    }
-                }
-                &#user-last-login,
-                &#user-service-branch,
-                &#user-name {
-                    width: 20%;
-                }
-              }
+  table#all-users-page__table.atat-table {
+    position: relative;
+    thead {
+      tr {
+        th {
+          a {
+            color: $color-black-light;
+            text-decoration: none;
+            margin-right: 16px;
+            &:after {
+              padding-left: 2px;
+              position: relative;
+              top: 0.2em;
+              content: " ";
+              background-image: url("#{$asset-path}/img/angle-arrow-down.svg");
+              background-position: left center;
+              width: 16px;
+              height: 1em;
+              display: inline-block;
+              background-origin: content-box;
+              background-repeat: no-repeat;
+              background-size: 13px;
             }
+            &:hover:after {
+              background-image: url("#{$asset-path}/img/angle-arrow-down-primary.svg");
+            }
+            &.current:after {
+              background-image: url("#{$asset-path}/img/arrow-down.svg");
+            }
+          }
+          &#user-last-login,
+          &#user-service-branch,
+          &#user-name {
+            width: 20%;
+          }
         }
+      }
     }
+  }
 }
