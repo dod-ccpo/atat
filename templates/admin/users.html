@@ -6,6 +6,11 @@
 {% from "components/modal.html" import Modal %}
 
 {% block content %}
+
+  {% set is_current_by_branch= "current" if order_by == "service_branch" else "" %}
+  {% set is_current_by_last_login=  "current" if order_by == "last_login" else "" %}
+  {% set is_current_by_name= "current" if not(is_current_by_branch or is_current_by_last_login ) else "" %}
+
   <div class="ccpo-panel-container" id="admin-all-users-page">
     <div class='col'>
       <br>
@@ -15,12 +20,20 @@
 
       {% include "fragments/flash.html" %}
 
+
+      <pre>
+        is_current_by_branch: {{ is_current_by_branch }}
+        is_current_by_last_login: {{ is_current_by_last_login }}
+        is_current_by_name: {{ is_current_by_name }}
+      </pre>
+
       <table id="all-users-page__table" class="atat-table" aria-describedby="this table shows all users">
         <thead>
           <tr>
             <th id="user-name">
               <a role="button"
                  href="?order-by=last_name"
+                 class="{{ is_current_by_name }}"
                  tabindex="0" >
                 {{ "common.name" | translate }}
               </a>
@@ -28,6 +41,7 @@
             <th id="user-service-branch">
               <a role="button"
                  href="?order-by=service_branch"
+                 class="{{ is_current_by_branch }}"
                  tabindex="0" >
                 Organization
               </a>
@@ -36,6 +50,7 @@
             <th id="user-portfolios">{{ "common.portfolio" | translate }}</th>
             <th id="user-last-login">
               <a role="button"
+                 class="{{ is_current_by_last_login }}"
                  href="?order-by=last_login"
                  tabindex="0" >
                 {{ "common.last_login" | translate }}

@@ -28,7 +28,6 @@
                         background-image: url("#{$asset-path}/img/angle-arrow-down-primary.svg");
                     }
                     &.current:after{
-                        border: pink 1px solid;
                         background-image: url("#{$asset-path}/img/arrow-down.svg");
                     }
                 }
