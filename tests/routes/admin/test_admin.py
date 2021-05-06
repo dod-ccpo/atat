@@ -13,4 +13,6 @@ def test_get_portfolios_from_user(user_session, client):
 
 def test_service_branch_label(user_session, client):
     branch_label = service_branch_label()
-    assert branch_label == "", "if service_branch_label have not branch id then return empty"
+    assert (
+        branch_label == ""
+    ), "if service_branch_label have not branch id then return empty"
