@@ -18,4 +18,6 @@ def test_service_branch_label(user_session, client):
     assert (
         branch_label == ""
     ), "if service_branch_label have not branch id then return empty"
-    assert air_force_label == branch_label_air_force, "the liable need to be the same that in the translation file."
+    assert (
+        air_force_label == branch_label_air_force
+    ), "the liable need to be the same that in the translation file."
