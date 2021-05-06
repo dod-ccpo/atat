@@ -10,10 +10,6 @@ from locust import SequentialTaskSet, between, task
 from locust.contrib.fasthttp import FastHttpUser
 from pyquery import PyQuery as pq
 
-# Provide username/password for basic auth
-USERNAME = os.getenv("ATAT_BA_USERNAME", "")
-PASSWORD = os.getenv("ATAT_BA_PASSWORD", "")
-
 # Ability to disable SSL verification for bad cert situations
 DISABLE_VERIFY = os.getenv("DISABLE_VERIFY", "true").lower() == "true"
 
