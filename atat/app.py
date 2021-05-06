@@ -20,9 +20,9 @@ from atat.filters import register_filters
 from atat.models.permissions import Permissions
 from atat.queue import celery, update_celery
 from atat.routes import bp
+from atat.routes.admin.admin import bp as admin_routes
 from atat.routes.applications import applications_bp
 from atat.routes.ccpo import bp as ccpo_routes
-from atat.routes.admin.admin import bp as admin_routes
 from atat.routes.dev import dev_bp as dev_routes
 from atat.routes.dev import local_access_bp
 from atat.routes.errors import make_error_pages

@@ -1,12 +1,12 @@
-from flask import request, render_template, Blueprint
+from flask import Blueprint, render_template, request
 
+from atat.domain.authz.decorator import user_can_access_decorator as user_can
 from atat.domain.portfolios import Portfolios
 from atat.domain.users import Users
 from atat.forms.ccpo_user import CCPOUserForm
 from atat.forms.data import SERVICE_BRANCHES
-from atat.models import User, Permissions
+from atat.models import Permissions, User
 from atat.utils.context_processors import atat as atat_context_processor
-from atat.domain.authz.decorator import user_can_access_decorator as user_can
 
 bp = Blueprint("admin", __name__)
 bp.context_processor(atat_context_processor)

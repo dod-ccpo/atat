@@ -58,27 +58,6 @@ table.atat-table {
         padding: 1rem 1.5rem;
         border-top: none;
       }
-      th a{
-        color:$color-black-light;
-        text-decoration: none;
-        border: pink 1px solid;
-        margin-right: 14px;
-        &:after{
-            border: blue 1px solid;
-            position: relative;
-            content: " ";
-            background: url("/static/assets/angle-arrow-down.10c43f2d.svg");
-            /* background-repeat: no-repeat; */
-            background-position: center center;
-            background-attachment: fixed;
-            width: 14px;
-            height: 1em;
-            /* overflow: hidden; */
-            display: block;
-            background-origin: content-box;
-            background-size: 13px;
-        }
-      }
     }
   }
 }
