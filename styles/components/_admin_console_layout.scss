@@ -1,0 +1,80 @@
+.admin-header {
+  flex-direction: column;
+  margin: $gap * 2 0;
+  max-width: $max-panel-width;
+
+  @include media($small-screen) {
+    flex-direction: row;
+  }
+
+  .col--grow {
+    overflow: inherit;
+    align-self: center;
+  }
+
+  &__name {
+    @include h1;
+
+    h1 {
+      margin: 0;
+      font-size: 3.5rem;
+    }
+
+    p {
+      font-size: $small-font-size;
+      margin: 0 0 (-$gap * 0.5);
+      color: $color-gray-medium;
+      max-width: 100%;
+    }
+  }
+
+  .links {
+    justify-content: center;
+    font-size: $small-font-size;
+
+    .icon-link {
+      padding: 0;
+      border-radius: 0;
+      color: $color-blue-darkest;
+      min-width: 10rem;
+      min-height: 10rem;
+
+      .col {
+        margin: 0 auto;
+      }
+
+      &:hover {
+        background-color: $color-aqua-lightest;
+      }
+
+      .icon {
+        @include icon-color($color-blue-darkest);
+        @include icon-size(30);
+      }
+
+      &.active {
+        color: $color-blue;
+        background-color: $color-gray-lightest;
+        text-decoration: none;
+
+        &:hover {
+          background-color: $color-aqua-lightest;
+        }
+
+        .icon {
+          @include icon-color($color-blue);
+        }
+      }
+
+      &--icon {
+        text-align: center;
+      }
+    }
+  }
+}
+.admin-panel-container {
+  @include media($large-screen) {
+    @include grid-row;
+    min-height: 500px;
+  }
+}
