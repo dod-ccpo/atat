@@ -1,0 +1,27 @@
+{% extends "base_private.html" %}
+
+{% from "components/alert.html" import Alert %}
+{% from "components/delete_confirmation.html" import DeleteConfirmation %}
+{% from "components/icon.html" import Icon %}
+{% from "components/modal.html" import Modal %}
+
+{% block content %}
+  <div class="ccpo-panel-container">
+    <div class='col'>
+      <br>
+      <div class="h2">
+        User: {{user.displayname }} ( user.dod_id)
+      </div>
+
+      {% include "fragments/flash.html" %}
+
+
+    </div>
+
+    <pre>
+      user:
+      {{ user }}
+    </pre>
+
+  </div>
+{% endblock %}

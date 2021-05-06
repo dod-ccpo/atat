@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship
 
 import atat.models.mixins as mixins
 import atat.models.types as types
+from atat.forms.data import SERVICE_BRANCHES
 from atat.models.application_invitation import ApplicationInvitation
 from atat.models.base import Base
 from atat.models.mixins.auditable import (
@@ -102,6 +103,13 @@ class User(
     @property
     def application_id(self):
         return None
+
+    @property
+    def service_branch_label(self):
+        labels = list(filter(lambda x:self.service_branch in x, SERVICE_BRANCHES))
+        if len(labels) > 0:
+            return labels[0][1]
+        return ""
 
     def __repr__(self):
         return "<User(name='{}', dod_id='{}', email='{}', id='{}')>".format(

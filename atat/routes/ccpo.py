@@ -48,14 +48,27 @@ def get_portfolios_from_user(user: User = None):
 
 
 @bp.route("/admin/users")
-def all_users():
-    all_users = Users.get_users()
+@user_can(Permissions.VIEW_PORTFOLIO_ADMIN, message="view all users")
+def all_users_page():
+    order_by = request.args.get('order-by') or "last_name"
+    all_users = Users.get_users(order_by=order_by)
     users_info = [(user, CCPOUserForm(obj=user), get_portfolios_from_user(user)) for user in all_users]
 
     return render_template(
         "admin/users.html",
+        order_by=order_by,
         users_info=users_info,
         all_users=all_users)
+
+
+@bp.route("/admin/users/<user_id>")
+@user_can(Permissions.VIEW_PORTFOLIO_ADMIN, message="view all users")
+def user_page(user_id):
+
+    user = Users.get(user_id)
+    return render_template(
+        "admin/user.html",
+        user=user)
 
 
 @bp.route("/ccpo-users/new")

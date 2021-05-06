@@ -39,7 +39,11 @@ class Users(object):
         )
 
     @classmethod
-    def get_users(cls):
+    def get_users(cls, order_by: str = "last_name"):
+        if order_by == "last_login":
+            return db.session.query(User).order_by(User.last_login).all()
+        elif order_by == "service_branch":
+            return db.session.query(User).order_by(User.service_branch).all()
         return db.session.query(User).order_by(User.last_name).all()
 
     @classmethod

@@ -36,6 +36,9 @@ ccpo:
     user_not_found_text: To add someone as a CCPO user, they must already have an ATAT account.
   disable_user:
     alert_message: "Confirm removing CCPO superuser access from {user_name}"
+admin:
+  users_page:
+    title: All Users
 common:
   applications: Applications
   cancel: Cancel
@@ -54,6 +57,8 @@ common:
   save: Save
   save_changes: Save Changes
   task_orders: Task Orders
+  portfolio: Portfolio
+  last_login: Last Login
 components:
   date_selector:
     day: Day

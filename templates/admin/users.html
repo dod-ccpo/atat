@@ -6,22 +6,42 @@
 {% from "components/modal.html" import Modal %}
 
 {% block content %}
-  <div class="ccpo-panel-container">
+  <div class="ccpo-panel-container" id="admin-all-users-page">
     <div class='col'>
+      <br>
       <div class="h2">
-        {{ "ccpo.users_title" | translate }} - admin all Users
+        {{ "admin.users_page.title" | translate }}
       </div>
 
       {% include "fragments/flash.html" %}
 
-      <table>
+      <table id="all-users-page__table">
         <thead>
           <tr>
-            <th id="user-name">{{ "common.name" | translate }}</th>
+            <th id="user-name">
+              <a role="button"
+                 href="?order-by=last_name"
+                 tabindex="0" >
+                {{ "common.name" | translate }}
+              </a>
+            </th>
+            <th id="user-service-branch">
+              <a role="button"
+                 href="?order-by=service_branch"
+                 tabindex="0" >
+                Organization
+              </a>
+            </th>
             <th id="user-email">{{ "common.email" | translate }}</th>
             <th id="user-dod-id">{{ "common.dod_id" | translate }}</th>
-            <th id="user-dod-id">Last login</th>
-            <th id="user-dod-id">Portfolios</th>
+            <th id="user-portfolios">{{ "common.portfolio" | translate }}</th>
+            <th id="user-last-login">
+              <a role="button"
+                 href="?order-by=last_login"
+                 tabindex="0" >
+                {{ "common.last_login" | translate }}
+              </a>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -31,9 +51,19 @@
             {% if user == g.current_user %}
               {% set disable_button_class = "usa-button-disabled" %}
             {% endif %}
-
             <tr>
-              <td>{{ user.full_name }}</td>
+              <td>
+
+                <br>
+                <a role="button"
+                   tabindex="0"
+                   href="{{ url_for('ccpo.user_page', user_id=user.id) }}" >
+                  <b>{{ user.full_name }}</b>
+                </a>
+
+
+              </td>
+              <td>{{ user.service_branch_label }}</td>
               <td>{{ user.email }}</td>
               <td>{{ user.dod_id }}</td>
               <td>
@@ -49,12 +79,9 @@
     </div>
 
     <pre>
-      all_users:
-      {{ all_users[0] }}
-      users_info:
-      {{ users_info[0] }}
+      order-by:
+      {{ order_by }}
     </pre>
-
 
   </div>
 {% endblock %}
