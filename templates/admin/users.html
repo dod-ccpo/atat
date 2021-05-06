@@ -15,7 +15,7 @@
 
       {% include "fragments/flash.html" %}
 
-      <table id="all-users-page__table" class="atat-table">
+      <table id="all-users-page__table" class="atat-table" aria-describedby="this table shows all users">
         <thead>
           <tr>
             <th id="user-name">
@@ -57,7 +57,7 @@
                 <a role="button"
                    tabindex="0"
                    href="{{ url_for('admin.user_page', user_id=user.id) }}" >
-                  <b>{{ user.full_name }}</b>
+                  <strong>{{ user.full_name }}</strong>
                 </a>
 
 
