@@ -68,11 +68,16 @@
           {% block next_button %}
             {{ SaveButton(text=('portfolios.applications.new.step_2_button_text' | translate)) }}
           {% endblock %}
-          <a class="usa-button usa-button-secondary" href="{{ url_for('applications.view_new_application_step_1', application_id=application.id) }}">
+          <a class="usa-button usa-button-secondary"
+             tabindex=0
+             role="button"
+             href="{{ url_for('applications.view_new_application_step_1', application_id=application.id) }}">
             Previous
           </a>
-          <a href="{{ url_for('applications.portfolio_applications', portfolio_id=portfolio.id) }}">
-            Cancel
+          <a href="{{ url_for('applications.portfolio_applications', portfolio_id=portfolio.id) }}"
+             tabindex=0
+             role="button">
+            {{ "common.cancel" | translate }}
           </a>
         </div>
       </div>

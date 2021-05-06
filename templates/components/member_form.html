@@ -15,7 +15,10 @@
           class='action-group__action usa-button usa-button-secondary'
           value='{{ "common.previous" | translate }}'>
     {% endif %}
-    <a class='action-group__action' v-on:click="closeModal('{{ modal }}')">{{ "common.cancel" | translate }}</a>
+    <a class='action-group__action'
+       tabindex=0
+       role="button"
+       v-on:click="closeModal('{{ modal }}')">{{ "common.cancel" | translate }}</a>
   </div>
 {% endmacro %}
 

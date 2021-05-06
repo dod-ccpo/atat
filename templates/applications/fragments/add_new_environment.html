@@ -16,14 +16,20 @@
             {{ TextInput(new_env_form.name, label="", validation="defaultStringField", optional=False) }}
           <div class="action-group">
             {{ SaveButton(text=('common.save' | translate), element="input", form="add-new-env") }}
-            <a class='action-group__action icon-link icon-link--default' v-on:click="toggle">
+            <a class='action-group__action icon-link icon-link--default'
+               v-on:click="toggle"
+               tabindex=0
+               role="button">
               {{ "common.cancel" | translate }}
             </a>
           </div>
         </div>
       </form>
     </div>
-    <a class="usa-button usa-button-secondary add-new-button" v-on:click="toggle">
+    <a class="usa-button usa-button-secondary add-new-button"
+       tabindex=0
+       role="button"
+       v-on:click="toggle">
       {{ "portfolios.applications.add_environment" | translate }}
     </a>
   </div>
