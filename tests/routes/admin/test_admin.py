@@ -22,6 +22,4 @@ def test_service_branch_label(user_session, client):
     assert (
         air_force_label == branch_label_air_force
     ), "the liable need to be the same that in the translation file."
-    assert (
-            branch_label_wrong == ""
-    ), "the liable is not valid return empty string."
+    assert branch_label_wrong == "", "the liable is not valid return empty string."
