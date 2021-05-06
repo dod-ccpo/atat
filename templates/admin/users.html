@@ -68,7 +68,7 @@
               <td>{{ user.dod_id }}</td>
               <td>
                 {% for name, id in portfolios%}
-                    {{ name }},
+                    {{ name }}{{ "," if not loop.last }}
                 {% endfor %}
               </td>
               <td>{{ user.last_login | formattedDate(formatter="%b %d, %Y")}}</td>
