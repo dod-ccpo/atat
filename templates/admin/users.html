@@ -45,7 +45,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for user, form, portfolios in users_info %}
+          {% for user, form, portfolios, branch in users_info %}
             {% set modal_id = "disable_ccpo_user_{}".format(user.dod_id) %}
             {% set disable_button_class = 'button-danger-outline' %}
             {% if user == g.current_user %}
@@ -63,7 +63,7 @@
 
 
               </td>
-              <td>{{ user.service_branch_label }}</td>
+              <td>{{ branch }}</td>
               <td>{{ user.email }}</td>
               <td>{{ user.dod_id }}</td>
               <td>
