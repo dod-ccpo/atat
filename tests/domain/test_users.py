@@ -102,6 +102,8 @@ def test_get_users():
     rando = UserFactory.create()
 
     users = Users.get_users()
+    users_by_last_login = Users.get_users(order_by="last_login")
+    users_by_service_branch = Users.get_users(order_by="service_branch")
     assert ccpo_1 in users
     assert ccpo_2 in users
     assert rando in users
