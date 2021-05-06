@@ -106,7 +106,7 @@ class User(
 
     @property
     def service_branch_label(self):
-        labels = list(filter(lambda x:self.service_branch in x, SERVICE_BRANCHES))
+        labels = list(filter(lambda x: self.service_branch in x, SERVICE_BRANCHES))
         if len(labels) > 0:
             return labels[0][1]
         return ""
