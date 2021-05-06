@@ -64,7 +64,7 @@ def get_last_login():
 def _nullify_session(session):
     session_key = f"{app.config.get('SESSION_KEY_PREFIX')}{session.sid}"
     app.redis.delete(session_key)
-    app.logger.info("%s is deleted from Redis.", session_key)
+    app.logger.info("The session [%s] has been destroyed.", session_key)
     request.cookies = ImmutableTypeConversionDict()
     request_ctx_stack.top.session = app.session_interface.open_session(app, request)
 
