@@ -6,6 +6,10 @@
 {% from "components/modal.html" import Modal %}
 
 {% block content %}
+  {% set is_current_by_branch= "current" if order_by == "service_branch" else "" %}
+  {% set is_current_by_last_login=  "current" if order_by == "last_login" else "" %}
+  {% set is_current_by_name= "current" if not(is_current_by_branch or is_current_by_last_login ) else "" %}
+
   <div class="ccpo-panel-container" id="admin-all-users-page">
     <div class='col'>
       <br>
