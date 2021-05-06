@@ -23,3 +23,10 @@ def test_service_branch_label(user_session, client):
         air_force_label == branch_label_air_force
     ), "the liable need to be the same that in the translation file."
     assert branch_label_wrong == "", "the liable is not valid return empty string."
+
+
+def test_user_page(user_session, client):
+    ccpo = UserFactory.create_ccpo()
+    user_session(ccpo)
+    response = client.get(url_for("admin.user_page", user_id=ccpo.id))
+    assert ccpo.email in response.data.decode()
