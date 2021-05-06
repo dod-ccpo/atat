@@ -22,6 +22,7 @@ from atat.queue import celery, update_celery
 from atat.routes import bp
 from atat.routes.applications import applications_bp
 from atat.routes.ccpo import bp as ccpo_routes
+from atat.routes.admin.admin import bp as admin_routes
 from atat.routes.dev import dev_bp as dev_routes
 from atat.routes.dev import local_access_bp
 from atat.routes.errors import make_error_pages
@@ -90,6 +91,7 @@ def make_app(config):
     app.register_blueprint(applications_bp)
     app.register_blueprint(user_routes)
     app.register_blueprint(ccpo_routes)
+    app.register_blueprint(admin_routes)
 
     if environment_name is not ApplicationEnvironment.PRODUCTION:
         # Activate the dev routes

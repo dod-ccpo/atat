@@ -15,7 +15,7 @@
 
       {% include "fragments/flash.html" %}
 
-      <table id="all-users-page__table">
+      <table id="all-users-page__table" class="atat-table">
         <thead>
           <tr>
             <th id="user-name">
@@ -32,7 +32,6 @@
                 Organization
               </a>
             </th>
-            <th id="user-email">{{ "common.email" | translate }}</th>
             <th id="user-dod-id">{{ "common.dod_id" | translate }}</th>
             <th id="user-portfolios">{{ "common.portfolio" | translate }}</th>
             <th id="user-last-login">
@@ -57,14 +56,13 @@
                 <br>
                 <a role="button"
                    tabindex="0"
-                   href="{{ url_for('ccpo.user_page', user_id=user.id) }}" >
+                   href="{{ url_for('admin.user_page', user_id=user.id) }}" >
                   <b>{{ user.full_name }}</b>
                 </a>
 
 
               </td>
               <td>{{ branch }}</td>
-              <td>{{ user.email }}</td>
               <td>{{ user.dod_id }}</td>
               <td>
                 {% for name, id in portfolios%}
