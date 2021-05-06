@@ -8,10 +8,11 @@ sys.path.append(parent_dir)
 
 import yaml
 
-from atat.app import make_config, make_app
+from atat.app import make_app
 from atat.database import db
 from atat.domain.users import Users
 from atat.models import User
+from atat.utils.config import make_config
 
 
 def add_ccpo_users(ccpo_users):

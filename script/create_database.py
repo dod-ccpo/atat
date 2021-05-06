@@ -9,7 +9,7 @@ sys.path.append(parent_dir)
 
 import sqlalchemy
 
-from atat.app import make_config
+from atat.utils.config import make_config
 
 default_extension = "uuid-ossp"
 

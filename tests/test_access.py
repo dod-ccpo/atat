@@ -5,8 +5,9 @@ import pytest
 from flask import Response, url_for
 
 import atat
-from atat.app import make_app, make_config
+from atat.app import make_app
 from atat.domain.auth import UNPROTECTED_ROUTES as _NO_LOGIN_REQUIRED
+from atat.utils.config import make_config
 from tests.factories import *
 
 _NO_ACCESS_CHECK_REQUIRED = _NO_LOGIN_REQUIRED + [

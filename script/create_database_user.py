@@ -8,8 +8,9 @@ sys.path.append(parent_dir)
 
 import sqlalchemy
 
-from atat.app import make_config, make_app
+from atat.app import make_app
 from atat.database import db
+from atat.utils.config import make_config
 
 
 def create_database_user(username, password, dbname):

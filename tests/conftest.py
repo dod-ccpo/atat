@@ -10,8 +10,9 @@ from werkzeug.datastructures import FileStorage
 import alembic.command
 import alembic.config
 import tests.factories as factories
-from atat.app import make_app, make_config
+from atat.app import make_app
 from atat.database import db as _db
+from atat.utils.config import make_config
 from tests.mocks import PDF_FILENAME, PDF_FILENAME2
 from tests.utils import FakeLogger, FakeNotificationSender
 

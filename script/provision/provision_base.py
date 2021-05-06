@@ -6,8 +6,8 @@ import argparse
 import time
 
 from atat.domain.csp.cloud.models import KeyVaultCredentials
-from atat.app import make_config
 from atat.domain.csp import CSP
+from atat.utils.config import make_config
 
 
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
