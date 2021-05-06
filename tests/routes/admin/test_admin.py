@@ -13,6 +13,9 @@ def test_get_portfolios_from_user(user_session, client):
 
 def test_service_branch_label(user_session, client):
     branch_label = service_branch_label()
+    air_force_label = translate("forms.portfolio.defense_component.choices.air_force")
+    branch_label_air_force = service_branch_label("air_force")
     assert (
         branch_label == ""
     ), "if service_branch_label have not branch id then return empty"
+    assert air_force_label == branch_label_air_force, "the liable need to be the same that in the translation file."
