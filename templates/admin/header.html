@@ -1,14 +1,3 @@
-{% from "components/icon.html" import Icon %}
-{% from "components/tooltip.html" import Tooltip %}
-
-{% macro Link(icon, text, url, active=False) %}
-  <a class='icon-link {{ "active" if active }}' href='{{ url }}'>
-    <div class='col'>
-      <div class='icon-link--icon'>{{ Icon(icon) }}</div>
-      <div class='icon-link--name'>{{ text }}</div>
-    </div>
-  </a>
-{% endmacro %}
 
 <div class='admin-header row'>
   <div class='col col--grow'>
@@ -19,10 +8,16 @@
   </div>
   <div class="col">
     <div class="action-group">
-      <a href="" class="usa-button usa-button-primary">
+      <a role="button"
+         tabindex="0"
+         href=""
+         class="usa-button usa-button-primary">
         Login to Cloud Service Provider
       </a>
-      <a href="" class="usa-button usa-button-secondary">
+      <a role="button"
+         tabindex="0"
+         href=""
+         class="usa-button usa-button-secondary">
         Export
       </a>
 

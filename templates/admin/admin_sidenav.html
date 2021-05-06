@@ -22,14 +22,13 @@
         </div>
         <ul class="sidenav__list" v-if="isVisible">
             {{ SidenavItem('Dashboard',
-              href="/admin/dashboard",
+              href=url_for("ccpo.dashboard"),
               active=request.url_rule.endpoint == "ccpo.dashboard",
               ) }}
           {{ SidenavItem('Users',
-              href="/ccpo-users",
+              href="",
               active=request.url_rule.endpoint == "ccpo.users",
               ) }}
-
         </ul>
       </div>
     </div>
