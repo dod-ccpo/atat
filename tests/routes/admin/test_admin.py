@@ -8,7 +8,9 @@ from tests.factories import UserFactory
 
 def test_get_portfolios_from_user(user_session, client):
     portfolios = get_portfolios_from_user()
-    assert portfolios == "", "if get_portfolios_from_user have not user return empty"
+    assert (
+        portfolios == ""
+    ), "A user without portfolios should result in an empty string"
 
 
 def test_service_branch_label(user_session, client):
@@ -29,4 +31,4 @@ def test_user_page(user_session, client):
     ccpo = UserFactory.create_ccpo()
     user_session(ccpo)
     response = client.get(url_for("admin.user_page", user_id=ccpo.id))
-    assert ccpo.email in response.data.decode()
+    assert ccpo.email in response.data.decode(), "email is not present on user page."
