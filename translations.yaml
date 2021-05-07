@@ -59,6 +59,7 @@ common:
   task_orders: Task Orders
   portfolio: Portfolio
   last_login: Last Login
+  service-branch: Organization
 components:
   date_selector:
     day: Day

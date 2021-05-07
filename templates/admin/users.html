@@ -27,6 +27,7 @@
               <a role="button"
                  href="?order-by=last_name"
                  class="{{ is_current_by_name }}"
+                 aria-label='Sort by {{ "common.name" | translate }}"'
                  tabindex="0" >
                 {{ "common.name" | translate }}
               </a>
@@ -35,8 +36,9 @@
               <a role="button"
                  href="?order-by=service_branch"
                  class="{{ is_current_by_branch }}"
+                 aria-label='Sort by {{ "common.service-branch" | translate }}'
                  tabindex="0" >
-                Organization
+                {{ "common.service-branch" | translate }}
               </a>
             </th>
             <th id="user-dod-id">{{ "common.dod_id" | translate }}</th>
@@ -45,6 +47,7 @@
               <a role="button"
                  class="{{ is_current_by_last_login }}"
                  href="?order-by=last_login"
+                 aria-label='Sort by {{ "common.last_login" | translate }}'
                  tabindex="0" >
                 {{ "common.last_login" | translate }}
               </a>
