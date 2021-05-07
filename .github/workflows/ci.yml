@@ -4,13 +4,13 @@ on:
   pull_request:
   push:
     branches:
-      - "master"
+      - "main"
       - "develop"
       - "release/**"
 
 jobs:
   cibuildscript:
-    name: Pre-merge Checks / Unit Tests / Sonar Scan
+    name: Unit Tests and Sonar Scan
     runs-on: ubuntu-20.04
     env:
       PYTHON_VERSION: "3.8.8"

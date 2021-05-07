@@ -1,6 +1,9 @@
 import pytest
 
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects.new_portfolio_page import (
     AddNewPortfolioPages,
@@ -8,9 +11,10 @@ from uitests.framework.page_objects.new_portfolio_page import (
 )
 from uitests.framework.page_objects import PageObjectMethods
 from uitests.framework.page_objects.application_page import CreateApplicationPages
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 current_dir_path = "./uitests/framework/resources/test.pdf"
 
@@ -26,10 +30,7 @@ class TestNewPortMem:
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "32. Create New Portfolio Member"}}'
-        )
+        self.driver.execute_script(set_session_name("32. Create New Portfolio Member"))
 
         # Initializing Page Objects
         self.port = AddNewPortfolioPages(self.driver)
@@ -78,14 +79,11 @@ class TestNewPortMem:
                 )
             )
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Application Indexing Verified"}}'
+                set_session_status("passed", "Application Indexing Verified")
             )
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Indexing Not Verified"}}'
+                set_session_status("failed", "Indexing Not Verified")
             )
 
         print("Test: Create New Portfolio Member")
-        self.driver.quit()

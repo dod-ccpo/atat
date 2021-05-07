@@ -14,6 +14,10 @@ from uitests.framework.page_objects.task_order_page import (
 )
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects import PageObjectMethods
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 current_dir_path = "./uitests/framework/resources/test.pdf"
 
@@ -24,10 +28,7 @@ class TestCreatefutureTaskOrder:
 
     def test_create_future_task_order(self, setup):
         self.driver = setup
-        self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "7. Create Future TO"}}'
-        )
+        self.driver.execute_script(set_session_name("7. Create Future TO"))
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -97,13 +98,16 @@ class TestCreatefutureTaskOrder:
 
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Timed out due to TaskOrder not showing under Upcoming TaskOrder section"}}'
+                set_session_name(
+                    "failed",
+                    "Timed out due to TaskOrder not showing under Upcoming TaskOrder section",
+                )
             )
         else:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Upcoming TaskOrder value is showing under Upcoming Section and the Value is matched"}}'
+                set_session_name(
+                    "passed",
+                    "Upcoming TaskOrder value is showing under Upcoming Section and the Value is matched",
+                )
             )
             print(tmp)
-            self.driver.quit()

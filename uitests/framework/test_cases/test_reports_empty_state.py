@@ -6,6 +6,10 @@ from uitests.framework.page_objects.new_portfolio_page import (
     random_generator,
 )
 from uitests.framework.page_objects.reports_page import ReportsPages
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 
 @pytest.mark.regression
@@ -15,8 +19,7 @@ class TestReportsEmptyState:
     def test_reports_empty_state(self, setup):
         self.driver = setup
         self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "10.Verifying the Reports with no Task Orders"}}'
+            set_session_name("10.Verifying the Reports with no Task Orders")
         )
         self.driver.get(self.url2)
         self.driver.maximize_window()
@@ -58,12 +61,14 @@ class TestReportsEmptyState:
             self.rep.remaining_funds(rfunds)
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Timed out due to Estimated Expended funds & Remaining funds not matched "}}'
+                set_session_name(
+                    "failed",
+                    "Timed out due to Estimated Expended funds & Remaining funds not matched ",
+                )
             )
         else:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Estimated Expended funds & Remaining funds matched"}}'
+                set_session_name(
+                    "passed", "Estimated Expended funds & Remaining funds matched"
+                )
             )
-        self.driver.quit()

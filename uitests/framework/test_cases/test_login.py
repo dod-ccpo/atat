@@ -7,6 +7,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from uitests.framework.page_objects import PageObjectMethods
 from uitests.framework.page_objects.login_page import Login
 from uitests.framework.utilities.read_properties import ReadConfig
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 
 @pytest.mark.smoke
@@ -18,10 +22,7 @@ class TestLogin:
         self.driver = setup
         self.driver.get(self.url2)
         self.driver.maximize_window()
-        self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "1. Verification of User Login"}}'
-        )
+        self.driver.execute_script(set_session_name("1. Verification of User Login"))
 
         # Initializing Page Objects
         self.login = Login(self.driver)
@@ -39,13 +40,10 @@ class TestLogin:
                 )
             )
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Successfully Logged Out"}}'
+                set_session_status("passed", "Successfully Logged Out")
             )
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Logout Not Successful"}}'
+                set_session_status("failed", "Logout Not Successful")
             )
         print("Test: Verification of User Login")
-        self.driver.quit()

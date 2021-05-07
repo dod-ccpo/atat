@@ -8,6 +8,10 @@ from uitests.framework.page_objects.new_portfolio_page import (
 )
 from uitests.framework.page_objects.task_order_page import TaskOrderPage
 from uitests.framework.page_objects import PageObjectMethods
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 
 @pytest.mark.daily
@@ -22,8 +26,7 @@ class TestToIndexEmptyState:
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
         self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": " 20.TO Index Landing Page - Empty State"}}'
+            set_session_name(" 20.TO Index Landing Page - Empty State")
         )
         # Initializing Page Objects
         self.port = AddNewPortfolioPages(self.driver)
@@ -53,13 +56,12 @@ class TestToIndexEmptyState:
         try:
             self.to.validate_add_to()
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Add Approved TaskOrders- Text is Matched"}}'
+                set_session_status("passed", "Add Approved TaskOrders- Text is Matched")
             )
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Add Approved TaskOrders-Text is NOT Matched"}}'
+                set_session_name(
+                    "failed", "Add Approved TaskOrders-Text is NOT Matched"
+                )
             )
         print(self.msg)
-        self.driver.quit()

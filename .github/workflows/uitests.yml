@@ -1,0 +1,106 @@
+---
+name: Run UI Test suite
+
+on:
+  push:
+    branches:
+      - "main"
+      - "develop"
+      - "release/**"
+  pull_request:
+
+env:
+  PYTHON_VERSION: "3.8.8"
+
+jobs:
+  uitests:
+    name: BrowserStack UI Test Suite
+    runs-on: ubuntu-20.04
+    services:
+      redis:
+        image: redis:6
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+      postgres:
+        image: postgres:10
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: atat_test
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: BrowserStack Env Setup
+        uses: browserstack/github-actions/setup-env@master
+        with:
+          username:  ${{ secrets.BROWSERSTACK_USERNAME }}
+          access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+      - name: Install xmlsec and python dependencies
+        run: |
+          sudo apt-get update -qqy
+          sudo apt-get install -qqy libxml2-dev libxmlsec1-dev libxmlsec1-openssl xmlsec1 pkg-config
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Python version
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Set Up Poetry
+        run: |
+          pip install poetry
+      - name: Cache poetry virtual environment
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-poetry-env
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-uitest-${{ env.PYTHON_VERSION }}-${{ env.cache-name }}-${{ hashFiles('pyproject.toml', 'poetry.lock')}}
+          restore-keys: |
+            ${{ runner.os }}-uitest-${{ env.PYTHON_VERSION }}-${{ env.cache-name }}-
+            ${{ runner.os }}-uitest-${{ env.PYTHON_VERSION }}-
+      - name: Cache yarn dependencies
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-yarn-deps
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-uitest-${{ env.cache-name }}-${{ hashFiles('package.json', 'yarn.lock')}}
+          restore-keys: |
+            ${{ runner.os }}-uitest-${{ env.cache-name }}-
+      - name: Run project setup script
+        run: |
+          sudo apt-get install -qqy postgresql-client
+          script/setup
+      - name: BrowserStack Local Setup
+        uses: browserstack/github-actions/setup-local@master
+        with:
+          local-testing: start
+          local-logging-level: all-logs
+          local-identifier: random
+      - name: Start a local server
+        run: |
+          ./script/create_local_certs
+          poetry run python ./script/seed_sample.py
+          ./script/secure_server &
+        env:
+          FLASK_ENV: development
+      - name: Run the UI smoke tests
+        run: |
+          poetry run pytest -s -v -m smoke uitests/* --no-cov --run-type BrowserStackLocal --browser ie
+        env:
+          baseUrl: https://localhost:8000
+          loginUrl: https://localhost:8000/login-local?username=brandon
+      - name: Stop BrowserStack local
+        uses: browserstack/github-actions/setup-local@master
+        with:
+          local-testing: stop

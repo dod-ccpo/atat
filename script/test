@@ -14,6 +14,7 @@ PYTHON_FILES="./app.py ./atat/** ./config"
 
 # Enable Python testing
 RUN_PYTHON_TESTS="true"
+RUN_PYTHON_LINT="true"
 
 # Enable Javascript testing
 RUN_JS_TESTS="true"

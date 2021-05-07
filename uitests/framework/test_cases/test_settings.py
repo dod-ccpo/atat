@@ -7,6 +7,10 @@ from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects.settings_page import SettingsPages
 from uitests.framework.page_objects import PageObjectMethods
 from uitests.framework.page_objects.new_portfolio_page import AddNewPortfolioPages
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 
 @pytest.mark.smoke
@@ -19,10 +23,7 @@ class TestSettings:
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
-        self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": "2. Validating Settings"}}'
-        )
+        self.driver.execute_script(set_session_name("2. Validating Settings"))
 
         # Initializing Page Objects
         self.cm = PageObjectMethods(self.driver)
@@ -37,14 +38,9 @@ class TestSettings:
         self.port.validating_name_comp()
         try:
             WebDriverWait(self.driver, 5).until(EC.title_contains("JEDI Cloud"))
-            self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Title matched!"}}'
-            )
+            self.driver.execute_script(set_session_status("passed", "Title matched!"))
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Title not matched"}}'
+                set_session_status("failed", "Title not matched")
             )
         print("Test: Validating Settings")
-        self.driver.quit()

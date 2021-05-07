@@ -12,6 +12,10 @@ from uitests.framework.page_objects.task_order_page import (
 )
 from uitests.framework.utilities.read_properties import ReadConfig
 from uitests.framework.page_objects import PageObjectMethods
+from uitests.framework.utilities.browserstack import (
+    set_session_name,
+    set_session_status,
+)
 
 current_dir_path = "./uitests/framework/resources/test.pdf"
 
@@ -23,10 +27,7 @@ class TestTOStep3AddClin:
 
     def test_to_step3_add_clin(self, setup):
         self.driver = setup
-        self.driver.execute_script(
-            'browserstack_executor: {"action": "setSessionName", '
-            '"arguments": {"name": " 25.TO Step 3 - Add-2 CLINs"}}'
-        )
+        self.driver.execute_script(set_session_name(" 25.TO Step 3 - Add-2 CLINs"))
         self.driver.get(self.url2)
         self.driver.maximize_window()
         self.driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -98,12 +99,15 @@ class TestTOStep3AddClin:
         try:
             self.to.click_next_review_TO()
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": '
-                '"Next:Review TaskOrder Button is enabled and able to click"}}'
+                set_session_name(
+                    "passed",
+                    "Next:Review TaskOrder Button is enabled and able to click",
+                )
             )
         except TimeoutException:
             self.driver.execute_script(
-                'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": '
-                '"Timed out due to Next:Review TaskOrder Button is not enabled or clickable"}}'
+                set_session_name(
+                    "failed",
+                    "Timed out due to Next:Review TaskOrder Button is not enabled or clickable",
+                )
             )
-        self.driver.quit()
