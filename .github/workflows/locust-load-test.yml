@@ -1,19 +1,35 @@
 name: Locust Load Test
 
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL of the deployed ATAT environment to be load tested"
+        required: true
+      users:
+        description: "The number of users to spawn"
+        required: true
+      rate:
+        description: "Spawn this many users per second to ramp-up"
+        required: true
+      runtime:
+        description: "Length of time to run the load test.  For example, 10s, 1m, 1h"
+        required: true
 
 jobs:
-  build:
-    name: 'Locust Load Test'
+  loadtest:
+    name: "Run load test"
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout
+      - name: Checkout ATAT repo
         uses: actions/checkout@v2
-      - name: Run Load Test
-        uses: dod-ccpo/atat@develop
-        with:
-          LOCUSTFILE: "load-test/locustfile.py"
-          URL:  "https://demo.atat.dev"
-          USERS: "10"
-          RATE: "2"
-          RUNTIME: "60s"
+      - name: Echo pwd
+        run: |
+          pwd
+      - name: Build locust.io docker container
+        working-directory: ./atat/load-test
+        run: |
+          docker build -t locust .
+      - name: Initiate the load test
+        run: |
+           docker run --rm -p 8089:8089 -e DISABLE_VERIFY=true locust:latest -H ${{ github.events.inputs.url }}
