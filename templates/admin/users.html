@@ -56,11 +56,6 @@
         </thead>
         <tbody>
           {% for user, form, portfolios, branch in users_info %}
-            {% set modal_id = "disable_ccpo_user_{}".format(user.dod_id) %}
-            {% set disable_button_class = 'button-danger-outline' %}
-            {% if user == g.current_user %}
-              {% set disable_button_class = "usa-button-disabled" %}
-            {% endif %}
             <tr>
               <td>
                 <a role="button"
