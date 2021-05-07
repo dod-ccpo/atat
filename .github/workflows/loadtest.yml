@@ -1,5 +1,5 @@
 ---
-name: Locust Load Test
+name: Load Test
 
 on:
   workflow_dispatch:
@@ -10,10 +10,10 @@ on:
         description: "Deployed ATAT environment to load test.  For example: (https://demo.atat.dev, https://xxxxxxxxxxxx.ngrok.io)"
         required: true
       users:
-        description: "Number of concurrent Locust users."
+        description: "Number of concurrent users."
         required: true
       spawn-rate:
-        description: "The rate per second in which users are spawned."
+        description: "Rate per second with which users are spawned."
         required: true
       run-time:
         description: "Length of time to load test.  For example: (300s, 20m, 3h, 1h30m, etc.)"
