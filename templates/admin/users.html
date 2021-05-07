@@ -73,7 +73,7 @@
                     {{ name }}{{ "," if not loop.last }}
                 {% endfor %}
               </td>
-              <td>{{ user.last_login | formattedDate(formatter="%b %d, %Y \n %H:%M %Z")}}</td>
+              <td>{{ user.last_login | formattedDate(formatter="%b %d, %Y \n %H:%M %Z") }}</td>
             </tr>
           {% endfor %}
         </tbody>
