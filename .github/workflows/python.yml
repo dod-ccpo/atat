@@ -7,21 +7,21 @@ on:
       - "main"
       - "develop"
       - "release/*"
-    paths:
-      - "**.py"
-      - ".github/**"
-      - "pyproject.toml"
-      - "poetry.*"
-      - ".bandit_config"
-      - ".pylintrc"
+    # paths:
+    #   - "**.py"
+    #   - ".github/**"
+    #   - "pyproject.toml"
+    #   - "poetry.*"
+    #   - ".bandit_config"
+    #   - ".pylintrc"
   pull_request:
-    paths:
-      - "**.py"
-      - ".github/**"
-      - "pyproject.toml"
-      - "poetry.*"
-      - ".bandit_config"
-      - ".pylintrc"
+    # paths:
+    #   - "**.py"
+    #   - ".github/**"
+    #   - "pyproject.toml"
+    #   - "poetry.*"
+    #   - ".bandit_config"
+    #   - ".pylintrc"
 
 env:
   PYTHON_FILES: "./app.py ./atat/** ./config"

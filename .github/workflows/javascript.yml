@@ -7,21 +7,21 @@ on:
       - "main"
       - "develop"
       - "release/*"
-    paths:
-      - "**.js"
-      - ".github/**"
-      - "package.json"
-      - "yarn.lock"
-      - ".prettierignore"
-      - "prettier.config.json"
+    # paths:
+    #   - "**.js"
+    #   - ".github/**"
+    #   - "package.json"
+    #   - "yarn.lock"
+    #   - ".prettierignore"
+    #   - "prettier.config.json"
   pull_request:
-    paths:
-      - "**.js"
-      - ".github/**"
-      - "package.json"
-      - "yarn.lock"
-      - ".prettierignore"
-      - "prettier.config.json"
+    # paths:
+    #   - "**.js"
+    #   - ".github/**"
+    #   - "package.json"
+    #   - "yarn.lock"
+    #   - ".prettierignore"
+    #   - "prettier.config.json"
 
 jobs:
   formatting:
