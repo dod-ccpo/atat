@@ -1,0 +1,591 @@
+# How to use text containing html tags in .html files:
+# In the template add the `safe` filter when referencing the string
+# from the template file. ie:
+
+# login:
+#   title: A title with <a href="#">a link</a>!
+
+# `{{ "login.title" | translate | safe }}`
+audit_log:
+  events:
+    default:
+      change: "{from} to {to}"
+      changes: "Changes:"
+      details: "Details:"
+base_public:
+  login: Login
+  title_tag: JEDI Cloud
+home:
+  add_portfolio_button_text: Add New Portfolio
+  new_portfolio: New Portfolio
+  get_started: Get Started
+  head: JEDI Cloud Services
+  funding_descrip: The task orders section allows you to enter, manage, and edit awarded TOs associated to a specific portfolio.
+  applications_descrip: The applications section allows you to easily create and define new applications within a portfolio, as well as manage user permissions and environments.
+  reports_descrip: The reports section allows you to view and monitor funding usage within a specific portfolio.
+  admin_descrip: Within the settings section, you can manage your portfolio name and description, as well as add, edit, and delete portfolio managers.
+ccpo:
+  users_title: CCPO Users
+  add_user: Add new CCPO user
+  form:
+    add_user_title: Add new CCPO user
+    confirm_user_title: Confirm new CCPO user
+    confirm_user_text: Please confirm that the user details below match the user being given CCPO permissions.
+    confirm_button: Confirm and Add User
+    user_not_found_title: User not found
+    user_not_found_text: To add someone as a CCPO user, they must already have an ATAT account.
+  disable_user:
+    alert_message: "Confirm removing CCPO superuser access from {user_name}"
+common:
+  applications: Applications
+  cancel: Cancel
+  close: Close
+  continue: Continue
+  delete: Delete
+  delete_confirm: "Please type the word {word} to confirm:"
+  dod_id: DoD ID
+  disable: Disable
+  edit: Edit
+  email: Email
+  name: Name
+  next: Next
+  optional: Optional
+  previous: Previous
+  save: Save
+  save_changes: Save Changes
+  task_orders: Task Orders
+components:
+  date_selector:
+    day: Day
+    month: Month
+    year: Year
+  modal:
+    destructive_title: Warning! This action is permanent
+  usa_header:
+    flag_image_alt: U.S. Flag
+    official_message: An official website of the United States government
+    tooltip:
+      message: |
+        <p>
+          <strong>The .mil means it’s official.</strong><br/>
+          Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure you’re on a federal government site.
+        </p><br/>
+        <p>
+          <strong>The site is secure.</strong><br>
+          The <strong>https://</strong> ensures that you are connecting to the official website and that any information you provide is encrypted and transmitted securely.
+        </p>
+      title: Here’s how you know
+errors:
+  default_sub: An error has occured!
+  not_found: Page Not Found
+  not_found_sub: This page does not exist.
+email:
+  application_invite: "{inviter_name} has invited you to a JEDI Cloud application"
+  app_role_created:
+    subject: Application Role Created
+    body: "Your application role has been created.\nVisit {url}, and use your username, {username}, to login."
+  azure_account_update:
+    subject: Azure account update
+    body: "There has been an update to your Azure account. \nVisit {url}, and use your username, {username}, to login."
+  portfolio_invite: "{inviter_name} has invited you to a JEDI Cloud portfolio"
+  portfolio_ready:
+    subject: Portfolio Provisioned
+    body: "Your portfolio has been provisioned.\nVisit {password_reset_address}, and use your username, {username}, to create a password."
+  task_order_sent:
+    subject: "Task Order {to_number}"
+    body: "Task Order number {to_number} updated."
+empty_state:
+  applications:
+    header:
+      edit: You don’t have any applications yet
+      view: This portfolio has no applications
+    message:
+      edit: You can manage multiple applications within a single portfolio as long as the funding sources are the same.
+      view: A portfolio member with <b>Edit Application</b> permissions can add applications to this portfolio.
+    button_text: Create Your First Application
+  applications_reporting:
+    header:
+      edit: Nothing to report.
+      view: Nothing to report.
+    message:
+      edit: This portfolio has no cloud environments set up, so there is no spending data to report. Create an application with some cloud environments to get started.
+      view: This portfolio has no cloud environments set up, so there is no spending data to report. Contact the portfolio owner to set up some cloud environments.
+    button_text: Add a new application
+  task_orders:
+    header:
+      edit: Add approved task orders
+      view: This Portfolio has no Task Orders
+    message:
+      edit: Upload your approved task order here. You are required to confirm you have the appropriate signature. You will have the ability to add additional approved task orders with more funding to this portfolio in the future.
+      view: A portfolio member with <b>Edit Funding</b> permissions can fund this portfolio with approved task orders.
+    button_text: Add Task Order
+flash:
+  application:
+    created:
+      title: Application Saved
+      message: "{application_name} has been successfully created. You may continue on to provision environments and assign team members now, or come back and complete these tasks at a later time."
+    updated: "You have successfully updated the {application_name} application."
+    name_error:
+      message: "The application name {name} has already been used in this portfolio. Please enter a unique name."
+    env_name_error:
+      message: "The environment name {name} has already been used in this application. Please enter a unique name."
+  application_invite:
+    error:
+      title: Application invitation error
+      message: There was an error processing the invitation for {user_name} from {application_name}
+    resent:
+      message: "{email} has been sent an invitation to access this Application"
+  application_member:
+    removed:
+      title: Team member removed from application
+      message: You have successfully deleted {user_name} from {application_name}
+    update_error:
+      title: "{user_name} could not be updated"
+      message: An unexpected problem occurred with your request, please try again. If the problem persists, contact an administrator.
+    updated:
+      title: Team member updated
+      message: You have successfully updated the permissions for {user_name}
+  ccpo_user:
+    added:
+      message: You have successfully given {user_name} CCPO permissions.
+    removed:
+      message: You have successfully removed {user_name}'s CCPO permissions.
+  delete_member_success: "You have successfully deleted {member_name} from the portfolio."
+  deleted_member: Portfolio member deleted
+  environment_added: 'The environment "{environment_name}" has been added to the application.'
+  environment:
+    updated:
+      title: Application environments updated
+      message: Application environments have been updated
+    deleted:
+      title: "{environment_name} deleted"
+      message: The environment "{environment_name}" has been deleted
+    subscription_failure:
+      title: Environment subscription error
+      message: An unexpected problem occurred with your request, please try again. If the problem persists, contact an administrator.
+    subscription_success:
+      title: Success!
+      message: "A subscription has been added to {name} environment"
+  form:
+    errors:
+      title: There were some errors
+      message: Please see below.
+  invite_revoked:
+    title: "{resource} invitation revoked"
+    message: "You have successfully revoked the invite for {user_name} from {resource_name}"
+  login_required_message: After you login, you will be redirected to your destination page.
+  login_required_title: Login required
+  logged_out:
+    title: Logged out
+    message: You've been logged out.
+  new_portfolio_member:
+    title: "{user_name}'s invitation has been sent"
+    message: "{user_name}'s access to this Portfolio is pending until they sign in for the first time."
+  new_ppoc_message: "You have successfully added {ppoc_name} as the primary point of contact. You are no longer the PPoC."
+  new_ppoc_title: Primary point of contact updated
+  portfolio_member:
+    revoked:
+      title: Removed portfolio access
+      message: Portfolio access successfully removed from {member_name}.
+    update:
+      title: Success!
+      message: You have successfully updated access permissions for {member_name}.
+    update_error:
+      title: Permissions for {member_name} could not be updated
+      message: An unexpected problem occurred with your request, please try again. If the problem persists, contact an administrator.
+  portfolio_invite:
+    resent:
+      message: "{email} has been sent an invitation to access this Portfolio"
+    error:
+      title: Portfolio invitation error
+      message: There was an error processing the invitation for {user_name}.
+  session_expired:
+    title: Session Expired
+    message: Your session expired due to inactivity. Please login again to continue.
+  success: Success!
+  task_order_number_error:
+    message: "The TO number has already been entered for a JEDI task order #{to_number}. Please double-check the TO number you are entering. If you believe this is in error, please contact support@cloud.mil."
+  task_order:
+    insufficient_funds:
+      title: Insufficient Funds
+    submitted:
+      title: Your Task Order has been uploaded successfully.
+      message: Your task order form for {task_order.portfolio_name} has been submitted.
+  new_application_member:
+    title: "{user_name}'s invitation has been sent"
+    message: "{user_name}'s access to this Application is pending until they sign in for the first time."
+  updated_application_team_settings: "You have updated the {application_name} team settings."
+  user:
+    complete_profile:
+      title: You must complete your profile
+      message: Before continuing, you must complete your profile.
+    updated:
+      title: User information updated.
+footer:
+  login: "Last login:"
+forms:
+  application:
+    description_label: Application Description
+    environment_names_label: Environment Name
+    environment_names_required_validation_message: Provide at least one environment name.
+    environment_names_unique_validation_message: Environment names must be unique.
+    name_label: Application Name
+  assign_ppoc:
+    dod_id: "Select new primary point of contact:"
+  environments:
+    name_label: Environment Name
+  edit_user:
+    designation_label: Designation of person
+    email_label: Email address
+    first_name_label: First name
+    last_name_label: Last name
+    phone_number_label: Phone number
+    service_branch_label: Service branch or agency
+  new_member:
+    app_mgmt:
+      label: Edit Applications
+      description: Add, remove and edit applications in this portfolio.
+    dod_id_label: DoD ID
+    dod_help: How do I find out the DoD ID?
+    dod_text: "An individual's DOD ID (formerly known as EDIPI) number can be found on the back of their CAC. Access to this system requires a valid CAC and DOD ID."
+    email_label: Email address
+    first_name_label: First name
+    funding:
+      label: Edit Funding
+      description: Add and Modify Task Orders to fund this portfolio.
+    last_name_label: Last name
+    phone_number_label: Phone number
+    portfolio_mgmt:
+      label: Edit Portfolio
+      description: "Edit this Portfolio's settings."
+    portfolio_poc:
+      label: Assign Primary PoC
+      description: "Make this user the Portfolio's primary point of contact."
+    reporting:
+      label: Edit Reporting
+      description: "View and export reports about this Portfolio's funding."
+  portfolio:
+    name:
+      label: Portfolio Name
+      length_validation_message: Portfolio names can be between 4-100 characters
+      help_text: |
+        <div class="usa-input__help">
+          <p>
+            Naming can be difficult. Choose a name that is descriptive enough for users to identify the Portfolio. You may consider naming based on your organization.
+          </p>
+          <p>
+            <strong>Writer's Block? A naming example</strong>
+            <ul>
+              <li>Design Support for Army Developers</li>
+            </ul>
+          </p>
+        </div>
+    description:
+      label: Portfolio Description
+      help_text: |
+        <div class="usa-input__help">
+          <p>
+            Add a brief one to two sentence description of your portfolio. Consider this your statement of work.
+          </p>
+          <p>
+            <strong>Writer's Block? A description example includes:</strong>
+            <ul>
+              <li>Build security applications for FOB Clark</li>
+            </ul>
+          </p>
+        </div>
+    defense_component:
+      choices:
+        air_force: Air Force
+        army: Army
+        marine_corps: Marine Corps
+        navy: Navy
+        space_force: Space Force
+        ccmd_js: Combatant Command / Joint Staff (CCMD/JS)
+        dafa: Defense Agency and Field Activity (DAFA)
+        osd_psas: Office of the Secretary of Defense (OSD) / Principal Staff Assistants (PSAs)
+        other: Other
+      title: Select DoD component(s) funding your Portfolio
+      validation_message: You must select at least one defense component.
+      help_text: |
+          Select the DOD component(s) that will fund all Applications within this Portfolio.
+           Multiple DoD organizations can fund the same Portfolio.<br/>
+          Select all that apply.
+  attachment:
+    object_name:
+      length_error: Object name may be no longer than 40 characters.
+    filename:
+      length_error: Filename may be no longer than 100 characters.
+  task_order:
+    upload_error: There was an error uploading your file. Please try again. If you encounter repeated problems uploading this file, please contact CCPO.
+    size_error: "The file you have selected is too large. Please choose a file no larger than {file_size_limit}MB."
+    filename_error: File names must end in .pdf and can only contain the characters A-Z, 0-9, space, hyphen, underscore, and period.
+    number_description: Task Order Number
+    pop_errors:
+      date_order: PoP start date must be before end date.
+      range: Date must be between {start} and {end}.
+      end_past_contract: PoP end date must be before or on {date}.
+      end_pre_contract: PoP end date must be after or on {date}.
+      start_past_contract: PoP start date must be before or on {date}.
+      start_pre_contract: PoP start date must be on or after {date}.
+    clin_funding_errors:
+      obligated_amount_error: Obligated funds can not exceed total CLIN value
+      funding_range_error: Dollar amount must be from $0.00 to $1,000,000,000.00
+  validators:
+    is_number_message: Please enter a valid number.
+    list_item_required_message: Please provide at least one.
+    list_items_unique_message: Items must be unique
+    name_message: "This field accepts letters, numbers, commas, apostrophes, hyphens, and periods."
+    phone_number_message: Please enter a valid 5 or 10 digit phone number.
+    alpha_numeric_message: This field may only contain alphanumeric characters.
+fragments:
+  edit_application_form:
+    explain: ATAT allows you to create multiple applications within a portfolio. Each application can then be broken down into its own customizable environments.
+  edit_user_form:
+    save_details_button: Save
+    service_choice: Please choose a service branch or agency
+  portfolio_admin:
+    none: Not Selected
+  ppoc:
+    update_btn: Update
+invites:
+  revoke: Revoke Invite
+  revoke_modal_text: "By revoking this invitation to {application}, you are confirming that this member will no longer have access."
+login:
+  ccpo_logo_alt_text: Cloud Computing Program Office Logo
+  certificate_selection:
+    learn_more: Learn more
+    message: "When you are prompted to select a certificate, please select an Authentication (Identification) Certificate from the provided choices."
+    title: Certificate Selection
+  h1_title: Access the JEDI Cloud
+  login_button: Sign in with CAC
+  title_tag: Sign in | JEDI Cloud
+navigation:
+  portfolio_navigation:
+    breadcrumbs:
+      admin: Settings
+      funding: Task Orders
+      reports: Reports
+      applications: Applications
+  topbar:
+    jedi_cloud_link_text: ATAT
+    logout_link_title: Log out of ATAT Cloud
+portfolios:
+  admin:
+    activity_log_title: Activity log
+    alert_header: Are you sure you want to delete this member?
+    alert_message: "The member will be removed from the portfolio, but their log history will be retained."
+    alert_title: Warning! You  are about to delete a member from the portfolio.
+    defense_component_label: Department of Defense Component
+    portfolio_name: Portfolio name
+    members:
+      perms_portfolio_mgmt:
+        "False": View Portfolio
+        "True": Edit Portfolio
+      perms_app_mgmt:
+        "False": View Applications
+        "True": Edit Applications
+      perms_funding:
+        "False": View Funding
+        "True": Edit Funding
+      perms_reporting:
+        "False": View Reporting
+        "True": Edit Reporting
+  applications:
+    add_environment: Add an Environment
+    add_member: Add Team Member
+    add_another_environment: Add another environment
+    create_button: Create Application
+    new:
+      step_1_header: Name and Describe New Application
+      step_1_button_text: "Next: Add Environments"
+      step_1_form_help_text:
+        name: |
+          <div>
+            <p>
+              The name of your application should be intuitive and easily recognizable for all of your team members.
+            </p>
+            <p>
+              <strong>Writer's Block? A naming example includes:</strong>
+              <ul>
+                <li>Army Security Infrastructure Application</li>
+              </ul>
+            </p>
+          </div>
+        description: |
+          <div>
+            <p>
+              Add a brief one to two sentence description of your application. You should be able to reference your TO Description of Work.
+            </p>
+            <p>
+              <strong>Writer's Block? A description example includes:</strong>
+              <ul>
+                <li>Build security applications for FOB Clark</li>
+              </ul>
+            </p>
+          </div>
+      step_2_header: Add Environments to {application_name}
+      step_2_description: Production, Staging, Testing, and Development environments are included by default. However, you can add, edit, and delete environments based on the needs of your Application.
+      step_2_button_text: "Next: Add Members"
+      step_3_header: Add Members to {application_name}
+      step_3_description: "To proceed, you will need each member's email address and DOD ID. Within this section, you will also assign Application-level permissions and environment-level roles for each member."
+      step_3_button_text: Save Application
+    create_new_env: Create a new environment.
+    create_new_env_info: Creating an environment gives you access to the Cloud Service Provider. This environment will function within the constraints of the task order, and any costs will be billed against the portfolio.
+    enter_env_name: "Enter environment name:"
+    environments:
+      add_subscription: Add new subscription
+      blank_slate: This Application has no environments
+      disabled: ": Access Suspended"
+      funding_alert: "Application environments will not be created until the {name} portfolio is funded."
+    environments_heading: Application Environments
+    existing_application_title: "{application_name} Application Settings"
+    member_count: "{count} Members"
+    new_application_title: New Application
+    settings:
+      name_description: Application name and description
+      team_members: Application Team
+      environments: Application Environments
+    members:
+      blank_slate: This Application has no members
+      form:
+        env_mgmt:
+          label: Manage Application Environments
+          description: Add and rename Environments, assign Environment access roles to team members.
+        team_mgmt:
+          label: Edit Application Team
+          description: Add and remove team members.
+        env_access:
+          title: Environment Roles
+          table_header: Environment Access
+          edit_description: Add or revoke Environment access.
+          description: Additional role controls are available in the CSP console. <a href="{learn_more_url}" target="_blank"> Learn More </a>
+          revoke_warning: Save changes to revoke access, <strong>this can not be undone.</strong>
+          suspended: Suspended access cannot be modified.
+        next_button: "Next: Roles and Permissions"
+        app_perms:
+          title: Application Permissions
+          description: Application permissions allow users to provision and modify applications and teams. <a href="{learn_more_url}" target="_blank"> Learn More </a>
+        edit_access_header: "Manage {user}'s Access"
+        add_member: Add Member
+      menu:
+        edit: Edit Roles and Permissions
+        resend: Resend Invite
+      new:
+        verify: Verify Member Information
+      perms_team_mgmt:
+        "False": View Team
+        "True": Edit Team
+      perms_env_mgmt:
+        "False": View Environments
+        "True": Edit Environments
+      roles:
+        ADMIN: Admin
+        BILLING_READ: Billing Read-only
+        CONTRIBUTOR: Contributor
+  header: PORTFOLIO
+  new:
+    title: New Portfolio
+    cta_step_1: Name and Describe Portfolio
+    sticky_header_context: "Step {step} of 1"
+    save: Save Portfolio
+  members:
+    archive_button: Delete member
+  reports:
+    days_remaining:
+      header: Days remaining
+      toolip: Days remaining are the days of funding remaining in the portfolio.
+    duration:
+      header: Funding duration
+      tooltip: Funding duration is the period of time that there is a valid task order funding the portfolio.
+    estimate_warning: Reports displayed in JEDI are estimates and not a system of record. To manage your costs, go to Azure by selecting the Login to Azure button above.
+    total_value:
+      header: Total Portfolio Value
+      tooltip: Total portfolio value is all obligated funds for active task orders in this portfolio.
+task_orders:
+  add_new_button: Add New Task Order
+  review:
+    clins:
+      number: TO CLIN
+      type: CLIN Type
+      idiq_clin_description: Description (IDIQ CLIN)
+      pop: PoP
+      total_amount: CLIN Value
+      obligated: Amount Obligated
+      JEDICLINType:
+        JEDI_CLIN_1: "Unclassified IaaS and PaaS (IDIQ CLIN 0001)"
+        JEDI_CLIN_2: "Classified IaaS and PaaS (IDIQ CLIN 0002)"
+        JEDI_CLIN_3: "Unclassified Cloud Support Package (IDIQ CLIN 0003)"
+        JEDI_CLIN_4: "Classified Cloud Support Package (IDIQ CLIN 0004)"
+    tooltip:
+      obligated_funds: Funds committed to fund your portfolio. This may represent 100% of your total task order value, or a portion of it.
+      total_value: All obligated and projected funds for the task order’s Base and Option CLINs.
+  form:
+    add_clin: Add Another CLIN
+    add_to_header: Enter the Task Order number
+    add_to_description: Please input your task order number. This number is listed under "Order Number" on form SF 1449. Moving forward, this portion of funding will be referenced by the recorded task order number.
+    builder_base:
+      cancel_modal: Do you want to save this draft?
+      delete_draft: No, delete it
+      save_draft: Yes, save for later
+      to_number: "<strong>Task Order Number:</strong> {number}"
+    clin_title: Enter Contract Line Items
+    clin_description: "Refer to your task order to locate your Contract Line Item Numbers (CLINs)."
+    clin_details: CLIN Details
+    clin_funding: CLIN Funding
+    clin_number_label: CLIN
+    clin_type_label: Corresponding IDIQ CLIN
+    clin_remove_text: "Do you want to remove "
+    clin_remove_confirm: Yes, remove CLIN
+    clin_remove_cancel: No, go back
+    draft_alert_title: Your information has been saved
+    draft_alert_message: You can return to the Task Order Builder to enter missing information. Once you are finished, you’ll be ready to submit this request.
+    total_funds_label: Total CLIN Value
+    obligated_funds_label: Obligated Funds
+    pop: Period of Performance (PoP)
+    pop_end: End Date
+    pop_end_alert: "A CLIN's period of performance must end before {end_date}."
+    pop_example: "For example: 07 04 1776"
+    pop_start: Start Date
+    supporting_docs_size_limit: "Your file may not exceed {file_size_limit}MB"
+    step_1:
+      title: Upload your approved Task Order (TO)
+      description: Upload your approved task order here. You are required to confirm you have the appropriate signature. You will have the ability to add additional approved task orders with more funding to this portfolio in the future.
+      next_button: "Next: Add TO Number"
+    step_2:
+      next_button: "Next: Add Base CLIN"
+    step_3:
+      next_button: "Next: Review Task Order"
+      percent_obligated: "% of Funds Obligated"
+    step_4:
+      documents: Documents
+      clins: CLIN Summary
+      next_button: "Next: Confirm"
+    step_5:
+      cta_text: Verify Your Information
+      description: Prior to submitting the task order, you must acknowledge, by marking the appropriate box below, that the uploaded task order is signed by an appropriate, duly warranted Contracting Officer who has the authority to execute the uploaded task order on your Agency’s behalf and has authorized you to upload the task order in accordance with Agency policy and procedures. You must further acknowledge, by marking the appropriate box below, that all information entered herein matches that of the submitted task order.
+      next_button: "Submit Task Order"
+    sticky_header_text: "Add a Task Order"
+    sticky_header_review_text: Review Changes
+    sticky_header_context: "Step {step} of 5"
+  sign:
+    digital_signature_description: I confirm the uploaded task order is signed by the appropriate, duly warranted Agency Contracting Officer who authorized me to upload the task order.
+    confirmation_description: I confirm that the information entered here in matches that of the submitted task order.
+    acknowledge:
+      title: Acknowledge Statement
+      text: I acknowledge, by executing the confirmation above and submitting this verification, that I am subject to potential penalties that may include fines, imprisonment, or both, under the U.S. law and regulations for any false statement or misrepresentation in association with this task order submission or on any accompanying documentation.
+  status_empty_state: "This Portfolio has no {status} Task Orders."
+  status_list_title: "{status} Task Orders"
+  summary:
+    obligated: Total Obligated
+    total: Total Value
+JEDICLINType:
+  JEDI_CLIN_1: "IDIQ CLIN 0001 Unclassified IaaS/PaaS"
+  JEDI_CLIN_2: "IDIQ CLIN 0002 Classified IaaS/PaaS"
+  JEDI_CLIN_3: "IDIQ CLIN 0003 Unclassified Cloud Support Package"
+  JEDI_CLIN_4: "IDIQ CLIN 0004 Classified Cloud Support Package"
+testing:
+  example_string: Hello World
+  example_with_variables: "Hello, {name}!"
+  nested:
+    example: Hello nested example

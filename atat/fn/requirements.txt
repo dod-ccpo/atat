@@ -1,0 +1,7 @@
+azure-functions
+azure-servicebus
+SQLAlchemy==1.4.11
+Flask==1.1.2
+#git+git://github.com/dod-ccpo/atat@develop#egg=atat
+./atat-0.1.0.tar.gz
+./xmlsec-1.3.10-cp38-cp38-linux_x86_64.whl
