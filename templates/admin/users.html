@@ -60,15 +60,11 @@
             {% endif %}
             <tr>
               <td>
-
-                <br>
                 <a role="button"
                    tabindex="0"
                    href="{{ url_for('admin.user_page', user_id=user.id) }}" >
                   <strong>{{ user.full_name }}</strong>
                 </a>
-
-
               </td>
               <td>{{ branch }}</td>
               <td>{{ user.dod_id }}</td>
