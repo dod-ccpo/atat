@@ -1,7 +1,7 @@
 name: Locust Load Test
 
 on:
-  workflow_dispatch:
+  push:
     inputs:
       url:
         description: "URL of the deployed ATAT environment to be load tested"
