@@ -1,9 +1,10 @@
 import logging
 
 import azure.functions as func
-import atat.fn.shared as shared
+from shared import portfolios_api #(absolute)
+
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    return func.HttpResponse(body=shared.get_portfolios(), mimetype='application/json')
+    return func.HttpResponse(body=portfolios_api.get_portfolios(), mimetype='application/json')
 
