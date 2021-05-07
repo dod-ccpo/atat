@@ -19,17 +19,14 @@ ENTITY_ID_MATCHER = re.compile(
     re.I,
 )
 
-# chance a new portfolio will be created
+# chance something will happen
 NEW_PORTFOLIO_CHANCE = 10
-# chance a new application will be created
 NEW_APPLICATION_CHANCE = 10
-# chance a new task order will be created
 NEW_TASK_ORDER_CHANCE = 10
-# chance the user will logout
 NEW_LOGOUT_CHANCE = 10
 
+# set of DoD IDs representing each unique user
 dod_ids = set()
-"""set of DoD IDs representing each unique user"""
 
 
 def update_user_profile(user, client, parent):
