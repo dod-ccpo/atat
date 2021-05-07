@@ -16,21 +16,21 @@ class SessionLimiter(object):
 
         session_id = self.session.sid
 
-        self._delete_session(user.last_session_id)
         app.logger.info(
             "The session [%s%s] is destroyed for user: %s.",
             self.session_prefix,
             user.last_session_id,
             user.full_name,
         )
+        self._delete_session(user.last_session_id)
 
-        Users.update_last_session_id(user, session_id)
         app.logger.info(
             "The session [%s%s] is assigned for user: %s.",
             self.session_prefix,
             session_id,
             user.full_name,
         )
+        Users.update_last_session_id(user, session_id)
 
     def _delete_session(self, session_id):
         self.redis.delete(f"{self.session_prefix}{session_id}")

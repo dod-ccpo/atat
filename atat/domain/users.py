@@ -91,7 +91,7 @@ class Users(object):
         db.session.add(user)
         db.session.commit()
 
-        app.logger.info("%s was updated.", user.full_name)
+        app.logger.info("%s's account was updated.", user.full_name)
         return user
 
     @classmethod
