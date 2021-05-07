@@ -1,5 +1,6 @@
 from flask import url_for
 
+from atat.domain.portfolios import Portfolios
 from atat.domain.users import Users
 from atat.routes.admin.admin import get_portfolios_from_user, service_branch_label
 from atat.utils.localization import translate
@@ -8,9 +9,24 @@ from tests.factories import UserFactory
 
 def test_get_portfolios_from_user(user_session, client):
     portfolios = get_portfolios_from_user()
+    ccpo = UserFactory.create_ccpo()
+    user_session(ccpo)
+    response = client.post(
+        url_for("portfolios.create_portfolio"),
+        data={
+            "name": "My project name",
+            "description": "My project description",
+            "defense_component": ["army"],
+        },
+    )
+    portfolios_of_ccpo = get_portfolios_from_user(user=ccpo)
     assert (
         portfolios == ""
     ), "A user without portfolios should result in an empty string"
+    assert response.status_code == 302, "CCPO user  own a portfolio"
+    assert (
+        portfolios_of_ccpo[0][0] == "My project name"
+    ), "A user with portfolios should result in array of tuples with portfolio (name, id)"
 
 
 def test_service_branch_label(user_session, client):
