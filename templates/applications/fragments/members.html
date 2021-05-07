@@ -167,7 +167,11 @@
   {% endif %}
   {% if user_can(permissions.CREATE_APPLICATION_MEMBER) %}
     {% set new_member_modal_name = "add-app-mem" %}
-    <a class="usa-button usa-button-secondary add-new-button" v-on:click="openModal('{{ new_member_modal_name }}')">
+    <a class="usa-button usa-button-secondary add-new-button"
+       role="button"
+       tabindex=0
+       aria-haspopup="true"
+       v-on:click="openModal('{{ new_member_modal_name }}')">
       {{ "portfolios.applications.add_member" | translate }}
     </a>
 
