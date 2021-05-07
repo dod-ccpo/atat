@@ -23,11 +23,8 @@ jobs:
     steps:
       - name: Checkout ATAT repo
         uses: actions/checkout@v2
-      - name: Echo pwd
-        run: |
-          pwd
       - name: Build locust.io docker container
-        working-directory: ./atat/load-test
+        working-directory: /home/runner/work/atat/atat/load-test
         run: |
           docker build -t locust .
       - name: Initiate the load test
