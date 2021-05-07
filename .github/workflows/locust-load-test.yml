@@ -2,6 +2,7 @@
 name: Locust Load Test
 
 on:
+  # workflow_dispatch:
   push:
     # Input names below mirror locust configuration options.
     # https://docs.locust.io/en/stable/configuration.html#all-available-configuration-options
@@ -31,5 +32,7 @@ jobs:
         run: |
           docker build -t locust .
       - name: Initiate the load test
+        # run: |
+        #    docker run --rm -p 8089:8089 -e DISABLE_VERIFY=true locust:latest --headless --locustfile locustfile --host ${{ github.events.inputs.host }} --users ${{ github.events.inputs.users }} --spawn-rate ${{ github.events.inputs.spawn-rate }} --run-time ${{ github.events.inputs.run-time }}
         run: |
-           docker run --rm -p 8089:8089 -e DISABLE_VERIFY=true locust:latest --headless --locustfile locustfile --host ${{ github.events.inputs.host }} --users ${{ github.events.inputs.users }} --spawn-rate ${{ github.events.inputs.spawn-rate }} --run-time ${{ github.events.inputs.run-time }}
+           docker run --rm -p 8089:8089 -e DISABLE_VERIFY=true locust:latest --headless --locustfile locustfile --host https://demo.atat.dev --users 3 --spawn-rate 1 --run-time 30s
