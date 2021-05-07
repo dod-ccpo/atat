@@ -1,0 +1,82 @@
+{% extends "base_private.html" %}
+
+{% from "components/alert.html" import Alert %}
+{% from "components/delete_confirmation.html" import DeleteConfirmation %}
+{% from "components/icon.html" import Icon %}
+{% from "components/modal.html" import Modal %}
+
+{% block content %}
+  {% set is_current_by_branch= "current" if order_by == "service_branch" else "" %}
+  {% set is_current_by_last_login=  "current" if order_by == "last_login" else "" %}
+  {% set is_current_by_name= "current" if not(is_current_by_branch or is_current_by_last_login ) else "" %}
+
+  <div class="ccpo-panel-container" id="admin-all-users-page">
+    <div class='col'>
+      <br>
+      <div class="h2">
+        {{ "admin.users_page.title" | translate }}
+      </div>
+
+      {% include "fragments/flash.html" %}
+
+
+      <table id="all-users-page__table" class="atat-table" aria-describedby="this table shows all users">
+        <thead>
+          <tr>
+            <th id="user-name">
+              <a role="button"
+                 href="?order-by=last_name"
+                 class="{{ is_current_by_name }}"
+                 aria-label='Sort by {{ "common.name" | translate }}"'
+                 tabindex="0" >
+                {{ "common.name" | translate }}
+              </a>
+            </th>
+            <th id="user-service-branch">
+              <a role="button"
+                 href="?order-by=service_branch"
+                 class="{{ is_current_by_branch }}"
+                 aria-label='Sort by {{ "common.service-branch" | translate }}'
+                 tabindex="0" >
+                {{ "common.service-branch" | translate }}
+              </a>
+            </th>
+            <th id="user-dod-id">{{ "common.dod_id" | translate }}</th>
+            <th id="user-portfolios">{{ "common.portfolio" | translate }}</th>
+            <th id="user-last-login">
+              <a role="button"
+                 class="{{ is_current_by_last_login }}"
+                 href="?order-by=last_login"
+                 aria-label='Sort by {{ "common.last_login" | translate }}'
+                 tabindex="0" >
+                {{ "common.last_login" | translate }}
+              </a>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user, form, portfolios, branch in users_info %}
+            <tr>
+              <td>
+                <a role="button"
+                   tabindex="0"
+                   href="{{ url_for('admin.user_page', user_id=user.id) }}" >
+                  <strong>{{ user.full_name }}</strong>
+                </a>
+              </td>
+              <td>{{ branch }}</td>
+              <td>{{ user.dod_id }}</td>
+              <td>
+                {% for name, id in portfolios%}
+                    {{ name }}{{ "," if not loop.last }}
+                {% endfor %}
+              </td>
+              <td>{{ user.last_login | formattedDate(formatter="%b %d, %Y \n %H:%M %Z") }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+{% endblock %}
