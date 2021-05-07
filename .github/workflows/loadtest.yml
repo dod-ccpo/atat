@@ -1,0 +1,35 @@
+---
+name: Load Test
+
+on:
+  workflow_dispatch:
+    # Input names below mirror locust configuration options.
+    # https://docs.locust.io/en/stable/configuration.html#all-available-configuration-options
+    inputs:
+      host:
+        description: "Deployed ATAT environment to load test.  For example: (https://demo.atat.dev, https://xxxxxxxxxxxx.ngrok.io)"
+        required: true
+      users:
+        description: "Number of concurrent users."
+        required: true
+      spawn-rate:
+        description: "Rate per second with which users are spawned."
+        required: true
+      run-time:
+        description: "Length of time to load test.  For example: (300s, 20m, 3h, 1h30m, etc.)"
+        required: true
+
+jobs:
+  loadtest:
+    name: "Run load test"
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout ATAT repo
+        uses: actions/checkout@v2
+      - name: Build docker container
+        working-directory: /home/runner/work/atat/atat/load-test
+        run: |
+          docker build -t locust .
+      - name: Initiate the load test
+        run: |
+           docker run --rm -p 8089:8089 -e DISABLE_VERIFY=true locust:latest --headless --locustfile locustfile --host ${{ github.events.inputs.host }} --users ${{ github.events.inputs.users }} --spawn-rate ${{ github.events.inputs.spawn-rate }} --run-time ${{ github.events.inputs.run-time }}

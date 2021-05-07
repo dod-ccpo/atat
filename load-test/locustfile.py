@@ -10,10 +10,6 @@ from locust import SequentialTaskSet, between, task
 from locust.contrib.fasthttp import FastHttpUser
 from pyquery import PyQuery as pq
 
-# Provide username/password for basic auth
-USERNAME = os.getenv("ATAT_BA_USERNAME", "")
-PASSWORD = os.getenv("ATAT_BA_PASSWORD", "")
-
 # Ability to disable SSL verification for bad cert situations
 DISABLE_VERIFY = os.getenv("DISABLE_VERIFY", "true").lower() == "true"
 
@@ -29,6 +25,7 @@ NEW_APPLICATION_CHANCE = 10
 NEW_TASK_ORDER_CHANCE = 10
 NEW_LOGOUT_CHANCE = 10
 
+# set of DoD IDs representing each unique user
 dod_ids = set()
 
 
@@ -67,6 +64,9 @@ def update_user_profile(user, client, parent):
 
 
 def create_application(client, parent, portfolio_id):
+    """
+    Create a new ATAT Application in the specified portfolio.
+    """
     # get new application page for csrf token
     create_app_url = f"/portfolios/{portfolio_id}/applications/new"
     response = client.get(create_app_url)
@@ -132,6 +132,9 @@ def create_application(client, parent, portfolio_id):
 
 
 def create_portfolio(client, parent):
+    """
+    Create a new ATAT Portfolio.
+    """
     # get portfolios page for csrf token
     response = client.get("/portfolios/new")
     csrf_token = get_csrf_token(response)
@@ -153,6 +156,9 @@ def create_portfolio(client, parent):
 
 
 def create_task_order(client, parent, portfolio_id):
+    """
+    Create a new ATAT Task Order (TO) in the specified portfolio.
+    """
     # get init page for csrf token
     response = client.get(f"/portfolios/{portfolio_id}/task_orders/form/step_1")
     csrf_token = get_csrf_token(response)
@@ -173,7 +179,7 @@ def create_task_order(client, parent, portfolio_id):
     # get TO ID
     task_order_id = extract_id(response._request.get_full_url())
 
-    # set TO number
+    # generate a Task Order number
     number = "".join(choices(string.digits, k=choice(range(13, 18))))
     set_task_order_number_url = f"/task_orders/{task_order_id}/form/step_2"
     response = client.post(
@@ -183,7 +189,7 @@ def create_task_order(client, parent, portfolio_id):
     )
     csrf_token = get_csrf_token(response)
 
-    # set TO parameters
+    # generate a CLIN
     clins_number = "".join(choices(string.digits, k=4))
     task_orders_step_3 = f"/task_orders/{task_order_id}/form/step_3"
     response = client.post(
@@ -215,14 +221,18 @@ def create_task_order(client, parent, portfolio_id):
 
 
 def get_portfolios(client):
-    # get all portfolios
+    """
+    Get all portfolios.
+    """
     response = client.get("/home")
     d = pq(response.text)
     return [p.attr("href") for p in d(".sidenav__link").items()]
 
 
 def get_applications(client, portfolio_id):
-    # get all applications for a portfolio
+    """
+    Get all applications for the specified portfolio.
+    """
     response = client.get(f"/portfolios/{portfolio_id}/applications")
     d = pq(response.text)
     return [
@@ -232,19 +242,26 @@ def get_applications(client, portfolio_id):
 
 
 def has_task_orders(client, portfolio_id):
+    """
+    Return true if the specified portfolio has a TO; false otherwise.
+    """
     response = client.get(f"/portfolios/{portfolio_id}/task_orders")
     d = pq(response.text)
     return not d(".portfolio-funding .empty-state")
 
 
 def get_csrf_token(response):
-    # get csrf token from html
+    """
+    Get csrf token from html.
+    """
     d = pq(response.text)
     return d("#csrf_token").val()
 
 
 def extract_id(path):
-    # get an id from a url path
+    """
+    Get an id from a url path.
+    """
     entity_id_match = ENTITY_ID_MATCHER.match(path)
 
     assert entity_id_match is not None, f"Could not find id in {path}"
@@ -253,6 +270,9 @@ def extract_id(path):
 
 
 def get_new_dod_id():
+    """
+    Generate a new unique 10-digit DoD ID and add it to the list of known user IDs.
+    """
     while True:
         dod_id = "1" + "".join(choice(string.digits) for _ in range(9))
         if dod_id not in dod_ids:
@@ -278,6 +298,10 @@ def log_out(user, client):
 
 
 def user_status(f):
+    """
+    Decorator to wrap Task functions.
+    """
+
     @wraps(f)
     def decorated_function(*args, **kwargs):
         task_set = args[0]
@@ -297,6 +321,10 @@ def user_status(f):
 
 
 class UserBehavior(SequentialTaskSet):
+    """
+    Defines Tasks a User can execute.
+    """
+
     def on_start(self):
         self.client.verify = not DISABLE_VERIFY
         login_as(self.user, self.client)
@@ -341,14 +369,21 @@ class UserBehavior(SequentialTaskSet):
 
 
 class ATATUser(FastHttpUser):
+    """
+    Represents one User, AKA locust, to be spawned to attack the system to be load tested.
+    """
+
     tasks = [UserBehavior]
+
     wait_time = between(3, 9)
+    """Time (in seconds) between the execution of Tasks."""
 
     def on_start(self):
-        dod_id = get_new_dod_id()
+        """
+        Called when a User starts running.
+        """
+        self.dod_id = get_new_dod_id()
         first_name, last_name = get_new_name()
-
-        self.dod_id = dod_id
         self.first_name = first_name
         self.last_name = last_name
         self.email = "".join([first_name.lower(), last_name.lower(), "@loadtest.atat"])
@@ -372,6 +407,9 @@ class ATATUser(FastHttpUser):
         self.portfolio_id = None
 
     def on_stop(self):
+        """
+        Called when a User stops running (is killed).
+        """
         dod_ids.remove(self.dod_id)
 
 
